@@ -137,6 +137,13 @@ td.table-checkbox, th.table-checkbox {
 	cursor: pointer;
 }
 
+
+.noselect {
+	cursor: pointer; -webkit-user-select: none; 
+  	-ms-user-select: none; 
+  	user-select: none;
+}
+
 /**
 AUTOCOMPLETE
 **/
@@ -158,4 +165,12 @@ AUTOCOMPLETE
 
 .clear-all-badge {
 	padding: 0.4rem;
+}
+
+/**
+ * Filters
+ */
+ 
+.filterable-field .card-header:hover {
+	background-color: #F0F0F0;
 }

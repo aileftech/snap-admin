@@ -66,22 +66,21 @@
 							<div class="box">
 								<h3 class="fw-bold mb-3"><i class="bi bi-funnel"></i> Filters</h3>
 								
-								<div th:each="field : ${schema.getFilterableFields()}">
-									<div class="card mb-3 cursor-pointer">
-										<div class="card-header">
-											<i class="bi bi-caret-right"></i> <span class="fw-bold" th:text="${field.getName()}"></span>
-										</div>
-										
-										<div class="card-body d-none">
-											<th:block th:if="${field.getConnectedType() != null}">
-												<div th:each="val : ${schema.getFieldValues(field)}">
-													<span th:text="${val}"></span>
-												</div>
-											</th:block>
-										</div>
+								<div class="card mb-3 filterable-field" th:each="field : ${schema.getFilterableFields()}">
+									<div class="card-header noselect cursor-pointer">
+										<i class="bi bi-caret-right filter-icon  align-middle"></i> 
+										<span class="fw-bold align-middle" th:text="${field.getName()}"></span>
 									</div>
-								
+									
+									<div class="card-body d-none">
+										<th:block th:if="${field.getConnectedType() != null}">
+											<div th:each="val : ${schema.getFieldValues(field)}">
+												<span th:text="${val}"></span>
+											</div>
+										</th:block>
+									</div>
 								</div>
+								
 							</div>
 						</div>
 		    		</div>
