@@ -21,8 +21,11 @@ broken, please report it as an issue and I will try to take a look at it.
 </dependency>
 ```
 
-2. A few configuration steps are required on your code in order to integrate the library in your project. The first one
-is to create a configuration class:
+2. A few configuration steps are required on your code in order to integrate the library in your project. If you don't want
+to test on your own code, you can clone the [test project](https://github.com/aileftech/spring-boot-database-admin-test) which provides
+a sample database and already configured code.
+
+If you wish to integrate it into your project instead, the first step is create creating a configuration class:
 
 ```
 @DbAdminConfiguration
