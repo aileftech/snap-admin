@@ -74,4 +74,20 @@ public class AdvancedJpaRepository extends SimpleJpaRepository {
         return entityManager.createQuery(query).setMaxResults(pageSize)
         			.setFirstResult((page - 1) * pageSize).getResultList();
 	}
+	
+	public List<Object> distinctFieldValues(DbField field) {
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		
+		Class<?> outputType = field.getType().getJavaClass();
+		if (field.getConnectedType() != null) {
+			outputType = field.getConnectedSchema().getPrimaryKey().getType().getJavaClass();
+		}
+		
+        CriteriaQuery query = cb.createQuery(outputType);
+        Root root = query.from(schema.getJavaClass());
+        
+        query.select(root.get(field.getJavaName()).as(outputType)).distinct(true);
+        
+        return entityManager.createQuery(query).getResultList();
+	}
 }

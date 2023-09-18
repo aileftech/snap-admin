@@ -15,7 +15,7 @@
 						<span class="align-middle"> [[ ${schema.getJavaClass().getSimpleName()} ]] </span>
 					</h1>
 		    		<div class="row mt-4">
-		    			<div class="col">
+		    			<div th:class="${schema.getFilterableFields().isEmpty() ? 'col' : 'col-9'}">
 	    					<div class="w-100 d-flex inner-navigation">
 	    						<a th:href="|/dbadmin/model/${className}|" class="active">
 		    						<div class="ui-tab ps-5 pe-5 p-3">
@@ -31,15 +31,16 @@
 		    					</div>
 	    					</div>
 							<div class="box with-navigation">
-							<form th:action="|/dbadmin/model/${className}|" method="GET" class="mb-3">
-		    					<div class="input-group">
-		    						<input type="text" th:value="${query}"
-		    						placeholder="Type and press ENTER to search" 
-		    						class="ui-text-input form-control" name="query" autofocus>
-		    						<button class="ui-btn btn btn-primary">Search</button>
-		    					</div>
-		    				</form>
-							
+								<form th:action="|/dbadmin/model/${className}|" method="GET" class="mb-3">
+			    					<div class="input-group">
+			    						<span class="input-group-text"><i class="bi bi-search"></i></span>
+			    						<input type="text" th:value="${query}"
+			    						placeholder="Type and press ENTER to search" 
+			    						class="ui-text-input form-control" name="query" autofocus>
+			    						<button class="ui-btn btn btn-primary">Search</button>
+			    					</div>
+			    				</form>
+								<div class="separator mb-4 mt-4"></div>
 							
 		    					<div class="d-flex justify-content-between">
 		    					
@@ -57,10 +58,27 @@
 										th:href="|/dbadmin/model/${schema.getClassName()}/create|"><i class="bi bi-plus-square"></i></a></h3>
 								</div>
 								
-								<div th:replace="~{fragments/table_selectable :: table(results=${page.getResults()}, schema=${schema})}"
-							
+								<div th:replace="~{fragments/table_selectable :: table(results=${page.getResults()}, schema=${schema})}">
+								</div>
 							</div>
 		    			</div>
+		    			<div th:if="${!schema.getFilterableFields().isEmpty()}" class="col-3">
+							<div class="box">
+								<h3 class="fw-bold"><i class="bi bi-funnel"></i> Filters</h3>
+								<ul>
+									<li th:each="field : ${schema.getFilterableFields()}">
+										<span class="fw-bold" th:text="${field.getName()}"></span>
+										
+										<th:block th:if="${field.getConnectedType() != null}">
+											<div th:each="val : ${schema.getFieldValues(field)}">
+												<span th:text="${val}"></span>
+											</div>
+										</th:block>
+									
+									</li>
+								</ul>
+							</div>
+						</div>
 		    		</div>
 		    	</div>
 		    </div>

@@ -95,7 +95,6 @@ public class DbAdmin {
 				field.setSchema(schema);
 				
 				schema.addField(field);
-				System.out.println(field);
 			}
 			
 			return schema;

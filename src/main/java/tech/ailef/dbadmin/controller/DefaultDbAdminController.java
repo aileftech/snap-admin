@@ -45,6 +45,10 @@ import tech.ailef.dbadmin.exceptions.InvalidPageException;
  * - Pagination in one to many results?
  * - BLOB upload (WIP: check edit not working)
  * - AI console (PRO)
+ * - Action logs
+ * - Boolean icons
+ * - @Filterable
+ * - Boolean in create/edit is checkbox
  * - SQL console (PRO)
  * - JPA Validation (PRO)
  * - Logging

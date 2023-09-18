@@ -1,6 +1,7 @@
 package tech.ailef.dbadmin.dbmapping;
 
 import java.lang.reflect.Method;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -19,6 +20,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import tech.ailef.dbadmin.DbAdmin;
 import tech.ailef.dbadmin.annotations.ComputedColumn;
+import tech.ailef.dbadmin.annotations.Filterable;
 import tech.ailef.dbadmin.exceptions.DbAdminException;
 import tech.ailef.dbadmin.misc.Utils;
 
@@ -172,6 +174,17 @@ public class DbObjectSchema {
 	
 	public Method getComputedColumn(String name) {
 		return computedColumns.get(name);
+	}
+	
+	public List<DbField> getFilterableFields() {
+		return getSortedFields().stream().filter(f -> { 
+			return !f.isBinary() && !f.isPrimaryKey()
+					&& f.getPrimitiveField().getAnnotation(Filterable.class) != null;
+		}).toList();
+	}
+	
+	public List<Object> getFieldValues(DbField field) {
+		return jpaRepository.distinctFieldValues(field);
 	}
 
 	public Object[] getInsertArray(Map<String, String> params, Map<String, MultipartFile> files) {
