@@ -133,6 +133,10 @@ td.table-checkbox, th.table-checkbox {
 }
 
 
+.cursor-pointer {
+	cursor: pointer;
+}
+
 /**
 AUTOCOMPLETE
 **/
