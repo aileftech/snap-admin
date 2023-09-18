@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+	<head th:replace="~{fragments/resources::head}">
+	</head>
+	<body>
+	
+		<div class="bg-light main-wrapper">
+			<nav th:replace="~{fragments/resources :: navbar}"></nav>
+		    <div class="d-flex">
+		    	<div th:replace="~{fragments/resources :: sidebar('entities')}"></div>
+		    	<div class="main-content bg-lighter">
+					<h1 class="fw-bold mb-4"><i class="align-middle bi bi-database"></i> 
+						<a class="align-middle" href="/dbadmin">Entities</a> 
+						<i class="align-middle bi bi-chevron-double-right"></i>
+						<a class="align-middle "th:href="|/dbadmin/model/${schema.getJavaClass().getName()}|"> 
+						[[ ${schema.getJavaClass().getSimpleName()} ]]</a>
+						<i class="align-middle bi bi-chevron-double-right"></i>
+						<span class="align-middle"> [[ ${object.getDisplayName()} ]]</span>
+					</h1>
+		    		<div class="row mt-4">
+		    			<div class="col">
+		    				<div class="box">
+		    					<div class="d-flex justify-content-between">
+		    						<h3 class="mb-3 fw-bold" th:text="${object.getDisplayName()}"></h3>
+									<h3><a th:href="|/dbadmin/model/${schema.getClassName()}/edit/${object.getPrimaryKeyValue()}|">
+										<i class="bi bi-pencil"></i></a>
+									</h3>
+								</div>
+								
+								
+								<table class="table table-striped align-middle show-table">
+									<tr class="table-data-row">
+										<th style="width: 32px"></th>
+										<th>Column</th>
+										<th>Value</th>
+										<th>Type</th>
+									</tr>
+									<tr th:each="field : ${schema.getSortedFields()}" class="table-data-row">
+										<td>
+											<span th:if="${field.isPrimaryKey()}">
+												<i title="Primary Key" class="bi bi-key"></i>
+											</span>
+											<span th:if="${field.isForeignKey()}">
+												<i title="Foreign Key" class="bi bi-link"></i>
+											</span>
+										</td>
+										<td>
+											<span class="m-0 p-0" th:text="${field.getName()}"></span>
+										</td>
+										<td>
+											<th:block th:if="${!object.has(field)}">
+												<span class="font-monospace null-label">NULL</span>
+											</th:block>
+											<th:block th:if="${object.has(field)}">
+												<th:block th:replace="~{fragments/data_row :: data_row_field(field=${field}, object=${object})}"></th:block>
+											</th:block>
+										</td>
+										<td class="dbfieldtype" th:text="${field.getType()}">
+										</td>
+									</tr>
+									<tr class="table-data-row" th:each="colName : ${schema.getComputedColumnNames()}">
+										<td>
+											<i class="bi bi-cpu"></i>
+										</td>
+										<td th:text="${colName}">
+										</td>
+										<td th:text="${object.compute(colName)}">
+										</td>
+										<td>
+											<span class="dbfieldtype">COMPUTED</span>
+										</td>
+									</tr>
+								</table>
+								
+								<div th:each="field : ${schema.getRelationshipFields()}">
+									<h2>
+										<span th:title="|${field.getType()} relationship|">
+											<i class="align-middle bi bi-share"></i> 
+											<span class="align-middle">[[ ${field.getJavaName()} ]]</span>
+										</span>
+									</h2>
+									<div th:replace="~{fragments/table :: table(schema=${field.getConnectedSchema()}, 
+											results=${object.getValues(field)})}">
+									</div>
+								</div>
+							</div>
+		    			</div>
+		    		</div>
+		    	</div>
+		    </div>
+		</div>
+	
+		
+	</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+	<head></head>
+	<body>
+		<div class="autocomplete-input position-relative" th:fragment="input_autocomplete(field, value)">
+			<input class="autocomplete form-control" type="text"  th:name="${field.getName()}"
+				th:data-classname="${field.getConnectedType().getName()}"
+				autocomplete="off"
+				th:value="${value}"
+				placeholder="NULL">
+			</input>
+			<div class="suggestions d-none">
+			</div>
+		</div>
+		
+		<div class="autocomplete-multi-input position-relative" th:fragment="input_autocomplete_multi(field, values)">
+			<div class="position-relative">
+				<input class="autocomplete form-control" type="text"
+					autocomplete="off"  
+					th:name="|${field.getName()}[]|"
+					th:data-fieldname="|${field.getName()}[]|"
+					th:data-classname="${field.getConnectedType().getName()}">
+				</input>
+				<div class="suggestions d-none">
+				</div>
+			</div>
+			<span class="badge bg-danger mb-0 mt-2 value-badge clear-all-badge"
+				th:classAppend="${values == null || values.isEmpty() ? 'd-none' : ''}">Clear all <i class="bi bi-trash"></i></span>
+			<div class="mt-0 mb-2 selected-values">
+				<th:block th:each="value : ${values}" th:if="${values}">
+					<span class="value-badge">
+						<input type="checkbox" checked="checked" class="badge-checkbox" 
+							   th:name="|${field.getName()}[]|" th:value="${value.getPrimaryKeyValue()}">
+						<span class="badge bg-primary me-2" th:text="${value.getDisplayName()}">
+						</span>
+					</span>
+				</th:block>
+			</div>
+		</div>
+		
+	</body>
+</html>

@@ -1,0 +1,157 @@
+form.delete-form {
+	display: inline-block;	
+}
+
+form.delete-form button {
+	background: transparent;
+	border: none;
+}
+
+.dbfieldtype {
+	font-weight: normal;
+	font-family: monospace;
+	font-size: 0.9rem;
+}
+
+a .bi, button .bi {
+	color: #007fd0;
+}
+
+a {
+	color: #007fd0;
+}
+
+.disable {
+	pointer-events: none;
+	background: #EDECEF;
+}
+
+.null-label {
+	background-color: #EEE;
+	border-radius: 5px;
+	border: 1px solid #DDD;
+	display: inline-block;
+	padding: 3px;
+	color: #333;
+	padding-left: 6px;
+	padding-right: 6px;
+}
+
+ul.pagination {
+	padding-bottom: 0;
+	margin-bottom: 0;
+}
+
+tr.table-data-row td, tr.table-data-row th {
+	border-right: 1px solid #DDD;
+}
+
+tr.table-data-row td:last-child, tr.table-data-row th:last-child {
+	border-right: 0px;
+}
+
+.row-icons {
+	font-size: 1.2rem;
+	width: 128px;
+}
+
+h1 .bi {
+	font-size: 2rem;
+}
+
+h1 a {
+	color: #222;
+	text-decoration: none;
+}
+
+h1 a:hover {
+	color: #007fd0;
+}
+
+
+.inner-navigation {
+	border-top-right-radius: 5px;
+	border-top-left-radius: 5px;
+	background-color: #FAFAFA;
+}
+
+.inner-navigation a:first-child {
+	border-top-left-radius: 5px;
+	background-color: #FAFAFA;
+}
+
+.inner-navigation-border {
+	border-bottom: 4px solid #F0F0F0;
+}
+
+.inner-navigation a {
+	text-decoration: none;
+	font-weight: bold;
+	border-bottom: 4px solid #F0F0F0;
+}
+
+.inner-navigation a.active {
+	border-bottom: 4px solid #007fd0 !important;
+}
+
+
+.inner-navigation a:hover {
+	background-color: #FFF;
+	border-bottom: 4px solid #ADDEFF;
+}
+
+
+.suggestions {
+	position: absolute;
+	width: 100%;
+	background-color: white;
+	border: 1px solid #DADADA;
+	border-bottom-right-radius: 5px;
+	border-bottom-left-radius: 5px;
+	top: 100%;
+	max-height: 300px;
+	overflow: auto;
+	z-index: 999;
+}
+
+.suggestion {
+	padding: 1rem;
+	background-color: #FAFAFA;
+	padding-bottom: 0;
+	margin: 0;
+	border-bottom: 2px solid #FAFAFA;
+}
+
+.suggestion:hover {
+	cursor: pointer;
+	background-color: #FFF;
+	border-bottom: 2px solid #ADDEFF;
+}
+
+td.table-checkbox, th.table-checkbox {
+	width: 36px;
+}
+
+
+/**
+AUTOCOMPLETE
+**/
+.badge-checkbox {
+	display: none;
+}
+
+.value-badge {
+	cursor: pointer; -webkit-user-select: none; 
+  	-ms-user-select: none; 
+  	user-select: none;
+}
+
+.value-badge .badge {
+	font-size: 1rem;
+	padding: 8px;
+	margin-top: 5px;
+}
+
+.clear-all-badge {
+	padding: 0.4rem;
+}

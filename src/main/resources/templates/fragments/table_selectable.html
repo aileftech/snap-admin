@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+	<head></head>
+	<body>
+		<div class="table-selectable" th:fragment="table(results, schema)">
+			<div th:if="${results.isEmpty()}">
+				<p>This table contains no data.</p>
+			</div>
+			<div th:if="${results.size() > 0}">
+				<form id="delete-form" th:action="|/dbadmin/model/${schema.getClassName()}/delete|" method="POST">
+				</form>
+				<nav th:replace="~{fragments/resources :: pagination(${page})}">
+				</nav>
+				<table class="table table-striped align-middle mt-3">
+					<tr class="table-data-row">
+						<th class="table-checkbox"><input type="checkbox" class="form-check-input check-all"></th>
+						<th class="table-data-row" th:each="field : ${schema.getSortedFields()}">
+							<div class="m-0 p-0 d-flex justify-content-between">
+								<div class="column-title">
+									<span th:if="${field.isPrimaryKey()}">
+										<i title="Primary Key" class="bi bi-key"></i>
+									</span>
+									<span th:if="${field.isForeignKey()}">
+										<i title="Foreign Key" class="bi bi-link"></i>
+									</span>
+									<span class="m-0 p-0" th:text="${field.getName()}"></span>
+								</div>
+								<div class="align-items-center">
+									<h4 class="m-0" th:if="${page}">
+										<th:block th:if="${sortKey != field.getName()}" >
+											<a th:href="@{|/dbadmin/model/${schema.getClassName()}|(page=${page.getPagination().getCurrentPage()},
+												pageSize=${page.getPagination().getPageSize()},sortKey=${field.getName()},sortOrder=DESC)}">
+											<i title="Sort" class="bi bi-caret-up"></i>
+											</a>
+										</th:block>
+										<th:block th:unless="${sortKey != field.getName()}">
+											<a th:if="${sortOrder == 'DESC'}" 
+												th:href="@{|/dbadmin/model/${schema.getClassName()}|(page=${page.getPagination().getCurrentPage()},
+													pageSize=${page.getPagination().getPageSize()},sortKey=${field.getName()},sortOrder=ASC)}">
+												<i title="Sort" class="bi bi-caret-down-fill"></i>
+											</a>
+											<a th:if="${sortOrder == 'ASC'}" 
+												th:href="@{|/dbadmin/model/${schema.getClassName()}|(page=${page.getPagination().getCurrentPage()},
+													pageSize=${page.getPagination().getPageSize()},sortKey=${field.getName()},sortOrder=DESC)}">
+												<i title="Sort" class="bi bi-caret-up-fill"></i>
+											</a>
+										</th:block>
+									</h4>
+								</div>
+							</div>
+							<p class="m-0 p-0 dbfieldtype"><small th:text="${field.getType()}"></small></p>
+						</th>
+						<th class="table-data-row" th:each="colName : ${schema.getComputedColumnNames()}">
+							<div class="m-0 p-0 d-flex justify-content-between">
+								<div class="column-title">
+									<i title="Primary Key" class="bi bi-cpu"></i>
+									<span class="m-0 p-0" th:text="${colName}"></span>
+								</div>
+							</div>
+							<p class="m-0 p-0 dbfieldtype"><small>COMPUTED</small></p>
+						</th>
+						<th></th>
+					</tr>
+					<th:block th:each="r : ${results}">
+						<tr th:replace="~{fragments/data_row :: data_row(row=${r},selectable=${true})}"></tr>
+					</th:block>
+				</table>
+				<nav th:replace="~{fragments/resources :: pagination(${page})}">
+				</nav>
+			</div>
+		</div>
+	</body>
+</html>
+
+
+
+

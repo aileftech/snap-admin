@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+	<head th:replace="~{fragments/resources::head}">
+	</head>
+	<body>
+	
+		<div class="bg-light main-wrapper">
+			<nav th:replace="~{fragments/resources :: navbar}"></nav>
+		    <div class="d-flex">
+		    	<div th:replace="~{fragments/resources :: sidebar('entities')}"></div>
+		    	<div class="main-content bg-lighter">
+		    		<th:block th:replace="~{fragments/resources :: alerts}"></th:block>
+
+					<h1 class="fw-bold mb-4">
+						<i class="align-middle bi bi-database"></i> 
+						<span class="align-middle">Entities</span>
+						<i class="align-middle bi bi-chevron-double-right"></i> 
+						<span class="align-middle"> [[ ${schema.getJavaClass().getSimpleName()} ]] </span>
+						<i class="align-middle bi bi-chevron-double-right"></i> 
+						<span class="align-middle" th:text="${create ? 'Create' : 'Edit'}"></span>
+						<th:block th:if="${!create}">
+							<i class="align-middle bi bi-chevron-double-right"></i> 
+							<span class="align-middle" th:text="${object.getDisplayName()}"></span>
+						</th:block>
+					</h1>
+		    		<div class="row mt-4">
+		    			<div class="col">
+		    				<div class="box">
+								<h3 class="fw-bold mb-4" th:text="${create ? schema.getJavaClass().getSimpleName() : object.getDisplayName()}"></h3>
+		        				<form class="form" enctype="multipart/form-data" method="post" th:action="|/dbadmin/model/${className}/create|">
+		        					<input type="hidden" name="__dbadmin_create" th:value="${create}">
+									<div th:each="field : ${schema.getSortedFields()}" class="mt-2">
+										<label th:for="|__id_${field.getName()}|" class="mb-1">[[ ${field.getName()} ]]</label>
+									
+										
+										<th:block th:if="${field.isForeignKey()}">
+											<div th:replace="~{fragments/forms :: input_autocomplete(field=${field},  value=${
+												create ? (params != null ? params.getOrDefault(field.getName(), '') : '') 
+														 : (object != null ? object.traverse(field).getPrimaryKeyValue() : '' )
+											})}">
+											</div>
+											<input type="hidden" th:value="${field.getType()}" th:name="|__dbadmin_${field.getName()}_type|">
+										</th:block>
+										<th:block th:unless="${field.isForeignKey()}">
+											<input placeholder="NULL" th:type="${field.getType().getHTMLName()}" 
+													th:name="${field.getName()}" 
+													th:value="
+														${create ? (params != null ? params.getOrDefault(field.getName(), '') : '') 
+														 : (object != null ? object.get(field).getValue() : '' )}
+														
+													"
+													class="form-control" th:id="|__id_${field.getName()}|"
+													th:classAppend="${field.isPrimaryKey() && object != null ? 'disable' : ''}"
+													th:required="${!field.isNullable() && !field.isPrimaryKey()}"
+													step="any"
+													oninvalid="this.setCustomValidity('This field is not nullable.')"
+													oninput="this.setCustomValidity('')">
+											<input type="hidden" th:value="${field.getType()}" th:name="|__dbadmin_${field.getName()}_type|">
+										</th:block>
+									</div>
+									
+									<div th:each="field : ${schema.getManyToManyOwnedFields()}" class="mt-3">
+										<h2><span th:title="|${field.getType()} relationship|"><i class="bi bi-share"></i> [[ ${field.getJavaName()} ]]</span></h2>
+										<div th:replace="~{fragments/forms :: input_autocomplete_multi(field=${field}, 
+											values=${object != null ? object.traverseMany(field) : null } )}">
+										</div>
+									</div>
+
+									
+									<div class="d-flex mt-4 justify-content-between">
+										<a th:href="|/dbadmin/model/${schema.getClassName()}|" class="ui-btn btn btn-secondary">Cancel</a>
+										<input type="submit" class="ui-btn btn btn-primary" th:value="${object != null ? 'Save' : 'Create'}">
+									</div>
+								</form>
+							</div>
+		    			</div>
+		    		</div>
+		    	</div>
+		    </div>
+		</div>
+	
+		
+	</body>
+</html>

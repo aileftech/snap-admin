@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+	<head th:replace="~{fragments/resources::head}">
+	</head>
+	<body>
+	
+		<div class="bg-light main-wrapper">
+			<nav th:replace="~{fragments/resources :: navbar}"></nav>
+		    <div class="d-flex">
+		    	<div th:replace="~{fragments/resources :: sidebar('entities')}"></div>
+		    	<div class="main-content bg-lighter">
+					<h1 class="fw-bold mb-4"><i class="bi bi-database"></i> 
+						<a class="align-middle" href="/dbadmin">Entities</a> 
+						<i class="align-middle bi bi-chevron-double-right"></i>
+						<a class="align-middle" th:href="|/dbadmin/model/${schema.getJavaClass().getName()}|"> [[ ${schema.getJavaClass().getSimpleName()} ]]</a>
+						<i class="align-middle bi bi-chevron-double-right"></i><span class="align-middle"> Schema</span>
+					</h1>
+		    		<div class="row mt-4">
+		    			<div class="col">
+		    				<div class="w-100 d-flex inner-navigation">
+	    						<a th:href="|/dbadmin/model/${schema.getJavaClass().getName()}|">
+		    						<div class="ui-tab ps-5 pe-5 p-3">
+		    							<i class="bi bi-database pe-2"></i> DATA
+		    						</div>
+		    					</a>
+		    					<a th:href="|/dbadmin/model/${schema.getJavaClass().getName()}/schema|" class="active">
+		    						<div class="ui-tab ps-5 pe-5 p-3">
+		    							<i class="bi bi-table pe-2"></i> SCHEMA
+		    						</div>
+		    					</a>
+		    					<div class="inner-navigation-border flex-grow-1">
+		    					</div>
+	    					</div>
+		    				<div class="box with-navigation">
+		    					<div class="d-flex justify-content-between">
+									<h3 class="fw-bold mb-4 align-baseline">
+										<span title="Java class name"> [[ ${schema.getJavaClass().getSimpleName()} ]] </span>
+										<span title="Database table name" class="ms-3 label label-primary label-gray font-monospace">
+											[[ ${schema.getTableName()} ]]
+										</span> 
+									</h3>
+									<h3><a title="Create new item" 
+										th:href="|/dbadmin/model/${schema.getClassName()}/create|"><i class="bi bi-plus-square"></i></a></h3>
+								</div>
+
+								<table class="table table-striped align-middle">
+									<tr class="table-data-row">
+										<th style="width: 32px"></th>
+										<th>Column</th>
+										<th>Type</th>
+										<th>Nullable</th>
+									</tr>
+									<tr th:each="field : ${schema.getSortedFields()}" class="table-data-row">
+										<td>
+											<span th:if="${field.isPrimaryKey()}">
+												<i title="Primary Key" class="bi bi-key"></i>
+											</span>
+											<span th:if="${field.isForeignKey()}">
+												<i title="Foreign Key" class="bi bi-link"></i>
+											</span>
+										</td>
+										<td>
+											<span class="m-0 p-0" th:text="${field.getName()}"></span>
+										</td>
+										<td th:text="${field.getType()}">
+										</td>
+										<td th:text="${field.isNullable()}"></td>
+									</tr>
+								</table>
+							</div>
+		    			</div>
+		    		</div>
+		    	</div>
+		    </div>
+		</div>
+	
+		
+	</body>
+</html>
