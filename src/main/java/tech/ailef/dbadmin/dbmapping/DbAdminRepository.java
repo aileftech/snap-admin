@@ -16,6 +16,7 @@ import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.transaction.Transactional;
@@ -63,8 +64,8 @@ public class DbAdminRepository {
 	 * @param query
 	 * @return
 	 */
-	public long count(DbObjectSchema schema, String query) {
-		return schema.getJpaRepository().count(query);
+	public long count(DbObjectSchema schema, String query, MultiValueMap<String, String> filteringParams) {
+		return schema.getJpaRepository().count(query, filteringParams);
 	}
 	
 	
@@ -223,10 +224,11 @@ public class DbAdminRepository {
 	 * @param query
 	 * @return
 	 */
-	public PaginatedResult search(DbObjectSchema schema, String query, int page, int pageSize, String sortKey, String sortOrder) {
+	public PaginatedResult search(DbObjectSchema schema, String query, int page, int pageSize, String sortKey, 
+			String sortOrder, MultiValueMap<String, String> filteringParams) {
 		AdvancedJpaRepository jpaRepository = schema.getJpaRepository();
         
-		long maxElement = count(schema, query);
+		long maxElement = count(schema, query, filteringParams);
 		int maxPage = (int)(Math.ceil ((double)maxElement / pageSize));
 		
 		if (page <= 0) page = 1;
@@ -236,7 +238,7 @@ public class DbAdminRepository {
 		
 		return new PaginatedResult(
 			new PaginationInfo(page, maxPage, pageSize, maxElement), 
-			jpaRepository.search(query, page, pageSize, sortKey, sortOrder).stream()
+			jpaRepository.search(query, page, pageSize, sortKey, sortOrder, filteringParams).stream()
 				.map(o  -> new DbObject(o, schema))
 				.toList()
 		);
@@ -251,7 +253,7 @@ public class DbAdminRepository {
 	public List<DbObject> search(DbObjectSchema schema, String query) {
 		AdvancedJpaRepository jpaRepository = schema.getJpaRepository();
 		
-		return jpaRepository.search(query, 1, 50, null, null).stream()
+		return jpaRepository.search(query, 1, 50, null, null, null).stream()
 					.map(o  -> new DbObject(o, schema))
 					.toList();
 	}

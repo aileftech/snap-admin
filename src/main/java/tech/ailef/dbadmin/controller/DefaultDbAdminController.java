@@ -22,11 +22,13 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jakarta.persistence.criteria.Predicate;
 import tech.ailef.dbadmin.DbAdmin;
 import tech.ailef.dbadmin.dbmapping.DbAdminRepository;
 import tech.ailef.dbadmin.dbmapping.DbObject;
 import tech.ailef.dbadmin.dbmapping.DbObjectSchema;
 import tech.ailef.dbadmin.dto.PaginatedResult;
+import tech.ailef.dbadmin.exceptions.DbAdminException;
 import tech.ailef.dbadmin.exceptions.InvalidPageException;
 
 @Controller
@@ -90,7 +92,9 @@ public class DefaultDbAdminController {
 	public String list(Model model, @PathVariable String className,
 			@RequestParam(required=false) Integer page, @RequestParam(required=false) String query,
 			@RequestParam(required=false) Integer pageSize, @RequestParam(required=false) String sortKey, 
-			@RequestParam(required=false) String sortOrder) {
+			@RequestParam(required=false) String sortOrder, @RequestParam MultiValueMap<String, String> otherParams) {
+		System.out.println(otherParams);
+		
 		if (page == null) page = 1;
 		if (pageSize == null) pageSize = 50;
 		
@@ -98,8 +102,8 @@ public class DefaultDbAdminController {
 		
 		try {
 			PaginatedResult result = null;
-			if (query != null) {
-				result = repository.search(schema, query, page, pageSize, sortKey, sortOrder);
+			if (query != null || !otherParams.isEmpty()) {
+				result = repository.search(schema, query, page, pageSize, sortKey, sortOrder, otherParams);
 			} else {
 				result = repository.findAll(schema, page, pageSize, sortKey, sortOrder);
 			}
@@ -337,9 +341,12 @@ public class DefaultDbAdminController {
 		}
 	}
 	
+	
 	@GetMapping("/settings")
 	public String settings(Model model) {
 		model.addAttribute("activePage", "settings");
 		return "settings";
 	}
+	
+
 }

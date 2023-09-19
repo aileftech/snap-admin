@@ -183,9 +183,9 @@ public class DbObjectSchema {
 		}).toList();
 	}
 	
-	public List<Object> getFieldValues(DbField field) {
-		return jpaRepository.distinctFieldValues(field);
-	}
+//	public List<Object> getFieldValues(DbField field) {
+//		return jpaRepository.distinctFieldValues(field);
+//	}
 
 	public Object[] getInsertArray(Map<String, String> params, Map<String, MultipartFile> files) {
 		int currentIndex = 0;

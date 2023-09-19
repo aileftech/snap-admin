@@ -38,5 +38,55 @@
 			</div>
 		</div>
 		
+		
+		
+		<div class="card mb-3 filterable-field"  th:fragment="filter_field(field)">
+			<div class="card-header noselect cursor-pointer">
+				<i class="bi bi-caret-right filter-icon  align-middle"></i> 
+				<span class="fw-bold align-middle" th:text="${field.getName()}"></span>
+			</div>
+			<div class="card-body d-none">
+			
+				<form action="" method="GET">
+					<th:block th:each="p : ${queryParams.keySet()}">
+						<input th:each="v : ${queryParams.get(p)}" th:name="${p}" th:value="${v}" type="hidden">
+					</th:block>
+					<div class="input-group pe-2">
+						<th:block th:if="${field.isForeignKey()}">
+							<div th:replace="~{fragments/forms :: input_autocomplete(field=${field},  value='')}">
+							</div>
+							<input type="hidden" th:value="${field.getType()}" th:name="|__dbadmin_${field.getName()}_type|">
+						</th:block>
+						<th:block th:unless="${field.isForeignKey()}">
+							<div class="container w-25">
+								<select class="form-select w-auto" name="filter_op[]">
+									<option value="equals">Equals</option>
+									<option value="contains">Contains</option>
+								</select>
+							</div>
+							<input type="hidden" name="filter_field[]" th:value="${field.getName()}">
+							<input placeholder="NULL" th:type="${field.getType().getHTMLName()}" 
+									name="filter_value[]" 
+									class="form-control" th:id="|__id_${field.getName()}|"
+									th:classAppend="${field.isPrimaryKey() && object != null ? 'disable' : ''}"
+									th:required="${!field.isNullable() && !field.isPrimaryKey()}"
+									step="any"
+									oninvalid="this.setCustomValidity('This field is not nullable.')"
+									oninput="this.setCustomValidity('')">
+							<input type="hidden" th:value="${field.getType()}" th:name="|__dbadmin_${field.getName()}_type|">
+						</th:block>
+						<button class="ui-btn btn btn-primary">Filter</button>
+					</div>
+				</form>
+			
+				<!-- 
+				<th:block th:if="${field.getConnectedType() != null}">
+					<div th:each="val : ${schema.getFieldValues(field)}">
+						<span th:text="${val}"></span>
+					</div>
+				</th:block> 
+				-->
+			</div>
+		</div>
 	</body>
 </html>
