@@ -39,6 +39,9 @@
 			    						class="ui-text-input form-control" name="query" autofocus>
 			    						<button class="ui-btn btn btn-primary">Search</button>
 			    					</div>
+			    					<th:block th:each="p : ${queryParams.keySet()}">
+										<input th:if="${!p.equals('query')}" th:each="v : ${queryParams.get(p)}" th:name="${p}" th:value="${v}" type="hidden">
+									</th:block>
 			    				</form>
 								<div class="separator mb-4 mt-4"></div>
 							
@@ -50,13 +53,12 @@
 										<span title="Database table name" class="ms-3 label label-primary label-gray font-monospace">
 											[[ ${schema.getTableName()} ]]
 										</span>
-										
-										
-										 
 									</h3>
-									<h3><a title="Create new item" 
-										th:href="|/dbadmin/model/${schema.getClassName()}/create|"><i class="bi bi-plus-square"></i></a>
-										</h3>
+									
+									<h3>
+										<a title="Create new item" 
+											th:href="|/dbadmin/model/${schema.getClassName()}/create|"><i class="bi bi-plus-square"></i></a>
+									</h3>
 								</div>
 								
 								<div th:replace="~{fragments/table_selectable :: table(results=${page.getResults()}, schema=${schema})}">
@@ -64,10 +66,34 @@
 							</div>
 		    			</div>
 		    			<div th:if="${!schema.getFilterableFields().isEmpty()}" class="col-3">
-							<div class="box">
+							<div class="box filterable-fields">
 								<h3 class="fw-bold mb-3"><i class="bi bi-funnel"></i> Filters</h3>
 								
-								
+								<div class="mb-2">
+									<div th:each="filter : ${activeFilters}">
+									
+										<span title="Click to remove this filter" 
+											class="active-filter badge bg-primary me-1 mb-2 p-2 font-monospace cursor-pointer noselect"
+											th:data-formid="${filter.toString()}"
+											th:text="${filter}">
+										</span>
+										<form action="" th:id="${filter.toString()}" method="GET">
+											<th:block th:each="p : ${queryParams.keySet()}">
+												<input th:each="v : ${queryParams.get(p)}" th:name="${p}" th:value="${v}" type="hidden">
+											</th:block>
+											<input type="hidden" name="remove_field" th:value="${filter.getField()}">
+											<input type="hidden" name="remove_op" th:value="${filter.getOp()}">
+											<input type="hidden" name="remove_value" th:value="${filter.getValue()}">
+										</form>
+									</div>
+										
+										
+										
+										
+										
+										
+										
+								</div>
 								
 								<th:block th:each="field : ${schema.getFilterableFields()}">
 									<div th:replace="~{fragments/forms :: filter_field(field=${field})}"></div>

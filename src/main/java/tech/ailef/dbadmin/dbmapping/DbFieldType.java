@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,6 +30,11 @@ public enum DbFieldType {
 		public Class<?> getJavaClass() {
 			return Integer.class;
 		}
+
+		@Override
+		public List<String> getCompareOperators() {
+			return List.of("gt", "eq", "lt");
+		}
 	},
 	DOUBLE {
 		@Override
@@ -44,6 +50,11 @@ public enum DbFieldType {
 		@Override
 		public Class<?> getJavaClass() {
 			return Double.class;
+		}
+		
+		@Override
+		public List<String> getCompareOperators() {
+			return List.of("gt", "eq", "lt");
 		}
 	},
 	LONG {
@@ -61,6 +72,11 @@ public enum DbFieldType {
 		public Class<?> getJavaClass() {
 			return Long.class;
 		}
+		
+		@Override
+		public List<String> getCompareOperators() {
+			return List.of("gt", "eq", "lt");
+		}
 	},
 	FLOAT {
 		@Override
@@ -76,6 +92,11 @@ public enum DbFieldType {
 		@Override
 		public Class<?> getJavaClass() {
 			return Float.class;
+		}
+		
+		@Override
+		public List<String> getCompareOperators() {
+			return List.of("gt", "eq", "lt");
 		}
 	},
 	LOCAL_DATE {
@@ -93,6 +114,11 @@ public enum DbFieldType {
 		public Class<?> getJavaClass() {
 			return Float.class;
 		}
+		
+		@Override
+		public List<String> getCompareOperators() {
+			return List.of("After", "Equals", "Before");
+		}
 	},
 	LOCAL_DATE_TIME {
 		@Override
@@ -108,6 +134,11 @@ public enum DbFieldType {
 		@Override
 		public Class<?> getJavaClass() {
 			return LocalDateTime.class;
+		}
+		
+		@Override
+		public List<String> getCompareOperators() {
+			return List.of("After", "Equals", "Before");
 		}
 	},
 	STRING {
@@ -125,6 +156,11 @@ public enum DbFieldType {
 		public Class<?> getJavaClass() {
 			return String.class;
 		}
+		
+		@Override
+		public List<String> getCompareOperators() {
+			return List.of("Equals", "Contains");
+		}
 	},
 	BOOLEAN {
 		@Override
@@ -141,6 +177,11 @@ public enum DbFieldType {
 		public Class<?> getJavaClass() {
 			return Boolean.class;
 		}
+		
+		@Override
+		public List<String> getCompareOperators() {
+			return List.of("Equals");
+		}
 	}, 
 	BIG_DECIMAL {
 		@Override
@@ -156,6 +197,11 @@ public enum DbFieldType {
 		@Override
 		public Class<?> getJavaClass() {
 			return BigDecimal.class;
+		}
+		
+		@Override
+		public List<String> getCompareOperators() {
+			return List.of("gt", "eq", "lt");
 		}
 	}, 
 	BYTE_ARRAY {
@@ -178,6 +224,10 @@ public enum DbFieldType {
 			return byte[].class;
 		}
 		
+		@Override
+		public List<String> getCompareOperators() {
+			return List.of("Equals");
+		}
 	},
 	ONE_TO_MANY {
 		@Override
@@ -203,6 +253,11 @@ public enum DbFieldType {
 		@Override
 		public String toString() {
 			return "One to Many";
+		}
+		
+		@Override
+		public List<String> getCompareOperators() {
+			throw new DbAdminException();
 		}
 	},
 	ONE_TO_ONE {
@@ -230,6 +285,11 @@ public enum DbFieldType {
 		public String toString() {
 			return "One to One";
 		}
+		
+		@Override
+		public List<String> getCompareOperators() {
+			throw new DbAdminException();
+		}
 	},
 	MANY_TO_MANY {
 		@Override
@@ -256,6 +316,11 @@ public enum DbFieldType {
 		public String toString() {
 			return "Many to Many";
 		}
+		
+		@Override
+		public List<String> getCompareOperators() {
+			throw new DbAdminException();
+		}
 	}, 
 	COMPUTED {
 		@Override
@@ -272,6 +337,11 @@ public enum DbFieldType {
 		public Class<?> getJavaClass() {
 			throw new UnsupportedOperationException();
 		}
+		
+		@Override
+		public List<String> getCompareOperators() {
+			throw new DbAdminException();
+		}
 	};
 
 	public abstract String getHTMLName();
@@ -279,6 +349,8 @@ public enum DbFieldType {
 	public abstract Object parseValue(Object value);
 	
 	public abstract Class<?> getJavaClass();
+	
+	public abstract List<String> getCompareOperators();
 	
 	public boolean isRelationship() {
 		return false;

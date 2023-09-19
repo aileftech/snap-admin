@@ -48,6 +48,10 @@
 			<div class="card-body d-none">
 			
 				<form action="" method="GET">
+					<!-- Reset page when applying filter to start back at page 1 -->
+					<!-- <input type="hidden" name="page" value="1">
+					<input type="hidden" name="pageSize" value="50"> -->
+					
 					<th:block th:each="p : ${queryParams.keySet()}">
 						<input th:each="v : ${queryParams.get(p)}" th:name="${p}" th:value="${v}" type="hidden">
 					</th:block>
@@ -59,14 +63,13 @@
 						</th:block>
 						<th:block th:unless="${field.isForeignKey()}">
 							<div class="container w-25">
-								<select class="form-select w-auto" name="filter_op[]">
-									<option value="equals">Equals</option>
-									<option value="contains">Contains</option>
+								<select class="form-select w-auto" name="filter_op">
+									<option th:value="${op}" th:each="op : ${field.getType().getCompareOperators()}" th:text="${op}">
 								</select>
 							</div>
-							<input type="hidden" name="filter_field[]" th:value="${field.getName()}">
+							<input type="hidden" name="filter_field" th:value="${field.getJavaName()}">
 							<input placeholder="NULL" th:type="${field.getType().getHTMLName()}" 
-									name="filter_value[]" 
+									name="filter_value" 
 									class="form-control" th:id="|__id_${field.getName()}|"
 									th:classAppend="${field.isPrimaryKey() && object != null ? 'disable' : ''}"
 									th:required="${!field.isNullable() && !field.isPrimaryKey()}"

@@ -3,10 +3,12 @@ package tech.ailef.dbadmin.dbmapping;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -16,12 +18,12 @@ import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.transaction.Transactional;
 import tech.ailef.dbadmin.dto.PaginatedResult;
 import tech.ailef.dbadmin.dto.PaginationInfo;
+import tech.ailef.dbadmin.dto.QueryFilter;
 import tech.ailef.dbadmin.exceptions.DbAdminException;
 import tech.ailef.dbadmin.exceptions.InvalidPageException;
 
@@ -64,8 +66,8 @@ public class DbAdminRepository {
 	 * @param query
 	 * @return
 	 */
-	public long count(DbObjectSchema schema, String query, MultiValueMap<String, String> filteringParams) {
-		return schema.getJpaRepository().count(query, filteringParams);
+	public long count(DbObjectSchema schema, String query, Set<QueryFilter> queryFilters) {
+		return schema.getJpaRepository().count(query, queryFilters);
 	}
 	
 	
@@ -117,7 +119,7 @@ public class DbAdminRepository {
 		
 		
 		return new PaginatedResult(
-			new PaginationInfo(page, maxPage, pageSize, maxElement),
+			new PaginationInfo(page, maxPage, pageSize, maxElement, null, new HashSet<>()),
 			results
 		);
 	}
@@ -225,10 +227,10 @@ public class DbAdminRepository {
 	 * @return
 	 */
 	public PaginatedResult search(DbObjectSchema schema, String query, int page, int pageSize, String sortKey, 
-			String sortOrder, MultiValueMap<String, String> filteringParams) {
+			String sortOrder, Set<QueryFilter> queryFilters) {
 		AdvancedJpaRepository jpaRepository = schema.getJpaRepository();
         
-		long maxElement = count(schema, query, filteringParams);
+		long maxElement = count(schema, query, queryFilters);
 		int maxPage = (int)(Math.ceil ((double)maxElement / pageSize));
 		
 		if (page <= 0) page = 1;
@@ -237,8 +239,8 @@ public class DbAdminRepository {
 		}
 		
 		return new PaginatedResult(
-			new PaginationInfo(page, maxPage, pageSize, maxElement), 
-			jpaRepository.search(query, page, pageSize, sortKey, sortOrder, filteringParams).stream()
+			new PaginationInfo(page, maxPage, pageSize, maxElement, query, queryFilters), 
+			jpaRepository.search(query, page, pageSize, sortKey, sortOrder, queryFilters).stream()
 				.map(o  -> new DbObject(o, schema))
 				.toList()
 		);

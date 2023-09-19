@@ -2,10 +2,10 @@ package tech.ailef.dbadmin.dbmapping;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
-import org.springframework.util.MultiValueMap;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -13,7 +13,7 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
-import tech.ailef.dbadmin.exceptions.DbAdminException;
+import tech.ailef.dbadmin.dto.QueryFilter;
 
 @SuppressWarnings("rawtypes")
 public class AdvancedJpaRepository extends SimpleJpaRepository {
@@ -30,12 +30,12 @@ public class AdvancedJpaRepository extends SimpleJpaRepository {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public long count(String q, MultiValueMap<String, String> filteringParams) {
+	public long count(String q, Set<QueryFilter> queryFilters) {
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery query = cb.createQuery(Long.class);
         Root root = query.from(schema.getJavaClass());
 
-        List<Predicate> finalPredicates = buildPredicates(q, filteringParams, cb, root);
+        List<Predicate> finalPredicates = buildPredicates(q, queryFilters, cb, root);
         
         query.select(cb.count(root.get(schema.getPrimaryKey().getName())))
             .where(
@@ -49,12 +49,12 @@ public class AdvancedJpaRepository extends SimpleJpaRepository {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Object> search(String q, int page, int pageSize, String sortKey, String sortOrder, MultiValueMap<String, String> filteringParams) {
+	public List<Object> search(String q, int page, int pageSize, String sortKey, String sortOrder, Set<QueryFilter> filters) {
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery query = cb.createQuery(schema.getJavaClass());
         Root root = query.from(schema.getJavaClass());
         
-        List<Predicate> finalPredicates = buildPredicates(q, filteringParams, cb, root);
+        List<Predicate> finalPredicates = buildPredicates(q, filters, cb, root);
         
         query.select(root)
             .where(
@@ -70,7 +70,7 @@ public class AdvancedJpaRepository extends SimpleJpaRepository {
         			.setFirstResult((page - 1) * pageSize).getResultList();
 	}
 	
-	private List<Predicate> buildPredicates(String q, MultiValueMap<String, String> filteringParams,
+	private List<Predicate> buildPredicates(String q, Set<QueryFilter> queryFilters,
 			CriteriaBuilder cb, Path root) {
 		List<Predicate> finalPredicates = new ArrayList<>();
         
@@ -89,33 +89,29 @@ public class AdvancedJpaRepository extends SimpleJpaRepository {
 	        finalPredicates.add(queryPredicate);
         }
 
-        /*
-         * Compute filtering predicates
-         */
-        if (filteringParams != null) {
-	        List<String> ops = filteringParams.get("filter_op[]");
-			List<String> fields = filteringParams.get("filter_field[]");
-			List<String> values = filteringParams.get("filter_value[]");
-			
-			
-			if (ops != null && fields != null && values != null) {
-				if (ops.size() != fields.size() || fields.size() != values.size()
-					|| ops.size() != values.size()) {
-					throw new DbAdminException("Filtering parameters must have the same size");
-				}
-				
-				for (int i = 0; i < ops.size(); i++) {
-					String op = ops.get(i);
-					String field = fields.get(i);
-					String value = values.get(i);
-					
-					if (op.equalsIgnoreCase("equals")) {
-						finalPredicates.add(cb.equal(cb.toString(root.get(field)), value));
-					} else if (op.equalsIgnoreCase("contains")) {
-						System.out.println("CONTAINS");
-						finalPredicates.add(cb.like(cb.toString(root.get(field)), "%" + value + "%"));
-					}
-				}
+        for (QueryFilter filter  : queryFilters) {
+        	String op = filter.getOp();
+        	String field = filter.getField();
+        	String value = filter.getValue();
+        		
+			if (op.equalsIgnoreCase("equals")) {
+				finalPredicates.add(cb.equal(cb.lower(cb.toString(root.get(field))), value.toLowerCase()));
+			} else if (op.equalsIgnoreCase("contains")) {
+				finalPredicates.add(
+					cb.like(cb.lower(cb.toString(root.get(field))), "%" + value.toLowerCase() + "%")
+				);
+			} else if (op.equalsIgnoreCase("eq")) {
+				finalPredicates.add(
+					cb.equal(root.get(field), value)
+				);
+			} else if (op.equalsIgnoreCase("gt")) {
+				finalPredicates.add(
+					cb.greaterThan(root.get(field), value)
+				);
+			} else if (op.equalsIgnoreCase("lt")) {
+				finalPredicates.add(
+					cb.lessThan(root.get(field), value)
+				);
 			}
         }
         return finalPredicates;

@@ -1,8 +1,14 @@
 package tech.ailef.dbadmin.dto;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import org.springframework.util.MultiValueMap;
+
+import tech.ailef.dbadmin.misc.Utils;
 
 /**
  * Attached as output to requests that have a paginated response,
@@ -30,12 +36,18 @@ public class PaginationInfo {
 	private int pageSize;
 	
 	private long maxElement;
+	
+	private Set<QueryFilter> queryFilters;
+	
+	private String query;
 
-	public PaginationInfo(int currentPage, int maxPage, int pageSize, long maxElement) {
+	public PaginationInfo(int currentPage, int maxPage, int pageSize, long maxElement, String query, Set<QueryFilter> queryFilters) {
 		this.currentPage = currentPage;
 		this.maxPage = maxPage;
 		this.pageSize = pageSize;
+		this.query = query;
 		this.maxElement = maxElement;
+		this.queryFilters = queryFilters;
 	}
 
 	public int getCurrentPage() {
@@ -64,6 +76,20 @@ public class PaginationInfo {
 	
 	public long getMaxElement() {
 		return maxElement;
+	}
+	
+	public String getLink(int page) {
+		MultiValueMap<String, String> params = Utils.computeParams(queryFilters);
+		
+		if (query != null) {
+			params.put("query", new ArrayList<>());
+			params.get("query").add(query);
+		}
+		
+		params.add("pageSize", "" + pageSize);
+		params.add("page", "" + page);
+		
+		return Utils.getQueryString(params);
 	}
 
 	public List<Integer> getBeforePages() {
