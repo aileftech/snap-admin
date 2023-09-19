@@ -199,8 +199,13 @@ public class DbObject {
 		String capitalize = Character.toUpperCase(fieldName.charAt(0)) + fieldName.substring(1);
 		Method[] methods = instance.getClass().getDeclaredMethods();
 		
+		String prefix = "get";
+		if (schema.getFieldByJavaName(fieldName).getType() == DbFieldType.BOOLEAN) {
+			prefix = "is";
+		}
+		
 		for (Method m : methods) {
-			if (m.getName().equals("get" + capitalize))
+			if (m.getName().equals(prefix + capitalize))
 				return m;
 		}
 		

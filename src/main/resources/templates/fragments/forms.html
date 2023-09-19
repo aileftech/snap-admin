@@ -45,7 +45,7 @@
 				<i class="bi bi-caret-right filter-icon  align-middle"></i> 
 				<span class="fw-bold align-middle" th:text="${field.getName()}"></span>
 			</div>
-			<div class="card-body d-none">
+			<div class="card-body">
 			
 				<form action="" method="GET">
 					<!-- Reset page when applying filter to start back at page 1 -->
@@ -57,7 +57,7 @@
 						<th:block th:if="${field.isForeignKey()}">
 							<div th:replace="~{fragments/forms :: input_autocomplete(field=${field},  value='')}">
 							</div>
-							<input type="hidden" th:value="${field.getType()}" th:name="|__dbadmin_${field.getName()}_type|">
+							<!-- <input type="hidden" th:value="${field.getType()}" th:name="|__dbadmin_${field.getName()}_type|"> -->
 						</th:block>
 						<th:block th:unless="${field.isForeignKey()}">
 							<div class="container w-25">
@@ -74,7 +74,7 @@
 									step="any"
 									oninvalid="this.setCustomValidity('This field is not nullable.')"
 									oninput="this.setCustomValidity('')">
-							<input type="hidden" th:value="${field.getType()}" th:name="|__dbadmin_${field.getName()}_type|">
+							<!-- <input type="hidden" th:value="${field.getType()}" th:name="|__dbadmin_${field.getName()}_type|"> -->
 						</th:block>
 						
 						<th:block th:each="p : ${queryParams.keySet()}">

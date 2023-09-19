@@ -61,7 +61,8 @@ import tech.ailef.dbadmin.misc.Utils;
  * - SQL console (PRO)
  * - JPA Validation (PRO)
  * - Logging
- * - ERROR 500: http://localhost:8080/dbadmin/model/tech.ailef.dbadmin.test.models.Order?query=2021 
+ * - TODO FIX: list model page crash
+ *             EDIT error on table product
  * - Logs in web ui
  * - Tests: AutocompleteController, REST API, create/edit
  */

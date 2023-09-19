@@ -220,16 +220,16 @@ public class DbObjectSchema {
 				value = files.get(name);
 			}
 			
-			String type = params.get("__dbadmin_" + name + "_type");
+//			String type = params.get("__dbadmin_" + name + "_type");
 			
-			if (type == null)
-				throw new RuntimeException("Missing type hidden field for: " + name);
+//			if (type == null)
+//				throw new RuntimeException("Missing type hidden field for: " + name);
 			
 			try {
 				if (value == null)
 					row[currentIndex++] = null;
 				else
-					row[currentIndex++] = DbFieldType.valueOf(type).parseValue(value);
+					row[currentIndex++] = value; //DbFieldType.valueOf(type).parseValue(value);
 			} catch (IllegalArgumentException | SecurityException e) {
 				e.printStackTrace();
 			}
@@ -257,16 +257,16 @@ public class DbObjectSchema {
 				value = files.get(name);
 			}
 			
-			String type = params.get("__dbadmin_" + name + "_type");
+//			String type = params.get("__dbadmin_" + name + "_type");
 			
-			if (type == null)
-				throw new RuntimeException("Missing type hidden field for: " + name);
+//			if (type == null)
+//				throw new RuntimeException("Missing type hidden field for: " + name);
 			
 			try {
 				if (value == null)
 					row[currentIndex++] = null;
 				else
-					row[currentIndex++] = DbFieldType.valueOf(type).parseValue(value);
+					row[currentIndex++] = value; //DbFieldType.valueOf(type).parseValue(value);
 			} catch (IllegalArgumentException | SecurityException e) {
 				e.printStackTrace();
 			}
