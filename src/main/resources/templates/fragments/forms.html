@@ -49,12 +49,10 @@
 			
 				<form action="" method="GET">
 					<!-- Reset page when applying filter to start back at page 1 -->
-					<!-- <input type="hidden" name="page" value="1">
-					<input type="hidden" name="pageSize" value="50"> -->
+					<input type="hidden" name="page" value="1">
+					<input type="hidden" name="pageSize" th:value="${queryParams.getOrDefault('pageSize', ['50'])[0]}">
+					<input type="hidden" name="query" th:value="${query}">
 					
-					<th:block th:each="p : ${queryParams.keySet()}">
-						<input th:each="v : ${queryParams.get(p)}" th:name="${p}" th:value="${v}" type="hidden">
-					</th:block>
 					<div class="input-group pe-2">
 						<th:block th:if="${field.isForeignKey()}">
 							<div th:replace="~{fragments/forms :: input_autocomplete(field=${field},  value='')}">
@@ -78,6 +76,14 @@
 									oninput="this.setCustomValidity('')">
 							<input type="hidden" th:value="${field.getType()}" th:name="|__dbadmin_${field.getName()}_type|">
 						</th:block>
+						
+						<th:block th:each="p : ${queryParams.keySet()}">
+                        	<input th:each="v : ${queryParams.get(p)}" 
+                        		th:name="${p}" th:value="${v}" type="hidden"
+                        		th:if="${p.startsWith('filter_')}">
+                        </th:block>
+
+						
 						<button class="ui-btn btn btn-primary">Filter</button>
 					</div>
 				</form>

@@ -39,9 +39,15 @@
 			    						class="ui-text-input form-control" name="query" autofocus>
 			    						<button class="ui-btn btn btn-primary">Search</button>
 			    					</div>
-			    					<th:block th:each="p : ${queryParams.keySet()}">
-										<input th:if="${!p.equals('query')}" th:each="v : ${queryParams.get(p)}" th:name="${p}" th:value="${v}" type="hidden">
+			    					<th:block th:each="queryParam : ${queryParams.keySet()}">
+										<input th:each="paramValue : ${queryParams.get(queryParam)}"
+											th:if="${queryParam.startsWith('filter_')}" 
+											th:name="${queryParam}" th:value="${paramValue}" type="hidden">
 									</th:block>
+									
+									<input type="hidden" name="page" value="1">
+									<input type="hidden" name="pageSize" 
+										th:value="${queryParams.getOrDefault('pageSize', ['50'])[0]}">
 			    				</form>
 								<div class="separator mb-4 mt-4"></div>
 							

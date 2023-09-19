@@ -138,9 +138,6 @@ public class DefaultDbAdminController {
 			return "redirect:" + redirectUrl.trim();
 		}
 		
-		
-		
-		
 		DbObjectSchema schema = dbAdmin.findSchemaByClassName(className);
 		
 		try {

@@ -179,7 +179,21 @@
 				</div>
 			</div>
 			
-			<div class="d-flex align-items-center" th:if="${page.getPagination().getMaxPage() == 1}">
+			<div class="d-flex align-items-center"  th:if="${page.getPagination().getMaxPage() == 1}">
+				<div class="me-3">
+					<form method="GET" th:action="@{|/dbadmin/model/${schema.getClassName()}|}">
+				  		<input type="hidden" th:value="${page.getPagination().getCurrentPage()}" th:name="page">
+				  		<input type="hidden" th:value="${query}" th:name="query">
+				  		<input type="hidden" name="pageSize">
+					  	<select class="form-select page-size">
+					  		<option disabled>Page size</option>
+					  		<option th:selected="${page.getPagination().getPageSize() == 50}">50</option>
+					  		<option th:selected="${page.getPagination().getPageSize() == 100}">100</option>
+					  		<option th:selected="${page.getPagination().getPageSize() == 150}">150</option>
+					  		<option th:selected="${page.getPagination().getPageSize() == 200}">200</option>
+					  	</select>
+					</form>
+				</div> 
 				<p class="m-0 p-0">
 					<i>Showing [[ ${page.getActualResults()} ]] of [[ ${page.getPagination().getMaxElement()} ]] results</i>
 				</p>
@@ -187,7 +201,6 @@
 
 			
 			<div class="bulk-actions">
-				
 			</div>
 		</div>
 	</nav>
