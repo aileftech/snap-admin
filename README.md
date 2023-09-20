@@ -1,4 +1,4 @@
-# Spring Boot Admin Panel
+# Spring Boot Database Admin Panel
 
 An add-on for Spring Boot apps that automatically generates a database admin panel based on your `@Entity` annotated classes.
 The panel offers basic CRUD and search functionalities to manage the database.
@@ -11,7 +11,7 @@ broken, please report it as an issue and I will try to take a look at it.
 
 ## Installation
 
-1. Clone the Github repo and `mvn install` the project, then include the dependency in your `pom.xml`:
+1. The code is not yet distributed on Maven, so for now you need to install manually. Clone the Github repo and `mvn install` the project, then include the dependency in your `pom.xml`:
 
 ```
 <dependency>
@@ -51,3 +51,55 @@ This tells Spring to scan the `tech.ailef.dbadmin` packages and look for compone
 your original root package as shown, or Spring will not scan it otherwise.
 
 3. At this point, when you run your application, you should be able to visit `http://localhost:$PORT/dbadmin` and access the web interface.
+
+## Documentation
+
+Once you are correctly running Spring Boot Database Admin you will see the web interface at `http://localhost:$PORT/dbadmin`. Most of the features are already available with the basic configuration. However, some customization to the interface might be applied by using appropriate annotations on your classes fields or methods. 
+The following annotations are supported.
+
+### @DisplayName
+```
+	@DisplayName
+	public String getName() {
+		return name;
+	}
+```
+
+To show an item in a table its primary key is used by default. If you set a method as `@DisplayName` in your `@Entity` class, this result will be shown in addition to its primary key wherever possible.
+
+### @DisplayFormat
+```
+	@DisplayFormat(format = "$%.2f")
+	private Double price;
+```
+
+Specify a format to apply when displaying the field.
+
+### @ComputedColumn
+```
+	@ComputedColumn
+	public double totalSpent() {
+		double total = 0;
+		for (Order o : orders) {
+			total += o.total();
+		}
+		return total;
+	}
+```
+
+Add an extra field that's computed at runtime instead of a database column. It will be displayed everywhere as a normal, read-only column.
+
+### @Filterable
+
+```
+	@Filterable
+	private LocalDate createdAt;
+```
+
+Place on one or more fields in a class to activate the faceted search feature. This will allow you to easily combine all these filters when operating on this table.
+
+
+## Changelog
+
+0.0.2 - Faceted search with `@Filterable` annotation
+0.0.1 - First alpha release (basic CRUD features)
