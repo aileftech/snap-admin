@@ -59,32 +59,32 @@ The following annotations are supported.
 
 ### @DisplayName
 ```
-	@DisplayName
-	public String getName() {
-		return name;
-	}
+@DisplayName
+public String getName() {
+	return name;
+}
 ```
 
 To show an item in a table its primary key is used by default. If you set a method as `@DisplayName` in your `@Entity` class, this result will be shown in addition to its primary key wherever possible.
 
 ### @DisplayFormat
 ```
-	@DisplayFormat(format = "$%.2f")
-	private Double price;
+@DisplayFormat(format = "$%.2f")
+private Double price;
 ```
 
 Specify a format to apply when displaying the field.
 
 ### @ComputedColumn
 ```
-	@ComputedColumn
-	public double totalSpent() {
-		double total = 0;
-		for (Order o : orders) {
-			total += o.total();
-		}
-		return total;
+@ComputedColumn
+public double totalSpent() {
+	double total = 0;
+	for (Order o : orders) {
+		total += o.total();
 	}
+	return total;
+}
 ```
 
 Add an extra field that's computed at runtime instead of a database column. It will be displayed everywhere as a normal, read-only column.
@@ -92,8 +92,8 @@ Add an extra field that's computed at runtime instead of a database column. It w
 ### @Filterable
 
 ```
-	@Filterable
-	private LocalDate createdAt;
+@Filterable
+private LocalDate createdAt;
 ```
 
 Place on one or more fields in a class to activate the faceted search feature. This will allow you to easily combine all these filters when operating on this table.
