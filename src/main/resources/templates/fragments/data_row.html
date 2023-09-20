@@ -33,7 +33,7 @@
 		
 		<!-- data-row-field fragment -->
 		<th:block th:fragment="data_row_field(field, object)">
-			<th:block th:if="${field.getConnectedType() != null}">
+			<th:block th:if="${field.getConnectedType() != null && object.traverse(field) != null}">
 				<a th:href="|/dbadmin/model/${field.getConnectedType().getName()}/show/${object.traverse(field).getPrimaryKeyValue()}|">
 					<span th:text="${object.has(field) ? object.traverse(field).getPrimaryKeyValue() : 'NULL'}"></span>
 				</a>

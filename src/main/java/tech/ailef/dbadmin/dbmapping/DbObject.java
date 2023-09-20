@@ -21,6 +21,9 @@ public class DbObject {
 	private DbObjectSchema schema;
 	
 	public DbObject(Object instance, DbObjectSchema schema) {
+		if (instance == null)
+			throw new DbAdminException("Trying to build object with instance == null");
+		
 		this.instance = instance;
 		this.schema = schema;
 	}
@@ -54,6 +57,8 @@ public class DbObject {
 		OneToOne oneToOne = field.getPrimitiveField().getAnnotation(OneToOne.class);
 		if (oneToOne != null || manyToOne != null) {
 			Object linkedObject = get(field.getJavaName()).getValue();
+			if (linkedObject == null) return null;
+			
 			DbObject linkedDbObject = new DbObject(linkedObject, field.getConnectedSchema());
 			return linkedDbObject;
 		} else {

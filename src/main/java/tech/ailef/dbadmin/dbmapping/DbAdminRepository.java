@@ -195,6 +195,12 @@ public class DbAdminRepository {
 		Map<String, Object> allValues = new HashMap<>();
 		allValues.putAll(values);
 		
+		values.keySet().forEach(fieldName -> {
+			if (values.get(fieldName).isBlank()) {
+				allValues.put(fieldName, null);
+			}
+		});
+		
 		files.keySet().forEach(f -> {
 			try {
 				allValues.put(f, files.get(f).getBytes());
