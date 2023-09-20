@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,12 +24,17 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import tech.ailef.dbadmin.DbAdmin;
 import tech.ailef.dbadmin.dbmapping.DbAdminRepository;
 import tech.ailef.dbadmin.dbmapping.DbObject;
 import tech.ailef.dbadmin.dbmapping.DbObjectSchema;
+import tech.ailef.dbadmin.dto.CompareOperator;
 import tech.ailef.dbadmin.dto.PaginatedResult;
+import tech.ailef.dbadmin.dto.QueryFilter;
 import tech.ailef.dbadmin.exceptions.InvalidPageException;
+import tech.ailef.dbadmin.misc.Utils;
 
 @Controller
 @RequestMapping("/dbadmin")
@@ -45,10 +52,15 @@ import tech.ailef.dbadmin.exceptions.InvalidPageException;
  * - Pagination in one to many results?
  * - BLOB upload (WIP: check edit not working)
  * - AI console (PRO)
+ * - Action logs
+ * - Boolean icons
+ * - @Filterable
+ * - Boolean in create/edit is checkbox
  * - SQL console (PRO)
  * - JPA Validation (PRO)
  * - Logging
- * - ERROR 500: http://localhost:8080/dbadmin/model/tech.ailef.dbadmin.test.models.Order?query=2021 
+ * - TODO FIX: list model page crash
+ *             EDIT error on table product
  * - Logs in web ui
  * - Tests: AutocompleteController, REST API, create/edit
  */
@@ -86,16 +98,55 @@ public class DefaultDbAdminController {
 	public String list(Model model, @PathVariable String className,
 			@RequestParam(required=false) Integer page, @RequestParam(required=false) String query,
 			@RequestParam(required=false) Integer pageSize, @RequestParam(required=false) String sortKey, 
-			@RequestParam(required=false) String sortOrder) {
+			@RequestParam(required=false) String sortOrder, @RequestParam MultiValueMap<String, String> otherParams,
+			HttpServletRequest request,
+			HttpServletResponse response) {
+		
 		if (page == null) page = 1;
 		if (pageSize == null) pageSize = 50;
+		
+		Set<QueryFilter> queryFilters = Utils.computeFilters(otherParams);
+		if (otherParams.containsKey("remove_field")) {
+			List<String> fields = otherParams.get("remove_field");
+			
+			for (int i = 0; i < fields.size(); i++) {
+				QueryFilter toRemove = 
+					new QueryFilter(
+						fields.get(i), 
+						CompareOperator.valueOf(otherParams.get("remove_op").get(i).toUpperCase()), 
+						otherParams.get("remove_value").get(i)
+					);
+				queryFilters.removeIf(f -> f.equals(toRemove));
+			}
+			
+			MultiValueMap<String, String> parameterMap = Utils.computeParams(queryFilters);
+			
+			MultiValueMap<String, String> filteredParams = new LinkedMultiValueMap<>();
+ 			request.getParameterMap().entrySet().stream()
+				.filter(e -> !e.getKey().startsWith("remove_") && !e.getKey().startsWith("filter_"))
+				.forEach(e -> {
+					filteredParams.putIfAbsent(e.getKey(), new ArrayList<>());
+					for (String v : e.getValue()) {
+						if (filteredParams.get(e.getKey()).isEmpty()) {
+							filteredParams.get(e.getKey()).add(v);
+						} else {
+							filteredParams.get(e.getKey()).set(0, v);
+						}
+					}
+				});
+ 			
+ 			filteredParams.putAll(parameterMap);
+ 			String queryString = Utils.getQueryString(filteredParams);
+			String redirectUrl = request.getServletPath() + queryString; 
+			return "redirect:" + redirectUrl.trim();
+		}
 		
 		DbObjectSchema schema = dbAdmin.findSchemaByClassName(className);
 		
 		try {
 			PaginatedResult result = null;
-			if (query != null) {
-				result = repository.search(schema, query, page, pageSize, sortKey, sortOrder);
+			if (query != null || !otherParams.isEmpty()) {
+				result = repository.search(schema, query, page, pageSize, sortKey, sortOrder, queryFilters);
 			} else {
 				result = repository.findAll(schema, page, pageSize, sortKey, sortOrder);
 			}
@@ -107,6 +158,7 @@ public class DefaultDbAdminController {
 			model.addAttribute("sortKey", sortKey);
 			model.addAttribute("query", query);
 			model.addAttribute("sortOrder", sortOrder);
+			model.addAttribute("activeFilters", queryFilters);
 			return "model/list";
 			
 		} catch (InvalidPageException e) {
@@ -333,9 +385,12 @@ public class DefaultDbAdminController {
 		}
 	}
 	
+	
 	@GetMapping("/settings")
 	public String settings(Model model) {
 		model.addAttribute("activePage", "settings");
 		return "settings";
 	}
+	
+
 }

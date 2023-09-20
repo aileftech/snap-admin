@@ -1,8 +1,14 @@
 package tech.ailef.dbadmin.dto;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import org.springframework.util.MultiValueMap;
+
+import tech.ailef.dbadmin.misc.Utils;
 
 /**
  * Attached as output to requests that have a paginated response,
@@ -30,12 +36,25 @@ public class PaginationInfo {
 	private int pageSize;
 	
 	private long maxElement;
+	
+	private Set<QueryFilter> queryFilters;
+	
+	private String query;
+	
+	private String sortKey;
+	
+	private String sortOrder;
 
-	public PaginationInfo(int currentPage, int maxPage, int pageSize, long maxElement) {
+	public PaginationInfo(int currentPage, int maxPage, int pageSize, long maxElement, String query, 
+			String sortKey, String sortOrder, Set<QueryFilter> queryFilters) {
 		this.currentPage = currentPage;
 		this.maxPage = maxPage;
 		this.pageSize = pageSize;
+		this.query = query;
 		this.maxElement = maxElement;
+		this.queryFilters = queryFilters;
+		this.sortKey = sortKey;
+		this.sortOrder = sortOrder;
 	}
 
 	public int getCurrentPage() {
@@ -64,6 +83,36 @@ public class PaginationInfo {
 	
 	public long getMaxElement() {
 		return maxElement;
+	}
+	
+	public String getSortedPageLink(String sortKey, String sortOrder) {
+		MultiValueMap<String, String> params = Utils.computeParams(queryFilters);
+		
+		if (query != null) {
+			params.put("query", new ArrayList<>());
+			params.get("query").add(query);
+		}
+		
+		params.add("pageSize", "" + pageSize);
+		params.add("page", "" + currentPage);
+		params.add("sortKey", sortKey);
+		params.add("sortOrder", sortOrder);
+		
+		return Utils.getQueryString(params);
+	}
+	
+	public String getLink(int page) {
+		MultiValueMap<String, String> params = Utils.computeParams(queryFilters);
+		
+		if (query != null) {
+			params.put("query", new ArrayList<>());
+			params.get("query").add(query);
+		}
+		
+		params.add("pageSize", "" + pageSize);
+		params.add("page", "" + page);
+		
+		return Utils.getQueryString(params);
 	}
 
 	public List<Integer> getBeforePages() {

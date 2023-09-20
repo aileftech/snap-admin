@@ -17,8 +17,13 @@ public class DbFieldValue {
 	}
 	
 	public String getFormattedValue() {
-		if (field.getFormat() == null) return value == null ? "NULL" : value.toString();
-		return String.format(field.getFormat(), value);
+		if (value == null) return null;
+		
+		if (field.getFormat() == null) {
+			return value.toString();
+		} else {
+			return String.format(field.getFormat(), value);
+		}
 	}
 
 	public DbField getField() {

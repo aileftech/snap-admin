@@ -39,7 +39,7 @@
 														 : (object != null ? object.traverse(field).getPrimaryKeyValue() : '' )
 											})}">
 											</div>
-											<input type="hidden" th:value="${field.getType()}" th:name="|__dbadmin_${field.getName()}_type|">
+											<!-- <input type="hidden" th:value="${field.getType()}" th:name="|__dbadmin_${field.getName()}_type|"> -->
 										</th:block>
 										<th:block th:unless="${field.isForeignKey()}">
 											<input placeholder="NULL" th:type="${field.getType().getHTMLName()}" 
@@ -55,7 +55,7 @@
 													step="any"
 													oninvalid="this.setCustomValidity('This field is not nullable.')"
 													oninput="this.setCustomValidity('')">
-											<input type="hidden" th:value="${field.getType()}" th:name="|__dbadmin_${field.getName()}_type|">
+											<!-- <input type="hidden" th:value="${field.getType()}" th:name="|__dbadmin_${field.getName()}_type|"> -->
 										</th:block>
 									</div>
 									
