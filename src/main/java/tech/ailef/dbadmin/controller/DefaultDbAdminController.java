@@ -2,7 +2,6 @@ package tech.ailef.dbadmin.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -25,16 +24,15 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import ch.qos.logback.core.joran.action.ParamAction;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import tech.ailef.dbadmin.DbAdmin;
 import tech.ailef.dbadmin.dbmapping.DbAdminRepository;
 import tech.ailef.dbadmin.dbmapping.DbObject;
 import tech.ailef.dbadmin.dbmapping.DbObjectSchema;
+import tech.ailef.dbadmin.dto.CompareOperator;
 import tech.ailef.dbadmin.dto.PaginatedResult;
 import tech.ailef.dbadmin.dto.QueryFilter;
-import tech.ailef.dbadmin.exceptions.DbAdminException;
 import tech.ailef.dbadmin.exceptions.InvalidPageException;
 import tech.ailef.dbadmin.misc.Utils;
 
@@ -113,7 +111,11 @@ public class DefaultDbAdminController {
 			
 			for (int i = 0; i < fields.size(); i++) {
 				QueryFilter toRemove = 
-					new QueryFilter(fields.get(i), otherParams.get("remove_op").get(i), otherParams.get("remove_value").get(i));
+					new QueryFilter(
+						fields.get(i), 
+						CompareOperator.valueOf(otherParams.get("remove_op").get(i).toUpperCase()), 
+						otherParams.get("remove_value").get(i)
+					);
 				queryFilters.removeIf(f -> f.equals(toRemove));
 			}
 			

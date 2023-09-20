@@ -27,21 +27,18 @@
 								</div>
 								<div class="align-items-center">
 									<h4 class="m-0" th:if="${page}">
-										<th:block th:if="${sortKey != field.getName()}" >
-											<a th:href="@{|/dbadmin/model/${schema.getClassName()}|(page=${page.getPagination().getCurrentPage()},
-												pageSize=${page.getPagination().getPageSize()},sortKey=${field.getName()},sortOrder=DESC)}">
+										<th:block th:if="${sortKey != field.getJavaName()}" >
+											<a th:href="@{|/dbadmin/model/${schema.getClassName()}${page.getPagination().getSortedPageLink(field.getJavaName(), 'DESC')}|}">
 											<i title="Sort" class="bi bi-caret-up"></i>
 											</a>
 										</th:block>
-										<th:block th:unless="${sortKey != field.getName()}">
+										<th:block th:unless="${sortKey != field.getJavaName()}">
 											<a th:if="${sortOrder == 'DESC'}" 
-												th:href="@{|/dbadmin/model/${schema.getClassName()}|(page=${page.getPagination().getCurrentPage()},
-													pageSize=${page.getPagination().getPageSize()},sortKey=${field.getName()},sortOrder=ASC)}">
+												th:href="@{|/dbadmin/model/${schema.getClassName()}${page.getPagination().getSortedPageLink(field.getJavaName(), 'ASC')}|}">
 												<i title="Sort" class="bi bi-caret-down-fill"></i>
 											</a>
 											<a th:if="${sortOrder == 'ASC'}" 
-												th:href="@{|/dbadmin/model/${schema.getClassName()}|(page=${page.getPagination().getCurrentPage()},
-													pageSize=${page.getPagination().getPageSize()},sortKey=${field.getName()},sortOrder=DESC)}">
+												th:href="@{|/dbadmin/model/${schema.getClassName()}${page.getPagination().getSortedPageLink(field.getJavaName(), 'DESC')}|}">
 												<i title="Sort" class="bi bi-caret-up-fill"></i>
 											</a>
 										</th:block>

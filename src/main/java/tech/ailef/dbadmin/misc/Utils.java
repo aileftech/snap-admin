@@ -8,6 +8,7 @@ import java.util.Set;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import tech.ailef.dbadmin.dto.CompareOperator;
 import tech.ailef.dbadmin.dto.QueryFilter;
 import tech.ailef.dbadmin.exceptions.DbAdminException;
 
@@ -30,7 +31,7 @@ public interface Utils {
 		
 		for (QueryFilter filter : filters) {
 			r.get("filter_field").add(filter.getField());
-			r.get("filter_op").add(filter.getOp());
+			r.get("filter_op").add(filter.getOp().toString());
 			r.get("filter_value").add(filter.getValue());
 		}
 			
@@ -59,7 +60,7 @@ public interface Utils {
 			String field = fields.get(i);
 			String value = values.get(i);
 			
-			QueryFilter queryFilter = new QueryFilter(field, op, value);
+			QueryFilter queryFilter = new QueryFilter(field, CompareOperator.valueOf(op.toUpperCase()), value);
 			filters.add(queryFilter);
 		}
 		

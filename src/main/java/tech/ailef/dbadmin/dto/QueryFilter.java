@@ -5,11 +5,11 @@ import java.util.Objects;
 public class QueryFilter {
 	private String field;
 	
-	private String op;
+	private CompareOperator op;
 	
 	private String value;
 	
-	public QueryFilter(String field, String op, String value) {
+	public QueryFilter(String field, CompareOperator op, String value) {
 		this.field = field;
 		this.op = op;
 		this.value = value;
@@ -19,7 +19,7 @@ public class QueryFilter {
 		return field;
 	}
 
-	public String getOp() {
+	public CompareOperator getOp() {
 		return op;
 	}
 
@@ -34,7 +34,11 @@ public class QueryFilter {
 
 	@Override
 	public String toString() {
-		return field + " " + op + " '" + value + "'";
+		String displayValue = value;
+		if (value.length() > 10) {
+			displayValue = value.substring(0, 4) + "..." + value.substring(value.length() - 4);
+		}
+		return "'" + field + "' " + op.getDisplayName() + " '" + displayValue + "'";
 	}
 	
 	@Override

@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import tech.ailef.dbadmin.dto.CompareOperator;
 import tech.ailef.dbadmin.exceptions.DbAdminException;
 
 public enum DbFieldType {
@@ -32,8 +33,8 @@ public enum DbFieldType {
 		}
 
 		@Override
-		public List<String> getCompareOperators() {
-			return List.of("gt", "eq", "lt");
+		public List<CompareOperator> getCompareOperators() {
+			return List.of(CompareOperator.GT, CompareOperator.EQ, CompareOperator.LT);
 		}
 	},
 	DOUBLE {
@@ -53,8 +54,8 @@ public enum DbFieldType {
 		}
 		
 		@Override
-		public List<String> getCompareOperators() {
-			return List.of("gt", "eq", "lt");
+		public List<CompareOperator> getCompareOperators() {
+			return List.of(CompareOperator.GT, CompareOperator.EQ, CompareOperator.LT);
 		}
 	},
 	LONG {
@@ -74,8 +75,8 @@ public enum DbFieldType {
 		}
 		
 		@Override
-		public List<String> getCompareOperators() {
-			return List.of("gt", "eq", "lt");
+		public List<CompareOperator> getCompareOperators() {
+			return List.of(CompareOperator.GT, CompareOperator.EQ, CompareOperator.LT);
 		}
 	},
 	FLOAT {
@@ -95,8 +96,8 @@ public enum DbFieldType {
 		}
 		
 		@Override
-		public List<String> getCompareOperators() {
-			return List.of("gt", "eq", "lt");
+		public List<CompareOperator> getCompareOperators() {
+			return List.of(CompareOperator.GT, CompareOperator.EQ, CompareOperator.LT);
 		}
 	},
 	LOCAL_DATE {
@@ -116,8 +117,8 @@ public enum DbFieldType {
 		}
 		
 		@Override
-		public List<String> getCompareOperators() {
-			return List.of("After", "Equals", "Before");
+		public List<CompareOperator> getCompareOperators() {
+			return List.of(CompareOperator.AFTER, CompareOperator.STRING_EQ, CompareOperator.BEFORE);
 		}
 	},
 	LOCAL_DATE_TIME {
@@ -137,8 +138,8 @@ public enum DbFieldType {
 		}
 		
 		@Override
-		public List<String> getCompareOperators() {
-			return List.of("After", "Equals", "Before");
+		public List<CompareOperator> getCompareOperators() {
+			return List.of(CompareOperator.AFTER, CompareOperator.STRING_EQ, CompareOperator.BEFORE);
 		}
 	},
 	STRING {
@@ -158,8 +159,8 @@ public enum DbFieldType {
 		}
 		
 		@Override
-		public List<String> getCompareOperators() {
-			return List.of("Equals", "Contains");
+		public List<CompareOperator> getCompareOperators() {
+			return List.of(CompareOperator.CONTAINS, CompareOperator.STRING_EQ);
 		}
 	},
 	BOOLEAN {
@@ -179,8 +180,8 @@ public enum DbFieldType {
 		}
 		
 		@Override
-		public List<String> getCompareOperators() {
-			return List.of("Equals");
+		public List<CompareOperator> getCompareOperators() {
+			return List.of(CompareOperator.EQ);
 		}
 	}, 
 	BIG_DECIMAL {
@@ -200,8 +201,8 @@ public enum DbFieldType {
 		}
 		
 		@Override
-		public List<String> getCompareOperators() {
-			return List.of("gt", "eq", "lt");
+		public List<CompareOperator> getCompareOperators() {
+			return List.of(CompareOperator.GT, CompareOperator.EQ, CompareOperator.LT);
 		}
 	}, 
 	BYTE_ARRAY {
@@ -225,8 +226,8 @@ public enum DbFieldType {
 		}
 		
 		@Override
-		public List<String> getCompareOperators() {
-			return List.of("Equals");
+		public List<CompareOperator> getCompareOperators() {
+			throw new DbAdminException("Binary fields are not comparable");
 		}
 	},
 	ONE_TO_MANY {
@@ -256,7 +257,7 @@ public enum DbFieldType {
 		}
 		
 		@Override
-		public List<String> getCompareOperators() {
+		public List<CompareOperator> getCompareOperators() {
 			throw new DbAdminException();
 		}
 	},
@@ -287,7 +288,7 @@ public enum DbFieldType {
 		}
 		
 		@Override
-		public List<String> getCompareOperators() {
+		public List<CompareOperator> getCompareOperators() {
 			throw new DbAdminException();
 		}
 	},
@@ -318,7 +319,7 @@ public enum DbFieldType {
 		}
 		
 		@Override
-		public List<String> getCompareOperators() {
+		public List<CompareOperator> getCompareOperators() {
 			throw new DbAdminException();
 		}
 	}, 
@@ -339,7 +340,7 @@ public enum DbFieldType {
 		}
 		
 		@Override
-		public List<String> getCompareOperators() {
+		public List<CompareOperator> getCompareOperators() {
 			throw new DbAdminException();
 		}
 	};
@@ -350,7 +351,7 @@ public enum DbFieldType {
 	
 	public abstract Class<?> getJavaClass();
 	
-	public abstract List<String> getCompareOperators();
+	public abstract List<CompareOperator> getCompareOperators();
 	
 	public boolean isRelationship() {
 		return false;

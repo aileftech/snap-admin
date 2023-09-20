@@ -40,14 +40,21 @@ public class PaginationInfo {
 	private Set<QueryFilter> queryFilters;
 	
 	private String query;
+	
+	private String sortKey;
+	
+	private String sortOrder;
 
-	public PaginationInfo(int currentPage, int maxPage, int pageSize, long maxElement, String query, Set<QueryFilter> queryFilters) {
+	public PaginationInfo(int currentPage, int maxPage, int pageSize, long maxElement, String query, 
+			String sortKey, String sortOrder, Set<QueryFilter> queryFilters) {
 		this.currentPage = currentPage;
 		this.maxPage = maxPage;
 		this.pageSize = pageSize;
 		this.query = query;
 		this.maxElement = maxElement;
 		this.queryFilters = queryFilters;
+		this.sortKey = sortKey;
+		this.sortOrder = sortOrder;
 	}
 
 	public int getCurrentPage() {
@@ -76,6 +83,22 @@ public class PaginationInfo {
 	
 	public long getMaxElement() {
 		return maxElement;
+	}
+	
+	public String getSortedPageLink(String sortKey, String sortOrder) {
+		MultiValueMap<String, String> params = Utils.computeParams(queryFilters);
+		
+		if (query != null) {
+			params.put("query", new ArrayList<>());
+			params.get("query").add(query);
+		}
+		
+		params.add("pageSize", "" + pageSize);
+		params.add("page", "" + currentPage);
+		params.add("sortKey", sortKey);
+		params.add("sortOrder", sortOrder);
+		
+		return Utils.getQueryString(params);
 	}
 	
 	public String getLink(int page) {

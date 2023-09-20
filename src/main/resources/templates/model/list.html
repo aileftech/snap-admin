@@ -47,7 +47,7 @@
 									
 									<input type="hidden" name="page" value="1">
 									<input type="hidden" name="pageSize" 
-										th:value="${queryParams.getOrDefault('pageSize', ['50'])[0]}">
+										th:value="${page.getPagination().getPageSize()}">
 			    				</form>
 								<div class="separator mb-4 mt-4"></div>
 							

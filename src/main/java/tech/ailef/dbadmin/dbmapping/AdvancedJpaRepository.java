@@ -1,6 +1,9 @@
 package tech.ailef.dbadmin.dbmapping;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -13,6 +16,7 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import tech.ailef.dbadmin.dto.CompareOperator;
 import tech.ailef.dbadmin.dto.QueryFilter;
 
 @SuppressWarnings("rawtypes")
@@ -89,29 +93,54 @@ public class AdvancedJpaRepository extends SimpleJpaRepository {
 	        finalPredicates.add(queryPredicate);
         }
 
+        
+        if (queryFilters == null) queryFilters = new HashSet<>();
         for (QueryFilter filter  : queryFilters) {
-        	String op = filter.getOp();
+        	CompareOperator op = filter.getOp();
         	String field = filter.getField();
-        	String value = filter.getValue();
-        		
-			if (op.equalsIgnoreCase("equals")) {
-				finalPredicates.add(cb.equal(cb.lower(cb.toString(root.get(field))), value.toLowerCase()));
-			} else if (op.equalsIgnoreCase("contains")) {
+        	String v = filter.getValue();
+        	
+        	DbField dbField = schema.getFieldByJavaName(field);
+        	Object value = dbField.getType().parseValue(v);
+        	
+			if (op == CompareOperator.STRING_EQ) {
+				finalPredicates.add(cb.equal(cb.lower(cb.toString(root.get(field))), value.toString().toLowerCase()));
+			} else if (op == CompareOperator.CONTAINS) {
 				finalPredicates.add(
-					cb.like(cb.lower(cb.toString(root.get(field))), "%" + value.toLowerCase() + "%")
+					cb.like(cb.lower(cb.toString(root.get(field))), "%" + value.toString().toLowerCase() + "%")
 				);
-			} else if (op.equalsIgnoreCase("eq")) {
+			} else if (op == CompareOperator.EQ) {
 				finalPredicates.add(
 					cb.equal(root.get(field), value)
 				);
-			} else if (op.equalsIgnoreCase("gt")) {
+			} else if (op == CompareOperator.GT) {
 				finalPredicates.add(
-					cb.greaterThan(root.get(field), value)
+					cb.greaterThan(root.get(field), value.toString())
 				);
-			} else if (op.equalsIgnoreCase("lt")) {
+			} else if (op == CompareOperator.LT) {
 				finalPredicates.add(
-					cb.lessThan(root.get(field), value)
+					cb.lessThan(root.get(field), value.toString())
 				);
+			} else if (op == CompareOperator.AFTER) {
+				if (value instanceof LocalDate)
+					finalPredicates.add(
+						cb.greaterThan(root.get(field), (LocalDate)value)
+					);
+				else if (value instanceof LocalDateTime)
+					finalPredicates.add(
+						cb.greaterThan(root.get(field), (LocalDateTime)value)
+					);
+				
+			} else if (op == CompareOperator.BEFORE) {
+				if (value instanceof LocalDate)
+					finalPredicates.add(
+						cb.lessThan(root.get(field), (LocalDate)value)
+					);
+				else if (value instanceof LocalDateTime)
+					finalPredicates.add(
+						cb.lessThan(root.get(field), (LocalDateTime)value)
+					);
+				
 			}
         }
         return finalPredicates;
