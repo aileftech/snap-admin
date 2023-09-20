@@ -162,6 +162,11 @@ public class AdvancedJpaRepository extends SimpleJpaRepository {
 		for (DbField field : schema.getSortedFields()) {
 			if (field.isPrimaryKey()) continue;
 			
+			if (params.getOrDefault("__keep_" + field.getJavaName(), "off").equals("on")) {
+				System.out.println("SKIPPING: " + field);
+				continue;
+			}
+			
 			String stringValue = params.get(field.getName());
 			Object value = null;
 			if (stringValue != null && stringValue.isBlank()) stringValue = null;
@@ -169,7 +174,7 @@ public class AdvancedJpaRepository extends SimpleJpaRepository {
 				value = field.getType().parseValue(stringValue);
 			} else {
 				try {
-					MultipartFile file = files.get(field.getJavaName());
+					MultipartFile file = files.get(field.getName());
 					if (file != null)
 						value = file.getBytes();
 				} catch (IOException e) {

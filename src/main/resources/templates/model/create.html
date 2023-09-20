@@ -39,15 +39,14 @@
 														 : (object != null ? object.traverse(field).getPrimaryKeyValue() : '' )
 											})}">
 											</div>
-											<!-- <input type="hidden" th:value="${field.getType()}" th:name="|__dbadmin_${field.getName()}_type|"> -->
 										</th:block>
 										<th:block th:unless="${field.isForeignKey()}">
-											<input placeholder="NULL" th:type="${field.getType().getHTMLName()}" 
+											
+											<input  th:if="${!field.isBinary()}" placeholder="NULL" th:type="${field.getType().getHTMLName()}" 
 													th:name="${field.getName()}" 
 													th:value="
 														${create ? (params != null ? params.getOrDefault(field.getName(), '') : '') 
 														 : (object != null ? object.get(field).getValue() : '' )}
-														
 													"
 													class="form-control" th:id="|__id_${field.getName()}|"
 													th:classAppend="${field.isPrimaryKey() && object != null ? 'disable' : ''}"
@@ -55,7 +54,25 @@
 													step="any"
 													oninvalid="this.setCustomValidity('This field is not nullable.')"
 													oninput="this.setCustomValidity('')">
-											<!-- <input type="hidden" th:value="${field.getType()}" th:name="|__dbadmin_${field.getName()}_type|"> -->
+											<!--/*--> Binary field flag <!--*/-->
+											<th:block th:if="${field.isBinary()}">
+												<div th:if="${object.get(field).getValue() != null}">
+													<input type="checkbox"
+														class="binary-field-checkbox"
+														th:data-fieldname="${field.getName()}"
+														th:id="|__keep_${field.getName()}|"
+														checked
+														th:name="|__keep_${field.getName()}|">
+														<span>Keep current data</span>
+												</div>
+												<input th:if="${field.isBinary()}" placeholder="NULL" th:type="${field.getType().getHTMLName()}" 
+													th:name="${field.getName()}" 
+													class="form-control mt-2" th:id="|__id_${field.getName()}|"
+													th:classAppend="${object.get(field).getValue() == null ? '' : ''}"
+													th:required="${!field.isNullable()}"
+													oninvalid="this.setCustomValidity('This field is not nullable.')"
+													oninput="this.setCustomValidity('')">
+											</th:block>
 										</th:block>
 									</div>
 									

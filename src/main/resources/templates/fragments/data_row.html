@@ -62,7 +62,7 @@
 					<span th:unless="${!field.isBinary()}">
 						<th:block th:if="${object.get(field).getValue()}">
 							<a class="text-decoration-none null-label" 
-								th:href="|/dbadmin/download/${schema.getJavaClass().getName()}/${field.getName()}/${object.get(schema.getPrimaryKey()).getValue()}|">
+								th:href="|/dbadmin/download/${schema.getJavaClass().getName()}/${field.getJavaName()}/${object.get(schema.getPrimaryKey()).getValue()}|">
 								<i class="align-middle bi bi-box-arrow-down"></i><span class="align-middle"> Download 
 								<!--/*--> <span class="text-muted">([[ ${object.get(field).getValue().length} ]] bytes)</span> <!--*/-->
 								</span>

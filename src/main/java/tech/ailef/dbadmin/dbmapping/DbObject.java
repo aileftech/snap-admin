@@ -147,26 +147,6 @@ public class DbObject {
 		}
 	}
 	
-//	public void initializeFromMap(Map<String, String> values) {
-////		String pkValue = values.get(schema.getPrimaryKey().getName());
-//		
-//		List<String> fields = 
-//			values.keySet().stream().filter(f -> !f.startsWith("__dbadmin_")).collect(Collectors.toList());
-//		
-//		for (String field : fields) {
-//			String fieldJavaName = Utils.snakeToCamel(field);
-//			Method setter = findSetter(fieldJavaName);
-//			if (setter == null)
-//				throw new DbAdminException("Unable to find setter for field " + fieldJavaName + " in class " + schema.getClassName());
-//			
-//			try {
-//				setter.invoke(instance, values.get(field));
-//			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-//				throw new DbAdminException(e);
-//			}
-//		}
-//	}
-	
 	public void set(String fieldName, Object value) {
 		Method setter = findSetter(fieldName);
 		
