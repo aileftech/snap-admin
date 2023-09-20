@@ -1,3 +1,7 @@
+.separator-light {
+	opacity: 25%;
+}
+
 form.delete-form {
 	display: inline-block;	
 }
@@ -173,4 +177,15 @@ AUTOCOMPLETE
  
 .filterable-field .card-header:hover {
 	background-color: #F0F0F0;
+}
+
+/**
+ * Images
+ */
+.thumb-image {
+	max-width: 128px;
+}
+.img-muted {
+    filter: brightness(50%);
+     
 }

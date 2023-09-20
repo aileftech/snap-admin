@@ -80,6 +80,7 @@ public class AdvancedJpaRepository extends SimpleJpaRepository {
         			.setFirstResult((page - 1) * pageSize).getResultList();
 	}
 	
+	@SuppressWarnings("unchecked")
 	private List<Predicate> buildPredicates(String q, Set<QueryFilter> queryFilters,
 			CriteriaBuilder cb, Path root) {
 		List<Predicate> finalPredicates = new ArrayList<>();
@@ -152,7 +153,8 @@ public class AdvancedJpaRepository extends SimpleJpaRepository {
         return finalPredicates;
 	}
 
-	public void update(DbObjectSchema schema, Map<String, String> params, Map<String, MultipartFile> files) {
+	@SuppressWarnings("unchecked")
+	public int update(DbObjectSchema schema, Map<String, String> params, Map<String, MultipartFile> files) {
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 
 		CriteriaUpdate update = cb.createCriteriaUpdate(schema.getJavaClass());
@@ -162,8 +164,9 @@ public class AdvancedJpaRepository extends SimpleJpaRepository {
 		for (DbField field : schema.getSortedFields()) {
 			if (field.isPrimaryKey()) continue;
 			
-			if (params.getOrDefault("__keep_" + field.getJavaName(), "off").equals("on")) {
-				System.out.println("SKIPPING: " + field);
+			boolean keepValue = params.getOrDefault("__keep_" + field.getJavaName(), "off").equals("on");
+			
+			if (keepValue) {
 				continue;
 			}
 			
@@ -175,8 +178,10 @@ public class AdvancedJpaRepository extends SimpleJpaRepository {
 			} else {
 				try {
 					MultipartFile file = files.get(field.getName());
-					if (file != null)
-						value = file.getBytes();
+					if (file != null) {
+						if (file.isEmpty()) value = null;
+						else value = file.getBytes();
+					}
 				} catch (IOException e) {
 					throw new DbAdminException(e);
 				}
@@ -184,11 +189,11 @@ public class AdvancedJpaRepository extends SimpleJpaRepository {
 			
 			update.set(employee.get(field.getJavaName()), value);
 		}
+		
 		String pkName = schema.getPrimaryKey().getJavaName();
 		update.where(cb.equal(employee.get(pkName), params.get(schema.getPrimaryKey().getName())));
 
 		Query query = entityManager.createQuery(update);
-		int rowCount = query.executeUpdate();
-		
+		return query.executeUpdate();
 	}
 }

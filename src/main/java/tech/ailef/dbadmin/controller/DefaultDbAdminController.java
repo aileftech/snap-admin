@@ -39,14 +39,6 @@ import tech.ailef.dbadmin.misc.Utils;
 @Controller
 @RequestMapping("/dbadmin")
 /**
- * - Sort controls      DONE
- * - @DisplayFormat for fields	DONE
- * - Fix pagination in product where total count = page size = 50 (it shows 'next' button and then empty page) DONE
- * - Show number of entries in home		DONE
- * - @ComputedColumn	name parameter DONE
- * - Basic search
- * - Improve create/edit UX   WIP
- * 		- blob edit doesn't show if it's present WIP
  * - double data source for internal database and settings 
  * - role based authorization (PRO)
  * - Pagination in one to many results?
@@ -54,13 +46,12 @@ import tech.ailef.dbadmin.misc.Utils;
  * - AI console (PRO)
  * - Action logs
  * - Boolean icons
- * - @Filterable
  * - Boolean in create/edit is checkbox
  * - SQL console (PRO)
  * - JPA Validation (PRO)
  * - Logging
- * - TODO FIX: list model page crash
- *             EDIT error on table product
+ * - Selenium tests
+ * - @DisplayImage
  * - Logs in web ui
  * - Tests: AutocompleteController, REST API, create/edit
  */

@@ -4,6 +4,8 @@ import java.lang.reflect.Field;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import tech.ailef.dbadmin.annotations.DisplayImage;
+
 public class DbField {
 	protected String dbName;
 
@@ -112,6 +114,10 @@ public class DbField {
 
 	public boolean isBinary() {
 		return type == DbFieldType.BYTE_ARRAY;
+	}
+	
+	public boolean isImage() {
+		return field.getAnnotation(DisplayImage.class) != null;
 	}
 	
 	public String getFormat() {

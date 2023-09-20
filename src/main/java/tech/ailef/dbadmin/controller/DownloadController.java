@@ -8,6 +8,7 @@ import org.apache.tika.mime.MimeTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +32,28 @@ public class DownloadController {
 	@Autowired
 	private DbAdmin dbAdmin;
 
+	
+	@GetMapping(value="/{className}/{fieldName}/{id}/image", produces = MediaType.IMAGE_JPEG_VALUE)
+	@ResponseBody
+	public ResponseEntity<byte[]> serveImage(@PathVariable String className, 
+			@PathVariable String fieldName, @PathVariable String id) {
+
+		DbObjectSchema schema = dbAdmin.findSchemaByClassName(className);
+		
+		Optional<DbObject> object = repository.findById(schema, id);
+		
+		if (object.isPresent()) {
+			DbObject dbObject = object.get();
+			DbFieldValue dbFieldValue = dbObject.get(fieldName);
+			byte[] file = (byte[])dbFieldValue.getValue();
+			return ResponseEntity.ok(file);
+		} else {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Object with id " + id + " not found");
+		}
+		
+
+	}
+	
 	@GetMapping("/{className}/{fieldName}/{id}")
 	@ResponseBody
 	public ResponseEntity<byte[]> serveFile(@PathVariable String className, 

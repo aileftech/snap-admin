@@ -1,3 +1,24 @@
+function showFileInput(inputElement) {
+	inputElement.classList.add('d-block');
+	inputElement.classList.remove('d-none');
+	inputElement.value = '';
+	
+	let img = document.getElementById(`__thumb_${inputElement.name}`);
+	if (img != null) {
+		img.classList.add('img-muted');
+	}
+}
+
+function hideFileInput(inputElement) {
+	inputElement.classList.add('d-none');
+	inputElement.classList.remove('d-block');
+	
+	let img = document.getElementById(`__thumb_${inputElement.name}`);
+	if (img != null) {
+		img.classList.remove('img-muted');
+	}
+}
+
 document.addEventListener("DOMContentLoaded", () => {
 	let checkboxes = document.querySelectorAll(".binary-field-checkbox");
 	
@@ -5,22 +26,16 @@ document.addEventListener("DOMContentLoaded", () => {
 		let fieldName = checkbox.dataset.fieldname;
 		
 		if (!checkbox.checked) {
-			document.querySelector(`input[name="${fieldName}"]`).classList.add('d-block');
-			document.querySelector(`input[name="${fieldName}"]`).classList.remove('d-none');
-			document.querySelector(`input[name="${fieldName}"]`).value = '';				 
+			showFileInput(document.querySelector(`input[name="${fieldName}"]`));
 		} else {
-			document.querySelector(`input[name="${fieldName}"]`).classList.add('d-none');
-			document.querySelector(`input[name="${fieldName}"]`).classList.remove('d-block');
+			hideFileInput(document.querySelector(`input[name="${fieldName}"]`));
 		}
 		
 		checkbox.addEventListener('change', function(e) {
 			if (!e.target.checked) {
-				document.querySelector(`input[name="${fieldName}"]`).classList.add('d-block');
-				document.querySelector(`input[name="${fieldName}"]`).classList.remove('d-none');
-				document.querySelector(`input[name="${fieldName}"]`).value = '';				 
+				showFileInput(document.querySelector(`input[name="${fieldName}"]`));				 
 			} else {
-				document.querySelector(`input[name="${fieldName}"]`).classList.add('d-none');
-				document.querySelector(`input[name="${fieldName}"]`).classList.remove('d-block');
+				hideFileInput(document.querySelector(`input[name="${fieldName}"]`));
 			}
 
 		});

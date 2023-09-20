@@ -7,7 +7,8 @@
 				<input type="checkbox" class="form-check-input" name="ids"
 					th:value="${row.getPrimaryKeyValue()}" form="delete-form">
 			</td>
-			<td th:each="field : ${schema.getSortedFields()}">
+			<td th:each="field : ${schema.getSortedFields()}"
+				th:classAppend="${field.isBinary() ? 'text-center' : ''}">
 				<th:block th:if="${!row.has(field)}">
 					 <span class="font-monospace null-label">NULL</span>
 				</th:block>
@@ -61,12 +62,19 @@
 					</th:block>
 					<span th:unless="${!field.isBinary()}">
 						<th:block th:if="${object.get(field).getValue()}">
+							<div th:if="${field.isImage()}" class="mb-2">
+								<img class="thumb-image" 
+									th:src="|/dbadmin/download/${schema.getClassName()}/${field.getJavaName()}/${object.getPrimaryKeyValue()}/image|">
+							</div>
+						
 							<a class="text-decoration-none null-label" 
-								th:href="|/dbadmin/download/${schema.getJavaClass().getName()}/${field.getJavaName()}/${object.get(schema.getPrimaryKey()).getValue()}|">
+								th:href="|/dbadmin/download/${schema.getClassName()}/${field.getJavaName()}/${object.getPrimaryKeyValue()}|">
 								<i class="align-middle bi bi-box-arrow-down"></i><span class="align-middle"> Download 
 								<!--/*--> <span class="text-muted">([[ ${object.get(field).getValue().length} ]] bytes)</span> <!--*/-->
 								</span>
 							</a>
+							
+							
 						</th:block>
 						<th:block th:unless="${object.get(field).getValue()}">
 							<span class="font-monospace null-label">NULL</span>

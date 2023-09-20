@@ -13,9 +13,10 @@
 
 					<h1 class="fw-bold mb-4">
 						<i class="align-middle bi bi-database"></i> 
-						<span class="align-middle">Entities</span>
+						<span class="align-middle"><a href="/dbadmin">Entities</a></span>
 						<i class="align-middle bi bi-chevron-double-right"></i> 
-						<span class="align-middle"> [[ ${schema.getJavaClass().getSimpleName()} ]] </span>
+						<a class="align-middle" th:href="|/dbadmin/model/${schema.getJavaClass().getName()}|">
+						 [[ ${schema.getJavaClass().getSimpleName()} ]] </a>
 						<i class="align-middle bi bi-chevron-double-right"></i> 
 						<span class="align-middle" th:text="${create ? 'Create' : 'Edit'}"></span>
 						<th:block th:if="${!create}">
@@ -30,8 +31,9 @@
 		        				<form class="form" enctype="multipart/form-data" method="post" th:action="|/dbadmin/model/${className}/create|">
 		        					<input type="hidden" name="__dbadmin_create" th:value="${create}">
 									<div th:each="field : ${schema.getSortedFields()}" class="mt-2">
-										<label th:for="|__id_${field.getName()}|" class="mb-1">[[ ${field.getName()} ]]</label>
-									
+										<label th:for="|__id_${field.getName()}|" class="mb-1 fw-bold">
+											[[ ${field.getName()} ]]
+										</label>
 										
 										<th:block th:if="${field.isForeignKey()}">
 											<div th:replace="~{fragments/forms :: input_autocomplete(field=${field},  value=${
@@ -54,9 +56,11 @@
 													step="any"
 													oninvalid="this.setCustomValidity('This field is not nullable.')"
 													oninput="this.setCustomValidity('')">
-											<!--/*--> Binary field flag <!--*/-->
+													
+											<!--/*--> Binary field <!--*/-->
 											<th:block th:if="${field.isBinary()}">
-												<div th:if="${object.get(field).getValue() != null}">
+												<!--/*--> Edit options <!--*/-->
+												<div th:if="${!create && object.get(field).getValue() != null}">
 													<input type="checkbox"
 														class="binary-field-checkbox"
 														th:data-fieldname="${field.getName()}"
@@ -64,16 +68,21 @@
 														checked
 														th:name="|__keep_${field.getName()}|">
 														<span>Keep current data</span>
+													<div th:if="${field.isImage()}" class="mb-2">
+														<img class="thumb-image" th:id="|__thumb_${field.getName()}|"
+															th:src="|/dbadmin/download/${schema.getClassName()}/${field.getJavaName()}/${object.getPrimaryKeyValue()}/image|">
+													</div>
 												</div>
+												<!--/*--> File input <!--*/-->
 												<input th:if="${field.isBinary()}" placeholder="NULL" th:type="${field.getType().getHTMLName()}" 
 													th:name="${field.getName()}" 
 													class="form-control mt-2" th:id="|__id_${field.getName()}|"
-													th:classAppend="${object.get(field).getValue() == null ? '' : ''}"
 													th:required="${!field.isNullable()}"
 													oninvalid="this.setCustomValidity('This field is not nullable.')"
 													oninput="this.setCustomValidity('')">
 											</th:block>
 										</th:block>
+										<div class="separator mt-3 mb-2 separator-light"></div>
 									</div>
 									
 									<div th:each="field : ${schema.getManyToManyOwnedFields()}" class="mt-3">
