@@ -129,14 +129,18 @@ public class DbAdminRepository {
 	 * @param schema
 	 * @param params
 	 */
+	@Transactional
 	public void update(DbObjectSchema schema, Map<String, String> params, Map<String, MultipartFile> files) {
-		Object[] updateArray = schema.getUpdateArray(params, files);
+//		Object[] updateArray = schema.getUpdateArray(params, files);
+//		
+//		String updateFields = 
+//				schema.getSortedFields().stream().map(f -> "`" + f.getName() + "` = ?").collect(Collectors.joining(", "));
+//		
+//		String query = "UPDATE `" + schema.getTableName() + "` SET " + updateFields + " WHERE `" + schema.getPrimaryKey().getName() + "` = ?";
+//		jdbcTemplate.update(query, updateArray);
 		
-		String updateFields = 
-				schema.getSortedFields().stream().map(f -> "`" + f.getName() + "` = ?").collect(Collectors.joining(", "));
-		
-		String query = "UPDATE `" + schema.getTableName() + "` SET " + updateFields + " WHERE `" + schema.getPrimaryKey().getName() + "` = ?";
-		jdbcTemplate.update(query, updateArray);
+		schema.getJpaRepository().update(schema, params, files);
+
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -206,17 +210,6 @@ public class DbAdminRepository {
 			insert.execute(allValues);
 			return primaryKey;
 		}
-//		String fieldsString = 
-//			schema.getSortedFields().stream().skip(primaryKey == null ? 1 : 0).map(f -> "`" + f.getName() + "`").collect(Collectors.joining(", "));
-//		
-//		String placeholdersString =
-//			schema.getSortedFields().stream().skip(primaryKey == null ? 1 : 0).map(f -> "?").collect(Collectors.joining(", "));
-//		Object[] array = schema.getInsertArray(values, files);
-//		
-//		String query = "INSERT INTO " + schema.getTableName() + " (" + fieldsString + ") VALUES (" + placeholdersString + ");";
-//		jdbcTemplate.update(query, array);
-		
-//		return primaryKey;
 	}
 	
 	

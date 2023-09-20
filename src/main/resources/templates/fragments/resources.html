@@ -162,6 +162,11 @@
 				  		<input type="hidden" th:value="${page.getPagination().getCurrentPage()}" th:name="page">
 				  		<input type="hidden" th:value="${query}" th:name="query">
 				  		<input type="hidden" name="pageSize">
+				  		<th:block th:each="p : ${queryParams.keySet()}">
+                        	<input th:each="v : ${queryParams.get(p)}" 
+                        		th:name="${p}" th:value="${v}" type="hidden"
+                        		th:if="${p.startsWith('filter_')}">
+                        </th:block>
 					  	<select class="form-select page-size">
 					  		<option disabled>Page size</option>
 					  		<option th:selected="${page.getPagination().getPageSize() == 50}">50</option>

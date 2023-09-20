@@ -1,23 +1,29 @@
 package tech.ailef.dbadmin.dbmapping;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
+import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.CriteriaUpdate;
 import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import tech.ailef.dbadmin.dto.CompareOperator;
 import tech.ailef.dbadmin.dto.QueryFilter;
+import tech.ailef.dbadmin.exceptions.DbAdminException;
 
 @SuppressWarnings("rawtypes")
 public class AdvancedJpaRepository extends SimpleJpaRepository {
@@ -145,22 +151,39 @@ public class AdvancedJpaRepository extends SimpleJpaRepository {
         }
         return finalPredicates;
 	}
-	
-	
-//	@SuppressWarnings("unchecked")
-//	public List<Object> distinctFieldValues(DbField field) {
-//		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-//		
-//		Class<?> outputType = field.getType().getJavaClass();
-//		if (field.getConnectedType() != null) {
-//			outputType = field.getConnectedSchema().getPrimaryKey().getType().getJavaClass();
-//		}
-//		
-//        CriteriaQuery query = cb.createQuery(outputType);
-//        Root root = query.from(schema.getJavaClass());
-//        
-//        query.select(root.get(field.getJavaName()).as(outputType)).distinct(true);
-//        
-//        return entityManager.createQuery(query).getResultList();
-//	}
+
+	public void update(DbObjectSchema schema, Map<String, String> params, Map<String, MultipartFile> files) {
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+
+		CriteriaUpdate update = cb.createCriteriaUpdate(schema.getJavaClass());
+
+		Root employee = update.from(schema.getJavaClass());
+
+		for (DbField field : schema.getSortedFields()) {
+			if (field.isPrimaryKey()) continue;
+			
+			String stringValue = params.get(field.getName());
+			Object value = null;
+			if (stringValue != null && stringValue.isBlank()) stringValue = null;
+			if (stringValue != null) {
+				value = field.getType().parseValue(stringValue);
+			} else {
+				try {
+					MultipartFile file = files.get(field.getJavaName());
+					if (file != null)
+						value = file.getBytes();
+				} catch (IOException e) {
+					throw new DbAdminException(e);
+				}
+			}
+			
+			update.set(employee.get(field.getJavaName()), value);
+		}
+		String pkName = schema.getPrimaryKey().getJavaName();
+		update.where(cb.equal(employee.get(pkName), params.get(schema.getPrimaryKey().getName())));
+
+		Query query = entityManager.createQuery(update);
+		int rowCount = query.executeUpdate();
+		
+	}
 }
