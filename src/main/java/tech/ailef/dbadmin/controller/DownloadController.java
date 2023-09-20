@@ -22,6 +22,7 @@ import tech.ailef.dbadmin.dbmapping.DbAdminRepository;
 import tech.ailef.dbadmin.dbmapping.DbFieldValue;
 import tech.ailef.dbadmin.dbmapping.DbObject;
 import tech.ailef.dbadmin.dbmapping.DbObjectSchema;
+import tech.ailef.dbadmin.exceptions.DbAdminException;
 
 @Controller
 @RequestMapping("/dbadmin/download")
@@ -65,7 +66,18 @@ public class DownloadController {
 		
 		if (object.isPresent()) {
 			DbObject dbObject = object.get();
-			DbFieldValue dbFieldValue = dbObject.get(fieldName);
+			
+			DbFieldValue dbFieldValue;
+			try {
+				dbFieldValue = dbObject.get(fieldName);
+			} catch (DbAdminException e) {
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Field not found", e);
+			}
+			
+			if (dbFieldValue.getValue() == null) {
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There's no file attached to this item");
+			}
+			
 			byte[] file = (byte[])dbFieldValue.getValue();
 			
 			String filename = schema.getClassName() + "_" + id + "_" + fieldName;

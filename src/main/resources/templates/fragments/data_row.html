@@ -5,7 +5,15 @@
 		<tr th:fragment="data_row(row, selectable)" class="table-data-row">
 			<td th:if=${selectable} class="table-checkbox">
 				<input type="checkbox" class="form-check-input" name="ids"
-					th:value="${row.getPrimaryKeyValue()}" form="delete-form">
+					th:value="${row.getPrimaryKeyValue()}" form="multi-delete-form">
+			</td>
+			<td class="text-center row-icons">
+				<a class="ps-1" th:href="|/dbadmin/model/${schema.getJavaClass().getName()}/edit/${row.getPrimaryKeyValue()}|">
+					<i class="bi bi-pencil-square"></i></a>
+				<form class="delete-form" method="POST" 
+					th:action="|/dbadmin/model/${schema.getJavaClass().getName()}/delete/${row.getPrimaryKeyValue()}|">
+					<button><i class="bi bi-trash"></i></button>
+				</form>
 			</td>
 			<td th:each="field : ${schema.getSortedFields()}"
 				th:classAppend="${field.isBinary() ? 'text-center' : ''}">
@@ -19,15 +27,6 @@
 			
 			<td th:each="colName : ${schema.getComputedColumnNames()}">
 				<span th:text="${row.compute(colName)}"></span>
-			</td>
-			
-			<td class="text-center row-icons" th:if="${selectable}">
-				<a class="ps-1" th:href="|/dbadmin/model/${schema.getJavaClass().getName()}/edit/${row.getPrimaryKeyValue()}|">
-					<i class="bi bi-pencil-square"></i></a>
-				<form class="delete-form" method="POST" 
-					th:action="|/dbadmin/model/${schema.getJavaClass().getName()}/delete/${row.getPrimaryKeyValue()}|">
-					<button><i class="bi bi-trash"></i></button>
-				</form>
 			</td>
 		</tr>
 		

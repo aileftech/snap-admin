@@ -39,19 +39,23 @@ import tech.ailef.dbadmin.misc.Utils;
 @Controller
 @RequestMapping("/dbadmin")
 /**
+ * FOR 0.0.3:
+ * @DisplayImage DONE TODO: write docs in README
+ * Fixed/improved edit page for binary fields (files) DONE
+ * 
+ * TODO
  * - double data source for internal database and settings 
  * - role based authorization (PRO)
  * - Pagination in one to many results?
- * - BLOB upload (WIP: check edit not working)
  * - AI console (PRO)
  * - Action logs
  * - Boolean icons
  * - Boolean in create/edit is checkbox
+ * - Documentation
  * - SQL console (PRO)
  * - JPA Validation (PRO)
  * - Logging
  * - Selenium tests
- * - @DisplayImage
  * - Logs in web ui
  * - Tests: AutocompleteController, REST API, create/edit
  */
@@ -81,7 +85,6 @@ public class DefaultDbAdminController {
 		model.addAttribute("activePage", "home");
 		model.addAttribute("title", "Entities | Index");
 		
-
 		return "home";
 	}
 	
@@ -272,8 +275,6 @@ public class DefaultDbAdminController {
 			@RequestParam MultiValueMap<String, String> formParams,
 			@RequestParam Map<String, MultipartFile> files,
 			RedirectAttributes attr) {
-		
-		
 		// Extract all parameters that have exactly 1 value,
 		// as these will be the raw values for the object that is being
 		// created.
