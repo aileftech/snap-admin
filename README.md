@@ -65,7 +65,7 @@ public String getName() {
 }
 ```
 
-To show an item in a table its primary key is used by default. If you set a method as `@DisplayName` in your `@Entity` class, this result will be shown in addition to its primary key wherever possible.
+When displaying a reference to an item, by default we show its primary key. If a class has a `@DisplayName`, this method will be used in addition to the primary key whenever possible, giving the user a more readable option. 
 
 ### @DisplayFormat
 ```
@@ -73,7 +73,7 @@ To show an item in a table its primary key is used by default. If you set a meth
 private Double price;
 ```
 
-Specify a format to apply when displaying the field.
+Specify a format string to apply when displaying the field.
 
 ### @ComputedColumn
 ```
@@ -87,7 +87,7 @@ public double totalSpent() {
 }
 ```
 
-Add an extra field that's computed at runtime instead of a database column. It will be displayed everywhere as a normal, read-only column.
+This annotation can be used to add values computed at runtime that are shown like additional columns.
 
 ### @Filterable
 
@@ -96,10 +96,22 @@ Add an extra field that's computed at runtime instead of a database column. It w
 private LocalDate createdAt;
 ```
 
-Place on one or more fields in a class to activate the faceted search feature. This will allow you to easily combine all these filters when operating on this table.
+Place on one or more fields in a class to activate the faceted search feature. This will allow you to easily combine all these filters when operating on the table. Can only be placed on fields that correspond to physical columns on the table (e.g. no `@ManyToMany`/`@OneToMany`) and that are not binary (`byte[]`).
+
+### @DisplayImage
+
+```
+@DisplayImage
+private byte[] image;
+```
+
+This annotation can be placed on binary fields to declare they are storing an image and that we want it displayed when possible. The image will be shown as a small thumbnail.
 
 
 ## Changelog
+
+0.0.3 - @DisplayImage
+
 
 0.0.2 - Faceted search with `@Filterable` annotation
 
