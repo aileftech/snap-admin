@@ -3,7 +3,7 @@
 An add-on for Spring Boot apps that automatically generates a database admin panel based on your `@Entity` annotated classes.
 The panel offers basic CRUD and search functionalities to manage the database.
 
-[![Example page listing products](https://i.imgur.com/knAKPxQ.png)](https://i.imgur.com/knAKPxQ.png)
+[![Example page listing products](https://i.imgur.com/Nz19f8e.png)](https://i.imgur.com/Nz19f8e.png)
 
 The code is in a very early version and I'm trying to collect as much feedback as possible in order to fix the
 most common issues that will inevitably arise. If you are so kind to try the project and you find something
