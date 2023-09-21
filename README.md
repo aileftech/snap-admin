@@ -1,9 +1,17 @@
 # Spring Boot Database Admin Panel
 
-An add-on for Spring Boot apps that automatically generates a database admin panel based on your `@Entity` annotated classes.
-The panel offers basic CRUD and search functionalities to manage the database.
+Generate a powerful CRUD management dashboard for your Spring Boot application in a few minutes.
+
+Spring Boot Database Admin scans your `@Entity` classes to generate a simple but powerful database management interface.
 
 [![Example page listing products](https://i.imgur.com/Nz19f8e.png)](https://i.imgur.com/Nz19f8e.png)
+
+Features:
+ * List objects with pagination and sorting
+ * Show detailed object page which also includes `@OneToMany`, `@ManyToMany`, etc... fields
+ * Create/Edit objects
+ * Search
+ * Customization
 
 The code is in a very early version and I'm trying to collect as much feedback as possible in order to fix the
 most common issues that will inevitably arise. If you are so kind to try the project and you find something
@@ -17,7 +25,7 @@ broken, please report it as an issue and I will try to take a look at it.
 <dependency>
 	<groupId>tech.ailef</groupId>
 	<artifactId>spring-boot-db-admin</artifactId>
-	<version>0.0.3</version>
+	<version>0.0.4</version>
 </dependency>
 ```
 
