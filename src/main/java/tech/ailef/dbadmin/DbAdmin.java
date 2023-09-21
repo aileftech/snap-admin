@@ -7,9 +7,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.stereotype.Component;
@@ -43,7 +46,7 @@ import tech.ailef.dbadmin.misc.Utils;
  */
 @Component
 public class DbAdmin {
-	private DbAdminProperties properties;
+	private static final Logger logger = Logger.getLogger(DbAdmin.class.getName());
 	
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -53,7 +56,6 @@ public class DbAdmin {
 	private String modelsPackage;
 	
 	public DbAdmin(@Autowired EntityManager entityManager, @Autowired DbAdminProperties properties) {
-		this.properties = properties;
 		this.modelsPackage = properties.getModelsPackage();
 		this.entityManager = entityManager;
 		
@@ -64,6 +66,8 @@ public class DbAdmin {
 		for (BeanDefinition bd : beanDefs) {
 			schemas.add(processBeanDefinition(bd));
 		}
+		logger.info("Spring Boot Database Admin initialized. Loaded " + schemas.size() + " table definitions");
+		logger.info("Spring Boot Database Admin web interface at: http://YOUR_HOST:YOUR_PORT/" + properties.getBaseUrl());
 	}
 
 	/**

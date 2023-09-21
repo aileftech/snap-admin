@@ -17,34 +17,26 @@ broken, please report it as an issue and I will try to take a look at it.
 <dependency>
 	<groupId>tech.ailef</groupId>
 	<artifactId>spring-boot-db-admin</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.3</version>
 </dependency>
 ```
 
-2. A few configuration steps are required on your code in order to integrate the library in your project. If you don't want
+2. A few simple configuration steps are required on your end in order to integrate the library into your project. If you don't want
 to test on your own code, you can clone the [test project](https://github.com/aileftech/spring-boot-database-admin-test) which provides
 a sample database and already configured code.
 
-If you wish to integrate it into your project instead, the first step is create creating a configuration class:
+If you wish to integrate it into your project instead, the first step is adding these to your `application.properties` file:
 
 ```
-@DbAdminConfiguration
-@Configuration
-public class TestConfiguration implements DbAdminAppConfiguration {
-
-	@Override
-	public String getModelsPackage() {
-		return "your.models.package"; // The package where your @Entity classes are located
-	}
-}
+dbadmin.enabled=true                                  # Optional, default true
+dbadmin.baseUrl=admin                                 # The first-level part of the URL path: http://localhost:8080/${baseUrl}/
+dbadmin.modelsPackage=tech.ailef.dbadmin.test.models  # The package that contains your @Entity classes
 ```
 
 The last step is to annotate your `@SpringBootApplication` class containing the `main` method with the following:
 
 ```
-@ComponentScan(basePackages = {"your.project.root.package", "tech.ailef.dbadmin"})
-@EnableJpaRepositories(basePackages = {"your.project.root.package", "tech.ailef.dbadmin"})
-@EntityScan(basePackages = {"your.project.root.package", "tech.ailef.dbadmin"})
+@ImportAutoConfiguration(DbAdminAutoConfiguration.class)
 ```
 
 This tells Spring to scan the `tech.ailef.dbadmin` packages and look for components there as well. Remember to also include
