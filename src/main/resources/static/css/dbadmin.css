@@ -1,3 +1,7 @@
+.separator-light {
+	opacity: 25%;
+}
+
 form.delete-form {
 	display: inline-block;	
 }
@@ -52,7 +56,7 @@ tr.table-data-row td:last-child, tr.table-data-row th:last-child {
 
 .row-icons {
 	font-size: 1.2rem;
-	width: 128px;
+	width: 96px;
 }
 
 h1 .bi {
@@ -112,6 +116,8 @@ h1 a:hover {
 	max-height: 300px;
 	overflow: auto;
 	z-index: 999;
+	-webkit-box-shadow: 0px 11px 12px -1px rgba(0,0,0,0.13); 
+	box-shadow: 0px 11px 12px -1px rgba(0,0,0,0.13);
 }
 
 .suggestion {
@@ -124,7 +130,7 @@ h1 a:hover {
 
 .suggestion:hover {
 	cursor: pointer;
-	background-color: #FFF;
+	background-color: #EBF7FF;
 	border-bottom: 2px solid #ADDEFF;
 }
 
@@ -173,4 +179,15 @@ AUTOCOMPLETE
  
 .filterable-field .card-header:hover {
 	background-color: #F0F0F0;
+}
+
+/**
+ * Images
+ */
+.thumb-image {
+	max-width: 128px;
+}
+.img-muted {
+    filter: brightness(50%);
+     
 }

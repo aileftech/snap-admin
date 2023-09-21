@@ -21,6 +21,9 @@ public class DbObject {
 	private DbObjectSchema schema;
 	
 	public DbObject(Object instance, DbObjectSchema schema) {
+		if (instance == null)
+			throw new DbAdminException("Trying to build object with instance == null");
+		
 		this.instance = instance;
 		this.schema = schema;
 	}
@@ -54,6 +57,8 @@ public class DbObject {
 		OneToOne oneToOne = field.getPrimitiveField().getAnnotation(OneToOne.class);
 		if (oneToOne != null || manyToOne != null) {
 			Object linkedObject = get(field.getJavaName()).getValue();
+			if (linkedObject == null) return null;
+			
 			DbObject linkedDbObject = new DbObject(linkedObject, field.getConnectedSchema());
 			return linkedDbObject;
 		} else {
@@ -120,7 +125,9 @@ public class DbObject {
 		
 		if (displayNameMethod.isPresent()) {
 			try {
-				return displayNameMethod.get().invoke(instance).toString();
+				Object displayName = displayNameMethod.get().invoke(instance);
+				if (displayName == null) return null;
+				else return displayName.toString();
 			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 				throw new DbAdminException(e);
 			}
@@ -146,26 +153,6 @@ public class DbObject {
 					+ " on class " + schema.getClassName());
 		}
 	}
-	
-//	public void initializeFromMap(Map<String, String> values) {
-////		String pkValue = values.get(schema.getPrimaryKey().getName());
-//		
-//		List<String> fields = 
-//			values.keySet().stream().filter(f -> !f.startsWith("__dbadmin_")).collect(Collectors.toList());
-//		
-//		for (String field : fields) {
-//			String fieldJavaName = Utils.snakeToCamel(field);
-//			Method setter = findSetter(fieldJavaName);
-//			if (setter == null)
-//				throw new DbAdminException("Unable to find setter for field " + fieldJavaName + " in class " + schema.getClassName());
-//			
-//			try {
-//				setter.invoke(instance, values.get(field));
-//			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-//				throw new DbAdminException(e);
-//			}
-//		}
-//	}
 	
 	public void set(String fieldName, Object value) {
 		Method setter = findSetter(fieldName);
@@ -199,8 +186,11 @@ public class DbObject {
 		String capitalize = Character.toUpperCase(fieldName.charAt(0)) + fieldName.substring(1);
 		Method[] methods = instance.getClass().getDeclaredMethods();
 		
+		DbField dbField = schema.getFieldByJavaName(fieldName);
+		if (dbField == null) return null;
+		
 		String prefix = "get";
-		if (schema.getFieldByJavaName(fieldName).getType() == DbFieldType.BOOLEAN) {
+		if (dbField.getType() == DbFieldType.BOOLEAN) {
 			prefix = "is";
 		}
 		

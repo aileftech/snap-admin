@@ -9,6 +9,7 @@
 			<div th:if="${results != null && results.size() > 0}">
 				<table class="table table-striped align-middle mt-3">
 					<tr class="table-data-row">
+						<th class="row-icons"></th>
 						<th th:each="field : ${schema.getSortedFields()}">
 							<div class="m-0 p-0 d-flex justify-content-between">
 								<div class="column-title">

@@ -6,10 +6,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Marks the class that holds the DbAdmin configuration.
+ * Marks a binary field as containing an image, which in turn enables
+ * its display in the interface.
  *
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface DbAdminConfiguration {
+@Target(ElementType.FIELD)
+public @interface DisplayImage {
 }

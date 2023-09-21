@@ -1,15 +1,23 @@
 function updateBulkActions(table, selected) {
 	let divs = document.querySelectorAll(".bulk-actions");
 	divs.forEach(div => {
-		div.innerHTML = `${selected} items selected <input type="submit" form="delete-form" class="ui-btn btn btn-secondary" value="Delete">`;
+		div.innerHTML = `${selected} items selected <input type="submit" form="multi-delete-form" class="ui-btn btn btn-secondary" value="Delete">`;
 	});
 }
 
 document.addEventListener("DOMContentLoaded", () => {
 	let selected = 0;
 
-	if (document.getElementById('delete-form') != null) {
-		document.getElementById('delete-form').addEventListener('submit', function(e) {
+	document.querySelectorAll(".delete-form").forEach(form => {
+		form.addEventListener('submit', function(e) {
+			if (!confirm('Are you sure you want to delete this item?')) {
+				e.preventDefault();
+			}
+		});
+	});
+
+	if (document.getElementById('multi-delete-form') != null) {
+		document.getElementById('multi-delete-form').addEventListener('submit', function(e) {
 			if (selected == 0) {
 				e.preventDefault();
 				alert('No items selected');

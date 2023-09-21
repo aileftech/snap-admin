@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import tech.ailef.dbadmin.DbAdmin;
 import tech.ailef.dbadmin.annotations.ComputedColumn;
@@ -128,8 +129,13 @@ public class DbObjectSchema {
 	public List<DbField> getSortedFields() {
 		return getFields().stream()
 			.filter(f -> {
-				return f.getPrimitiveField().getAnnotation(OneToMany.class) == null
+				boolean toMany = f.getPrimitiveField().getAnnotation(OneToMany.class) == null
 					&& f.getPrimitiveField().getAnnotation(ManyToMany.class) == null;
+				
+				OneToOne oneToOne = f.getPrimitiveField().getAnnotation(OneToOne.class);
+				boolean mappedBy = oneToOne != null && !oneToOne.mappedBy().isBlank();
+				
+				return toMany && !mappedBy;
 			})
 			.sorted((a, b) -> {
 				if (a.isPrimaryKey() && !b.isPrimaryKey())

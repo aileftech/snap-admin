@@ -35,6 +35,15 @@ import tech.ailef.dbadmin.dbmapping.DbObjectSchema;
 import tech.ailef.dbadmin.exceptions.DbAdminException;
 import tech.ailef.dbadmin.misc.Utils;
 
+/**
+ * The main DbAdmin class responsible for the initialization phase. This class scans
+ * the user provided package containing the `@Entity` definitions and tries to map each
+ * entity to a DbObjectSchema instance.
+ * 
+ * This process involves determining the correct type for each class field and its 
+ * configuration at the database level. An exception will be thrown if it's not possible
+ * to determine the field type.
+ */
 @Component
 public class DbAdmin {
 	@PersistenceContext
@@ -57,10 +66,6 @@ public class DbAdmin {
 		this.modelsPackage = applicationClass.getModelsPackage();
 		this.entityManager = entityManager;
 		
-    	init();
-	}
-
-	public void init() {
 		ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
 		provider.addIncludeFilter(new AnnotationTypeFilter(Entity.class));
 		
@@ -69,7 +74,46 @@ public class DbAdmin {
 			schemas.add(processBeanDefinition(bd));
 		}
 	}
+
+	/**
+	 * Returns all the loaded schemas (i.e. entity classes)
+	 * @return
+	 */
+	public List<DbObjectSchema> getSchemas() {
+		return Collections.unmodifiableList(schemas);
+	}
 	
+	/**
+	 * Finds a schema by its full class name
+	 * @param className	qualified class name
+	 * @return 
+	 * @throws DbAdminException if corresponding schema not found
+	 */
+	public DbObjectSchema findSchemaByClassName(String className) {
+		return schemas.stream().filter(s -> s.getClassName().equals(className)).findFirst().orElseThrow(() -> {
+			return new DbAdminException("Schema " + className + " not found.");
+		});
+	}
+	
+	/**
+	 * Finds a schema by its class
+	 * @param klass
+	 * @return
+	 * @throws DbAdminException if corresponding schema not found
+	 */
+	public DbObjectSchema findSchemaByClass(Class<?> klass) {
+		return findSchemaByClassName(klass.getName());
+	}
+
+	
+	/**
+	 * This method processes a BeanDefinition into a DbObjectSchema object,
+	 * where all fields have been correctly mapped to DbField objects.
+	 * 
+	 * If any field is not mappable, the method will throw an exception.
+	 * @param bd
+	 * @return
+	 */
 	private DbObjectSchema processBeanDefinition(BeanDefinition bd) {
 		String fullClassName = bd.getBeanClassName();
 		
@@ -88,9 +132,7 @@ public class DbAdmin {
 				System.out.println(" - Mapping field " + f);
 				DbField field = mapField(f, schema);
 				if (field == null) {
-//					continue;
-					// TODO: CHECK THIS EXCEPTION
-					throw new DbAdminException("IMPOSSIBLE TO MAP FIELD: " + f);
+					throw new DbAdminException("Impossible to map field: " + f);
 				}
 				field.setSchema(schema);
 				
@@ -123,6 +165,11 @@ public class DbAdmin {
 		return fieldName;
 	}
 	
+	/**
+	 * Determines if a field is nullable from the `@Column` annotation
+	 * @param f
+	 * @return
+	 */
 	private boolean determineNullable(Field f) {
 		Column[] columnAnnotations = f.getAnnotationsByType(Column.class);
 
@@ -135,6 +182,15 @@ public class DbAdmin {
 		return nullable;
 	}
 	
+	/**
+	 * Builds a DbField object from a primitive Java field. This process involves
+	 * determining the correct field name on the database, its type and additional
+	 * attributes (e.g. nullable). 
+	 * This method returns null if a field cannot be mapped to a supported type.
+	 * @param f primitive Java field to construct a DbField from
+	 * @param schema the schema this field belongs to
+	 * @return
+	 */
 	private DbField mapField(Field f, DbObjectSchema schema) {
 		OneToMany oneToMany = f.getAnnotation(OneToMany.class);
 		ManyToMany manyToMany = f.getAnnotation(ManyToMany.class);
@@ -208,7 +264,7 @@ public class DbAdmin {
 	 * Returns the type of a foreign key field, by looking at the type
 	 * of the primary key (defined as `@Id`) in the referenced table.
 	 * 
-	 * @param f
+	 * @param entityClass
 	 * @return
 	 */
 	private DbFieldType mapForeignKeyType(Class<?> entityClass) {
@@ -230,27 +286,5 @@ public class DbAdmin {
 				| InvocationTargetException | NoSuchMethodException | SecurityException e) {
 			throw new DbAdminException(e);
 		}
-	}
-	
-	public String getBasePackage() {
-		return modelsPackage;
-	}
-	
-	public List<DbObjectSchema> getSchemas() {
-		return Collections.unmodifiableList(schemas);
-	}
-	
-	public DbObjectSchema findSchemaByClassName(String className) {
-		return schemas.stream().filter(s -> s.getClassName().equals(className)).findFirst().orElseThrow(() -> {
-			return new DbAdminException("Schema " + className + " not found.");
-		});
-	}
-	
-	public DbObjectSchema findSchemaByClass(Class<?> klass) {
-		return findSchemaByClassName(klass.getName());
-	}
-
-	public EntityManager getEntityManager() {
-		return entityManager;
 	}
 }

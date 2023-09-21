@@ -5,9 +5,18 @@
 		<tr th:fragment="data_row(row, selectable)" class="table-data-row">
 			<td th:if=${selectable} class="table-checkbox">
 				<input type="checkbox" class="form-check-input" name="ids"
-					th:value="${row.getPrimaryKeyValue()}" form="delete-form">
+					th:value="${row.getPrimaryKeyValue()}" form="multi-delete-form">
 			</td>
-			<td th:each="field : ${schema.getSortedFields()}">
+			<td class="text-center row-icons">
+				<a class="ps-1" th:href="|/dbadmin/model/${schema.getJavaClass().getName()}/edit/${row.getPrimaryKeyValue()}|">
+					<i class="bi bi-pencil-square"></i></a>
+				<form class="delete-form" method="POST" 
+					th:action="|/dbadmin/model/${schema.getJavaClass().getName()}/delete/${row.getPrimaryKeyValue()}|">
+					<button><i class="bi bi-trash"></i></button>
+				</form>
+			</td>
+			<td th:each="field : ${schema.getSortedFields()}"
+				th:classAppend="${field.isBinary() ? 'text-center' : ''}">
 				<th:block th:if="${!row.has(field)}">
 					 <span class="font-monospace null-label">NULL</span>
 				</th:block>
@@ -19,21 +28,12 @@
 			<td th:each="colName : ${schema.getComputedColumnNames()}">
 				<span th:text="${row.compute(colName)}"></span>
 			</td>
-			
-			<td class="text-center row-icons" th:if="${selectable}">
-				<a class="ps-1" th:href="|/dbadmin/model/${schema.getJavaClass().getName()}/edit/${row.getPrimaryKeyValue()}|">
-					<i class="bi bi-pencil-square"></i></a>
-				<form class="delete-form" method="POST" 
-					th:action="|/dbadmin/model/${schema.getJavaClass().getName()}/delete/${row.getPrimaryKeyValue()}|">
-					<button><i class="bi bi-trash"></i></button>
-				</form>
-			</td>
 		</tr>
 		
 		
 		<!-- data-row-field fragment -->
 		<th:block th:fragment="data_row_field(field, object)">
-			<th:block th:if="${field.getConnectedType() != null}">
+			<th:block th:if="${field.getConnectedType() != null && object.traverse(field) != null}">
 				<a th:href="|/dbadmin/model/${field.getConnectedType().getName()}/show/${object.traverse(field).getPrimaryKeyValue()}|">
 					<span th:text="${object.has(field) ? object.traverse(field).getPrimaryKeyValue() : 'NULL'}"></span>
 				</a>
@@ -61,12 +61,19 @@
 					</th:block>
 					<span th:unless="${!field.isBinary()}">
 						<th:block th:if="${object.get(field).getValue()}">
+							<div th:if="${field.isImage()}" class="mb-2">
+								<img class="thumb-image" 
+									th:src="|/dbadmin/download/${schema.getClassName()}/${field.getJavaName()}/${object.getPrimaryKeyValue()}/image|">
+							</div>
+						
 							<a class="text-decoration-none null-label" 
-								th:href="|/dbadmin/download/${schema.getJavaClass().getName()}/${field.getName()}/${object.get(schema.getPrimaryKey()).getValue()}|">
+								th:href="|/dbadmin/download/${schema.getClassName()}/${field.getJavaName()}/${object.getPrimaryKeyValue()}|">
 								<i class="align-middle bi bi-box-arrow-down"></i><span class="align-middle"> Download 
 								<!--/*--> <span class="text-muted">([[ ${object.get(field).getValue().length} ]] bytes)</span> <!--*/-->
 								</span>
 							</a>
+							
+							
 						</th:block>
 						<th:block th:unless="${object.get(field).getValue()}">
 							<span class="font-monospace null-label">NULL</span>

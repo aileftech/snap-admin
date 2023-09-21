@@ -131,16 +131,7 @@ public class DbAdminRepository {
 	 */
 	@Transactional
 	public void update(DbObjectSchema schema, Map<String, String> params, Map<String, MultipartFile> files) {
-//		Object[] updateArray = schema.getUpdateArray(params, files);
-//		
-//		String updateFields = 
-//				schema.getSortedFields().stream().map(f -> "`" + f.getName() + "` = ?").collect(Collectors.joining(", "));
-//		
-//		String query = "UPDATE `" + schema.getTableName() + "` SET " + updateFields + " WHERE `" + schema.getPrimaryKey().getName() + "` = ?";
-//		jdbcTemplate.update(query, updateArray);
-		
 		schema.getJpaRepository().update(schema, params, files);
-
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -194,6 +185,12 @@ public class DbAdminRepository {
 		
 		Map<String, Object> allValues = new HashMap<>();
 		allValues.putAll(values);
+		
+		values.keySet().forEach(fieldName -> {
+			if (values.get(fieldName).isBlank()) {
+				allValues.put(fieldName, null);
+			}
+		});
 		
 		files.keySet().forEach(f -> {
 			try {

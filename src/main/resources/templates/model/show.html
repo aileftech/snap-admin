@@ -12,7 +12,7 @@
 					<h1 class="fw-bold mb-4"><i class="align-middle bi bi-database"></i> 
 						<a class="align-middle" href="/dbadmin">Entities</a> 
 						<i class="align-middle bi bi-chevron-double-right"></i>
-						<a class="align-middle "th:href="|/dbadmin/model/${schema.getJavaClass().getName()}|"> 
+						<a class="align-middle" th:href="|/dbadmin/model/${schema.getJavaClass().getName()}|"> 
 						[[ ${schema.getJavaClass().getSimpleName()} ]]</a>
 						<i class="align-middle bi bi-chevron-double-right"></i>
 						<span class="align-middle"> [[ ${object.getDisplayName()} ]]</span>
@@ -44,7 +44,7 @@
 												<i title="Foreign Key" class="bi bi-link"></i>
 											</span>
 										</td>
-										<td>
+										<td class="fw-bold">
 											<span class="m-0 p-0" th:text="${field.getName()}"></span>
 										</td>
 										<td>
