@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
@@ -48,7 +49,7 @@ import tech.ailef.dbadmin.misc.Utils;
 public class DbAdmin {
 	private static final Logger logger = Logger.getLogger(DbAdmin.class.getName());
 	
-	@PersistenceContext
+//	@PersistenceContext
 	private EntityManager entityManager;
 	
 	private List<DbObjectSchema> schemas = new ArrayList<>();
