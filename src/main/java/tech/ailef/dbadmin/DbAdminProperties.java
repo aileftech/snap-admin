@@ -7,6 +7,8 @@ public class DbAdminProperties {
 	public boolean enabled = true;
 	
 	private String baseUrl;
+	
+	private String modelsPackage;
 
 	public boolean isEnabled() {
 		return enabled;
@@ -22,6 +24,14 @@ public class DbAdminProperties {
 
 	public void setBaseUrl(String baseUrl) {
 		this.baseUrl = baseUrl;
+	}
+	
+	public String getModelsPackage() {
+		return modelsPackage;
+	}
+	
+	public void setModelsPackage(String modelsPackage) {
+		this.modelsPackage = modelsPackage;
 	}
 	
 	
