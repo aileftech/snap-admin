@@ -28,7 +28,7 @@ import tech.ailef.dbadmin.exceptions.DbAdminException;
  * Controller to serve file or images (`@DisplayImage`) 
  */
 @Controller
-@RequestMapping("/dbadmin/download")
+@RequestMapping(value = {"/${dbadmin.baseUrl}/download", "/${dbadmin.baseUrl}/download/"})
 public class DownloadController {
 	@Autowired
 	private DbAdminRepository repository;

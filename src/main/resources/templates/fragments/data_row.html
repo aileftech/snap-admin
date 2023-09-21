@@ -8,10 +8,10 @@
 					th:value="${row.getPrimaryKeyValue()}" form="multi-delete-form">
 			</td>
 			<td class="text-center row-icons">
-				<a class="ps-1" th:href="|/dbadmin/model/${schema.getJavaClass().getName()}/edit/${row.getPrimaryKeyValue()}|">
+				<a class="ps-1" th:href="|/${baseUrl}/model/${schema.getJavaClass().getName()}/edit/${row.getPrimaryKeyValue()}|">
 					<i class="bi bi-pencil-square"></i></a>
 				<form class="delete-form" method="POST" 
-					th:action="|/dbadmin/model/${schema.getJavaClass().getName()}/delete/${row.getPrimaryKeyValue()}|">
+					th:action="|/${baseUrl}/model/${schema.getJavaClass().getName()}/delete/${row.getPrimaryKeyValue()}|">
 					<button><i class="bi bi-trash"></i></button>
 				</form>
 			</td>
@@ -34,7 +34,7 @@
 		<!-- data-row-field fragment -->
 		<th:block th:fragment="data_row_field(field, object)">
 			<th:block th:if="${field.getConnectedType() != null && object.traverse(field) != null}">
-				<a th:href="|/dbadmin/model/${field.getConnectedType().getName()}/show/${object.traverse(field).getPrimaryKeyValue()}|">
+				<a th:href="|/${baseUrl}/model/${field.getConnectedType().getName()}/show/${object.traverse(field).getPrimaryKeyValue()}|">
 					<span th:text="${object.has(field) ? object.traverse(field).getPrimaryKeyValue() : 'NULL'}"></span>
 				</a>
 				<p class="p-0 m-0"
@@ -42,7 +42,7 @@
 			</th:block>
 			<th:block th:if="${field.getConnectedType() == null}">
 				<th:block th:if="${field.isPrimaryKey()}">
-					<a th:href="|/dbadmin/model/${schema.getClassName()}/show/${object.get(field).getValue()}|">
+					<a th:href="|/${baseUrl}/model/${schema.getClassName()}/show/${object.get(field).getValue()}|">
 						<span th:text="${object.get(field).getFormattedValue()}">
 						</span>
 					</a>
@@ -63,11 +63,11 @@
 						<th:block th:if="${object.get(field).getValue()}">
 							<div th:if="${field.isImage()}" class="mb-2">
 								<img class="thumb-image" 
-									th:src="|/dbadmin/download/${schema.getClassName()}/${field.getJavaName()}/${object.getPrimaryKeyValue()}/image|">
+									th:src="|/${baseUrl}/download/${schema.getClassName()}/${field.getJavaName()}/${object.getPrimaryKeyValue()}/image|">
 							</div>
 						
 							<a class="text-decoration-none null-label" 
-								th:href="|/dbadmin/download/${schema.getClassName()}/${field.getJavaName()}/${object.getPrimaryKeyValue()}|">
+								th:href="|/${baseUrl}/download/${schema.getClassName()}/${field.getJavaName()}/${object.getPrimaryKeyValue()}|">
 								<i class="align-middle bi bi-box-arrow-down"></i><span class="align-middle"> Download 
 								<!--/*--> <span class="text-muted">([[ ${object.get(field).getValue().length} ]] bytes)</span> <!--*/-->
 								</span>

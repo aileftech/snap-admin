@@ -19,7 +19,7 @@ import tech.ailef.dbadmin.dto.PaginatedResult;
 import tech.ailef.dbadmin.exceptions.DbAdminException;
 
 @RestController
-@RequestMapping("/dbadmin/api")
+@RequestMapping(value = {"/${dbadmin.baseUrl}/api", "/${dbadmin.baseUrl}/api/"})
 public class DefaultDbAdminRestController {
 	@Autowired
 	public DbAdmin dbAdmin;
