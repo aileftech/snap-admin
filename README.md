@@ -113,9 +113,16 @@ This annotation can be placed on binary fields to declare they are storing an im
 
 
 ## Changelog
+**0.0.4**
+- Simplified setup/configuration: now it only requires a couple of config properties and 1 annotation
+- Support of custom base url where the interface is server instead of hardcoded "/dbadmin"
+- Continued implementation of automated testing with Selenium
 
-0.0.3 - @DisplayImage; Selenium tests; Fixed/greatly improved edit page;
+**0.0.3**
+- @DisplayImage; Selenium tests; Fixed/greatly improved edit page;
 
-0.0.2 - Faceted search with `@Filterable` annotation
+**0.0.2**
+- Faceted search with `@Filterable` annotation
 
-0.0.1 - First alpha release (basic CRUD features)
+**0.0.1**
+- First alpha release (basic CRUD features)
