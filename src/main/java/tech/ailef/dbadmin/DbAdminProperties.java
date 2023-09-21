@@ -1,5 +1,8 @@
 package tech.ailef.dbadmin;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -45,6 +48,14 @@ public class DbAdminProperties {
 	
 	public void setModelsPackage(String modelsPackage) {
 		this.modelsPackage = modelsPackage;
+	}
+	
+	public Map<String, String> toMap() {
+		Map<String, String> conf = new HashMap<>();
+		conf.put("enabled", enabled + "");
+		conf.put("baseUrl", baseUrl);
+		conf.put("modelsPackage", modelsPackage);
+		return conf;
 	}
 	
 	

@@ -1,6 +1,8 @@
 package tech.ailef.dbadmin.controller.rest;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import tech.ailef.dbadmin.DbAdmin;
+import tech.ailef.dbadmin.DbAdminProperties;
 import tech.ailef.dbadmin.dbmapping.DbAdminRepository;
 import tech.ailef.dbadmin.dbmapping.DbObjectSchema;
 import tech.ailef.dbadmin.dto.PaginatedResult;
@@ -23,6 +26,9 @@ import tech.ailef.dbadmin.exceptions.DbAdminException;
 public class DefaultDbAdminRestController {
 	@Autowired
 	public DbAdmin dbAdmin;
+	
+	@Autowired
+	private DbAdminProperties properties;
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
@@ -30,6 +36,11 @@ public class DefaultDbAdminRestController {
 	//	@Autowired
 //	@Qualifier("internalJdbc")
 //	private JdbcTemplate internalJdbc;
+	
+//	@GetMapping("/configuration")
+//	public ResponseEntity<?> conf() {
+//		return ResponseEntity.ok(properties.toMap());
+//	}
 	
 	@GetMapping
 	public ResponseEntity<?> index(@RequestParam(required = false) String query) {
