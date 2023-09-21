@@ -30,6 +30,11 @@ public class GlobalController {
 		return request.getParameterMap();
 	}
 	
+	/**
+	 * The baseUrl as specified in the properties file by the user
+	 * @param request
+	 * @return
+	 */
 	@ModelAttribute("baseUrl")
 	public String getBaseUrl(HttpServletRequest request) {
 		return props.getBaseUrl();

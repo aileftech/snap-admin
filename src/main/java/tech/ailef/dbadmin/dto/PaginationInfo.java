@@ -41,20 +41,13 @@ public class PaginationInfo {
 	
 	private String query;
 	
-	private String sortKey;
-	
-	private String sortOrder;
-
-	public PaginationInfo(int currentPage, int maxPage, int pageSize, long maxElement, String query, 
-			String sortKey, String sortOrder, Set<QueryFilter> queryFilters) {
+	public PaginationInfo(int currentPage, int maxPage, int pageSize, long maxElement, String query, Set<QueryFilter> queryFilters) {
 		this.currentPage = currentPage;
 		this.maxPage = maxPage;
 		this.pageSize = pageSize;
 		this.query = query;
 		this.maxElement = maxElement;
 		this.queryFilters = queryFilters;
-		this.sortKey = sortKey;
-		this.sortOrder = sortOrder;
 	}
 
 	public int getCurrentPage() {
@@ -122,7 +115,14 @@ public class PaginationInfo {
 	public List<Integer> getAfterPages() {
 		return IntStream.range(currentPage + 1, Math.min(currentPage + PAGE_RANGE,  maxPage + 1)).boxed().collect(Collectors.toList());
 	}
-	
+//	
+//	public String getSortKey() {
+//		return sortKey;
+//	}
+//	
+//	public String getSortOrder() {
+//		return sortOrder;
+//	}
 	
 	public boolean isLastPage() {
 		return currentPage == maxPage;

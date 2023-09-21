@@ -66,6 +66,7 @@ public class DbAdmin {
 		for (BeanDefinition bd : beanDefs) {
 			schemas.add(processBeanDefinition(bd));
 		}
+
 		logger.info("Spring Boot Database Admin initialized. Loaded " + schemas.size() + " table definitions");
 		logger.info("Spring Boot Database Admin web interface at: http://YOUR_HOST:YOUR_PORT/" + properties.getBaseUrl());
 	}

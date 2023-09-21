@@ -28,9 +28,14 @@ a sample database and already configured code.
 If you wish to integrate it into your project instead, the first step is adding these to your `application.properties` file:
 
 ```
-dbadmin.enabled=true                                  # Optional, default true
-dbadmin.baseUrl=admin                                 # The first-level part of the URL path: http://localhost:8080/${baseUrl}/
-dbadmin.modelsPackage=tech.ailef.dbadmin.test.models  # The package that contains your @Entity classes
+# Optional, default true
+dbadmin.enabled=true
+
+# The first-level part of the URL path: http://localhost:8080/${baseUrl}/
+dbadmin.baseUrl=admin
+
+# The package that contains your @Entity classes
+dbadmin.modelsPackage=tech.ailef.dbadmin.test.models
 ```
 
 The last step is to annotate your `@SpringBootApplication` class containing the `main` method with the following:
@@ -39,14 +44,13 @@ The last step is to annotate your `@SpringBootApplication` class containing the 
 @ImportAutoConfiguration(DbAdminAutoConfiguration.class)
 ```
 
-This tells Spring to scan the `tech.ailef.dbadmin` packages and look for components there as well. Remember to also include
-your original root package as shown, or Spring will not scan it otherwise.
+This will autoconfigure the various DbAdmin components when your application starts.
 
-3. At this point, when you run your application, you should be able to visit `http://localhost:$PORT/dbadmin` and access the web interface.
+3. At this point, when you run your application, you should be able to visit `http://localhost:$PORT/${baseUrl}` and access the web interface.
 
 ## Documentation
 
-Once you are correctly running Spring Boot Database Admin you will see the web interface at `http://localhost:$PORT/dbadmin`. Most of the features are already available with the basic configuration. However, some customization to the interface might be applied by using appropriate annotations on your classes fields or methods. 
+Once you are correctly running Spring Boot Database Admin, you will be able to access the web interface. Most of the features are already available with the basic configuration. However, some customization to the interface might be applied by using appropriate annotations on your classes fields or methods. 
 The following annotations are supported.
 
 ### @DisplayName

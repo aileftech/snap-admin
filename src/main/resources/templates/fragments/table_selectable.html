@@ -29,17 +29,17 @@
 								<div class="align-items-center">
 									<h4 class="m-0" th:if="${page}">
 										<th:block th:if="${sortKey != field.getJavaName()}" >
-											<a th:href="@{|${baseUrl}/model/${schema.getClassName()}${page.getPagination().getSortedPageLink(field.getJavaName(), 'DESC')}|}">
+											<a th:href="@{|/${baseUrl}/model/${schema.getClassName()}${page.getPagination().getSortedPageLink(field.getJavaName(), 'DESC')}|}">
 											<i title="Sort" class="bi bi-caret-up"></i>
 											</a>
 										</th:block>
 										<th:block th:unless="${sortKey != field.getJavaName()}">
 											<a th:if="${sortOrder == 'DESC'}" 
-												th:href="@{|${baseUrl}/model/${schema.getClassName()}${page.getPagination().getSortedPageLink(field.getJavaName(), 'ASC')}|}">
+												th:href="@{|/${baseUrl}/model/${schema.getClassName()}${page.getPagination().getSortedPageLink(field.getJavaName(), 'ASC')}|}">
 												<i title="Sort" class="bi bi-caret-down-fill"></i>
 											</a>
 											<a th:if="${sortOrder == 'ASC'}" 
-												th:href="@{|${baseUrl}/model/${schema.getClassName()}${page.getPagination().getSortedPageLink(field.getJavaName(), 'DESC')}|}">
+												th:href="@{|/${baseUrl}/model/${schema.getClassName()}${page.getPagination().getSortedPageLink(field.getJavaName(), 'DESC')}|}">
 												<i title="Sort" class="bi bi-caret-up-fill"></i>
 											</a>
 										</th:block>
