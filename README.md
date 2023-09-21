@@ -110,8 +110,7 @@ This annotation can be placed on binary fields to declare they are storing an im
 
 ## Changelog
 
-0.0.3 - @DisplayImage
-
+0.0.3 - @DisplayImage; Selenium tests; Fixed/greatly improved edit page;
 
 0.0.2 - Faceted search with `@Filterable` annotation
 

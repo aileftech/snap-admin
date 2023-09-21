@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.LinkedMultiValueMap;
@@ -36,29 +37,11 @@ import tech.ailef.dbadmin.dto.QueryFilter;
 import tech.ailef.dbadmin.exceptions.InvalidPageException;
 import tech.ailef.dbadmin.misc.Utils;
 
+/**
+ * The main DbAdmin controller that register most of the routes of the web interface.
+ */
 @Controller
 @RequestMapping("/dbadmin")
-/**
- * FOR 0.0.3:
- * @DisplayImage DONE TODO: write docs in README
- * Fixed/improved edit page for binary fields (files) DONE
- * 
- * TODO
- * - double data source for internal database and settings 
- * - role based authorization (PRO)
- * - Pagination in one to many results?
- * - AI console (PRO)
- * - Action logs
- * - Boolean icons
- * - Boolean in create/edit is checkbox
- * - Documentation
- * - SQL console (PRO)
- * - JPA Validation (PRO)
- * - Logging
- * - Selenium tests
- * - Logs in web ui
- * - Tests: AutocompleteController, REST API, create/edit
- */
 public class DefaultDbAdminController {
 	@Autowired
 	private DbAdminRepository repository;
@@ -66,6 +49,12 @@ public class DefaultDbAdminController {
 	@Autowired
 	private DbAdmin dbAdmin;
 
+	/**
+	 * Home page with list of schemas
+	 * @param model
+	 * @param query
+	 * @return
+	 */
 	@GetMapping
 	public String index(Model model, @RequestParam(required = false) String query) {
 		List<DbObjectSchema> schemas = dbAdmin.getSchemas();
@@ -88,6 +77,24 @@ public class DefaultDbAdminController {
 		return "home";
 	}
 	
+	/**
+	 * Lists the items of a schema by applying a variety of filters:
+	 *  - query: fuzzy search
+	 *  - otherParams: filterable fields
+	 * Includes pagination and sorting options.
+	 *  
+	 * @param model
+	 * @param className
+	 * @param page
+	 * @param query
+	 * @param pageSize
+	 * @param sortKey
+	 * @param sortOrder
+	 * @param otherParams
+	 * @param request
+	 * @param response
+	 * @return
+	 */
 	@GetMapping("/model/{className}")
 	public String list(Model model, @PathVariable String className,
 			@RequestParam(required=false) Integer page, @RequestParam(required=false) String query,
@@ -160,6 +167,12 @@ public class DefaultDbAdminController {
 		}
 	}
 	
+	/**
+	 * Displays information about the schema
+	 * @param model
+	 * @param className
+	 * @return
+	 */
 	@GetMapping("/model/{className}/schema")
 	public String schema(Model model, @PathVariable String className) {
 		DbObjectSchema schema = dbAdmin.findSchemaByClassName(className);
@@ -170,6 +183,13 @@ public class DefaultDbAdminController {
 		return "model/schema";
 	}
 	
+	/**
+	 * Shows a single item
+	 * @param model
+	 * @param className
+	 * @param id
+	 * @return
+	 */
 	@GetMapping("/model/{className}/show/{id}")
 	public String show(Model model, @PathVariable String className, @PathVariable String id) {
 		DbObjectSchema schema = dbAdmin.findSchemaByClassName(className);
@@ -333,6 +353,10 @@ public class DefaultDbAdminController {
 				attr.addFlashAttribute("errorTitle", "Unable to INSERT row");
 				attr.addFlashAttribute("error", e.getMessage());
 				attr.addFlashAttribute("params", params);
+			} catch (UncategorizedSQLException e) {
+				attr.addFlashAttribute("errorTitle", "Unable to INSERT row");
+				attr.addFlashAttribute("error", e.getMessage());
+				attr.addFlashAttribute("params", params);
 			}
 			
 		} else {
@@ -349,6 +373,10 @@ public class DefaultDbAdminController {
 						repository.attachManyToMany(schema, pkValue, multiValuedParams);
 						attr.addFlashAttribute("message", "Item saved successfully.");
 					} catch (DataIntegrityViolationException e) {
+						attr.addFlashAttribute("errorTitle", "Unable to UPDATE row (no changes applied)");
+						attr.addFlashAttribute("error", e.getMessage());
+						attr.addFlashAttribute("params", params);
+					} catch (IllegalArgumentException e) {
 						attr.addFlashAttribute("errorTitle", "Unable to UPDATE row (no changes applied)");
 						attr.addFlashAttribute("error", e.getMessage());
 						attr.addFlashAttribute("params", params);

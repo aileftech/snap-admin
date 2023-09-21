@@ -125,7 +125,9 @@ public class DbObject {
 		
 		if (displayNameMethod.isPresent()) {
 			try {
-				return displayNameMethod.get().invoke(instance).toString();
+				Object displayName = displayNameMethod.get().invoke(instance);
+				if (displayName == null) return null;
+				else return displayName.toString();
 			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 				throw new DbAdminException(e);
 			}

@@ -24,6 +24,9 @@ import tech.ailef.dbadmin.dbmapping.DbObject;
 import tech.ailef.dbadmin.dbmapping.DbObjectSchema;
 import tech.ailef.dbadmin.exceptions.DbAdminException;
 
+/**
+ * Controller to serve file or images (`@DisplayImage`) 
+ */
 @Controller
 @RequestMapping("/dbadmin/download")
 public class DownloadController {

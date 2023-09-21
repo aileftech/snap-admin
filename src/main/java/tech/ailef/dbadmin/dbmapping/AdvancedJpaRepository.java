@@ -159,16 +159,13 @@ public class AdvancedJpaRepository extends SimpleJpaRepository {
 
 		CriteriaUpdate update = cb.createCriteriaUpdate(schema.getJavaClass());
 
-		Root employee = update.from(schema.getJavaClass());
+		Root root = update.from(schema.getJavaClass());
 
 		for (DbField field : schema.getSortedFields()) {
 			if (field.isPrimaryKey()) continue;
 			
-			boolean keepValue = params.getOrDefault("__keep_" + field.getJavaName(), "off").equals("on");
-			
-			if (keepValue) {
-				continue;
-			}
+			boolean keepValue = params.getOrDefault("__keep_" + field.getName(), "off").equals("on");
+			if (keepValue) continue;
 			
 			String stringValue = params.get(field.getName());
 			Object value = null;
@@ -187,11 +184,14 @@ public class AdvancedJpaRepository extends SimpleJpaRepository {
 				}
 			}
 			
-			update.set(employee.get(field.getJavaName()), value);
+			if (field.getConnectedSchema() != null)
+				value = field.getConnectedSchema().getJpaRepository().findById(value).get();
+			
+			update.set(root.get(field.getJavaName()), value);
 		}
 		
 		String pkName = schema.getPrimaryKey().getJavaName();
-		update.where(cb.equal(employee.get(pkName), params.get(schema.getPrimaryKey().getName())));
+		update.where(cb.equal(root.get(pkName), params.get(schema.getPrimaryKey().getName())));
 
 		Query query = entityManager.createQuery(update);
 		return query.executeUpdate();
