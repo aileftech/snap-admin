@@ -10,9 +10,9 @@
 		    	<div th:replace="~{fragments/resources :: sidebar('entities')}"></div>
 		    	<div class="main-content bg-lighter">
 					<h1 class="fw-bold mb-4"><i class="align-middle bi bi-database"></i> 
-						<a class="align-middle" href="/dbadmin">Entities</a> 
+						<a class="align-middle" th:href="|/${baseUrl}|">Entities</a> 
 						<i class="align-middle bi bi-chevron-double-right"></i>
-						<a class="align-middle" th:href="|/dbadmin/model/${schema.getJavaClass().getName()}|"> 
+						<a class="align-middle" th:href="|/${baseUrl}/model/${schema.getJavaClass().getName()}|"> 
 						[[ ${schema.getJavaClass().getSimpleName()} ]]</a>
 						<i class="align-middle bi bi-chevron-double-right"></i>
 						<span class="align-middle"> [[ ${object.getDisplayName()} ]]</span>
@@ -22,7 +22,7 @@
 		    				<div class="box">
 		    					<div class="d-flex justify-content-between">
 		    						<h3 class="mb-3 fw-bold" th:text="${object.getDisplayName()}"></h3>
-									<h3><a th:href="|/dbadmin/model/${schema.getClassName()}/edit/${object.getPrimaryKeyValue()}|">
+									<h3><a th:href="|/${baseUrl}/model/${schema.getClassName()}/edit/${object.getPrimaryKeyValue()}|">
 										<i class="bi bi-pencil"></i></a>
 									</h3>
 								</div>

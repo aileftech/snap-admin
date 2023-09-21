@@ -28,6 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import tech.ailef.dbadmin.DbAdmin;
+import tech.ailef.dbadmin.DbAdminProperties;
 import tech.ailef.dbadmin.dbmapping.DbAdminRepository;
 import tech.ailef.dbadmin.dbmapping.DbObject;
 import tech.ailef.dbadmin.dbmapping.DbObjectSchema;
@@ -41,8 +42,11 @@ import tech.ailef.dbadmin.misc.Utils;
  * The main DbAdmin controller that register most of the routes of the web interface.
  */
 @Controller
-@RequestMapping("/dbadmin")
+@RequestMapping(value= {"/${dbadmin.baseUrl}", "/${dbadmin.baseUrl}/"})
 public class DefaultDbAdminController {
+	@Autowired
+	private DbAdminProperties properties;
+	
 	@Autowired
 	private DbAdminRepository repository;
 	
@@ -163,7 +167,7 @@ public class DefaultDbAdminController {
 			return "model/list";
 			
 		} catch (InvalidPageException e) {
-			return "redirect:/dbadmin/model/" + className;
+			return "redirect:/" + properties.getBaseUrl() + "/model/" + className;
 		}
 	}
 	
@@ -260,7 +264,7 @@ public class DefaultDbAdminController {
 			attr.addFlashAttribute("error", e.getMessage());
 		}
 		
-		return "redirect:/dbadmin/model/" + className;
+		return "redirect:/" + properties.getBaseUrl() + "/model/" + className;
 	}
 	
 	@PostMapping(value="/model/{className}/delete")
@@ -287,7 +291,7 @@ public class DefaultDbAdminController {
 		if (countDeleted > 0)
 			attr.addFlashAttribute("message", "Deleted " + countDeleted + " of " + ids.length + " items");
 		
-		return "redirect:/dbadmin/model/" + className;
+		return "redirect:/" + properties.getBaseUrl() + "/model/" + className;
 	}
 	
 	@PostMapping(value="/model/{className}/create")
@@ -397,11 +401,11 @@ public class DefaultDbAdminController {
 
 		if (attr.getFlashAttributes().containsKey("error")) {
 			if (create)
-				return "redirect:/dbadmin/model/" + schema.getClassName() + "/create";
+				return "redirect:/" + properties.getBaseUrl() + "/model/" + schema.getClassName() + "/create";
 			else
-				return "redirect:/dbadmin/model/" + schema.getClassName() + "/edit/" + pkValue;
+				return "redirect:/" + properties.getBaseUrl() + "/model/" + schema.getClassName() + "/edit/" + pkValue;
 		} else {
-			return "redirect:/dbadmin/model/" + schema.getClassName() + "/show/" + pkValue;
+			return "redirect:/" + properties.getBaseUrl() + "/model/" + schema.getClassName() + "/show/" + pkValue;
 		}
 	}
 	

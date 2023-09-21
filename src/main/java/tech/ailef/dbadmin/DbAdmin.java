@@ -6,11 +6,13 @@ import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.stereotype.Component;
@@ -25,8 +27,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PersistenceContext;
-import tech.ailef.dbadmin.annotations.DbAdminAppConfiguration;
-import tech.ailef.dbadmin.annotations.DbAdminConfiguration;
 import tech.ailef.dbadmin.annotations.DisplayFormat;
 import tech.ailef.dbadmin.dbmapping.AdvancedJpaRepository;
 import tech.ailef.dbadmin.dbmapping.DbField;
@@ -46,6 +46,8 @@ import tech.ailef.dbadmin.misc.Utils;
  */
 @Component
 public class DbAdmin {
+	private static final Logger logger = Logger.getLogger(DbAdmin.class.getName());
+	
 	@PersistenceContext
 	private EntityManager entityManager;
 	
@@ -53,17 +55,8 @@ public class DbAdmin {
 	
 	private String modelsPackage;
 	
-	public DbAdmin(@Autowired EntityManager entityManager) {
-		Map<String, Object> beansWithAnnotation = 
-			ApplicationContextUtils.getApplicationContext().getBeansWithAnnotation(DbAdminConfiguration.class);
-		
-		if (beansWithAnnotation.size() != 1) {
-			throw new DbAdminException("Found " + beansWithAnnotation.size() + " beans with annotation @DbAdminConfiguration, but must be unique");
-		}
-		
-		DbAdminAppConfiguration applicationClass = (DbAdminAppConfiguration) beansWithAnnotation.values().iterator().next();
-		
-		this.modelsPackage = applicationClass.getModelsPackage();
+	public DbAdmin(@Autowired EntityManager entityManager, @Autowired DbAdminProperties properties) {
+		this.modelsPackage = properties.getModelsPackage();
 		this.entityManager = entityManager;
 		
 		ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
@@ -73,6 +66,9 @@ public class DbAdmin {
 		for (BeanDefinition bd : beanDefs) {
 			schemas.add(processBeanDefinition(bd));
 		}
+
+		logger.info("Spring Boot Database Admin initialized. Loaded " + schemas.size() + " table definitions");
+		logger.info("Spring Boot Database Admin web interface at: http://YOUR_HOST:YOUR_PORT/" + properties.getBaseUrl());
 	}
 
 	/**

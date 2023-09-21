@@ -7,7 +7,7 @@
 				<p>This table contains no data.</p>
 			</div>
 			<div th:if="${results.size() > 0}">
-				<form id="multi-delete-form" th:action="|/dbadmin/model/${schema.getClassName()}/delete|" method="POST">
+				<form id="multi-delete-form" th:action="|/${baseUrl}/model/${schema.getClassName()}/delete|" method="POST">
 				</form>
 				<nav th:replace="~{fragments/resources :: pagination(${page})}">
 				</nav>
@@ -29,17 +29,17 @@
 								<div class="align-items-center">
 									<h4 class="m-0" th:if="${page}">
 										<th:block th:if="${sortKey != field.getJavaName()}" >
-											<a th:href="@{|/dbadmin/model/${schema.getClassName()}${page.getPagination().getSortedPageLink(field.getJavaName(), 'DESC')}|}">
+											<a th:href="@{|/${baseUrl}/model/${schema.getClassName()}${page.getPagination().getSortedPageLink(field.getJavaName(), 'DESC')}|}">
 											<i title="Sort" class="bi bi-caret-up"></i>
 											</a>
 										</th:block>
 										<th:block th:unless="${sortKey != field.getJavaName()}">
 											<a th:if="${sortOrder == 'DESC'}" 
-												th:href="@{|/dbadmin/model/${schema.getClassName()}${page.getPagination().getSortedPageLink(field.getJavaName(), 'ASC')}|}">
+												th:href="@{|/${baseUrl}/model/${schema.getClassName()}${page.getPagination().getSortedPageLink(field.getJavaName(), 'ASC')}|}">
 												<i title="Sort" class="bi bi-caret-down-fill"></i>
 											</a>
 											<a th:if="${sortOrder == 'ASC'}" 
-												th:href="@{|/dbadmin/model/${schema.getClassName()}${page.getPagination().getSortedPageLink(field.getJavaName(), 'DESC')}|}">
+												th:href="@{|/${baseUrl}/model/${schema.getClassName()}${page.getPagination().getSortedPageLink(field.getJavaName(), 'DESC')}|}">
 												<i title="Sort" class="bi bi-caret-up-fill"></i>
 											</a>
 										</th:block>

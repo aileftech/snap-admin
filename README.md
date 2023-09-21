@@ -1,9 +1,17 @@
 # Spring Boot Database Admin Panel
 
-An add-on for Spring Boot apps that automatically generates a database admin panel based on your `@Entity` annotated classes.
-The panel offers basic CRUD and search functionalities to manage the database.
+Generate a powerful CRUD management dashboard for your Spring Boot application in a few minutes.
+
+Spring Boot Database Admin scans your `@Entity` classes to generate a simple but powerful database management interface.
 
 [![Example page listing products](https://i.imgur.com/Nz19f8e.png)](https://i.imgur.com/Nz19f8e.png)
+
+Features:
+ * List objects with pagination and sorting
+ * Show detailed object page which also includes `@OneToMany`, `@ManyToMany`, etc... fields
+ * Create/Edit objects
+ * Search
+ * Customization
 
 The code is in a very early version and I'm trying to collect as much feedback as possible in order to fix the
 most common issues that will inevitably arise. If you are so kind to try the project and you find something
@@ -17,44 +25,40 @@ broken, please report it as an issue and I will try to take a look at it.
 <dependency>
 	<groupId>tech.ailef</groupId>
 	<artifactId>spring-boot-db-admin</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.4</version>
 </dependency>
 ```
 
-2. A few configuration steps are required on your code in order to integrate the library in your project. If you don't want
+2. A few simple configuration steps are required on your end in order to integrate the library into your project. If you don't want
 to test on your own code, you can clone the [test project](https://github.com/aileftech/spring-boot-database-admin-test) which provides
 a sample database and already configured code.
 
-If you wish to integrate it into your project instead, the first step is create creating a configuration class:
+If you wish to integrate it into your project instead, the first step is adding these to your `application.properties` file:
 
 ```
-@DbAdminConfiguration
-@Configuration
-public class TestConfiguration implements DbAdminAppConfiguration {
+# Optional, default true
+dbadmin.enabled=true
 
-	@Override
-	public String getModelsPackage() {
-		return "your.models.package"; // The package where your @Entity classes are located
-	}
-}
+# The first-level part of the URL path: http://localhost:8080/${baseUrl}/
+dbadmin.baseUrl=admin
+
+# The package that contains your @Entity classes
+dbadmin.modelsPackage=tech.ailef.dbadmin.test.models
 ```
 
 The last step is to annotate your `@SpringBootApplication` class containing the `main` method with the following:
 
 ```
-@ComponentScan(basePackages = {"your.project.root.package", "tech.ailef.dbadmin"})
-@EnableJpaRepositories(basePackages = {"your.project.root.package", "tech.ailef.dbadmin"})
-@EntityScan(basePackages = {"your.project.root.package", "tech.ailef.dbadmin"})
+@ImportAutoConfiguration(DbAdminAutoConfiguration.class)
 ```
 
-This tells Spring to scan the `tech.ailef.dbadmin` packages and look for components there as well. Remember to also include
-your original root package as shown, or Spring will not scan it otherwise.
+This will autoconfigure the various DbAdmin components when your application starts.
 
-3. At this point, when you run your application, you should be able to visit `http://localhost:$PORT/dbadmin` and access the web interface.
+3. At this point, when you run your application, you should be able to visit `http://localhost:$PORT/${baseUrl}` and access the web interface.
 
 ## Documentation
 
-Once you are correctly running Spring Boot Database Admin you will see the web interface at `http://localhost:$PORT/dbadmin`. Most of the features are already available with the basic configuration. However, some customization to the interface might be applied by using appropriate annotations on your classes fields or methods. 
+Once you are correctly running Spring Boot Database Admin, you will be able to access the web interface. Most of the features are already available with the basic configuration. However, some customization to the interface might be applied by using appropriate annotations on your classes fields or methods. 
 The following annotations are supported.
 
 ### @DisplayName

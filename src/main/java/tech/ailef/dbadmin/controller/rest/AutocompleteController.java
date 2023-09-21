@@ -20,7 +20,7 @@ import tech.ailef.dbadmin.dto.AutocompleteSearchResult;
  * API controller for autocomplete results
  */
 @RestController
-@RequestMapping("/dbadmin/api/autocomplete")
+@RequestMapping(value= {"/${dbadmin.baseUrl}/api/autocomplete", "/${dbadmin.baseUrl}/api/autocomplete/"})
 public class AutocompleteController {
 	@Autowired
 	private DbAdmin dbAdmin;

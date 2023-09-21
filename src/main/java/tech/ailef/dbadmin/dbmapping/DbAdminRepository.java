@@ -36,7 +36,6 @@ public class DbAdminRepository {
 	
 	public DbAdminRepository(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
-		
 	}
 
 	/**
@@ -119,7 +118,7 @@ public class DbAdminRepository {
 		
 		
 		return new PaginatedResult(
-			new PaginationInfo(page, maxPage, pageSize, maxElement, null, sortKey, sortOrder, new HashSet<>()),
+			new PaginationInfo(page, maxPage, pageSize, maxElement, null, new HashSet<>()),
 			results
 		);
 	}
@@ -229,7 +228,7 @@ public class DbAdminRepository {
 		}
 		
 		return new PaginatedResult(
-			new PaginationInfo(page, maxPage, pageSize, maxElement, query, sortKey, sortOrder, queryFilters), 
+			new PaginationInfo(page, maxPage, pageSize, maxElement, query, queryFilters), 
 			jpaRepository.search(query, page, pageSize, sortKey, sortOrder, queryFilters).stream()
 				.map(o  -> new DbObject(o, schema))
 				.toList()
