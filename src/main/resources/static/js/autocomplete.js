@@ -1,6 +1,6 @@
 /* Request to the autocomplete REST endpoit */
 async function getSuggestions(className, query) {
-	const response = await fetch(`/dbadmin/api/autocomplete/${className}?query=${query}`);
+	const response = await fetch(`/${baseUrl}/api/autocomplete/${className}?query=${query}`);
 	const suggestions = await response.json();
 	return suggestions;
 }
