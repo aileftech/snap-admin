@@ -13,6 +13,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -25,9 +26,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.PersistenceUnit;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -59,17 +60,8 @@ public class DefaultDbAdminController {
 	@Autowired
 	private DbAdmin dbAdmin;
 	
-	@PersistenceUnit(unitName = "internal")
-	private EntityManagerFactory entityManagerFactory;
-	
-//	private EntityManager entityManager;
 	@Autowired
 	private ActionRepository repo;
-	
-//	@PostConstruct
-//	public void initialize() {
-//		this.entityManager = entityManagerFactory.createEntityManager();
-//	}
 	
 	/**
 	 * Home page with list of schemas
@@ -78,11 +70,13 @@ public class DefaultDbAdminController {
 	 * @return
 	 */
 	@GetMapping
-//	@Transactional("internalTransactionManager")
+	@Transactional("internalTransactionManager")
 	public String index(Model model, @RequestParam(required = false) String query) {
 		Action a = new Action();
 		a.setDescription("ciao");
 //		a.setId(1);
+//		entityManagerFactory.createEntityManager().persist(a);
+//		entityManager.persist(a);
 		Action save = repo.save(a);
 		System.out.println(save);
 		

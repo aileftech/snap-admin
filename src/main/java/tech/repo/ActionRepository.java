@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import jakarta.persistence.EntityManager;
 
 @Repository
-//@Component
 public interface ActionRepository extends JpaRepository<Action, Integer> {
 
 }
