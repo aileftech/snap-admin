@@ -1,4 +1,4 @@
-package tech.ailef.dbadmin.model;
+package tech.repo;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,6 +27,11 @@ public class Action {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	@Override
+	public String toString() {
+		return "Action [id=" + id + ", description=" + description + "]";
 	}
 	
 }
