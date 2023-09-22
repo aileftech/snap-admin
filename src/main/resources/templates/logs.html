@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+	<head th:replace="~{fragments/resources::head}">
+	</head>
+	<body>
+		<div class="bg-light main-wrapper">
+			<nav th:replace="~{fragments/resources :: navbar}"></nav>
+		    <div class="d-flex">
+		    	<div th:replace="~{fragments/resources :: sidebar('logs')}"></div>
+		    	<div class="main-content bg-lighter">
+		    		<th:block th:replace="~{fragments/resources :: alerts}"></th:block>
+					<h1 class="fw-bold mb-4"><i class="align-middle bi bi-gear"></i>
+						<span class="align-middle">Logs</span> 
+					</h1>
+		    		<div class="row mt-4">
+		    			<div class="col">
+	    					<div class="w-100 d-flex inner-navigation">
+	    						<a href="#" class="active">
+		    						<div class="ui-tab ps-5 pe-5 p-3">
+		    							<i class="bi bi-database pe-2"></i> APPEARANCE
+		    						</div>
+		    					</a>
+		    					<a href="#">
+		    						<div class="ui-tab ps-5 pe-5 p-3">
+		    							<i class="bi bi-table pe-2"></i> DATA
+		    						</div>
+		    					</a>
+		    					<div class="inner-navigation-border flex-grow-1">
+		    					</div>
+	    					</div>
+		    				<div class="box with-navigation">
+								<div class="row" th:each="entry : ${logs}">
+									<div class="col-3" th:text="${entry.getCreatedAt()}">
+									</div>
+									<div class="col-3" th:text="${entry.getActionType()}">
+									</div>
+									<div class="col-3" th:text="${entry.getOnTable()}">
+									</div>
+									<div class="col-3" th:text="${entry.getPrimaryKey()}">
+									</div>
+								</div>						
+							</div>
+		    			</div>
+		    		</div>
+		    	</div>
+		    </div>
+		</div>
+		
+	</body>
+</html>

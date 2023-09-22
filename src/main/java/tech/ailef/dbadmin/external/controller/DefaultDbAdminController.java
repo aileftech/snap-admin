@@ -38,7 +38,7 @@ import tech.ailef.dbadmin.external.dto.PaginatedResult;
 import tech.ailef.dbadmin.external.dto.QueryFilter;
 import tech.ailef.dbadmin.external.exceptions.InvalidPageException;
 import tech.ailef.dbadmin.external.misc.Utils;
-import tech.ailef.dbadmin.internal.model.Action;
+import tech.ailef.dbadmin.internal.model.UserAction;
 import tech.ailef.dbadmin.internal.repository.ActionRepository;
 
 /**
@@ -66,18 +66,7 @@ public class DefaultDbAdminController {
 	 * @return
 	 */
 	@GetMapping
-	@Transactional("internalTransactionManager")
 	public String index(Model model, @RequestParam(required = false) String query) {
-		Action a = new Action();
-		a.setDescription("ciao");
-//		a.setId(1);
-//		entityManagerFactory.createEntityManager().persist(a);
-//		entityManager.persist(a);
-		Action save = repo.save(a);
-		System.out.println(save);
-		
-//		repo.save(a);
-//		displayAllBeans();
 		
 		List<DbObjectSchema> schemas = dbAdmin.getSchemas();
 		if (query != null && !query.isBlank()) {
@@ -282,6 +271,8 @@ public class DefaultDbAdminController {
 			attr.addFlashAttribute("error", e.getMessage());
 		}
 		
+		saveAction(new UserAction(schema.getTableName(), id, "DELETE"));
+		
 		return "redirect:/" + properties.getBaseUrl() + "/model/" + className;
 	}
 	
@@ -308,7 +299,7 @@ public class DefaultDbAdminController {
 		
 		if (countDeleted > 0)
 			attr.addFlashAttribute("message", "Deleted " + countDeleted + " of " + ids.length + " items");
-		
+		saveAction(new UserAction(schema.getTableName(), String.join(", ", ids), "DELETE"));
 		return "redirect:/" + properties.getBaseUrl() + "/model/" + className;
 	}
 	
@@ -371,6 +362,7 @@ public class DefaultDbAdminController {
 				repository.attachManyToMany(schema, newPrimaryKey, multiValuedParams);				
 				pkValue = newPrimaryKey.toString();
 				attr.addFlashAttribute("message", "Item created successfully.");
+				saveAction(new UserAction(schema.getTableName(), pkValue, "CREATE"));
 			} catch (DataIntegrityViolationException e) {
 				attr.addFlashAttribute("errorTitle", "Unable to INSERT row");
 				attr.addFlashAttribute("error", e.getMessage());
@@ -394,6 +386,7 @@ public class DefaultDbAdminController {
 						repository.update(schema, params, files);
 						repository.attachManyToMany(schema, pkValue, multiValuedParams);
 						attr.addFlashAttribute("message", "Item saved successfully.");
+						saveAction(new UserAction(schema.getTableName(), pkValue, "EDIT"));
 					} catch (DataIntegrityViolationException e) {
 						attr.addFlashAttribute("errorTitle", "Unable to UPDATE row (no changes applied)");
 						attr.addFlashAttribute("error", e.getMessage());
@@ -409,6 +402,7 @@ public class DefaultDbAdminController {
 					Object newPrimaryKey = repository.create(schema, params, files, pkValue);
 					repository.attachManyToMany(schema, newPrimaryKey, multiValuedParams);
 					attr.addFlashAttribute("message", "Item created successfully");
+					saveAction(new UserAction(schema.getTableName(), pkValue, "CREATE"));
 				} catch (DataIntegrityViolationException e) {
 					attr.addFlashAttribute("errorTitle", "Unable to INSERT row (no changes applied)");
 					attr.addFlashAttribute("error", e.getMessage());
@@ -427,6 +421,12 @@ public class DefaultDbAdminController {
 		}
 	}
 	
+	@GetMapping("/logs")
+	public String logs(Model model) {
+		model.addAttribute("logs", repo.findAll());
+		return "logs";
+	}
+	
 	
 	@GetMapping("/settings")
 	public String settings(Model model) {
@@ -434,5 +434,8 @@ public class DefaultDbAdminController {
 		return "settings";
 	}
 	
-
+	@Transactional("internalTransactionManager")
+	private UserAction saveAction(UserAction action) {
+		return repo.save(action);
+	}
 }
