@@ -1,17 +1,28 @@
 package tech.ailef.dbadmin.controller;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.sql.DataSource;
+
+import org.hibernate.dialect.H2Dialect;
+import org.hibernate.dialect.Oracle12cDialect;
+import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.UncategorizedSQLException;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.LinkedMultiValueMap;
@@ -24,10 +35,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
+import static org.hibernate.cfg.AvailableSettings.*;
+import jakarta.annotation.PostConstruct;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.SharedCacheMode;
+import jakarta.persistence.ValidationMode;
+import jakarta.persistence.spi.ClassTransformer;
+import jakarta.persistence.spi.PersistenceUnitInfo;
+import jakarta.persistence.spi.PersistenceUnitTransactionType;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import tech.ailef.dbadmin.DbAdmin;
+import tech.ailef.dbadmin.DbAdminAutoConfiguration;
 import tech.ailef.dbadmin.DbAdminProperties;
 import tech.ailef.dbadmin.dbmapping.DbAdminRepository;
 import tech.ailef.dbadmin.dbmapping.DbObject;
@@ -52,6 +72,32 @@ public class DefaultDbAdminController {
 	
 	@Autowired
 	private DbAdmin dbAdmin;
+	
+	private EntityManager entityManager;
+	
+	@PostConstruct
+	public void initialize() {
+//		params.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+//		params.put("spring.jpa.database-platform", "org.hibernate.dialect.H2Dialect");
+		LocalContainerEntityManagerFactoryBean emf = DbAdminAutoConfiguration.internalEntityManager();
+		EntityManagerFactory factory = emf.getNativeEntityManagerFactory();
+		entityManager = factory.createEntityManager();
+		
+//		EntityManagerFactory emf = new HibernatePersistenceProvider().createEntityManagerFactory("internal", params);
+
+//		entityManager 	= entityManagerFactory.createEntityManager();
+//		entityManager = emf.createEntityManager();
+	}
+	
+//	@Autowired
+//	private ApplicationContext applicationContext;
+	
+//	public void displayAllBeans() {
+//        String[] allBeanNames = applicationContext.getBeanDefinitionNames();
+//        for(String beanName : allBeanNames) {
+//            System.out.println(beanName);
+//        }
+//    }
 
 	/**
 	 * Home page with list of schemas
@@ -60,7 +106,15 @@ public class DefaultDbAdminController {
 	 * @return
 	 */
 	@GetMapping
+//	@Transactional("internalTransactionManager")
 	public String index(Model model, @RequestParam(required = false) String query) {
+//		Action a = new Action();
+//		a.setDescription("ciao");
+//		a.setId(1);
+//		new ActionRepository(entityManger).save(a);
+//		repo.save(a);
+//		displayAllBeans();
+		
 		List<DbObjectSchema> schemas = dbAdmin.getSchemas();
 		if (query != null && !query.isBlank()) {
 			schemas = schemas.stream().filter(s -> {

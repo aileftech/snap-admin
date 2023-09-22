@@ -18,9 +18,9 @@ import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.transaction.Transactional;
 import tech.ailef.dbadmin.dto.PaginatedResult;
 import tech.ailef.dbadmin.dto.PaginationInfo;
 import tech.ailef.dbadmin.dto.QueryFilter;
@@ -128,18 +128,18 @@ public class DbAdminRepository {
 	 * @param schema
 	 * @param params
 	 */
-	@Transactional
+	@Transactional("transactionManager")
 	public void update(DbObjectSchema schema, Map<String, String> params, Map<String, MultipartFile> files) {
 		schema.getJpaRepository().update(schema, params, files);
 	}
 	
 	@SuppressWarnings("unchecked")
-	@Transactional
+	@Transactional("transactionManager")
 	private void save(DbObjectSchema schema, DbObject o) {
 		schema.getJpaRepository().save(o.getUnderlyingInstance());
 	}
 	
-	@Transactional
+	@Transactional("transactionManager")
 	public void attachManyToMany(DbObjectSchema schema, Object id, Map<String, List<String>> params) {
 		Optional<DbObject> optional = findById(schema, id);
 
@@ -256,7 +256,7 @@ public class DbAdminRepository {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	@Transactional
+	@Transactional("transactionManager")
 	public void delete(DbObjectSchema schema, String id) {
 		schema.getJpaRepository().deleteById(id);
 	}
