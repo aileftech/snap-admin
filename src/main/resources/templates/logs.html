@@ -37,13 +37,14 @@
 				    							<option value="Any">Any</option>
 				    							<option th:each="schema : ${schemas}" 
 				    									th:value="${schema.getTableName()}"
-				    									th:text="${schema.getJavaClass().getSimpleName()}"
+				    									th:text="${schema.getTableName()}"
 				    									th:selected="${schema.getTableName().equals(searchRequest.getTable())}">
 				    							</option>
 				    						</select>
 				    						<span class="input-group-text ms-3">Item ID</span>
 				    						<input type="text" class="form-control" name="itemId"
 				    							th:value="${searchRequest.getItemId()}">
+				    						<button class="ui-btn btn btn-primary ms-3">Filter</button>
 			    						</div>
 			    					</form>
 			    				</div>

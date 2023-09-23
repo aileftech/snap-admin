@@ -26,6 +26,8 @@ public class DbAdminProperties {
 	 */
 	private String modelsPackage;
 
+	private boolean testMode = false;
+	
 	public boolean isEnabled() {
 		return enabled;
 	}
@@ -50,11 +52,20 @@ public class DbAdminProperties {
 		this.modelsPackage = modelsPackage;
 	}
 	
+	public boolean isTestMode() {
+		return testMode;
+	}
+	
+	public void setTestMode(boolean testMode) {
+		this.testMode = testMode;
+	}
+	
 	public Map<String, String> toMap() {
 		Map<String, String> conf = new HashMap<>();
 		conf.put("enabled", enabled + "");
 		conf.put("baseUrl", baseUrl);
 		conf.put("modelsPackage", modelsPackage);
+		conf.put("testMode", testMode + "");
 		return conf;
 	}
 	

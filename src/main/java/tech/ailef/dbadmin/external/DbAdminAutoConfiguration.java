@@ -35,13 +35,17 @@ import tech.ailef.dbadmin.internal.InternalDbAdminConfiguration;
 @Import(InternalDbAdminConfiguration.class)
 public class DbAdminAutoConfiguration {
 	@Autowired
-	Environment env;
+	private DbAdminProperties props;
 
 	@Bean
 	public DataSource internalDataSource() {
 		DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
 		dataSourceBuilder.driverClassName("org.h2.Driver");
-		dataSourceBuilder.url("jdbc:h2:file:./dbadmin_internal");
+		if (props.isTestMode())
+			dataSourceBuilder.url("jdbc:h2:mem:test");
+		else
+			dataSourceBuilder.url("jdbc:h2:file:./dbadmin_internal");
+		
 		dataSourceBuilder.username("sa");
 		dataSourceBuilder.password("password");
 		return dataSourceBuilder.build();
