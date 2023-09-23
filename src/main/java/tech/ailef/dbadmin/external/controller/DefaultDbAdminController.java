@@ -13,7 +13,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -34,12 +33,13 @@ import tech.ailef.dbadmin.external.dbmapping.DbAdminRepository;
 import tech.ailef.dbadmin.external.dbmapping.DbObject;
 import tech.ailef.dbadmin.external.dbmapping.DbObjectSchema;
 import tech.ailef.dbadmin.external.dto.CompareOperator;
+import tech.ailef.dbadmin.external.dto.LogsSearchRequest;
 import tech.ailef.dbadmin.external.dto.PaginatedResult;
 import tech.ailef.dbadmin.external.dto.QueryFilter;
 import tech.ailef.dbadmin.external.exceptions.InvalidPageException;
 import tech.ailef.dbadmin.external.misc.Utils;
 import tech.ailef.dbadmin.internal.model.UserAction;
-import tech.ailef.dbadmin.internal.repository.ActionRepository;
+import tech.ailef.dbadmin.internal.service.UserActionService;
 
 /**
  * The main DbAdmin controller that register most of the routes of the web interface.
@@ -57,7 +57,14 @@ public class DefaultDbAdminController {
 	private DbAdmin dbAdmin;
 	
 	@Autowired
-	private ActionRepository repo;
+	private UserActionService userActionService;
+	
+//	@Autowired
+//	private ActionRepository repo;
+//	
+//	@Autowired
+//	private CustomActionRepositoryImpl customRepo;
+	
 	
 	/**
 	 * Home page with list of schemas
@@ -299,7 +306,11 @@ public class DefaultDbAdminController {
 		
 		if (countDeleted > 0)
 			attr.addFlashAttribute("message", "Deleted " + countDeleted + " of " + ids.length + " items");
-		saveAction(new UserAction(schema.getTableName(), String.join(", ", ids), "DELETE"));
+		
+		for (String id : ids) {
+			saveAction(new UserAction(schema.getTableName(), id, "DELETE"));
+		}
+		
 		return "redirect:/" + properties.getBaseUrl() + "/model/" + className;
 	}
 	
@@ -422,8 +433,19 @@ public class DefaultDbAdminController {
 	}
 	
 	@GetMapping("/logs")
-	public String logs(Model model) {
-		model.addAttribute("logs", repo.findAll());
+	public String logs(Model model, LogsSearchRequest searchRequest) {
+		model.addAttribute("activePage", "logs");
+		model.addAttribute(
+			"page", 
+			userActionService.findActions(
+				searchRequest.getTable(),
+				searchRequest.getActionType(),
+				searchRequest.getItemId(),
+				searchRequest.toPageRequest()
+			)
+		);
+		model.addAttribute("schemas", dbAdmin.getSchemas());
+		model.addAttribute("searchRequest", searchRequest);
 		return "logs";
 	}
 	
@@ -434,8 +456,8 @@ public class DefaultDbAdminController {
 		return "settings";
 	}
 	
-	@Transactional("internalTransactionManager")
+//	@Transactional("internalTransactionManager")
 	private UserAction saveAction(UserAction action) {
-		return repo.save(action);
+		return userActionService.save(action);
 	}
 }

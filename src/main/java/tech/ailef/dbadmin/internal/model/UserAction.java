@@ -2,6 +2,8 @@ package tech.ailef.dbadmin.internal.model;
 
 import java.time.LocalDateTime;
 
+import org.springframework.format.datetime.standard.DateTimeFormatterFactory;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -89,5 +91,8 @@ public class UserAction {
 	public void setActionType(String actionType) {
 		this.actionType = actionType;
 	}
-	
+
+	public String getFormattedDate() {
+		return new DateTimeFormatterFactory("YYYY-MM-dd HH:mm:ss").createDateTimeFormatter().format(createdAt);
+	}
 }

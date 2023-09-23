@@ -117,7 +117,7 @@ public class DbAdminRepository {
 		}
 		
 		
-		return new PaginatedResult(
+		return new PaginatedResult<DbObject>(
 			new PaginationInfo(page, maxPage, pageSize, maxElement, null, new HashSet<>()),
 			results
 		);
@@ -227,7 +227,7 @@ public class DbAdminRepository {
 			throw new InvalidPageException();
 		}
 		
-		return new PaginatedResult(
+		return new PaginatedResult<DbObject>(
 			new PaginationInfo(page, maxPage, pageSize, maxElement, query, queryFilters), 
 			jpaRepository.search(query, page, pageSize, sortKey, sortOrder, queryFilters).stream()
 				.map(o  -> new DbObject(o, schema))

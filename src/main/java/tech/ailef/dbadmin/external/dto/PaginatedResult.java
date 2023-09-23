@@ -4,12 +4,12 @@ import java.util.List;
 
 import tech.ailef.dbadmin.external.dbmapping.DbObject;
 
-public class PaginatedResult {
+public class PaginatedResult<T> {
 	private PaginationInfo pagination;
 	
-	private List<DbObject> results;
+	private List<T> results;
 
-	public PaginatedResult(PaginationInfo pagination, List<DbObject> page) {
+	public PaginatedResult(PaginationInfo pagination, List<T> page) {
 		this.pagination = pagination;
 		this.results = page;
 	}
@@ -18,11 +18,15 @@ public class PaginatedResult {
 		return pagination;
 	}
 
-	public List<DbObject> getResults() {
+	public List<T> getResults() {
 		return results;
 	}
 	
-	public int getActualResults() {
+	public boolean isEmpty() {
+		return results.isEmpty();
+	}
+	
+	public int getNumberOfResults() {
 		return getResults().size();
 	}
 	

@@ -24,6 +24,8 @@ public interface Utils {
 	
 	public static MultiValueMap<String, String> computeParams(Set<QueryFilter> filters) {
 		MultiValueMap<String, String> r = new LinkedMultiValueMap<>();
+		if (filters == null)
+			return r; 
 		
 		r.put("filter_field", new ArrayList<>());
 		r.put("filter_op", new ArrayList<>());

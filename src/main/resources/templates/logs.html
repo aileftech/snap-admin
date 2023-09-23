@@ -14,31 +14,81 @@
 					</h1>
 		    		<div class="row mt-4">
 		    			<div class="col">
-	    					<div class="w-100 d-flex inner-navigation">
-	    						<a href="#" class="active">
-		    						<div class="ui-tab ps-5 pe-5 p-3">
-		    							<i class="bi bi-database pe-2"></i> APPEARANCE
-		    						</div>
-		    					</a>
-		    					<a href="#">
-		    						<div class="ui-tab ps-5 pe-5 p-3">
-		    							<i class="bi bi-table pe-2"></i> DATA
-		    						</div>
-		    					</a>
-		    					<div class="inner-navigation-border flex-grow-1">
-		    					</div>
-	    					</div>
-		    				<div class="box with-navigation">
-								<div class="row" th:each="entry : ${logs}">
-									<div class="col-3" th:text="${entry.getCreatedAt()}">
-									</div>
-									<div class="col-3" th:text="${entry.getActionType()}">
-									</div>
-									<div class="col-3" th:text="${entry.getOnTable()}">
-									</div>
-									<div class="col-3" th:text="${entry.getPrimaryKey()}">
-									</div>
-								</div>						
+		    				<div class="box">
+		    					<h3 class="fw-bold">Logs</h3>
+		    					<div class="w-75">
+			    					<form th:action="|/${baseUrl}/logs|" class="mt-3" id="log-filter-form" method="GET">
+			    						<div class="input-group">
+			    							<span class="input-group-text">Action type</span>
+				    						<select name="actionType" class="form-select">
+				    							<option>Any</option>
+				    							<option value="CREATE" 
+				    								th:selected="${searchRequest.getActionType() != null 
+				    									&& searchRequest.getActionType().equalsIgnoreCase('CREATE') }">Create</option>
+				    							<option value="EDIT" 
+				    								th:selected="${searchRequest.getActionType() != null 
+				    									&& searchRequest.getActionType().equalsIgnoreCase('EDIT') }">Edit</option>
+												<option value="DELETE" 
+				    								th:selected="${searchRequest.getActionType() != null 
+				    									&& searchRequest.getActionType().equalsIgnoreCase('DELETE') }">Delete</option>
+				    						</select>
+			    							<span class="input-group-text ms-3">Table</span>
+				    						<select name="table" class="form-select">
+				    							<option value="Any">Any</option>
+				    							<option th:each="schema : ${schemas}" 
+				    									th:value="${schema.getTableName()}"
+				    									th:text="${schema.getJavaClass().getSimpleName()}"
+				    									th:selected="${schema.getTableName().equals(searchRequest.getTable())}">
+				    							</option>
+				    						</select>
+				    						<span class="input-group-text ms-3">Item ID</span>
+				    						<input type="text" class="form-control" name="itemId"
+				    							th:value="${searchRequest.getItemId()}">
+			    						</div>
+			    					</form>
+			    				</div>
+		    					<div class="separator mt-3 mb-3"></div>
+
+
+								<div class="mt-3" th:if="${page.isEmpty()}">
+									<div class="alert alert-warning">There are no results for your filtering criteria</div>
+								</div>
+		    					<div class="table-responsive mt-3" th:if="${!page.isEmpty()}">
+									<nav th:replace="~{fragments/resources :: pagination(page=${page})}"></nav>
+		    						
+		    						<table class="table table-striped mt-3">
+		    							<tr class="table-data-row">
+		    								<th>Action type</th>
+		    								<th>Table</th>
+		    								<th>Item ID</th>
+		    								<th>Time</th>
+		    								<th></th>
+		    							</tr>
+										<tr th:each="entry : ${page.getResults()}" class="table-data-row align-middle">
+											<td th:text="${entry.getActionType()}">
+											</td>
+											<td th:text="${entry.getOnTable()}">
+											</td>
+											<td th:text="${entry.getPrimaryKey()}">
+											</td>
+											<td th:text="${entry.getFormattedDate()}">
+											</td>
+											<td>
+												<!--
+												<a href="#" class="ui-btn btn btn-primary">
+													Diff <i class="text-white bi bi-search"></i>
+												</a>
+												-->
+											</td>
+										</tr>
+									</table>
+									
+									<nav th:replace="~{fragments/resources :: pagination(page=${page})}"></nav>								
+								</div>
+							
+								
+								
+								
 							</div>
 		    			</div>
 		    		</div>

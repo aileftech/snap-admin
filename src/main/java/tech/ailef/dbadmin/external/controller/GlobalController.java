@@ -36,7 +36,12 @@ public class GlobalController {
 	 * @return
 	 */
 	@ModelAttribute("baseUrl")
-	public String getBaseUrl(HttpServletRequest request) {
+	public String getBaseUrl() {
 		return props.getBaseUrl();
+	}
+	
+	@ModelAttribute("requestUrl")
+	public String getRequestUrl(HttpServletRequest request) {
+		return request.getRequestURI();
 	}
 }

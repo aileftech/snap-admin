@@ -89,6 +89,18 @@ public class DbAdmin {
 	}
 	
 	/**
+	 * Finds a schema by its table name
+	 * @param tableName the table name on the database
+	 * @return 
+	 * @throws DbAdminException if corresponding schema not found
+	 */
+	public DbObjectSchema findSchemaByTableName(String tableName) {
+		return schemas.stream().filter(s -> s.getTableName().equals(tableName)).findFirst().orElseThrow(() -> {
+			return new DbAdminException("Schema " + tableName + " not found.");
+		});
+	}
+	
+	/**
 	 * Finds a schema by its class
 	 * @param klass
 	 * @return
