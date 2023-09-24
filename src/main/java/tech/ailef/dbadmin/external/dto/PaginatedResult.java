@@ -2,8 +2,6 @@ package tech.ailef.dbadmin.external.dto;
 
 import java.util.List;
 
-import tech.ailef.dbadmin.external.dbmapping.DbObject;
-
 public class PaginatedResult<T> {
 	private PaginationInfo pagination;
 	

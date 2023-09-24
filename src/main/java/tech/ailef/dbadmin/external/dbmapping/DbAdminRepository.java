@@ -215,7 +215,7 @@ public class DbAdminRepository {
 	 * @param query
 	 * @return
 	 */
-	public PaginatedResult search(DbObjectSchema schema, String query, int page, int pageSize, String sortKey, 
+	public PaginatedResult<DbObject> search(DbObjectSchema schema, String query, int page, int pageSize, String sortKey, 
 			String sortOrder, Set<QueryFilter> queryFilters) {
 		AdvancedJpaRepository jpaRepository = schema.getJpaRepository();
         

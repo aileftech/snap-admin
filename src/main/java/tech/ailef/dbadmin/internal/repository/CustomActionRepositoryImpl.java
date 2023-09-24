@@ -3,7 +3,6 @@ package tech.ailef.dbadmin.internal.repository;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
@@ -13,8 +12,6 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
-import tech.ailef.dbadmin.external.DbAdmin;
-import tech.ailef.dbadmin.external.dbmapping.DbObjectSchema;
 import tech.ailef.dbadmin.internal.model.UserAction;
 
 @Component
@@ -23,9 +20,6 @@ public class CustomActionRepositoryImpl implements CustomActionRepository {
     @PersistenceContext(unitName = "internal")
     private EntityManager entityManager;
     
-    @Autowired
-    private DbAdmin dbAdmin;
-
     @Override
     public List<UserAction> findActions(String table, String actionType, String itemId, PageRequest page) {
 

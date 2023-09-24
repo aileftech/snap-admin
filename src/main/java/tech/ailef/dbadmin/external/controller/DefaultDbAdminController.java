@@ -163,7 +163,7 @@ public class DefaultDbAdminController {
 		DbObjectSchema schema = dbAdmin.findSchemaByClassName(className);
 		
 		try {
-			PaginatedResult result = null;
+			PaginatedResult<DbObject> result = null;
 			if (query != null || !otherParams.isEmpty()) {
 				result = repository.search(schema, query, page, pageSize, sortKey, sortOrder, queryFilters);
 			} else {

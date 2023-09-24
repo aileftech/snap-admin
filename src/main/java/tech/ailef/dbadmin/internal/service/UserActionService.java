@@ -10,13 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 import tech.ailef.dbadmin.external.dto.PaginatedResult;
 import tech.ailef.dbadmin.external.dto.PaginationInfo;
 import tech.ailef.dbadmin.internal.model.UserAction;
-import tech.ailef.dbadmin.internal.repository.ActionRepository;
 import tech.ailef.dbadmin.internal.repository.CustomActionRepositoryImpl;
+import tech.ailef.dbadmin.internal.repository.UserActionRepository;
 
 @Service
 public class UserActionService {
 	@Autowired
-	private ActionRepository repo;
+	private UserActionRepository repo;
 	
 	@Autowired
 	private CustomActionRepositoryImpl customRepo;

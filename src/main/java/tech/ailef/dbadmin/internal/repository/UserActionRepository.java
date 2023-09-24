@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import tech.ailef.dbadmin.internal.model.UserAction;
 
 @Repository
-public interface ActionRepository extends JpaRepository<UserAction, Integer>, CustomActionRepository {
+public interface UserActionRepository extends JpaRepository<UserAction, Integer>, CustomActionRepository {
 	public List<UserAction> findAllByOnTableAndActionTypeAndPrimaryKey(String table, String actionType, String primaryKey, PageRequest pageRequest);
 	
 }
