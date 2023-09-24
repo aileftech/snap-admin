@@ -19,6 +19,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,6 +40,8 @@ import tech.ailef.dbadmin.external.dto.QueryFilter;
 import tech.ailef.dbadmin.external.exceptions.InvalidPageException;
 import tech.ailef.dbadmin.external.misc.Utils;
 import tech.ailef.dbadmin.internal.model.UserAction;
+import tech.ailef.dbadmin.internal.model.UserSetting;
+import tech.ailef.dbadmin.internal.repository.UserSettingsRepository;
 import tech.ailef.dbadmin.internal.service.UserActionService;
 
 /**
@@ -59,12 +62,9 @@ public class DefaultDbAdminController {
 	@Autowired
 	private UserActionService userActionService;
 	
-//	@Autowired
-//	private ActionRepository repo;
-//	
-//	@Autowired
-//	private CustomActionRepositoryImpl customRepo;
-	
+
+	@Autowired
+	private UserSettingsRepository userSettingsRepo;
 	
 	/**
 	 * Home page with list of schemas
@@ -456,7 +456,15 @@ public class DefaultDbAdminController {
 		return "settings";
 	}
 	
-//	@Transactional("internalTransactionManager")
+	@PostMapping("/settings")
+	public String settings(@RequestParam Map<String, String> params, Model model) {
+		for (String paramName : params.keySet()) {
+			userSettingsRepo.save(new UserSetting(paramName, params.get(paramName)));
+		}
+		model.addAttribute("activePage", "settings");
+		return "settings";
+	}
+	
 	private UserAction saveAction(UserAction action) {
 		return userActionService.save(action);
 	}

@@ -40,10 +40,11 @@ public class DbAdminAutoConfiguration {
 	public DataSource internalDataSource() {
 		DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
 		dataSourceBuilder.driverClassName("org.h2.Driver");
-		if (props.isTestMode())
+		if (props.isTestMode()) {
 			dataSourceBuilder.url("jdbc:h2:mem:test");
-		else
+		} else {
 			dataSourceBuilder.url("jdbc:h2:file:./dbadmin_internal");
+		}
 		
 		dataSourceBuilder.username("sa");
 		dataSourceBuilder.password("password");

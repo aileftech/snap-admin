@@ -8,7 +8,15 @@ public class UserSetting {
 	@Id
 	private String id;
 	
-	private String value;
+	private String settingValue;
+	
+	public UserSetting() {
+	}
+	
+	public UserSetting(String id, String settingValue) {
+		this.id = id;
+		this.settingValue = settingValue;
+	}
 
 	public String getId() {
 		return id;
@@ -18,12 +26,12 @@ public class UserSetting {
 		this.id = id;
 	}
 
-	public String getValue() {
-		return value;
+	public String getSettingValue() {
+		return settingValue;
 	}
-
-	public void setValue(String value) {
-		this.value = value;
+	
+	public void setSettingValue(String settingValue) {
+		this.settingValue = settingValue;
 	}
 	
 }

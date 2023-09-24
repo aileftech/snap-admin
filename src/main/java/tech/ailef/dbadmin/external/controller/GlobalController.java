@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 import jakarta.servlet.http.HttpServletRequest;
 import tech.ailef.dbadmin.external.DbAdminProperties;
+import tech.ailef.dbadmin.internal.UserConfiguration;
 
 /**
  * This class registers some ModelAttribute objects that are
@@ -18,6 +19,9 @@ public class GlobalController {
 
 	@Autowired
 	private DbAdminProperties props;
+
+	@Autowired
+	private UserConfiguration userConf;
 	
 	/**
 	 * A multi valued map containing the query parameters. It is used primarily
@@ -44,4 +48,10 @@ public class GlobalController {
 	public String getRequestUrl(HttpServletRequest request) {
 		return request.getRequestURI();
 	}
+	
+	@ModelAttribute("userConf")
+	public UserConfiguration getUserConf() {
+		return userConf;
+	}
 }
+

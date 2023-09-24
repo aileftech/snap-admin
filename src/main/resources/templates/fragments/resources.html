@@ -31,7 +31,9 @@
 	
 	<nav class="navbar fixed-top navbar-expand-lg bg-accent color-white" th:fragment="navbar">
 	    <div class="container-fluid">
-	        <a class=" fw-bold navbar-brand" href="/"><i class="bi bi-hexagon-fill"></i> Spring Boot DB Admin Panel</a>
+	        <a class=" fw-bold navbar-brand" href="/"><i class="bi bi-hexagon-fill"></i>
+	        	[[ ${userConf.get('brandName')} ]]
+	        </a>
 	        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 	            <span class="navbar-toggler-icon"></span>
 	        </button>
@@ -77,7 +79,18 @@
 	        			</div>
     				</a>
         		</li>
-        		
+        		<li th:class="${#strings.equals(activePage, 'settings') ? 'active' : ''}">
+        			<a th:href="|/${baseUrl}/settings|">
+	        			<div class="d-flex align-items-center">
+	        				<div class="menu-icon">
+	        					<i class="bi bi-gear"></i>
+	        				</div>
+	        				<div class="menu-entry-text d-none d-md-block">
+	        					Settings
+	        				</div>
+	        			</div>
+    				</a>
+        		</li>
         		<!--
         		<li th:class="${#strings.equals(activePage, 'console') ? 'active' : ''}">
         			<a href="/live">
@@ -99,18 +112,6 @@
 	        				</div>
 	        				<div class="menu-entry-text  d-none d-md-block">
 	        					AI console
-	        				</div>
-	        			</div>
-    				</a>
-        		</li>
-        		<li th:class="${#strings.equals(activePage, 'settings') ? 'active' : ''}">
-        			<a th:href="|/${baseUrl}/settings|">
-	        			<div class="d-flex align-items-center">
-	        				<div class="menu-icon">
-	        					<i class="bi bi-gear"></i>
-	        				</div>
-	        				<div class="menu-entry-text d-none d-md-block">
-	        					Settings
 	        				</div>
 	        			</div>
     				</a>

@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import tech.ailef.dbadmin.internal.model.UserSetting;
 
 @Repository
-public interface UserSettingsRepository extends JpaRepository<UserSetting, Integer> {
+public interface UserSettingsRepository extends JpaRepository<UserSetting, String> {
 	
 }
