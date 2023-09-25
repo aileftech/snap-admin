@@ -193,7 +193,10 @@ public class DbAdminRepository {
 		
 		files.keySet().forEach(f -> {
 			try {
-				allValues.put(f, files.get(f).getBytes());
+				// The file parameter gets sent even if empty, so it's needed
+				// to check if the file has actual content, to avoid storing an empty file
+				if (files.get(f).getSize() > 0)
+					allValues.put(f, files.get(f).getBytes());
 			} catch (IOException e) {
 				throw new DbAdminException(e);
 			}
