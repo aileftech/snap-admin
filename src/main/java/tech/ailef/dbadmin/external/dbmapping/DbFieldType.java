@@ -163,6 +163,28 @@ public enum DbFieldType {
 			return List.of(CompareOperator.CONTAINS, CompareOperator.STRING_EQ);
 		}
 	},
+	TEXT {
+		@Override
+		public String getHTMLName() {
+			return "textarea";
+		}
+
+		@Override
+		public Object parseValue(Object value) {
+			return value;
+		}
+
+		@Override
+		public Class<?> getJavaClass() {
+			return String.class;
+		}
+
+		@Override
+		public List<CompareOperator> getCompareOperators() {
+			return List.of(CompareOperator.CONTAINS, CompareOperator.STRING_EQ);
+		}
+		
+	},
 	BOOLEAN {
 		@Override
 		public String getHTMLName() {

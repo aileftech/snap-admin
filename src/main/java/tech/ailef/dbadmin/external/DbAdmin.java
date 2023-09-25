@@ -20,6 +20,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -201,6 +202,7 @@ public class DbAdmin {
 		ManyToMany manyToMany = f.getAnnotation(ManyToMany.class);
 		ManyToOne manyToOne = f.getAnnotation(ManyToOne.class);
 		OneToOne oneToOne = f.getAnnotation(OneToOne.class);
+		Lob lob = f.getAnnotation(Lob.class);
 		
 		String fieldName = determineFieldName(f);
 		
@@ -212,6 +214,10 @@ public class DbAdmin {
 		DbFieldType fieldType = null;
 		try {
 			fieldType = DbFieldType.fromClass(f.getType());
+			
+			if (fieldType != null && lob != null && fieldType == DbFieldType.STRING) {
+				fieldType = DbFieldType.TEXT;
+			}
 		} catch (DbAdminException e) {
 			// If failure, we try to map a relationship on this field
 		}

@@ -124,6 +124,10 @@ public class DbField {
 		return format;
 	}
 	
+	public boolean isText() {
+		return type == DbFieldType.TEXT;
+	}
+	
 	@Override
 	public String toString() {
 		return "DbField [name=" + dbName + ", javaName=" + javaName + ", type=" + type + ", field=" + field
