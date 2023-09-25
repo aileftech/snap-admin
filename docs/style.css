@@ -1,0 +1,63 @@
+.main-content {
+	border-left:  1px solid #EEE;
+}
+
+body {
+	color: #333;
+	background-color: #FAFAFA;
+}
+
+p {
+	color: #111;
+}
+
+code pre  {
+	background-color: #DFDFDF;
+	padding: 5px;
+	border-radius: 5px;
+	font-size: 0.9rem;
+}
+
+
+h1, h2, h3, h4, h5, h6 {
+	font-weight: bold;
+	margin-top: 1.5rem;
+	margin-bottom: 1.5rem;
+
+}
+
+ol.toc {
+	list-style: none;
+}
+
+.separator {
+	border-top:  1px solid #DDD;
+	width: 100%;
+	margin:  0 auto;
+	margin-top: 2rem;
+	margin-bottom: 2rem;
+	
+}
+
+p.tip {
+	border-radius: 5px;
+	background-color: #D0DCF0;
+	padding: 1rem;
+	padding-top: 1.5rem;
+	margin-top: 2rem;
+	position: relative;
+}
+
+p.tip span.title {
+	font-weight: bold;
+	padding: 5px;
+	padding-left: 10px;
+	padding-right: 10px;
+	top: 0;
+	transform: translateY(-50%);
+	position: absolute;
+	top: 0;
+	left: 20;
+	background-color: lightsalmon;
+	color: white;
+}

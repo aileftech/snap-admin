@@ -10,6 +10,7 @@ Features:
  * List objects with pagination and sorting
  * Show detailed object page which also includes `@OneToMany`, `@ManyToMany`, etc... fields
  * Create/Edit objects
+ * Action logs (i.e. see a history of all write operations done through the web UI)
  * Search
  * Customization
 
