@@ -114,6 +114,11 @@ This annotation can be placed on binary fields to declare they are storing an im
 
 
 ## Changelog
+
+**0.1.0**
+- Implemented action logs
+- Implemented user settings
+
 **0.0.4**
 - Simplified setup/configuration: now it only requires a couple of config properties and 1 annotation
 - Support of custom base url for the web UI, instead of hardcoded "/dbadmin"
