@@ -59,7 +59,7 @@ This will autoconfigure the various DbAdmin components when your application sta
 
 ## Documentation
 
-For more detailed documentation, visit https://aileftech.github.io/spring-boot-database-admin/docs.
+For more detailed documentation, visit https://aileftech.github.io/spring-boot-database-admin/.
 
 Once you are correctly running Spring Boot Database Admin, you will be able to access the web interface. Most of the features are already available with the basic configuration. However, some customization to the interface might be applied by using appropriate annotations on your classes fields or methods. 
 The following annotations are supported.
