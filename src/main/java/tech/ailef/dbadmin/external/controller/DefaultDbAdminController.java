@@ -123,17 +123,20 @@ public class DefaultDbAdminController {
 		if (page == null) page = 1;
 		if (pageSize == null) pageSize = 50;
 		
-		Set<QueryFilter> queryFilters = Utils.computeFilters(otherParams);
+		DbObjectSchema schema = dbAdmin.findSchemaByClassName(className);
+		
+		Set<QueryFilter> queryFilters = Utils.computeFilters(schema, otherParams);
 		if (otherParams.containsKey("remove_field")) {
 			List<String> fields = otherParams.get("remove_field");
 			
 			for (int i = 0; i < fields.size(); i++) {
 				QueryFilter toRemove = 
 					new QueryFilter(
-						fields.get(i), 
+						schema.getFieldByJavaName(fields.get(i)), 
 						CompareOperator.valueOf(otherParams.get("remove_op").get(i).toUpperCase()), 
 						otherParams.get("remove_value").get(i)
 					);
+				System.out.println("TOREMOVE = " + toRemove);
 				queryFilters.removeIf(f -> f.equals(toRemove));
 			}
 			
@@ -158,8 +161,6 @@ public class DefaultDbAdminController {
 			String redirectUrl = request.getServletPath() + queryString; 
 			return "redirect:" + redirectUrl.trim();
 		}
-		
-		DbObjectSchema schema = dbAdmin.findSchemaByClassName(className);
 		
 		try {
 			PaginatedResult<DbObject> result = null;

@@ -108,6 +108,7 @@ public enum DbFieldType {
 
 		@Override
 		public Object parseValue(Object value) {
+			if (value == null) return null;
 			return LocalDate.parse(value.toString());
 		}
 
@@ -129,6 +130,7 @@ public enum DbFieldType {
 
 		@Override
 		public Object parseValue(Object value) {
+			if (value == null || value.toString().isBlank()) return null;
 			return LocalDateTime.parse(value.toString());
 		}
 
