@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -18,7 +19,6 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import tech.ailef.dbadmin.external.DbAdmin;
 import tech.ailef.dbadmin.external.annotations.ComputedColumn;
-import tech.ailef.dbadmin.external.annotations.Filterable;
 import tech.ailef.dbadmin.external.exceptions.DbAdminException;
 import tech.ailef.dbadmin.external.misc.Utils;
 
@@ -182,13 +182,41 @@ public class DbObjectSchema {
 	public List<DbField> getFilterableFields() {
 		return getSortedFields().stream().filter(f -> { 
 			return !f.isBinary() && !f.isPrimaryKey()
-					&& f.getPrimitiveField().getAnnotation(Filterable.class) != null;
+					&& f.isFilterable();
 		}).toList();
+	}
+	
+	public List<DbObject> findAll() {
+		List r = jpaRepository.findAll();
+		List<DbObject> results = new ArrayList<>();
+		for (Object o : r) {
+			results.add(new DbObject(o, this));
+		}
+		return results;
 	}
 
 	@Override
 	public String toString() {
 		return "DbObjectSchema [fields=" + fields + ", className=" + entityClass.getName() + "]";
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(tableName);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DbObjectSchema other = (DbObjectSchema) obj;
+		return Objects.equals(tableName, other.tableName);
+	}
+	
+	
 	
 }

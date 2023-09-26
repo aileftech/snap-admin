@@ -181,6 +181,19 @@ AUTOCOMPLETE
 	background-color: #F0F0F0;
 }
 
+ul.categorical-select {
+	list-style-type: none;
+	margin-bottom: 0px;
+}
+
+ul.categorical-select button {
+	color: #007fd0;
+	text-decoration: underline;
+	background: transparent;
+	border: none;
+}
+
+
 /**
  * Images
  */

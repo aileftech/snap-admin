@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		activeFilters.forEach(activeFilter => {
 			activeFilter.addEventListener('click', function(e) {
 				let formId = e.target.dataset.formid;
-				document.getElementById(formId).submit()
+				document.getElementById(formId).submit();
 			});
 		});
 	

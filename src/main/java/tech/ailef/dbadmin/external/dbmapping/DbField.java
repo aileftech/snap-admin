@@ -1,10 +1,15 @@
 package tech.ailef.dbadmin.external.dbmapping;
 
 import java.lang.reflect.Field;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import tech.ailef.dbadmin.external.annotations.DisplayImage;
+import tech.ailef.dbadmin.external.annotations.Filterable;
 
 public class DbField {
 	protected String dbName;
@@ -128,11 +133,47 @@ public class DbField {
 		return type == DbFieldType.TEXT;
 	}
 	
+	public boolean isFilterable() {
+		return getPrimitiveField().getAnnotation(Filterable.class) != null;
+	}
+	
+	public boolean isFilterableCategorical() {
+		Filterable filterable = getPrimitiveField().getAnnotation(Filterable.class);
+		return filterable != null && filterable.type().equalsIgnoreCase("categorical");
+	}
+	
+	public Set<DbFieldValue> getAllValues() {
+		List findAll = schema.getJpaRepository().findAll();
+		Set<DbFieldValue> allValues = new HashSet<>();
+		for (Object o : findAll) {
+			DbFieldValue val = new DbObject(o, schema).get(this);
+			allValues.add(val);
+		}
+		return allValues;
+	}
+	
 	@Override
 	public String toString() {
 		return "DbField [name=" + dbName + ", javaName=" + javaName + ", type=" + type + ", field=" + field
 				+ ", connectedType=" + connectedType + ", primaryKey=" + primaryKey + ", nullable=" + nullable
 				+ ", schema=" + schema.getClassName() + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(dbName, type);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DbField other = (DbField) obj;
+		return Objects.equals(dbName, other.dbName) && type == other.type;
 	}
 
 	

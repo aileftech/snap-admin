@@ -90,7 +90,7 @@ public class AdvancedJpaRepository extends SimpleJpaRepository {
         			.collect(Collectors.toList());
         
         List<Predicate> queryPredicates = new ArrayList<>();
-        if (q != null) {
+        if (q != null && !q.isBlank()) {
 	        for (DbField f : stringFields) {
 	        	Path path = root.get(f.getJavaName());
 	        	queryPredicates.add(cb.like(cb.lower(cb.toString(path)), "%" + q.toLowerCase() + "%"));
@@ -118,15 +118,15 @@ public class AdvancedJpaRepository extends SimpleJpaRepository {
 				);
 			} else if (op == CompareOperator.EQ) {
 				finalPredicates.add(
-					cb.equal(root.get(field), value)
+					cb.equal(root.get(field), Double.parseDouble(value.toString()))
 				);
 			} else if (op == CompareOperator.GT) {
 				finalPredicates.add(
-					cb.greaterThan(root.get(field), value.toString())
+					cb.greaterThan(root.get(field), Double.parseDouble(value.toString()))
 				);
 			} else if (op == CompareOperator.LT) {
 				finalPredicates.add(
-					cb.lessThan(root.get(field), value.toString())
+					cb.lessThan(root.get(field), Double.parseDouble(value.toString()))
 				);
 			} else if (op == CompareOperator.AFTER) {
 				if (value instanceof LocalDate)

@@ -81,7 +81,8 @@
 										<span title="Click to remove this filter" 
 											class="active-filter badge bg-primary me-1 mb-2 p-2 font-monospace cursor-pointer noselect"
 											th:data-formid="${filter.toString()}"
-											th:text="${filter}">
+											>
+											[[ ${filter}]] <!-- <i class="bi bi-x-circle"></i> -->
 										</span>
 										<form action="" th:id="${filter.toString()}" method="GET">
 											<th:block th:each="p : ${queryParams.keySet()}">
