@@ -82,7 +82,7 @@
 											class="active-filter badge bg-primary me-1 mb-2 p-2 font-monospace cursor-pointer noselect"
 											th:data-formid="${filter.toString()}"
 											>
-											[[ ${filter}]] <!-- <i class="bi bi-x-circle"></i> -->
+											[[ ${filter}]] <i class="bi bi-x-circle"></i>
 										</span>
 										<form action="" th:id="${filter.toString()}" method="GET">
 											<th:block th:each="p : ${queryParams.keySet()}">
