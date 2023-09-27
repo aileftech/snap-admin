@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import tech.ailef.dbadmin.external.annotations.DisplayImage;
 import tech.ailef.dbadmin.external.annotations.Filterable;
+import tech.ailef.dbadmin.external.annotations.FilterableType;
 
 public class DbField {
 	protected String dbName;
@@ -139,7 +140,7 @@ public class DbField {
 	
 	public boolean isFilterableCategorical() {
 		Filterable filterable = getPrimitiveField().getAnnotation(Filterable.class);
-		return filterable != null && filterable.type().equalsIgnoreCase("categorical");
+		return filterable != null && filterable.type() == FilterableType.CATEGORICAL;
 	}
 	
 	public Set<DbFieldValue> getAllValues() {

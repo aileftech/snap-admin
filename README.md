@@ -6,35 +6,40 @@ Spring Boot Database Admin scans your `@Entity` classes to generate a simple but
 
 [![Example page listing products](https://i.imgur.com/Nz19f8e.png)](https://i.imgur.com/Nz19f8e.png)
 
-Features:
+**Features:**
  * List objects with pagination and sorting
- * Show detailed object page which also includes `@OneToMany`, `@ManyToMany`, etc... fields
+ * Show object detail page, which also includes `@OneToMany`, `@ManyToMany`, etc... fields
  * Create/Edit objects
- * Action logs (i.e. see a history of all write operations done through the web UI)
+ * Action logs: history of all write operations executed through the web UI
  * Search
  * Customization
 
-The code is in a very early version and I'm trying to collect as much feedback as possible in order to fix the
-most common issues that will inevitably arise. If you are so kind to try the project and you find something
-broken, please report it as an issue and I will try to take a look at it.
+**Supported JPA annotations**
+ * Core: @Entity, @Table, @Column, @Lob, @Id
+ * Relationships: @OneToMany, @ManyToOne, @ManyToMany, @OneToOne
+
+The behaviour you specify with these annotations should be applied automatically by Spring Boot Database Admin as well. Keep in mind that using non-supported annotations will not necessarily result in an error, as they are simply ignored. Depending on what the annotation actually is, this could be just fine or result in an error if it interferes with something that Spring Boot Database Admin relies on.
+
+The code is still in a very early stage and it might not be robust if you use not-yet-supported JPA annotations.
+If find something broken with your configuration, please report it as an issue and I will try to take a look at it.
 
 ## Installation
 
-1. The code is not yet distributed on Maven, so for now you need to install manually. Clone the Github repo and `mvn install` the project, then include the dependency in your `pom.xml`:
+1. The code is not yet distributed on Maven, so for now you need to install manually. Clone the Github repo and execute `mvn install -DskipTests`  in the project's directory. Then, include the dependency in your `pom.xml`:
 
 ```
 <dependency>
 	<groupId>tech.ailef</groupId>
 	<artifactId>spring-boot-db-admin</artifactId>
-	<version>0.0.4</version>
+	<version>0.0.4</version> <!-- Make sure to put the correct version here -->
 </dependency>
 ```
 
-2. A few simple configuration steps are required on your end in order to integrate the library into your project. If you don't want
-to test on your own code, you can clone the [test project](https://github.com/aileftech/spring-boot-database-admin-test) which provides
+2. A few simple configuration steps are required on your end in order to integrate the library into your project. 
+If you don't want to test on your own code, you can clone the [test project](https://github.com/aileftech/spring-boot-database-admin-test) which provides
 a sample database and already configured code.
 
-If you wish to integrate it into your project instead, the first step is adding these to your `application.properties` file:
+Otherwise, go ahead and add these to your `application.properties` file:
 
 ```
 # Optional, default true
@@ -44,7 +49,7 @@ dbadmin.enabled=true
 dbadmin.baseUrl=admin
 
 # The package that contains your @Entity classes
-dbadmin.modelsPackage=tech.ailef.dbadmin.test.models
+dbadmin.modelsPackage=put.your.models.package.here
 ```
 
 The last step is to annotate your `@SpringBootApplication` class containing the `main` method with the following:
@@ -53,67 +58,21 @@ The last step is to annotate your `@SpringBootApplication` class containing the 
 @ImportAutoConfiguration(DbAdminAutoConfiguration.class)
 ```
 
-This will autoconfigure the various DbAdmin components when your application starts.
+This will autoconfigure Spring Boot Database Admin when your application starts. You are good to go!
 
-3. At this point, when you run your application, you should be able to visit `http://localhost:$PORT/${baseUrl}` and access the web interface.
+3. At this point, when you run your application, you should be able to visit `http://localhost:${port}/${dbadmin.baseUrl}` and see the web interface.
 
 ## Documentation
 
-For more detailed documentation, visit https://aileftech.github.io/spring-boot-database-admin/.
+Available at: https://aileftech.github.io/spring-boot-database-admin/.
 
-Once you are correctly running Spring Boot Database Admin, you will be able to access the web interface. Most of the features are already available with the basic configuration. However, some customization to the interface might be applied by using appropriate annotations on your classes fields or methods. 
-The following annotations are supported.
+## Issues
 
-### @DisplayName
-```
-@DisplayName
-public String getName() {
-	return name;
-}
-```
+If you find a problem or a bug, please report it as issue. When doing so, include as much information as possible, and in particular:
 
-When displaying a reference to an item, by default we show its primary key. If a class has a `@DisplayName`, this method will be used in addition to the primary key whenever possible, giving the user a more readable option. 
-
-### @DisplayFormat
-```
-@DisplayFormat(format = "$%.2f")
-private Double price;
-```
-
-Specify a format string to apply when displaying the field.
-
-### @ComputedColumn
-```
-@ComputedColumn
-public double totalSpent() {
-	double total = 0;
-	for (Order o : orders) {
-		total += o.total();
-	}
-	return total;
-}
-```
-
-This annotation can be used to add values computed at runtime that are shown like additional columns.
-
-### @Filterable
-
-```
-@Filterable
-private LocalDate createdAt;
-```
-
-Place on one or more fields in a class to activate the faceted search feature. This will allow you to easily combine all these filters when operating on the table. Can only be placed on fields that correspond to physical columns on the table (e.g. no `@ManyToMany`/`@OneToMany`) and that are not binary (`byte[]`).
-
-### @DisplayImage
-
-```
-@DisplayImage
-private byte[] image;
-```
-
-This annotation can be placed on binary fields to declare they are storing an image and that we want it displayed when possible. The image will be shown as a small thumbnail.
-
+ * provide the code for the involved `@Entity` classes, if possible
+ * provide the full stack trace of the error
+ * specify if you are using any particular configuration either in your `application.properties` or through annotations
 
 ## Changelog
 

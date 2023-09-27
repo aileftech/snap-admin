@@ -13,7 +13,7 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/properties.min.js"></script>
 		<script type="text/javascript">
 			document.addEventListener('DOMContentLoaded', function() {
-				document.querySelectorAll('h2, h3, h4, h5, h6').forEach(heading => {
+				document.querySelectorAll('h2, h3, h4, h5').forEach(heading => {
 					let tag = heading.tagName.replace('H', '');
 
 					document.getElementById('toc').innerHTML +=
@@ -63,7 +63,7 @@
 
 <h2 id="introduction">1. Introduction</h2>
 
-<p>The following documentation outlines how to install, configure and customize Spring Boot Database Admin panel. Refer to this document for troubleshooting and if you still encounter problems, please report it as an issue on Github.</p>
+<p>The following documentation outlines how to install, configure and customize Spring Boot Database Admin panel. Refer to this document for troubleshooting and if you still encounter problems, please <a href="https://github.com/aileftech/spring-boot-database-admin/issues" target="_blank">report it as an issue on Github</a>.</p>
 <div class="separator"></div>
 <h2 id="getting-started">2. Getting started</h2>
 <p>Getting started with Spring Boot Database Admin requires including it as a dependency and then performing a simple configuration step.</p>
@@ -145,6 +145,22 @@ private Double price;
 
 
 <h4 id="computed-column">3.1.3 @ComputedColumn</h4>
+<h6>Supported parameters</h6>
+<table class="table table-striped">
+	<tr>
+		<th>Name</th>
+		<th>Type</th>
+		<th>Required</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td class="fw-bold">name</td>
+		<td>String</td>
+		<td>false</td>
+		<td>The name of this column in the web interface. The method's name is used if this value is not specified.</td>
+	</tr>
+</table>
+<h6>Code example</h6>
 	<pre>
 <code class="language-java">@ComputedColumn
 public double totalSpent() {
@@ -160,14 +176,35 @@ public double totalSpent() {
 <p>This annotation can be used to add values computed at runtime that are shown like additional columns.</p>
 
 <h4 id="filterable">3.1.4 @Filterable</h4>
-
+<h6>Supported parameters</h6>
+<table class="table table-striped">
+	<tr>
+		<th>Name</th>
+		<th>Required</th>
+		<th>Type</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td class="fw-bold">type</td>
+		<td>false</td>
+		<td>Enum (<code>DEFAULT</code>, <code>CATEGORICAL</code>)</td>
+		<td>If <code>CATEGORICAL</code>, this changes the filter in the UI to shows all the possible values directly instead of providing a autocomplete form.</td>
+	</tr>
+</table>
+<h6>Code example</h6>
 <pre>
 <code class="language-java">@Filterable
 private LocalDate createdAt;
+
+@Filterable(type=FilterableType.CATEGORICAL)
+@ManyToOne
+private User user;
 </code>
 </pre>
 
-<p>Place on one or more fields in a class to activate the faceted search feature. This will allow you to easily combine all these filters when operating on the table. Can only be placed on fields that correspond to physical columns on the table (e.g. no `@ManyToMany`/`@OneToMany`) and that are not binary (`byte[]`).</p>
+
+
+<p>Place on one or more fields in a class to activate the faceted search feature. This will allow you to easily combine all these filters when operating on the table. Can only be placed on fields that correspond to physical columns on the table (e.g. no <code>@ManyToMany</code>/<code>@OneToMany</code>) and that are not binary (<code>byte[]</code>).</p>
 
 <h4 id="display-image">3.1.5 @DisplayImage</h4>
 
@@ -190,6 +227,10 @@ private byte[] image;
 <h2>4. Security</h2>
 <p>Spring Boot Database Admin does not implement authentication and/or authorization mechanisms. However, you can use a standard Spring security configuration in order to limit access to the web UI or specific parts of it.</p>
 <p>All Spring Boot Database Admin routes start with the value of <code>dbadmin.baseUrl</code> property, and all write operations (edit, create, delete) are implemented as <code>POST</code> calls.</p>
+<div class="separator"></div>
+<h2>5. Troubleshooting</h2>
+
+
 				</div>
 			</div>
 			

@@ -16,5 +16,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface Filterable {
-	public String type() default "";
+	public FilterableType type() default FilterableType.DEFAULT;
 }
