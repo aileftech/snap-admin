@@ -43,18 +43,6 @@
     	<div class="sidebar-top">
         	<h6 class="fw-bold pt-2 ms-3 menu-subheading d-none d-md-block">MENU</h6>
         	<ul class="sidebar-menu pb-0 mb-0 ">
-        		<li th:class="${#strings.equals(activePage, 'home') ? 'active' : ''}">
-    				<a th:href="|/${baseUrl}|">
-	        			<div class="d-flex align-items-center">
-	        				<div class="menu-icon">
-	        					<i class="bi bi-house"></i>
-	        				</div>
-	        				<div class="menu-entry-text d-none d-md-block">
-	        					Home
-	        				</div>
-	        			</div>
-    				</a>
-        		</li>
         		<li th:class="${#strings.equals(activePage, 'entities') ? 'active' : ''}">
     				<a th:href="|/${baseUrl}|">
 	        			<div class="d-flex align-items-center">

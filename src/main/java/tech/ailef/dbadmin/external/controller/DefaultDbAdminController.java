@@ -19,7 +19,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -89,7 +88,7 @@ public class DefaultDbAdminController {
 		model.addAttribute("schemas", schemas);
 		model.addAttribute("query", query);
 		model.addAttribute("counts", counts);
-		model.addAttribute("activePage", "home");
+		model.addAttribute("activePage", "entities");
 		model.addAttribute("title", "Entities | Index");
 		
 		return "home";
@@ -124,17 +123,20 @@ public class DefaultDbAdminController {
 		if (page == null) page = 1;
 		if (pageSize == null) pageSize = 50;
 		
-		Set<QueryFilter> queryFilters = Utils.computeFilters(otherParams);
+		DbObjectSchema schema = dbAdmin.findSchemaByClassName(className);
+		
+		Set<QueryFilter> queryFilters = Utils.computeFilters(schema, otherParams);
 		if (otherParams.containsKey("remove_field")) {
 			List<String> fields = otherParams.get("remove_field");
 			
 			for (int i = 0; i < fields.size(); i++) {
 				QueryFilter toRemove = 
 					new QueryFilter(
-						fields.get(i), 
+						schema.getFieldByJavaName(fields.get(i)), 
 						CompareOperator.valueOf(otherParams.get("remove_op").get(i).toUpperCase()), 
 						otherParams.get("remove_value").get(i)
 					);
+				
 				queryFilters.removeIf(f -> f.equals(toRemove));
 			}
 			
@@ -159,8 +161,6 @@ public class DefaultDbAdminController {
 			String redirectUrl = request.getServletPath() + queryString; 
 			return "redirect:" + redirectUrl.trim();
 		}
-		
-		DbObjectSchema schema = dbAdmin.findSchemaByClassName(className);
 		
 		try {
 			PaginatedResult<DbObject> result = null;

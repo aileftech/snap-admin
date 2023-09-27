@@ -7,8 +7,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Logger;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
@@ -20,12 +21,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import tech.ailef.dbadmin.external.annotations.DisplayFormat;
-import tech.ailef.dbadmin.external.dbmapping.AdvancedJpaRepository;
+import tech.ailef.dbadmin.external.dbmapping.CustomJpaRepository;
 import tech.ailef.dbadmin.external.dbmapping.DbField;
 import tech.ailef.dbadmin.external.dbmapping.DbFieldType;
 import tech.ailef.dbadmin.external.dbmapping.DbObjectSchema;
@@ -43,9 +45,8 @@ import tech.ailef.dbadmin.external.misc.Utils;
  */
 @Component
 public class DbAdmin {
-	private static final Logger logger = Logger.getLogger(DbAdmin.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(DbAdmin.class.getName());
 	
-//	@PersistenceContext
 	private EntityManager entityManager;
 	
 	private List<DbObjectSchema> schemas = new ArrayList<>();
@@ -125,24 +126,22 @@ public class DbAdmin {
 		try {
 			Class<?> klass = Class.forName(fullClassName);
 			DbObjectSchema schema = new DbObjectSchema(klass, this);
-			AdvancedJpaRepository simpleJpaRepository = new AdvancedJpaRepository(schema, entityManager);
+			CustomJpaRepository simpleJpaRepository = new CustomJpaRepository(schema, entityManager);
 			schema.setJpaRepository(simpleJpaRepository);
-				
-			System.out.println("\n\n******************************************************");
-			System.out.println("* Class: " + klass + " - Table: " + schema.getTableName());
-			System.out.println("******************************************************");
+			
+			logger.debug("Processing class: "  + klass + " - Table: " + schema.getTableName());
 			
 			Field[] fields = klass.getDeclaredFields();
 			for (Field f : fields) {
-				System.out.println(" - Mapping field " + f);
 				DbField field = mapField(f, schema);
 				if (field == null) {
 					throw new DbAdminException("Impossible to map field: " + f);
 				}
 				field.setSchema(schema);
-				
 				schema.addField(field);
 			}
+			
+			logger.debug("Processed " + klass + ", extracted " + schema.getSortedFields().size() + " fields");
 			
 			return schema;
 		} catch (ClassNotFoundException |
@@ -201,6 +200,7 @@ public class DbAdmin {
 		ManyToMany manyToMany = f.getAnnotation(ManyToMany.class);
 		ManyToOne manyToOne = f.getAnnotation(ManyToOne.class);
 		OneToOne oneToOne = f.getAnnotation(OneToOne.class);
+		Lob lob = f.getAnnotation(Lob.class);
 		
 		String fieldName = determineFieldName(f);
 		
@@ -212,6 +212,10 @@ public class DbAdmin {
 		DbFieldType fieldType = null;
 		try {
 			fieldType = DbFieldType.fromClass(f.getType());
+			
+			if (fieldType != null && lob != null && fieldType == DbFieldType.STRING) {
+				fieldType = DbFieldType.TEXT;
+			}
 		} catch (DbAdminException e) {
 			// If failure, we try to map a relationship on this field
 		}

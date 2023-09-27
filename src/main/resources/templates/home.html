@@ -8,8 +8,8 @@
 	        <div class="d-flex">
 	        	<div th:replace="~{fragments/resources :: sidebar('entities')}"></div>
 	        	<div class="main-content bg-lighter">
-					<h1 class="fw-bold mb-4"><i class="align-middle bi bi-house"></i><span class="align-middle"> Home</span></h1>
-					<form th:action="${baseUrl}" method="GET">
+					<h1 class="fw-bold mb-4"><i class="align-middle bi bi-database"></i><span class="align-middle"> Entities</span></h1>
+					<form th:action="|/${baseUrl}|" method="GET">
     					<div class="input-group">
     						<input type="text" th:value="${query}"
     						placeholder="Type a class or a table name and press ENTER to search" 
@@ -58,108 +58,8 @@
 							</div>
 	        			</div>
 	        		</div>
-	        		<!-- <h1 class="fw-bold mb-4"><i class="bi bi-bounding-box-circles"></i> Dashboard</h1>
-	        		<div class="alert mt-4 alert-warning" role="alert">
-		        		<i class="bi bi-info-circle"></i>
-		        		<span>
-		        			In some sections, this website displays unfiltered war footage from Telegram channels.
-		        			This might be NSFW and/or hurt your sensibility. Proceed at your own discretion. 
-		        		</span>
-	        		</div>
-	        		<div class="row">
-			        	<div class="col pb-4">
-			        		<form action="/search" method="get" class="form">
-			        			<div class="input-group">
-			        				<input type="text" name="query" class="form-control ui-text-input" placeholder="Quick search">
-			        				<button class="ui-btn btn btn-primary">Search</button>
-			        			</div>
-			        		</form>
-			        	</div>
-			        </div>
-			        <div class="separator"></div>
-			        <div class="row mt-4">
-			        	<div class="col-12 col-lg-6">
-			        		<div class="box with-footer-button">
-			        			<h3 class="fw-bold"><i class="bi bi-chat-dots"></i> Total messages</h3>
-			        			<p class="fine">The total number of messages indexed since Feb 23, 2022.</p>
-			        			<p class="fs-bigger" th:text="${countMessages}"></p>
-			        			<div class="separator mb-3 mt-3"></div>
-			        			<div class="row mt-1">
-									<div class="col-6 text-center">
-										<h4> <span th:text="${countMessagesOneDay}"></span></h4>
-										<p class="mb-0 text-center fw-bold">LAST 24 HOURS</p>
-									</div>
-									<div class="col-6 text-center">
-										<h4> <span th:text="${countMessagesOneHour}"></span></h4>
-										<p class="mb-0 text-center fw-bold">LAST HOUR</p>
-									</div>
-								</div>
-			        			<a href="/search"
-									class="text-decoration-none color-black">
-									<div class="explore-channel text-center">
-										<p class="m-0 p-0">
-											SEARCH MESSAGES		 
-										</p>
-									</div>
-								</a>
-			        			
-			        		</div>
-			        	</div>
-			        	<div class="col-12 col-lg-6 mt-4 mt-lg-0">
-			        		<div class="box with-footer-button">
-			        			<h3 class="fw-bold"><i class="bi bi-megaphone"></i> Total channels</h3>
-			        			<p class="fine">The total number of channels, a fraction of which is actively indexed.</p>
-			        			<p class="fs-bigger" th:text="${countChannels}"></p>
-			        			<div class="separator mb-3 mt-3"></div>
-			        			<div class="row mt-1">
-									<div class="col-4 text-center">
-										<h4> <span class="fw-bold" th:text="${countChannelsEn}"></span></h4>
-										<p class="mb-0 text-center fw-bold">&#x1F1EC;&#x1F1E7; English</p>
-									</div>
-									<div class="col-4 text-center">
-										<h4> <span class="fw-bold" th:text="${countChannelsRu}"></span></h4>
-										<p class="mb-0 text-center fw-bold">&#x1F1F7;&#x1F1FA; Russian</p>
-									</div>
-									<div class="col-4 text-center">
-										<h4> <span class="fw-bold" th:text="${countChannelsUa}"></span></h4>
-										<p class="mb-0 text-center fw-bold">&#x1F1FA;&#x1F1E6; Ukrainian</p>
-									</div>
-								</div>
-			        			<a href="/channels"
-									class="text-decoration-none color-black">
-									<div class="explore-channel text-center">
-										<p class="m-0 p-0">
-											EXPLORE CHANNELS		 
-										</p>
-									</div>
-								</a>
-			        		</div>
-			        	</div>
-			        </div>
-			        <div class="row mt-4">
-			        	<div class="col-lg-12 col-xxl-8">
-			        		<div class="box d-none d-sm-block">
-			        			<h3 class="fw-bold"><i class="bi bi-graph-up"></i> Messages per day</h3>
-			        			A
-			        		</div>
-			        	</div>
-			        	<div class="col-lg-12 col-xxl-4 mt-4 mt-xxl-0 ">
-			        		<div class="box">
-			        			<h3 class="fw-bold mb-4"><i class="bi bi-graph-up-arrow"></i> Trending topics</h3>
-			        			CIAO
-			        		</div>
-			        	</div>
-			        </div>
-			        -->
-			       
 	        	</div>
 	        </div>
 	    </div>
-	</body>
-</html>
-			
-			
-			
-		
 	</body>
 </html>

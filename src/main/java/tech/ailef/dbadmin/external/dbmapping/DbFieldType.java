@@ -108,6 +108,7 @@ public enum DbFieldType {
 
 		@Override
 		public Object parseValue(Object value) {
+			if (value == null) return null;
 			return LocalDate.parse(value.toString());
 		}
 
@@ -129,6 +130,7 @@ public enum DbFieldType {
 
 		@Override
 		public Object parseValue(Object value) {
+			if (value == null || value.toString().isBlank()) return null;
 			return LocalDateTime.parse(value.toString());
 		}
 
@@ -162,6 +164,28 @@ public enum DbFieldType {
 		public List<CompareOperator> getCompareOperators() {
 			return List.of(CompareOperator.CONTAINS, CompareOperator.STRING_EQ);
 		}
+	},
+	TEXT {
+		@Override
+		public String getHTMLName() {
+			return "textarea";
+		}
+
+		@Override
+		public Object parseValue(Object value) {
+			return value;
+		}
+
+		@Override
+		public Class<?> getJavaClass() {
+			return String.class;
+		}
+
+		@Override
+		public List<CompareOperator> getCompareOperators() {
+			return List.of(CompareOperator.CONTAINS, CompareOperator.STRING_EQ);
+		}
+		
 	},
 	BOOLEAN {
 		@Override

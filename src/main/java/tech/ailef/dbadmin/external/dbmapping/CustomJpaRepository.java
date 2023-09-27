@@ -26,14 +26,14 @@ import tech.ailef.dbadmin.external.dto.QueryFilter;
 import tech.ailef.dbadmin.external.exceptions.DbAdminException;
 
 @SuppressWarnings("rawtypes")
-public class AdvancedJpaRepository extends SimpleJpaRepository {
+public class CustomJpaRepository extends SimpleJpaRepository {
 
 	private EntityManager entityManager;
 	
 	private DbObjectSchema schema;
 	
 	@SuppressWarnings("unchecked")
-	public AdvancedJpaRepository(DbObjectSchema schema, EntityManager em) {
+	public CustomJpaRepository(DbObjectSchema schema, EntityManager em) {
 		super(schema.getJavaClass(), em);
 		this.entityManager = em;
 		this.schema = schema;
@@ -90,7 +90,7 @@ public class AdvancedJpaRepository extends SimpleJpaRepository {
         			.collect(Collectors.toList());
         
         List<Predicate> queryPredicates = new ArrayList<>();
-        if (q != null) {
+        if (q != null && !q.isBlank()) {
 	        for (DbField f : stringFields) {
 	        	Path path = root.get(f.getJavaName());
 	        	queryPredicates.add(cb.like(cb.lower(cb.toString(path)), "%" + q.toLowerCase() + "%"));
@@ -104,48 +104,51 @@ public class AdvancedJpaRepository extends SimpleJpaRepository {
         if (queryFilters == null) queryFilters = new HashSet<>();
         for (QueryFilter filter  : queryFilters) {
         	CompareOperator op = filter.getOp();
-        	String field = filter.getField();
+        	DbField dbField = filter.getField();
+        	String fieldName = dbField.getJavaName();
         	String v = filter.getValue();
         	
-        	DbField dbField = schema.getFieldByJavaName(field);
         	Object value = dbField.getType().parseValue(v);
         	
 			if (op == CompareOperator.STRING_EQ) {
-				finalPredicates.add(cb.equal(cb.lower(cb.toString(root.get(field))), value.toString().toLowerCase()));
+				if (value == null)
+					finalPredicates.add(cb.isNull(root.get(fieldName)));
+				else
+					finalPredicates.add(cb.equal(cb.lower(cb.toString(root.get(fieldName))), value.toString().toLowerCase()));
 			} else if (op == CompareOperator.CONTAINS) {
 				finalPredicates.add(
-					cb.like(cb.lower(cb.toString(root.get(field))), "%" + value.toString().toLowerCase() + "%")
+					cb.like(cb.lower(cb.toString(root.get(fieldName))), "%" + value.toString().toLowerCase() + "%")
 				);
 			} else if (op == CompareOperator.EQ) {
 				finalPredicates.add(
-					cb.equal(root.get(field), value)
+					cb.equal(root.get(fieldName), value)
 				);
 			} else if (op == CompareOperator.GT) {
 				finalPredicates.add(
-					cb.greaterThan(root.get(field), value.toString())
+					cb.greaterThan(root.get(fieldName), value.toString())
 				);
 			} else if (op == CompareOperator.LT) {
 				finalPredicates.add(
-					cb.lessThan(root.get(field), value.toString())
+					cb.lessThan(root.get(fieldName), value.toString())
 				);
 			} else if (op == CompareOperator.AFTER) {
 				if (value instanceof LocalDate)
 					finalPredicates.add(
-						cb.greaterThan(root.get(field), (LocalDate)value)
+						cb.greaterThan(root.get(fieldName), (LocalDate)value)
 					);
 				else if (value instanceof LocalDateTime)
 					finalPredicates.add(
-						cb.greaterThan(root.get(field), (LocalDateTime)value)
+						cb.greaterThan(root.get(fieldName), (LocalDateTime)value)
 					);
 				
 			} else if (op == CompareOperator.BEFORE) {
 				if (value instanceof LocalDate)
 					finalPredicates.add(
-						cb.lessThan(root.get(field), (LocalDate)value)
+						cb.lessThan(root.get(fieldName), (LocalDate)value)
 					);
 				else if (value instanceof LocalDateTime)
 					finalPredicates.add(
-						cb.lessThan(root.get(field), (LocalDateTime)value)
+						cb.lessThan(root.get(fieldName), (LocalDateTime)value)
 					);
 				
 			}

@@ -8,8 +8,8 @@ document.addEventListener("DOMContentLoaded", () => {
 		let activeFilters = root.querySelectorAll(".active-filter");
 		activeFilters.forEach(activeFilter => {
 			activeFilter.addEventListener('click', function(e) {
-				let formId = e.target.dataset.formid;
-				document.getElementById(formId).submit()
+				let formId = activeFilter.dataset.formid;
+				document.getElementById(formId).submit();
 			});
 		});
 	
