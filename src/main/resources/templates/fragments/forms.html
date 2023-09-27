@@ -130,6 +130,13 @@
 						<ul class="categorical-select">
 							<li th:each="categoricalValue : ${field.getAllValues()}">
 								<form action="" method="GET">
+									<!--/*--> Propagate queryParams containing other filters with hidden fields <!--*/-->
+									<th:block th:each="p : ${queryParams.keySet()}">
+					                	<input th:each="v : ${queryParams.get(p)}" 
+					                		th:name="${p}" th:value="${v}" type="hidden"
+					                		th:if="${p.startsWith('filter_')}">
+					                </th:block>
+									
 									<!-- Reset page when applying filter to start back at page 1 -->
 									<input type="hidden" name="page" value="1">
 									<input type="hidden" name="pageSize" th:value="${page.getPagination().getPageSize()}">

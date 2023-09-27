@@ -26,14 +26,14 @@ import tech.ailef.dbadmin.external.dto.QueryFilter;
 import tech.ailef.dbadmin.external.exceptions.DbAdminException;
 
 @SuppressWarnings("rawtypes")
-public class AdvancedJpaRepository extends SimpleJpaRepository {
+public class CustomJpaRepository extends SimpleJpaRepository {
 
 	private EntityManager entityManager;
 	
 	private DbObjectSchema schema;
 	
 	@SuppressWarnings("unchecked")
-	public AdvancedJpaRepository(DbObjectSchema schema, EntityManager em) {
+	public CustomJpaRepository(DbObjectSchema schema, EntityManager em) {
 		super(schema.getJavaClass(), em);
 		this.entityManager = em;
 		this.schema = schema;

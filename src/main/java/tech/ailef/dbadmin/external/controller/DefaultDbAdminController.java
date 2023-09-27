@@ -88,7 +88,7 @@ public class DefaultDbAdminController {
 		model.addAttribute("schemas", schemas);
 		model.addAttribute("query", query);
 		model.addAttribute("counts", counts);
-		model.addAttribute("activePage", "home");
+		model.addAttribute("activePage", "entities");
 		model.addAttribute("title", "Entities | Index");
 		
 		return "home";
@@ -136,7 +136,7 @@ public class DefaultDbAdminController {
 						CompareOperator.valueOf(otherParams.get("remove_op").get(i).toUpperCase()), 
 						otherParams.get("remove_value").get(i)
 					);
-				System.out.println("TOREMOVE = " + toRemove);
+				
 				queryFilters.removeIf(f -> f.equals(toRemove));
 			}
 			

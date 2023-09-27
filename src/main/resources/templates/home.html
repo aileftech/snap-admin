@@ -8,8 +8,8 @@
 	        <div class="d-flex">
 	        	<div th:replace="~{fragments/resources :: sidebar('entities')}"></div>
 	        	<div class="main-content bg-lighter">
-					<h1 class="fw-bold mb-4"><i class="align-middle bi bi-house"></i><span class="align-middle"> Home</span></h1>
-					<form th:action="${baseUrl}" method="GET">
+					<h1 class="fw-bold mb-4"><i class="align-middle bi bi-database"></i><span class="align-middle"> Entities</span></h1>
+					<form th:action="|/${baseUrl}|" method="GET">
     					<div class="input-group">
     						<input type="text" th:value="${query}"
     						placeholder="Type a class or a table name and press ENTER to search" 

@@ -39,7 +39,7 @@ public class DbObjectSchema {
 	/**
 	 * A JPA repository to operate on the database
 	 */
-	private AdvancedJpaRepository jpaRepository;
+	private CustomJpaRepository jpaRepository;
 	
 	private DbAdmin dbAdmin;
 	
@@ -113,11 +113,11 @@ public class DbObjectSchema {
 		fields.add(f);
 	}
 
-	public AdvancedJpaRepository getJpaRepository() {
+	public CustomJpaRepository getJpaRepository() {
 		return jpaRepository;
 	}
 
-	public void setJpaRepository(AdvancedJpaRepository jpaRepository) {
+	public void setJpaRepository(CustomJpaRepository jpaRepository) {
 		this.jpaRepository = jpaRepository;
 	}
 	

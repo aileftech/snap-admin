@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -144,13 +145,10 @@ public class DbField {
 	}
 	
 	public Set<DbFieldValue> getAllValues() {
-		List findAll = schema.getJpaRepository().findAll();
-		Set<DbFieldValue> allValues = new HashSet<>();
-		for (Object o : findAll) {
-			DbFieldValue val = new DbObject(o, schema).get(this);
-			allValues.add(val);
-		}
-		return allValues;
+		List<?> findAll = schema.getJpaRepository().findAll();
+		return findAll.stream()
+					.map(o -> new DbObject(o, schema).get(this))
+					.collect(Collectors.toSet());
 	}
 	
 	@Override

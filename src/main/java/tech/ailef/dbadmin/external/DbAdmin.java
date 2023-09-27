@@ -26,7 +26,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import tech.ailef.dbadmin.external.annotations.DisplayFormat;
-import tech.ailef.dbadmin.external.dbmapping.AdvancedJpaRepository;
+import tech.ailef.dbadmin.external.dbmapping.CustomJpaRepository;
 import tech.ailef.dbadmin.external.dbmapping.DbField;
 import tech.ailef.dbadmin.external.dbmapping.DbFieldType;
 import tech.ailef.dbadmin.external.dbmapping.DbObjectSchema;
@@ -126,7 +126,7 @@ public class DbAdmin {
 		try {
 			Class<?> klass = Class.forName(fullClassName);
 			DbObjectSchema schema = new DbObjectSchema(klass, this);
-			AdvancedJpaRepository simpleJpaRepository = new AdvancedJpaRepository(schema, entityManager);
+			CustomJpaRepository simpleJpaRepository = new CustomJpaRepository(schema, entityManager);
 			schema.setJpaRepository(simpleJpaRepository);
 				
 			System.out.println("\n\n******************************************************");

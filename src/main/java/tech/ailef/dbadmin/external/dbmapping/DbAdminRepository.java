@@ -220,7 +220,7 @@ public class DbAdminRepository {
 	 */
 	public PaginatedResult<DbObject> search(DbObjectSchema schema, String query, int page, int pageSize, String sortKey, 
 			String sortOrder, Set<QueryFilter> queryFilters) {
-		AdvancedJpaRepository jpaRepository = schema.getJpaRepository();
+		CustomJpaRepository jpaRepository = schema.getJpaRepository();
         
 		long maxElement = count(schema, query, queryFilters);
 		int maxPage = (int)(Math.ceil ((double)maxElement / pageSize));
@@ -245,7 +245,7 @@ public class DbAdminRepository {
 	 * @return
 	 */
 	public List<DbObject> search(DbObjectSchema schema, String query) {
-		AdvancedJpaRepository jpaRepository = schema.getJpaRepository();
+		CustomJpaRepository jpaRepository = schema.getJpaRepository();
 		
 		return jpaRepository.search(query, 1, 50, null, null, null).stream()
 					.map(o  -> new DbObject(o, schema))
