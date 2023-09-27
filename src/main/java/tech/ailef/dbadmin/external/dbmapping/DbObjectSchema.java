@@ -187,12 +187,8 @@ public class DbObjectSchema {
 	}
 	
 	public List<DbObject> findAll() {
-		List r = jpaRepository.findAll();
-		List<DbObject> results = new ArrayList<>();
-		for (Object o : r) {
-			results.add(new DbObject(o, this));
-		}
-		return results;
+		List<?> r = jpaRepository.findAll();
+		return r.stream().map(o -> new DbObject(o, this)).toList();
 	}
 
 	@Override

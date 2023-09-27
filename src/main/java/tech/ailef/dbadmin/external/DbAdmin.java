@@ -7,8 +7,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Logger;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
@@ -44,9 +45,8 @@ import tech.ailef.dbadmin.external.misc.Utils;
  */
 @Component
 public class DbAdmin {
-	private static final Logger logger = Logger.getLogger(DbAdmin.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(DbAdmin.class.getName());
 	
-//	@PersistenceContext
 	private EntityManager entityManager;
 	
 	private List<DbObjectSchema> schemas = new ArrayList<>();
@@ -128,22 +128,20 @@ public class DbAdmin {
 			DbObjectSchema schema = new DbObjectSchema(klass, this);
 			CustomJpaRepository simpleJpaRepository = new CustomJpaRepository(schema, entityManager);
 			schema.setJpaRepository(simpleJpaRepository);
-				
-			System.out.println("\n\n******************************************************");
-			System.out.println("* Class: " + klass + " - Table: " + schema.getTableName());
-			System.out.println("******************************************************");
+			
+			logger.debug("Processing class: "  + klass + " - Table: " + schema.getTableName());
 			
 			Field[] fields = klass.getDeclaredFields();
 			for (Field f : fields) {
-				System.out.println(" - Mapping field " + f);
 				DbField field = mapField(f, schema);
 				if (field == null) {
 					throw new DbAdminException("Impossible to map field: " + f);
 				}
 				field.setSchema(schema);
-				
 				schema.addField(field);
 			}
+			
+			logger.debug("Processed " + klass + ", extracted " + schema.getSortedFields().size() + " fields");
 			
 			return schema;
 		} catch (ClassNotFoundException |

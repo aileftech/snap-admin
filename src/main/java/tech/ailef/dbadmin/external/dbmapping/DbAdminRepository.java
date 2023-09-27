@@ -81,7 +81,7 @@ public class DbAdminRepository {
 	 * @return
 	 */
 	@SuppressWarnings("rawtypes")
-	public PaginatedResult findAll(DbObjectSchema schema, int page, int pageSize, String sortKey, String sortOrder) {
+	public PaginatedResult<DbObject> findAll(DbObjectSchema schema, int page, int pageSize, String sortKey, String sortOrder) {
 		SimpleJpaRepository repository = schema.getJpaRepository();
 		
 		long maxElement = count(schema);
