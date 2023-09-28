@@ -36,7 +36,6 @@ public class GlobalController {
 	
 	/**
 	 * The baseUrl as specified in the properties file by the user
-	 * @param request
 	 * @return
 	 */
 	@ModelAttribute("baseUrl")

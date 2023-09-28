@@ -256,7 +256,6 @@ public class DbAdminRepository {
 	 * Delete a specific object
 	 * @param schema
 	 * @param id
-	 * @return
 	 */
 	@SuppressWarnings("unchecked")
 	@Transactional("transactionManager")
