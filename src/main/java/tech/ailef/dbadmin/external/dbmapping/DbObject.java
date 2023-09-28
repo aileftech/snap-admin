@@ -15,9 +15,19 @@ import tech.ailef.dbadmin.external.annotations.DisplayName;
 import tech.ailef.dbadmin.external.exceptions.DbAdminException;
 import tech.ailef.dbadmin.external.misc.Utils;
 
+/**
+ * Wrapper for all objects retrieved from the database.
+ *
+ */
 public class DbObject {
+	/**
+	 * The instance of the object, i.e. an instance of the `@Entity` class
+	 */
 	private Object instance;
 	
+	/**
+	 * The schema this object belongs to
+	 */
 	private DbObjectSchema schema;
 	
 	public DbObject(Object instance, DbObjectSchema schema) {

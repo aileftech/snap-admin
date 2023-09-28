@@ -43,11 +43,21 @@ public class GlobalController {
 		return props.getBaseUrl();
 	}
 	
+	/**
+	 * The full request URL, not including the query string
+	 * @param request
+	 * @return
+	 */
 	@ModelAttribute("requestUrl")
 	public String getRequestUrl(HttpServletRequest request) {
 		return request.getRequestURI();
 	}
 	
+	/**
+	 * The UserConfiguration object used to retrieve values specified
+	 * in the settings table.
+	 * @return
+	 */
 	@ModelAttribute("userConf")
 	public UserConfiguration getUserConf() {
 		return userConf;

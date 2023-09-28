@@ -1,5 +1,9 @@
 package tech.ailef.dbadmin.external.dto;
 
+/**
+ * A list of operators that are used in faceted search. 
+ *
+ */
 public enum CompareOperator {
 	GT {
 		@Override

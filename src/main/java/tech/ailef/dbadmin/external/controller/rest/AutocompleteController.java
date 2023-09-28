@@ -28,6 +28,12 @@ public class AutocompleteController {
 	@Autowired
 	private DbAdminRepository repository;
 	
+	/**
+	 * Returns a list of entities from a given table that match an input query.
+	 * @param className
+	 * @param query
+	 * @return
+	 */
 	@GetMapping("/{className}")
 	public ResponseEntity<?> autocomplete(@PathVariable String className, @RequestParam String query) {
 		DbObjectSchema schema = dbAdmin.findSchemaByClassName(className);

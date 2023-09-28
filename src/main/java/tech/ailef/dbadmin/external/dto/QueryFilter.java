@@ -29,6 +29,10 @@ public class QueryFilter {
 		return value;
 	}
 
+	/**
+	 * Provides a readable version of this query filter, customized
+	 * based on field type and/or operator.
+	 */
 	@Override
 	public String toString() {
 		if (value != null && !value.toString().isBlank()) {

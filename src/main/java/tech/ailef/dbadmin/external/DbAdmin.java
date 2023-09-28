@@ -53,6 +53,12 @@ public class DbAdmin {
 	
 	private String modelsPackage;
 	
+	/**
+	 * Builds the DbAdmin instance by scanning the `@Entity` beans and loading
+	 * the schemas.
+	 * @param entityManager	the entity manager
+	 * @param properties	the configuration properties
+	 */
 	public DbAdmin(@Autowired EntityManager entityManager, @Autowired DbAdminProperties properties) {
 		this.modelsPackage = properties.getModelsPackage();
 		this.entityManager = entityManager;
@@ -71,7 +77,7 @@ public class DbAdmin {
 
 	/**
 	 * Returns all the loaded schemas (i.e. entity classes)
-	 * @return
+	 * @return the list of loaded schemas from the `@Entity` classes
 	 */
 	public List<DbObjectSchema> getSchemas() {
 		return Collections.unmodifiableList(schemas);
@@ -80,7 +86,7 @@ public class DbAdmin {
 	/**
 	 * Finds a schema by its full class name
 	 * @param className	qualified class name
-	 * @return 
+	 * @return the schema with this class name
 	 * @throws DbAdminException if corresponding schema not found
 	 */
 	public DbObjectSchema findSchemaByClassName(String className) {
@@ -92,7 +98,7 @@ public class DbAdmin {
 	/**
 	 * Finds a schema by its table name
 	 * @param tableName the table name on the database
-	 * @return 
+	 * @return the schema with this table name
 	 * @throws DbAdminException if corresponding schema not found
 	 */
 	public DbObjectSchema findSchemaByTableName(String tableName) {
@@ -102,9 +108,9 @@ public class DbAdmin {
 	}
 	
 	/**
-	 * Finds a schema by its class
-	 * @param klass
-	 * @return
+	 * Finds a schema by its class object
+	 * @param the `@Entity` class you want to find the schema for
+	 * @return the schema for the `@Entity` class
 	 * @throws DbAdminException if corresponding schema not found
 	 */
 	public DbObjectSchema findSchemaByClass(Class<?> klass) {
@@ -118,7 +124,7 @@ public class DbAdmin {
 	 * 
 	 * If any field is not mappable, the method will throw an exception.
 	 * @param bd
-	 * @return
+	 * @return a schema derived from the `@Entity` class
 	 */
 	private DbObjectSchema processBeanDefinition(BeanDefinition bd) {
 		String fullClassName = bd.getBeanClassName();

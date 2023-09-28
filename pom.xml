@@ -13,10 +13,17 @@
 	<artifactId>spring-boot-db-admin</artifactId>
 	<version>0.1.2</version>
 	<name>spring-boot-db-admin</name>
-	<description>Srping Boot DB Admin Dashboard</description>
+	<description>Srping Boot Database Admin is an auto-generated CRUD admin panel for Spring Boot apps</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
+	<licenses>
+		<license>
+			<name>GPL-v3.0</name>
+      		<url>http://www.gnu.org/licenses/gpl-3.0.txt</url>
+		</license>
+	</licenses>
+
 	<profiles>
 		<profile>
 			<id>release</id>
@@ -38,8 +45,8 @@
 											<maven-central>
 												<active>ALWAYS</active>
 												<url>https://s01.oss.sonatype.org/service/local</url>
-												<closeRepository>false</closeRepository>
-												<releaseRepository>false</releaseRepository>
+												<closeRepository>true</closeRepository>
+												<releaseRepository>true</releaseRepository>
 												<stagingRepositories>target/staging-deploy</stagingRepositories>
 											</maven-central>
 										</nexus2>

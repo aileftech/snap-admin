@@ -22,6 +22,11 @@ import tech.ailef.dbadmin.external.annotations.ComputedColumn;
 import tech.ailef.dbadmin.external.exceptions.DbAdminException;
 import tech.ailef.dbadmin.external.misc.Utils;
 
+/**
+ * A class that represents a table/`@Entity` as reconstructed from the
+ * JPA annotations found on its fields.
+ *
+ */
 public class DbObjectSchema {
 	/**
 	 * All the fields in this table. The fields include all the

@@ -21,6 +21,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import tech.ailef.dbadmin.internal.InternalDbAdminConfiguration;
 
+/**
+ * The configuration class that adds and configures the "internal" data source.
+ *
+ */
 @ConditionalOnProperty(name = "dbadmin.enabled", matchIfMissing = true)
 @ComponentScan
 @EnableConfigurationProperties(DbAdminProperties.class)
@@ -56,7 +60,7 @@ public class DbAdminAutoConfiguration {
 		LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
 		factoryBean.setDataSource(internalDataSource());
 		factoryBean.setPersistenceUnitName("internal");
-		factoryBean.setPackagesToScan("tech.ailef.dbadmin.internal.model"); // , "tech.ailef.dbadmin.repository");
+		factoryBean.setPackagesToScan("tech.ailef.dbadmin.internal.model");
 		factoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 		Properties properties = new Properties();
 		properties.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");

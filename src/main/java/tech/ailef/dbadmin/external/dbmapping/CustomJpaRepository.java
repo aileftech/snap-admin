@@ -80,6 +80,51 @@ public class CustomJpaRepository extends SimpleJpaRepository {
         			.setFirstResult((page - 1) * pageSize).getResultList();
 	}
 	
+
+	@SuppressWarnings("unchecked")
+	public int update(DbObjectSchema schema, Map<String, String> params, Map<String, MultipartFile> files) {
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+
+		CriteriaUpdate update = cb.createCriteriaUpdate(schema.getJavaClass());
+
+		Root root = update.from(schema.getJavaClass());
+
+		for (DbField field : schema.getSortedFields()) {
+			if (field.isPrimaryKey()) continue;
+			
+			boolean keepValue = params.getOrDefault("__keep_" + field.getName(), "off").equals("on");
+			if (keepValue) continue;
+			
+			String stringValue = params.get(field.getName());
+			Object value = null;
+			if (stringValue != null && stringValue.isBlank()) stringValue = null;
+			if (stringValue != null) {
+				value = field.getType().parseValue(stringValue);
+			} else {
+				try {
+					MultipartFile file = files.get(field.getName());
+					if (file != null) {
+						if (file.isEmpty()) value = null;
+						else value = file.getBytes();
+					}
+				} catch (IOException e) {
+					throw new DbAdminException(e);
+				}
+			}
+			
+			if (field.getConnectedSchema() != null)
+				value = field.getConnectedSchema().getJpaRepository().findById(value).get();
+			
+			update.set(root.get(field.getJavaName()), value);
+		}
+		
+		String pkName = schema.getPrimaryKey().getJavaName();
+		update.where(cb.equal(root.get(pkName), params.get(schema.getPrimaryKey().getName())));
+
+		Query query = entityManager.createQuery(update);
+		return query.executeUpdate();
+	}
+	
 	@SuppressWarnings("unchecked")
 	private List<Predicate> buildPredicates(String q, Set<QueryFilter> queryFilters,
 			CriteriaBuilder cb, Path root) {
@@ -154,49 +199,5 @@ public class CustomJpaRepository extends SimpleJpaRepository {
 			}
         }
         return finalPredicates;
-	}
-
-	@SuppressWarnings("unchecked")
-	public int update(DbObjectSchema schema, Map<String, String> params, Map<String, MultipartFile> files) {
-		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-
-		CriteriaUpdate update = cb.createCriteriaUpdate(schema.getJavaClass());
-
-		Root root = update.from(schema.getJavaClass());
-
-		for (DbField field : schema.getSortedFields()) {
-			if (field.isPrimaryKey()) continue;
-			
-			boolean keepValue = params.getOrDefault("__keep_" + field.getName(), "off").equals("on");
-			if (keepValue) continue;
-			
-			String stringValue = params.get(field.getName());
-			Object value = null;
-			if (stringValue != null && stringValue.isBlank()) stringValue = null;
-			if (stringValue != null) {
-				value = field.getType().parseValue(stringValue);
-			} else {
-				try {
-					MultipartFile file = files.get(field.getName());
-					if (file != null) {
-						if (file.isEmpty()) value = null;
-						else value = file.getBytes();
-					}
-				} catch (IOException e) {
-					throw new DbAdminException(e);
-				}
-			}
-			
-			if (field.getConnectedSchema() != null)
-				value = field.getConnectedSchema().getJpaRepository().findById(value).get();
-			
-			update.set(root.get(field.getJavaName()), value);
-		}
-		
-		String pkName = schema.getPrimaryKey().getJavaName();
-		update.where(cb.equal(root.get(pkName), params.get(schema.getPrimaryKey().getName())));
-
-		Query query = entityManager.createQuery(update);
-		return query.executeUpdate();
 	}
 }

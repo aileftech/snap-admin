@@ -26,6 +26,9 @@ public class DbAdminProperties {
 	 */
 	private String modelsPackage;
 
+	/**
+	 * Set to true when running the tests to configure the "internal" data source as in memory
+	 */
 	private boolean testMode = false;
 	
 	public boolean isEnabled() {
