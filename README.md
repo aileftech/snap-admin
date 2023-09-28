@@ -76,6 +76,7 @@ If you find a problem or a bug, please report it as issue. When doing so, includ
 
 ## Changelog
 
+
 **0.1.2**
 - Better handling of large text fields (shown as `textarea`)
 - Added `CATEGORICAL` option to `Filterable`
