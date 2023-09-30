@@ -209,6 +209,12 @@ public class DbObjectSchema {
 					return -1;
 				if (b.isPrimaryKey() && !a.isPrimaryKey())
 					return 1;
+				
+				if (!a.isNullable() && b.isNullable())
+					return -1;
+				if (a.isNullable() && !b.isNullable())
+					return 1;
+				
 				return a.getName().compareTo(b.getName());
 			}).collect(Collectors.toList());
 	}
