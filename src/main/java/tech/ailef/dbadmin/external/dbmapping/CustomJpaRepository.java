@@ -153,11 +153,14 @@ public class CustomJpaRepository extends SimpleJpaRepository {
         	String fieldName = dbField.getJavaName();
         	String v = filter.getValue();
         	
-        	Object value;
-        	try {
-        		value = dbField.getType().parseValue(v);
-        	} catch (Exception e) {
-        		throw new DbAdminException("Invalid value `" + v + "` specified for field `" + dbField.getName() + "`");
+        	Object value = null;
+        	
+        	if (!v.isBlank()) {
+	        	try {
+	        		value = dbField.getType().parseValue(v);
+	        	} catch (Exception e) {
+	        		throw new DbAdminException("Invalid value `" + v + "` specified for field `" + dbField.getName() + "`");
+	        	}
         	}
         	
 			if (op == CompareOperator.STRING_EQ) {
@@ -166,21 +169,24 @@ public class CustomJpaRepository extends SimpleJpaRepository {
 				else
 					finalPredicates.add(cb.equal(cb.lower(cb.toString(root.get(fieldName))), value.toString().toLowerCase()));
 			} else if (op == CompareOperator.CONTAINS) {
-				finalPredicates.add(
-					cb.like(cb.lower(cb.toString(root.get(fieldName))), "%" + value.toString().toLowerCase() + "%")
-				);
+				if (value != null)
+					finalPredicates.add(
+						cb.like(cb.lower(cb.toString(root.get(fieldName))), "%" + value.toString().toLowerCase() + "%")
+					);
 			} else if (op == CompareOperator.EQ) {
 				finalPredicates.add(
 					cb.equal(root.get(fieldName), value)
 				);
 			} else if (op == CompareOperator.GT) {
-				finalPredicates.add(
-					cb.greaterThan(root.get(fieldName), value.toString())
-				);
+				if (value != null)
+					finalPredicates.add(
+						cb.greaterThan(root.get(fieldName), value.toString())
+					);
 			} else if (op == CompareOperator.LT) {
-				finalPredicates.add(
-					cb.lessThan(root.get(fieldName), value.toString())
-				);
+				if (value != null)
+					finalPredicates.add(
+						cb.lessThan(root.get(fieldName), value.toString())
+					);
 			} else if (op == CompareOperator.AFTER) {
 				if (value instanceof LocalDate)
 					finalPredicates.add(
