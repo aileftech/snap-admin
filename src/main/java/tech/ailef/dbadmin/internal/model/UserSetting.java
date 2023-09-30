@@ -3,11 +3,20 @@ package tech.ailef.dbadmin.internal.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
+/**
+ * A single variable in the settings.
+ */
 @Entity
 public class UserSetting {
+	/**
+	 * The id of the variable (its name)
+	 */
 	@Id
 	private String id;
 	
+	/**
+	 * The value of the variable
+	 */
 	private String settingValue;
 	
 	public UserSetting() {

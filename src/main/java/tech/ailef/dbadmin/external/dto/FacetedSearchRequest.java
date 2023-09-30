@@ -6,6 +6,11 @@ import java.util.Set;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+/**
+ * The filter request for faceted search. It is implemented as a
+ * set of filters that can be stacked on top of each other. 
+ *
+ */
 public class FacetedSearchRequest implements FilterRequest {
 	private Set<QueryFilter> filters;
 	

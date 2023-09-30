@@ -15,12 +15,22 @@ import jakarta.persistence.criteria.Root;
 import tech.ailef.dbadmin.external.dto.LogsSearchRequest;
 import tech.ailef.dbadmin.internal.model.UserAction;
 
+/**
+ * A repository that provides custom queries for UserActions 
+ */
 @Component
 public class CustomActionRepositoryImpl implements CustomActionRepository {
 
     @PersistenceContext(unitName = "internal")
     private EntityManager entityManager;
     
+    /**
+     * Finds the UserAction that match the input search request.
+     * Implemented as a custom CriteriaQuery in order to put all the filter
+     * in an AND condition but ignore null value. The default JpaRepository
+     * behaviour is to test for equality to NULL when an AND condition is used,
+     * instead of ignoring the fields.
+     */
     @Override
     public List<UserAction> findActions(LogsSearchRequest request) {
     	String table = request.getTable();
@@ -61,6 +71,10 @@ public class CustomActionRepositoryImpl implements CustomActionRepository {
         			.getResultList();
     }
     
+    /**
+     * Returns the count that match the filtering parameters, used for pagination.
+     * @return
+     */
     @Override
     public long countActions(String table, String actionType, String itemId) {
 

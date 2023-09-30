@@ -11,6 +11,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 
+/**
+ * An action executed by any user from the web UI. 
+ *
+ */
 @Entity
 public class UserAction {
 	@Id

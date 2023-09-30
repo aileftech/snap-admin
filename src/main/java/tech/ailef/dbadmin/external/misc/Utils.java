@@ -54,30 +54,6 @@ public interface Utils {
 	}
 	
 	/**
-	 * Converts a set of query filters applied with the faceted search feature
-	 * to a multi value map
-	 * @param filters
-	 * @return
-	 */
-//	public static MultiValueMap<String, String> computeParams(Set<QueryFilter> filters) {
-//		MultiValueMap<String, String> r = new LinkedMultiValueMap<>();
-//		if (filters == null)
-//			return r; 
-//		
-//		r.put("filter_field", new ArrayList<>());
-//		r.put("filter_op", new ArrayList<>());
-//		r.put("filter_value", new ArrayList<>());
-//		
-//		for (QueryFilter filter : filters) {
-//			r.get("filter_field").add(filter.getField().getJavaName());
-//			r.get("filter_op").add(filter.getOp().toString());
-//			r.get("filter_value").add(filter.getValue());
-//		}
-//			
-//		return r;
-//	}
-	
-	/**
 	 * Converts a multi value map of parameters containing query filters applied
 	 * with the faceted search feature into a set of QueryFilter objects
 	 * @param schema

@@ -4,6 +4,10 @@ import java.util.Objects;
 
 import tech.ailef.dbadmin.external.dbmapping.DbField;
 
+/**
+ * A single filter in a FacetedSearchRequest. This describes a 
+ * single boolean condition on the value of a specific field.
+ */
 public class QueryFilter {
 	private DbField field;
 	
@@ -17,14 +21,26 @@ public class QueryFilter {
 		this.value = value;
 	}
 
+	/**
+	 * Returns the field of the boolean condition
+	 * @return
+	 */
 	public DbField getField() {
 		return field;
 	}
 
+	/**
+	 * Returns the operator of the boolean condition
+	 * @return
+	 */
 	public CompareOperator getOp() {
 		return op;
 	}
 
+	/**
+	 * Returns the value of the boolean condition
+	 * @return
+	 */
 	public String getValue() {
 		return value;
 	}
