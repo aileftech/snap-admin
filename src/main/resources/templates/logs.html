@@ -59,10 +59,50 @@
 		    						
 		    						<table class="table table-striped mt-3">
 		    							<tr class="table-data-row">
-		    								<th>Action type</th>
-		    								<th>Table</th>
-		    								<th>Item ID</th>
-		    								<th>Time</th>
+		    								<th >
+		    									<div class="d-flex justify-content-between">
+			    									<div>Action type</div>
+			    									<h4>
+			    										<th:block th:replace="~{fragments/table_selectable :: 
+			    											sort_arrow(sortKey=${searchRequest.getSortKey()},
+			    											sortOrder=${searchRequest.getSortOrder()},
+			    											fieldName='actionType')}">
+			    									</h4>
+			    								</div>
+		    								</th>
+		    								<th >
+			    								<div class="d-flex justify-content-between">
+			    									<div>Table</div>
+			    									<h4>
+			    										<th:block th:replace="~{fragments/table_selectable :: 
+			    											sort_arrow(sortKey=${searchRequest.getSortKey()},
+			    											sortOrder=${searchRequest.getSortOrder()},
+			    											fieldName='onTable')}">
+			    									</h4>
+			    								</div>
+		    								</th>
+		    								<th >
+		    									<div class="d-flex justify-content-between">
+			    									<div>Item ID</div>
+			    									<h4>
+			    										<th:block th:replace="~{fragments/table_selectable :: 
+			    											sort_arrow(sortKey=${searchRequest.getSortKey()},
+			    											sortOrder=${searchRequest.getSortOrder()},
+			    											fieldName='primaryKey')}">
+			    									</h4>
+			    								</div>
+		    								</th>
+		    								<th >
+		    									<div class="d-flex justify-content-between">
+			    									<div>Time</div>
+			    									<h4>
+			    										<th:block th:replace="~{fragments/table_selectable :: 
+			    											sort_arrow(sortKey=${searchRequest.getSortKey()},
+			    											sortOrder=${searchRequest.getSortOrder()},
+			    											fieldName='createdAt')}">
+			    									</h4>
+			    								</div>
+		    								</th>
 		    							</tr>
 										<tr th:each="entry : ${page.getResults()}" class="table-data-row align-middle">
 											<td th:text="${entry.getActionType()}">

@@ -33,6 +33,7 @@ import tech.ailef.dbadmin.external.dbmapping.DbAdminRepository;
 import tech.ailef.dbadmin.external.dbmapping.DbObject;
 import tech.ailef.dbadmin.external.dbmapping.DbObjectSchema;
 import tech.ailef.dbadmin.external.dto.CompareOperator;
+import tech.ailef.dbadmin.external.dto.FacetedSearchRequest;
 import tech.ailef.dbadmin.external.dto.LogsSearchRequest;
 import tech.ailef.dbadmin.external.dto.PaginatedResult;
 import tech.ailef.dbadmin.external.dto.QueryFilter;
@@ -140,7 +141,8 @@ public class DefaultDbAdminController {
 				queryFilters.removeIf(f -> f.equals(toRemove));
 			}
 			
-			MultiValueMap<String, String> parameterMap = Utils.computeParams(queryFilters);
+			FacetedSearchRequest filterRequest = new FacetedSearchRequest(queryFilters);
+			MultiValueMap<String, String> parameterMap = filterRequest.computeParams();
 			
 			MultiValueMap<String, String> filteredParams = new LinkedMultiValueMap<>();
  			request.getParameterMap().entrySet().stream()
@@ -437,12 +439,7 @@ public class DefaultDbAdminController {
 		model.addAttribute("activePage", "logs");
 		model.addAttribute(
 			"page", 
-			userActionService.findActions(
-				searchRequest.getTable(),
-				searchRequest.getActionType(),
-				searchRequest.getItemId(),
-				searchRequest.toPageRequest()
-			)
+			userActionService.findActions(searchRequest)
 		);
 		model.addAttribute("schemas", dbAdmin.getSchemas());
 		model.addAttribute("searchRequest", searchRequest);

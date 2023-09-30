@@ -2,7 +2,6 @@ package tech.ailef.dbadmin.external.dto;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -38,17 +37,17 @@ public class PaginationInfo {
 	// TODO: Check if used
 	private long maxElement;
 	
-	private Set<QueryFilter> queryFilters;
+	private FilterRequest filterRequest;
 	
 	private String query;
 	
-	public PaginationInfo(int currentPage, int maxPage, int pageSize, long maxElement, String query, Set<QueryFilter> queryFilters) {
+	public PaginationInfo(int currentPage, int maxPage, int pageSize, long maxElement, String query, FilterRequest request) {
 		this.currentPage = currentPage;
 		this.maxPage = maxPage;
 		this.pageSize = pageSize;
 		this.query = query;
 		this.maxElement = maxElement;
-		this.queryFilters = queryFilters;
+		this.filterRequest = request;
 	}
 
 	public int getCurrentPage() {
@@ -80,7 +79,10 @@ public class PaginationInfo {
 	}
 	
 	public String getSortedPageLink(String sortKey, String sortOrder) {
-		MultiValueMap<String, String> params = Utils.computeParams(queryFilters);
+		MultiValueMap<String, String> params = FilterRequest.empty();
+		
+		if (filterRequest != null)
+			params = filterRequest.computeParams();
 		
 		if (query != null) {
 			params.put("query", new ArrayList<>());
@@ -96,7 +98,10 @@ public class PaginationInfo {
 	}
 	
 	public String getLink(int page) {
-		MultiValueMap<String, String> params = Utils.computeParams(queryFilters);
+		MultiValueMap<String, String> params = FilterRequest.empty();
+		
+		if (filterRequest != null)
+			params = filterRequest.computeParams();
 		
 		if (query != null) {
 			params.put("query", new ArrayList<>());

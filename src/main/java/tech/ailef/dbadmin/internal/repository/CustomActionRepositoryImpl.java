@@ -12,6 +12,7 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import tech.ailef.dbadmin.external.dto.LogsSearchRequest;
 import tech.ailef.dbadmin.internal.model.UserAction;
 
 @Component
@@ -21,7 +22,11 @@ public class CustomActionRepositoryImpl implements CustomActionRepository {
     private EntityManager entityManager;
     
     @Override
-    public List<UserAction> findActions(String table, String actionType, String itemId, PageRequest page) {
+    public List<UserAction> findActions(LogsSearchRequest request) {
+    	String table = request.getTable();
+    	String actionType = request.getActionType();
+    	String itemId = request.getItemId();
+    	PageRequest page = request.toPageRequest();
 
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<UserAction> query = cb.createQuery(UserAction.class);
@@ -39,6 +44,15 @@ public class CustomActionRepositoryImpl implements CustomActionRepository {
             query.select(userAction)
                  .where(cb.and(
                             predicates.toArray(new Predicate[predicates.size()])));
+        }
+        
+        if (request.getSortKey() != null) {
+        	String key = request.getSortKey();
+        	if (request.getSortOrder().equalsIgnoreCase("ASC")) {
+        		query.orderBy(cb.asc(userAction.get(key)));
+        	} else {
+        		query.orderBy(cb.desc(userAction.get(key)));
+        	}
         }
         
         return entityManager.createQuery(query)

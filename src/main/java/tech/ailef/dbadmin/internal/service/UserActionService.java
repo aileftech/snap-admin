@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import tech.ailef.dbadmin.external.dto.LogsSearchRequest;
 import tech.ailef.dbadmin.external.dto.PaginatedResult;
 import tech.ailef.dbadmin.external.dto.PaginationInfo;
 import tech.ailef.dbadmin.internal.model.UserAction;
@@ -26,13 +27,18 @@ public class UserActionService {
 		return repo.save(a);
 	}
 	
-	public PaginatedResult<UserAction> findActions(String table, String actionType, String userId, PageRequest page) {
-		long count = customRepo.countActions(table, actionType, userId);
-		List<UserAction> actions = customRepo.findActions(table, actionType, userId, page);
+	public PaginatedResult<UserAction> findActions(LogsSearchRequest request) {
+		String table = request.getTable();
+		String actionType = request.getActionType();
+		String itemId = request.getItemId();
+		PageRequest page = request.toPageRequest();
+		
+		long count = customRepo.countActions(table, actionType, itemId);
+		List<UserAction> actions = customRepo.findActions(request);
 		int maxPage = (int)(Math.ceil ((double)count / page.getPageSize()));
 		
 		return new PaginatedResult<>(
-			new PaginationInfo(page.getPageNumber() + 1, maxPage, page.getPageSize(), count, null, null),
+			new PaginationInfo(page.getPageNumber() + 1, maxPage, page.getPageSize(), count, null, request),
 			actions
 		);
 	}

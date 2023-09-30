@@ -2,13 +2,15 @@ package tech.ailef.dbadmin.external.dto;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 /**
  * A client request for the Action logs page where
  * several filtering parameters are present
  *
  */
-public class LogsSearchRequest {
+public class LogsSearchRequest implements FilterRequest {
 	/**
 	 * The table name to filter on
 	 */
@@ -123,6 +125,19 @@ public class LogsSearchRequest {
 		} else {
 			return PageRequest.of(actualPage, actualPageSize, Sort.by(sortKey).ascending());
 		}
+	}
+
+	@Override
+	public MultiValueMap<String, String> computeParams() {
+		LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		if (table != null)
+			params.add("table", table);
+		if (itemId != null)
+			params.add("itemId", itemId);
+		if (actionType != null)
+			params.add("actionType", actionType);
+		
+		return params;
 	}
 	
 }

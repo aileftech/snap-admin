@@ -3,7 +3,6 @@ package tech.ailef.dbadmin.external.dbmapping;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -21,6 +20,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import tech.ailef.dbadmin.external.dto.FacetedSearchRequest;
 import tech.ailef.dbadmin.external.dto.PaginatedResult;
 import tech.ailef.dbadmin.external.dto.PaginationInfo;
 import tech.ailef.dbadmin.external.dto.QueryFilter;
@@ -118,7 +118,7 @@ public class DbAdminRepository {
 		
 		
 		return new PaginatedResult<DbObject>(
-			new PaginationInfo(page, maxPage, pageSize, maxElement, null, new HashSet<>()),
+			new PaginationInfo(page, maxPage, pageSize, maxElement, null, null),
 			results
 		);
 	}
@@ -231,7 +231,7 @@ public class DbAdminRepository {
 		}
 		
 		return new PaginatedResult<DbObject>(
-			new PaginationInfo(page, maxPage, pageSize, maxElement, query, queryFilters), 
+			new PaginationInfo(page, maxPage, pageSize, maxElement, query, new FacetedSearchRequest(queryFilters)), 
 			jpaRepository.search(query, page, pageSize, sortKey, sortOrder, queryFilters).stream()
 				.map(o  -> new DbObject(o, schema))
 				.toList()

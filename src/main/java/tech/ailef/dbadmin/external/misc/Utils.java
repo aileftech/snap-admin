@@ -1,12 +1,10 @@
 package tech.ailef.dbadmin.external.misc;
 
 import java.util.ArrayList;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import tech.ailef.dbadmin.external.dbmapping.DbObjectSchema;
@@ -61,23 +59,23 @@ public interface Utils {
 	 * @param filters
 	 * @return
 	 */
-	public static MultiValueMap<String, String> computeParams(Set<QueryFilter> filters) {
-		MultiValueMap<String, String> r = new LinkedMultiValueMap<>();
-		if (filters == null)
-			return r; 
-		
-		r.put("filter_field", new ArrayList<>());
-		r.put("filter_op", new ArrayList<>());
-		r.put("filter_value", new ArrayList<>());
-		
-		for (QueryFilter filter : filters) {
-			r.get("filter_field").add(filter.getField().getJavaName());
-			r.get("filter_op").add(filter.getOp().toString());
-			r.get("filter_value").add(filter.getValue());
-		}
-			
-		return r;
-	}
+//	public static MultiValueMap<String, String> computeParams(Set<QueryFilter> filters) {
+//		MultiValueMap<String, String> r = new LinkedMultiValueMap<>();
+//		if (filters == null)
+//			return r; 
+//		
+//		r.put("filter_field", new ArrayList<>());
+//		r.put("filter_op", new ArrayList<>());
+//		r.put("filter_value", new ArrayList<>());
+//		
+//		for (QueryFilter filter : filters) {
+//			r.get("filter_field").add(filter.getField().getJavaName());
+//			r.get("filter_op").add(filter.getOp().toString());
+//			r.get("filter_value").add(filter.getValue());
+//		}
+//			
+//		return r;
+//	}
 	
 	/**
 	 * Converts a multi value map of parameters containing query filters applied

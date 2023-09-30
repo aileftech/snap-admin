@@ -2,6 +2,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 	<head></head>
 	<body>
+		<th:block th:fragment="sort_arrow(sortKey, sortOrder, fieldName)">
+			<th:block th:if="${sortKey != fieldName}" >
+				<a th:href="@{|${requestUrl}${page.getPagination().getSortedPageLink(fieldName, 'DESC')}|}">
+				<i title="Sort" class="bi bi-caret-up"></i>
+				</a>
+			</th:block>
+			<th:block th:unless="${sortKey != fieldName}">
+				<a th:if="${sortOrder == 'DESC'}" 
+					th:href="@{|${requestUrl}${page.getPagination().getSortedPageLink(fieldName, 'ASC')}|}">
+					<i title="Sort" class="bi bi-caret-down-fill"></i>
+				</a>
+				<a th:if="${sortOrder == 'ASC'}" 
+					th:href="@{|${requestUrl}${page.getPagination().getSortedPageLink(fieldName, 'DESC')}|}">
+					<i title="Sort" class="bi bi-caret-up-fill"></i>
+				</a>
+			</th:block>
+		</th:block>
 		<div class="table-selectable table-responsive" th:fragment="table(results, schema)">
 			<div th:if="${results.isEmpty()}">
 				<p>This table contains no data.</p>
@@ -28,21 +45,10 @@
 								</div>
 								<div class="align-items-center">
 									<h4 class="m-0" th:if="${page}">
-										<th:block th:if="${sortKey != field.getJavaName()}" >
-											<a th:href="@{|/${baseUrl}/model/${schema.getClassName()}${page.getPagination().getSortedPageLink(field.getJavaName(), 'DESC')}|}">
-											<i title="Sort" class="bi bi-caret-up"></i>
-											</a>
-										</th:block>
-										<th:block th:unless="${sortKey != field.getJavaName()}">
-											<a th:if="${sortOrder == 'DESC'}" 
-												th:href="@{|/${baseUrl}/model/${schema.getClassName()}${page.getPagination().getSortedPageLink(field.getJavaName(), 'ASC')}|}">
-												<i title="Sort" class="bi bi-caret-down-fill"></i>
-											</a>
-											<a th:if="${sortOrder == 'ASC'}" 
-												th:href="@{|/${baseUrl}/model/${schema.getClassName()}${page.getPagination().getSortedPageLink(field.getJavaName(), 'DESC')}|}">
-												<i title="Sort" class="bi bi-caret-up-fill"></i>
-											</a>
-										</th:block>
+										<th:block th:replace="~{fragments/table_selectable :: 
+											sort_arrow(sortKey=${sortKey},
+											sortOrder=${sortOrder}, 
+											fieldName=${field.getJavaName()})}">
 									</h4>
 								</div>
 							</div>
