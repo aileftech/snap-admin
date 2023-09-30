@@ -16,6 +16,9 @@
 		<script th:inline="javascript">
 		    let baseUrl = [[ ${baseUrl} ]];
 		</script>
+		<style type="text/css">
+			[( ${userConf.get('additionalCss')} )]
+		</style>
 	</head>
 	
 	<th:block th:fragment="alerts">
@@ -111,7 +114,7 @@
         		<div class="separator"></div>
 	    		<ul class="sidebar-menu mb-0 pb-0">
 	        		<li th:class="${#strings.equals(page, 'about') ? 'active' : ''}">
-	        			<a href="/about">
+	        			<a th:href="|/${baseUrl}/about|">
 		        			<div class="d-flex align-items-center">
 		        				<div class="menu-icon">
 		        					<i class="bi bi-question-circle"></i>

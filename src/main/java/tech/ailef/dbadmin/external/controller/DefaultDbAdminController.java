@@ -453,16 +453,32 @@ public class DefaultDbAdminController {
 	@GetMapping("/settings")
 	public String settings(Model model) {
 		model.addAttribute("activePage", "settings");
-		return "settings";
+		return "settings/settings";
+	}
+	
+	@GetMapping("/about")
+	public String about(Model model) {
+		model.addAttribute("activePage", "about");
+		return "about";
+	}
+	
+	@GetMapping("/settings/appearance")
+	public String settingsAppearance(Model model) {
+		model.addAttribute("activePage", "settings");
+		return "settings/appearance";
 	}
 	
 	@PostMapping("/settings")
 	public String settings(@RequestParam Map<String, String> params, Model model) {
+		String next = params.getOrDefault("next", "settings/settings");
+		
 		for (String paramName : params.keySet()) {
+			if (paramName.equals("next")) continue;
+			
 			userSettingsRepo.save(new UserSetting(paramName, params.get(paramName)));
 		}
 		model.addAttribute("activePage", "settings");
-		return "settings";
+		return next;
 	}
 	
 	private UserAction saveAction(UserAction action) {

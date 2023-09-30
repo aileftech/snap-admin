@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+	<head th:replace="~{fragments/resources::head}">
+	</head>
+	<body>
+    	<div class="bg-light main-wrapper">
+    		<nav th:replace="~{fragments/resources :: navbar}"></nav>
+	        <div class="d-flex">
+	        	<div th:replace="~{fragments/resources :: sidebar('entities')}"></div>
+	        	<div class="main-content bg-lighter">
+					<h1 class="fw-bold mb-4"><i class="align-middle bi bi-database"></i><span class="align-middle"> Entities</span></h1>
+	        		<div class="row mt-4">
+	        			<div class="col">
+	        				<div class="box">
+	        					<h3 class="fw-bold">About</h3>
+							</div>
+	        			</div>
+	        		</div>
+	        	</div>
+	        </div>
+	    </div>
+	</body>
+</html>

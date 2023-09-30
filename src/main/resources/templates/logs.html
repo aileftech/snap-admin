@@ -63,7 +63,6 @@
 		    								<th>Table</th>
 		    								<th>Item ID</th>
 		    								<th>Time</th>
-		    								<th></th>
 		    							</tr>
 										<tr th:each="entry : ${page.getResults()}" class="table-data-row align-middle">
 											<td th:text="${entry.getActionType()}">
@@ -74,13 +73,11 @@
 											</td>
 											<td th:text="${entry.getFormattedDate()}">
 											</td>
-											<td>
-												<!--
-												<a href="#" class="ui-btn btn btn-primary">
-													Diff <i class="text-white bi bi-search"></i>
-												</a>
-												-->
-											</td>
+											<!--
+											<a href="#" class="ui-btn btn btn-primary">
+												Diff <i class="text-white bi bi-search"></i>
+											</a>
+											-->
 										</tr>
 									</table>
 									
