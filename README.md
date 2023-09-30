@@ -12,8 +12,8 @@ for your database schema. No modifications required to your existing code!
  * Object detail page, which also includes `@OneToMany` and `@ManyToMany` related objects
  * Create/Edit objects
  * Action logs: history of all write operations executed through the web UI
- * Search
- * Customization
+ * Advanced search and filtering
+ * Annotation-based customization
 
 **Supported JPA annotations**
  * Core: @Entity, @Table, @Column, @Lob, @Id
@@ -25,13 +25,13 @@ The code is still in a very early stage and it might not be robust if you use no
 
 ## Installation
 
-1. The code is not yet distributed on Maven, so for now you need to install manually. Clone the Github repo and execute `mvn install -DskipTests`  in the project's directory. Then, include the dependency in your `pom.xml`:
+1. Spring Boot Database Admin is distributed on Maven. For the latest stable release you can simply include the following snippet in your `pom.xml` file:
 
 ```
 <dependency>
 	<groupId>tech.ailef</groupId>
 	<artifactId>spring-boot-db-admin</artifactId>
-	<version>0.0.4</version> <!-- Make sure to put the correct version here -->
+	<version>0.1.2</version>
 </dependency>
 ```
 
@@ -52,7 +52,7 @@ dbadmin.baseUrl=admin
 dbadmin.modelsPackage=put.your.models.package.here
 ```
 
-The last step is to annotate your `@SpringBootApplication` class containing the `main` method with the following:
+Now annotate your `@SpringBootApplication` class containing the `main` method with the following:
 
 ```
 @ImportAutoConfiguration(DbAdminAutoConfiguration.class)
