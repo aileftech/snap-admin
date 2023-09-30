@@ -2,6 +2,7 @@ package tech.ailef.dbadmin.internal.model;
 
 import java.time.LocalDateTime;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.datetime.standard.DateTimeFormatterFactory;
 
 import jakarta.persistence.Column;
@@ -10,6 +11,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
+import jakarta.persistence.Transient;
+import tech.ailef.dbadmin.external.DbAdmin;
+import tech.ailef.dbadmin.external.dbmapping.DbObjectSchema;
 
 /**
  * An action executed by any user from the web UI. 
@@ -29,6 +33,9 @@ public class UserAction {
 	private String sql;
 	
 	@Column(nullable = false)
+	private String javaClass;
+	
+	@Column(nullable = false)
 	private String onTable;
 	
 	@Column(nullable = false)
@@ -40,9 +47,10 @@ public class UserAction {
 	public UserAction() {
 	}
 	
-	public UserAction(String onTable, String primaryKey, String actionType) {
+	public UserAction(String onTable, String primaryKey, String actionType, String javaClass) {
 		this.createdAt = LocalDateTime.now();
 		this.sql = "SQL TODO";
+		this.javaClass = javaClass;
 		this.onTable = onTable;
 		this.actionType = actionType;
 		this.primaryKey = primaryKey;
@@ -98,5 +106,13 @@ public class UserAction {
 
 	public String getFormattedDate() {
 		return new DateTimeFormatterFactory("YYYY-MM-dd HH:mm:ss").createDateTimeFormatter().format(createdAt);
+	}
+	
+	public String getJavaClass() {
+		return javaClass;
+	}
+
+	public void setJavaClass(String javaClass) {
+		this.javaClass = javaClass;
 	}
 }

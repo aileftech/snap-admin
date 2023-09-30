@@ -109,7 +109,14 @@
 											</td>
 											<td th:text="${entry.getOnTable()}">
 											</td>
-											<td th:text="${entry.getPrimaryKey()}">
+											<td>
+												<th:block th:if="${entry.getActionType() != 'DELETE'}">
+													<a th:href="|/${baseUrl}/model/${entry.getJavaClass()}/show/${entry.getPrimaryKey()}|"
+														th:text="${entry.getPrimaryKey()}"></a>
+												</th:block>
+												<th:block th:if="${entry.getActionType() == 'DELETE'}">
+													<span th:text="${entry.getPrimaryKey()}"></span>
+												</th:block>
 											</td>
 											<td th:text="${entry.getFormattedDate()}">
 											</td>

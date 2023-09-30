@@ -280,7 +280,7 @@ public class DefaultDbAdminController {
 			attr.addFlashAttribute("error", e.getMessage());
 		}
 		
-		saveAction(new UserAction(schema.getTableName(), id, "DELETE"));
+		saveAction(new UserAction(schema.getTableName(), id, "DELETE", schema.getClassName()));
 		
 		return "redirect:/" + properties.getBaseUrl() + "/model/" + className;
 	}
@@ -310,7 +310,7 @@ public class DefaultDbAdminController {
 			attr.addFlashAttribute("message", "Deleted " + countDeleted + " of " + ids.length + " items");
 		
 		for (String id : ids) {
-			saveAction(new UserAction(schema.getTableName(), id, "DELETE"));
+			saveAction(new UserAction(schema.getTableName(), id, "DELETE", schema.getClassName()));
 		}
 		
 		return "redirect:/" + properties.getBaseUrl() + "/model/" + className;
@@ -375,7 +375,7 @@ public class DefaultDbAdminController {
 				repository.attachManyToMany(schema, newPrimaryKey, multiValuedParams);				
 				pkValue = newPrimaryKey.toString();
 				attr.addFlashAttribute("message", "Item created successfully.");
-				saveAction(new UserAction(schema.getTableName(), pkValue, "CREATE"));
+				saveAction(new UserAction(schema.getTableName(), pkValue, "CREATE", schema.getClassName()));
 			} catch (DataIntegrityViolationException e) {
 				attr.addFlashAttribute("errorTitle", "Unable to INSERT row");
 				attr.addFlashAttribute("error", e.getMessage());
@@ -399,7 +399,7 @@ public class DefaultDbAdminController {
 						repository.update(schema, params, files);
 						repository.attachManyToMany(schema, pkValue, multiValuedParams);
 						attr.addFlashAttribute("message", "Item saved successfully.");
-						saveAction(new UserAction(schema.getTableName(), pkValue, "EDIT"));
+						saveAction(new UserAction(schema.getTableName(), pkValue, "EDIT", schema.getClassName()));
 					} catch (DataIntegrityViolationException e) {
 						attr.addFlashAttribute("errorTitle", "Unable to UPDATE row (no changes applied)");
 						attr.addFlashAttribute("error", e.getMessage());
@@ -415,7 +415,7 @@ public class DefaultDbAdminController {
 					Object newPrimaryKey = repository.create(schema, params, files, pkValue);
 					repository.attachManyToMany(schema, newPrimaryKey, multiValuedParams);
 					attr.addFlashAttribute("message", "Item created successfully");
-					saveAction(new UserAction(schema.getTableName(), pkValue, "CREATE"));
+					saveAction(new UserAction(schema.getTableName(), pkValue, "CREATE", schema.getClassName()));
 				} catch (DataIntegrityViolationException e) {
 					attr.addFlashAttribute("errorTitle", "Unable to INSERT row (no changes applied)");
 					attr.addFlashAttribute("error", e.getMessage());
