@@ -69,17 +69,19 @@
 <p>Getting started with Spring Boot Database Admin requires including it as a dependency and then performing a simple configuration step.</p>
 
 <h3 id="installation">2.1 Installation</h3>
-<p>At the moment the code is not yet distributed on Maven, so it is necessary to build and install manually. Clone the Github repo and <code>mvn install</code> the project into your local repository. Then, include the dependency in your <code>pom.xml</code>:</p>
+<p>Since Spring Boot Database Admin is distributed on Maven, the easiest way to start is to include this dependency in your <code>pom.xml</code>:</p>
 
 <pre>
 <code class="language-xml">&lt;dependency&gt;
 	&lt;groupId&gt;tech.ailef&lt;/groupId&gt;
 	&lt;artifactId&gt;spring-boot-db-admin&lt;/artifactId&gt;
-	&lt;version&gt;0.0.4&lt;/version&gt;
+	&lt;version&gt;0.1.2&lt;/version&gt;
 &lt;/dependency&gt;
 </code>
 </pre>
-<p class="tip"><span class="title"><i class="bi bi-info-circle"></i> TIP</span> The version in this snippet might be different from the one you pulled from Github. Make sure to edit it to match the version contained in the project's <code>pom.xml</code> file.</p>
+<p class="tip"><span class="title"><i class="bi bi-info-circle"></i> TIP</span> Go to the <a href="https://mvnrepository.com/artifact/tech.ailef/spring-boot-db-admin" target="_blank">Maven repository</a> to retrieve the exact snippet for the latest stable release.</p>
+
+<p>If you want the latest unstable release, you can clone the <code>main</code> branch of the Github repo and execute <code>mvn install -D skipTests</code> in the project's directory. This will install the library in your local repository, which you can then include using the same snippet as above, but replacing the version number with the one contained in the <code>pom.xml</code> file of the code you pulled from Github.</p>
 
 <h3 id="configuration">2.2 Configuration</h3>
 <p>After including the dependency, a few configuration steps are required on your end in order to integrate the library into your project. </p>
