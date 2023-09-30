@@ -131,7 +131,7 @@ public class CustomJpaRepository extends SimpleJpaRepository {
 		List<Predicate> finalPredicates = new ArrayList<>();
         
         List<DbField> stringFields = 
-        	schema.getSortedFields().stream().filter(f -> f.getType() == DbFieldType.STRING)
+        	schema.getSortedFields().stream().filter(f -> f.getType() == DbFieldType.STRING || f.getType() == DbFieldType.TEXT)
         			.collect(Collectors.toList());
         
         List<Predicate> queryPredicates = new ArrayList<>();
