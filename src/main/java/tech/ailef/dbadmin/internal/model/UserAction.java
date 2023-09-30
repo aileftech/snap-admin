@@ -2,7 +2,6 @@ package tech.ailef.dbadmin.internal.model;
 
 import java.time.LocalDateTime;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.datetime.standard.DateTimeFormatterFactory;
 
 import jakarta.persistence.Column;
@@ -11,9 +10,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
-import jakarta.persistence.Transient;
-import tech.ailef.dbadmin.external.DbAdmin;
-import tech.ailef.dbadmin.external.dbmapping.DbObjectSchema;
 
 /**
  * An action executed by any user from the web UI. 

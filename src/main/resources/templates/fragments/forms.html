@@ -49,11 +49,17 @@
 				<!--/*--> Handle non categorical filter <!--*/-->
 				<th:block th:if="${!field.isFilterableCategorical()}">
 					<form action="" method="GET">
-						<!--/*--> Propagate queryParams containing other filters with hidden fields <!--*/-->
-						<th:block th:each="p : ${queryParams.keySet()}">
-		                	<input th:each="v : ${queryParams.get(p)}" 
-		                		th:name="${p}" th:value="${v}" type="hidden"
-		                		th:if="${p.startsWith('filter_')}">
+						<!--/*--> Propagate query filters with hidden fields <!--*/-->
+		                <th:block th:each="filter : ${activeFilters}">
+		                	<input type="hidden"
+		                		name="filter_field" 
+		                		th:value="${filter.getField().getJavaName()}">
+		                	<input type="hidden"
+		                		name="filter_op" 
+		                		th:value="${filter.getOp()}">
+		                	<input type="hidden"
+		                		name="filter_value" 
+		                		th:value="${filter.getValue()}"> 
 		                </th:block>
 						
 						<div class="input-group pe-2">
@@ -103,11 +109,20 @@
 						<ul class="categorical-select">
 							<li th:each="categoricalValue : ${field.getConnectedSchema().findAll()}">
 								<form action="" method="GET">
-									<!--/*--> Propagate queryParams containing other filters with hidden fields <!--*/-->
-									<th:block th:each="p : ${queryParams.keySet()}">
-					                	<input th:each="v : ${queryParams.get(p)}" 
-					                		th:name="${p}" th:value="${v}" type="hidden"
-					                		th:if="${p.startsWith('filter_')}">
+									<!--/*--> Propagate query filters with hidden fields <!--*/-->
+					                <th:block th:each="filter : ${activeFilters}">
+					                	<!--/*--> This field is categorical so we don't propagate it, to make it mutually exclusive <!--*/-->
+					                	<th:block th:unless="${field.getJavaName() == filter.getField().getJavaName()}">
+						                	<input type="hidden"
+						                		name="filter_field" 
+						                		th:value="${filter.getField().getJavaName()}">
+						                	<input type="hidden"
+						                		name="filter_op" 
+						                		th:value="${filter.getOp()}">
+						                	<input type="hidden"
+						                		name="filter_value" 
+						                		th:value="${filter.getValue()}">
+						                </th:block> 
 					                </th:block>
 									
 									<!-- Reset page when applying filter to start back at page 1 -->
@@ -130,11 +145,20 @@
 						<ul class="categorical-select">
 							<li th:each="categoricalValue : ${field.getAllValues()}">
 								<form action="" method="GET">
-									<!--/*--> Propagate queryParams containing other filters with hidden fields <!--*/-->
-									<th:block th:each="p : ${queryParams.keySet()}">
-					                	<input th:each="v : ${queryParams.get(p)}" 
-					                		th:name="${p}" th:value="${v}" type="hidden"
-					                		th:if="${p.startsWith('filter_')}">
+									<!--/*--> Propagate query filters with hidden fields <!--*/-->
+					                <th:block th:each="filter : ${activeFilters}">
+					                	<!--/*--> This field is categorical so we don't propagate it, to make it mutually exclusive <!--*/-->
+					                	<th:block th:unless="${field.getJavaName() == filter.getField().getJavaName()}">
+						                	<input type="hidden"
+						                		name="filter_field" 
+						                		th:value="${filter.getField().getJavaName()}">
+						                	<input type="hidden"
+						                		name="filter_op" 
+						                		th:value="${filter.getOp()}">
+						                	<input type="hidden"
+						                		name="filter_value" 
+						                		th:value="${filter.getValue()}">
+						                </th:block> 
 					                </th:block>
 									
 									<!-- Reset page when applying filter to start back at page 1 -->
