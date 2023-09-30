@@ -19,6 +19,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import tech.ailef.dbadmin.external.DbAdmin;
 import tech.ailef.dbadmin.external.annotations.ComputedColumn;
+import tech.ailef.dbadmin.external.annotations.HiddenColumn;
 import tech.ailef.dbadmin.external.exceptions.DbAdminException;
 import tech.ailef.dbadmin.external.misc.Utils;
 
@@ -185,15 +186,28 @@ public class DbObjectSchema {
 	}
 	
 	/**
-	 * Returns a sorted list of physical fields (i.e., fields that correspond to
-	 * a column in the table as opposed to fields that are just present as 
-	 * instance variables, like relationship fields). Sorted alphabetically
-	 * with priority to the primary key.
-	 * 
+	 * See {@link DbObjectSchema#getSortedFields()} 
 	 * @return
 	 */
 	@JsonIgnore
 	public List<DbField> getSortedFields() {
+		return getSortedFields(true);
+	}
+	
+	/**
+	 * Returns a sorted list of physical fields (i.e., fields that correspond to
+	 * a column in the table as opposed to fields that are just present as 
+	 * instance variables, like relationship fields). Sorted alphabetically
+	 * with priority the primary key, and non nullable fields.
+	 * 
+	 * If readOnly is true, `@HiddenColumn`s are not returned. If instead
+	 * readOnly is false, i.e. how it gets called in the create/edit page,
+	 * hidden columns are included if they are not nullable.
+	 * 
+	 * @param readOnly whether we only need to read the fields are create/edit
+	 * @return 
+	 */
+	public List<DbField> getSortedFields(boolean readOnly) {
 		return getFields().stream()
 			.filter(f -> {
 				boolean toMany = f.getPrimitiveField().getAnnotation(OneToMany.class) == null
@@ -202,7 +216,10 @@ public class DbObjectSchema {
 				OneToOne oneToOne = f.getPrimitiveField().getAnnotation(OneToOne.class);
 				boolean mappedBy = oneToOne != null && !oneToOne.mappedBy().isBlank();
 				
-				return toMany && !mappedBy;
+				boolean hidden = f.getPrimitiveField().getAnnotation(HiddenColumn.class) != null;
+				
+				
+				return toMany && !mappedBy && (!hidden || !readOnly);
 			})
 			.sorted((a, b) -> {
 				if (a.isPrimaryKey() && !b.isPrimaryKey())
@@ -314,7 +331,5 @@ public class DbObjectSchema {
 		DbObjectSchema other = (DbObjectSchema) obj;
 		return Objects.equals(tableName, other.tableName);
 	}
-	
-	
 	
 }

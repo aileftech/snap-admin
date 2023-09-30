@@ -30,7 +30,7 @@
 								<h3 class="fw-bold mb-4" th:text="${create ? schema.getJavaClass().getSimpleName() : object.getDisplayName()}"></h3>
 		        				<form class="form" enctype="multipart/form-data" method="post" th:action="|/${baseUrl}/model/${className}/create|">
 		        					<input type="hidden" name="__dbadmin_create" th:value="${create}">
-									<div th:each="field : ${schema.getSortedFields()}" class="mt-2">
+									<div th:each="field : ${schema.getSortedFields(false)}" class="mt-2">
 										<label th:for="|__id_${field.getName()}|" class="mb-1 fw-bold">
 											<span th:if="${!field.isNullable() && !field.isPrimaryKey()}">
 												*
