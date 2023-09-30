@@ -1,6 +1,7 @@
 package tech.ailef.dbadmin.external.misc;
 
 import java.util.ArrayList;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -13,7 +14,38 @@ import tech.ailef.dbadmin.external.dto.CompareOperator;
 import tech.ailef.dbadmin.external.dto.QueryFilter;
 import tech.ailef.dbadmin.external.exceptions.DbAdminException;
 
+/**
+ * Collection of utility functions used across the project
+ *
+ */
 public interface Utils {
+	/**
+	 * Converts snake case to camel case
+	 * @param text
+	 * @return
+	 */
+	public static String snakeToCamel(String text) {
+		boolean shouldConvertNextCharToLower = true;
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < text.length(); i++) {
+		    char currentChar = text.charAt(i);
+		    if (currentChar == '_') {
+		        shouldConvertNextCharToLower = false;
+		    } else if (shouldConvertNextCharToLower) {
+		        builder.append(Character.toLowerCase(currentChar));
+		    } else {
+		        builder.append(Character.toUpperCase(currentChar));
+		        shouldConvertNextCharToLower = true;
+		    }
+		}
+		return builder.toString();
+	}
+
+	/**
+	 * Convers camel case to snake case
+	 * @param v
+	 * @return
+	 */
 	public static String camelToSnake(String v) {
 		if (Character.isUpperCase(v.charAt(0))) {
 			v = Character.toLowerCase(v.charAt(0)) + v.substring(1);
@@ -23,6 +55,12 @@ public interface Utils {
 		
 	}
 	
+	/**
+	 * Converts a set of query filters applied with the faceted search feature
+	 * to a multi value map
+	 * @param filters
+	 * @return
+	 */
 	public static MultiValueMap<String, String> computeParams(Set<QueryFilter> filters) {
 		MultiValueMap<String, String> r = new LinkedMultiValueMap<>();
 		if (filters == null)
@@ -41,6 +79,13 @@ public interface Utils {
 		return r;
 	}
 	
+	/**
+	 * Converts a multi value map of parameters containing query filters applied
+	 * with the faceted search feature into a set of QueryFilter objects
+	 * @param schema
+	 * @param params
+	 * @return
+	 */
 	public static Set<QueryFilter> computeFilters(DbObjectSchema schema, MultiValueMap<String, String> params) {
 		if (params == null)
 			return new HashSet<>();
@@ -85,20 +130,4 @@ public interface Utils {
 		return "?" + String.join("&", paramValues);
 	}
 	
-	public static String snakeToCamel(String text) {
-		boolean shouldConvertNextCharToLower = true;
-		StringBuilder builder = new StringBuilder();
-		for (int i = 0; i < text.length(); i++) {
-		    char currentChar = text.charAt(i);
-		    if (currentChar == '_') {
-		        shouldConvertNextCharToLower = false;
-		    } else if (shouldConvertNextCharToLower) {
-		        builder.append(Character.toLowerCase(currentChar));
-		    } else {
-		        builder.append(Character.toUpperCase(currentChar));
-		        shouldConvertNextCharToLower = true;
-		    }
-		}
-		return builder.toString();
-	}
 }

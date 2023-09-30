@@ -59,6 +59,13 @@ public class DbObjectSchema {
 	 */
 	private String tableName;
 	
+	/**
+	 * Initializes this schema for the specific `@Entity` class. 
+	 * Determines the table name from the `@Table` annotation and also
+	 * which methods are `@ComputedColumn`s
+	 * @param klass the `@Entity` class
+	 * @param dbAdmin the DbAdmin instance
+	 */
 	public DbObjectSchema(Class<?> klass, DbAdmin dbAdmin) {
 		this.dbAdmin = dbAdmin;
 		this.entityClass = klass;
@@ -88,48 +95,103 @@ public class DbObjectSchema {
 		}
 	}
 	
+	/**
+	 * Returns the DbAdmin instance
+	 * @return the DbAdmin instance
+	 */
 	public DbAdmin getDbAdmin() {
 		return dbAdmin;
 	}
 	
+	/**
+	 * Returns the Java class for the underlying `@Entity` this schema
+	 * corresponds to
+	 * @return  the Java class for the `@Entity` this schema corresponds to
+	 */
 	@JsonIgnore
 	public Class<?> getJavaClass() {
 		return entityClass;
 	}
 	
+	/**
+	 * Returns the name of the Java class for the underlying `@Entity` this schema
+	 * corresponds to
+	 * @return  the name of the Java class for the `@Entity` this schema corresponds to
+	 */
 	@JsonIgnore
 	public String getClassName() {
 		return entityClass.getName();
 	}
 	
+	/**
+	 * Returns an unmodifiable list of all the fields in the schema
+	 * @return an unmodifiable list of all the fields in the schema
+	 */
 	public List<DbField> getFields() {
 		return Collections.unmodifiableList(fields);
 	}
 	
+	/**
+	 * Get a field by its Java name, i.e. the name of the instance variable
+	 * in the `@Entity` class
+	 * @param name	name of the instance variable
+	 * @return	the DbField if found, null otherwise
+	 */
 	public DbField getFieldByJavaName(String name) {
 		return fields.stream().filter(f -> f.getJavaName().equals(name)).findFirst().orElse(null);
 	}
 	
+	/**
+	 * Get a field by its database name, i.e. the name of the column corresponding
+	 * to the field
+	 * @param name	name of the column
+	 * @return	the DbField if found, null otherwise
+	 */
 	public DbField getFieldByName(String name) {
 		return fields.stream().filter(f -> f.getName().equals(name)).findFirst().orElse(null);
 	}
 	
+	/**
+	 * Adds a field to this schema. This is used by the DbAdmin instance
+	 * during initialization and it's not supposed to be called afterwards
+	 * @param f	the DbField to add
+	 */
 	public void addField(DbField f) {
 		fields.add(f);
 	}
-
+	
+	/**
+	 * Returns the underlying CustomJpaRepository
+	 * @return
+	 */
 	public CustomJpaRepository getJpaRepository() {
 		return jpaRepository;
 	}
 
+	/**
+	 * Sets the underlying CustomJpaRepository
+	 * @param jpaRepository
+	 */
 	public void setJpaRepository(CustomJpaRepository jpaRepository) {
 		this.jpaRepository = jpaRepository;
 	}
 	
+	/**
+	 * Returns the inferred table name for this schema 
+	 * @return
+	 */
 	public String getTableName() {
 		return tableName;
 	}
 	
+	/**
+	 * Returns a sorted list of physical fields (i.e., fields that correspond to
+	 * a column in the table as opposed to fields that are just present as 
+	 * instance variables, like relationship fields). Sorted alphabetically
+	 * with priority to the primary key.
+	 * 
+	 * @return
+	 */
 	@JsonIgnore
 	public List<DbField> getSortedFields() {
 		return getFields().stream()
@@ -151,6 +213,10 @@ public class DbObjectSchema {
 			}).collect(Collectors.toList());
 	}
 	
+	/**
+	 * Returns the list of relationship fields
+	 * @return
+	 */
 	public List<DbField> getRelationshipFields() {
 		List<DbField> res = getFields().stream().filter(f -> {
 			return f.getPrimitiveField().getAnnotation(OneToMany.class) != null
@@ -159,6 +225,11 @@ public class DbObjectSchema {
 		return res;
 	}
 	
+	/**
+	 * Returns the list of ManyToMany fields owned by this class (i.e. they
+	 * do not have "mappedBy")
+	 * @return
+	 */
 	public List<DbField> getManyToManyOwnedFields() {
 		List<DbField> res = getFields().stream().filter(f -> {
 			ManyToMany anno = f.getPrimitiveField().getAnnotation(ManyToMany.class);
@@ -167,6 +238,10 @@ public class DbObjectSchema {
 		return res;
 	}
 	
+	/**
+	 * Returns the DbField which serves as the primary key for this schema
+	 * @return
+	 */
 	@JsonIgnore
 	public DbField getPrimaryKey() {
 		Optional<DbField> pk = fields.stream().filter(f -> f.isPrimaryKey()).findFirst();
@@ -176,21 +251,37 @@ public class DbObjectSchema {
 			throw new RuntimeException("No primary key defined on " + entityClass.getName() + " (table `" + tableName + "`)");
 	}
 	
+	/**
+	 * Returns the names of the `@ComputedColumn`s in this schema
+	 * @return
+	 */
 	public List<String> getComputedColumnNames() {
 		return computedColumns.keySet().stream().sorted().toList();
 	}
 	
+	/**
+	 * Returns the method for the given `@ComputedColumn` name
+	 * @param name the name of the `@ComputedColumn`
+	 * @return the corresponding instance method if found, null otherwise
+	 */
 	public Method getComputedColumn(String name) {
 		return computedColumns.get(name);
 	}
 	
+	/**
+	 * Returns the list of fields that are `@Filterable`
+	 * @return 
+	 */
 	public List<DbField> getFilterableFields() {
 		return getSortedFields().stream().filter(f -> { 
-			return !f.isBinary() && !f.isPrimaryKey()
-					&& f.isFilterable();
+			return !f.isBinary() && !f.isPrimaryKey() && f.isFilterable();
 		}).toList();
 	}
 	
+	/**
+	 * Returns all the data in this schema, as `DbObject`s
+	 * @return
+	 */
 	public List<DbObject> findAll() {
 		List<?> r = jpaRepository.findAll();
 		return r.stream().map(o -> new DbObject(o, this)).toList();
