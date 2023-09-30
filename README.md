@@ -1,14 +1,15 @@
 # Spring Boot Database Admin Panel
 
-Generate a powerful CRUD management dashboard for your Spring Boot application in a few minutes.
+Generate a powerful CRUD management dashboard for your Spring Boot application in a few minutes. 
 
-Spring Boot Database Admin scans your `@Entity` classes to generate a simple but powerful database management interface.
+Spring Boot Database Admin scans your `@Entity` classes and automatically builds a web UI with CRUD operations
+for your database schema. No modifications required to your existing code!
 
 [![Example page listing products](https://i.imgur.com/Nz19f8e.png)](https://i.imgur.com/Nz19f8e.png)
 
 **Features:**
  * List objects with pagination and sorting
- * Show object detail page, which also includes `@OneToMany`, `@ManyToMany`, etc... fields
+ * Object detail page, which also includes `@OneToMany` and `@ManyToMany` related objects
  * Create/Edit objects
  * Action logs: history of all write operations executed through the web UI
  * Search
@@ -18,10 +19,9 @@ Spring Boot Database Admin scans your `@Entity` classes to generate a simple but
  * Core: @Entity, @Table, @Column, @Lob, @Id
  * Relationships: @OneToMany, @ManyToOne, @ManyToMany, @OneToOne
 
-The behaviour you specify with these annotations should be applied automatically by Spring Boot Database Admin as well. Keep in mind that using non-supported annotations will not necessarily result in an error, as they are simply ignored. Depending on what the annotation actually is, this could be just fine or result in an error if it interferes with something that Spring Boot Database Admin relies on.
+The behaviour you specify with these annotations should be applied automatically by Spring Boot Database Admin as well. Keep in mind that using non-supported annotations will not necessarily result in an error, as they are simply ignored. Depending on what the annotation actually does, this could be just fine or result in an error if it interferes with something that Spring Boot Database Admin relies on.
 
-The code is still in a very early stage and it might not be robust if you use not-yet-supported JPA annotations.
-If find something broken with your configuration, please report it as an issue and I will try to take a look at it.
+The code is still in a very early stage and it might not be robust if you use not-yet-supported JPA annotations and/or other custom configurations (e.g., custom naming strategy). If you find a bug with your settings, please report it as an issue and I will try to take a look at it.
 
 ## Installation
 
@@ -75,10 +75,6 @@ If you find a problem or a bug, please report it as issue. When doing so, includ
  * specify if you are using any particular configuration either in your `application.properties` or through annotations
 
 ## Changelog
-
- * provide the code for the involved `@Entity` classes, if possible
- * provide the full stack trace of the error
- * specify if you are using any particular configuration either in your `application.properties` or through annotations
 
 **0.1.2**
 - Better handling of large text fields (shown as `textarea`)
