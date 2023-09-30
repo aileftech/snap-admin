@@ -32,6 +32,9 @@
 		        					<input type="hidden" name="__dbadmin_create" th:value="${create}">
 									<div th:each="field : ${schema.getSortedFields()}" class="mt-2">
 										<label th:for="|__id_${field.getName()}|" class="mb-1 fw-bold">
+											<span th:if="${!field.isNullable() && !field.isPrimaryKey()}">
+												*
+											</span>
 											[[ ${field.getName()} ]]
 										</label>
 										
@@ -52,9 +55,8 @@
 														"
 														class="form-control" th:id="|__id_${field.getName()}|"
 														th:required="${!field.isNullable() && !field.isPrimaryKey()}"
-														oninvalid="this.setCustomValidity('This field is not nullable.')"
 														rows="5"
-														oninput="this.setCustomValidity('')"></textarea>
+														></textarea>
 											</th:block>
 											<th:block th:if="${!field.isText()}">
 												<input  th:if="${!field.isBinary()}" placeholder="NULL" th:type="${field.getType().getHTMLName()}" 
@@ -67,8 +69,7 @@
 														th:classAppend="${field.isPrimaryKey() && object != null ? 'disable' : ''}"
 														th:required="${!field.isNullable() && !field.isPrimaryKey()}"
 														step="any"
-														oninvalid="this.setCustomValidity('This field is not nullable.')"
-														oninput="this.setCustomValidity('')">
+														>
 											</th:block>
 													
 											<!--/*--> Binary field <!--*/-->
@@ -92,8 +93,7 @@
 													th:name="${field.getName()}" 
 													class="form-control mt-2" th:id="|__id_${field.getName()}|"
 													th:required="${!field.isNullable()}"
-													oninvalid="this.setCustomValidity('This field is not nullable.')"
-													oninput="this.setCustomValidity('')">
+													>
 											</th:block>
 										</th:block>
 										<div class="separator mt-3 mb-2 separator-light"></div>

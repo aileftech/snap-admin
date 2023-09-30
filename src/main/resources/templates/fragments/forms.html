@@ -96,8 +96,7 @@
 										th:classAppend="${field.isPrimaryKey() && object != null ? 'disable' : ''}"
 										th:required="${!field.isNullable() && !field.isPrimaryKey()}"
 										step="any"
-										oninvalid="this.setCustomValidity('This field is not nullable.')"
-										oninput="this.setCustomValidity('')">
+										>
 							</th:block>
 							<button class="ui-btn btn btn-primary"><i class="bi bi-search text-white"></i></button>
 						</div>
