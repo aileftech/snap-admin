@@ -2,6 +2,11 @@ package tech.ailef.dbadmin.external.dto;
 
 import tech.ailef.dbadmin.external.dbmapping.DbObject;
 
+/**
+ * An object to hold autocomplete results returned from the 
+ * respective AutocompleteController
+ *
+ */
 public class AutocompleteSearchResult {
 	private Object id;
 	

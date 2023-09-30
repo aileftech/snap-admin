@@ -13,5 +13,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface DisplayFormat {
+	/**
+	 * The format to apply to the field's value
+	 * @return 
+	 */
 	public String format() default "";
 }

@@ -3,19 +3,45 @@ package tech.ailef.dbadmin.external.dto;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
+/**
+ * A client request for the Action logs page where
+ * several filtering parameters are present
+ *
+ */
 public class LogsSearchRequest {
+	/**
+	 * The table name to filter on
+	 */
 	private String table;
 	
+	/**
+	 * The action type to filter on (EDIT, CREATE, DELETE, ANY)
+	 */
 	private String actionType;
 	
+	/**
+	 * The item id to filter on.
+	 */
 	private String itemId;
 	
+	/**
+	 * The requested page
+	 */
 	private int page;
 	
+	/**
+	 * The requested page size
+	 */
 	private int pageSize;
 	
+	/**
+	 * The requested sort key
+	 */
 	private String sortKey;
 	
+	/**
+	 * The requested sort order
+	 */
 	private String sortOrder;
 
 	public String getTable() {
@@ -80,6 +106,10 @@ public class LogsSearchRequest {
 				+ page + ", pageSize=" + pageSize + ", sortKey=" + sortKey + ", sortOrder=" + sortOrder + "]";
 	}
 	
+	/**
+	 * Build a Spring PageRequest object from the parameters in this request
+	 * @return a Spring PageRequest object
+	 */
 	public PageRequest toPageRequest() {
 		int actualPage = page - 1 < 0 ? 0 : page - 1;
 		int actualPageSize = pageSize <= 0 ? 50 : pageSize;

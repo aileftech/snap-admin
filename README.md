@@ -76,6 +76,15 @@ If you find a problem or a bug, please report it as issue. When doing so, includ
 
 ## Changelog
 
+ * provide the code for the involved `@Entity` classes, if possible
+ * provide the full stack trace of the error
+ * specify if you are using any particular configuration either in your `application.properties` or through annotations
+
+**0.1.2**
+- Better handling of large text fields (shown as `textarea`)
+- Added `CATEGORICAL` option to `Filterable`
+- Several bug fixes
+
 **0.1.0**
 - Implemented action logs
 - Implemented user settings

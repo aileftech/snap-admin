@@ -16,5 +16,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface Filterable {
+	/**
+	 * The type of filter (DEFAULT or CATEGORICAL)
+	 * @return
+	 */
 	public FilterableType type() default FilterableType.DEFAULT;
 }

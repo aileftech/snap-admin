@@ -37,6 +37,13 @@ public class DownloadController {
 	private DbAdmin dbAdmin;
 
 	
+	/**
+	 * Serve a binary field as an image
+	 * @param className
+	 * @param fieldName
+	 * @param id
+	 * @return
+	 */
 	@GetMapping(value="/{className}/{fieldName}/{id}/image", produces = MediaType.IMAGE_JPEG_VALUE)
 	@ResponseBody
 	public ResponseEntity<byte[]> serveImage(@PathVariable String className, 
@@ -58,6 +65,16 @@ public class DownloadController {
 
 	}
 	
+	/**
+	 * Serve a binary field as a file. This tries to detect the file type using Tika
+	 * in order to serve the file with a plausible extension, since we don't have
+	 * any meta-data about what was originally uploaded and it is not feasible to 
+	 * store it (it could be modified on another end and we wouldn't be aware of it).
+	 * @param className
+	 * @param fieldName
+	 * @param id
+	 * @return
+	 */
 	@GetMapping("/{className}/{fieldName}/{id}")
 	@ResponseBody
 	public ResponseEntity<byte[]> serveFile(@PathVariable String className, 

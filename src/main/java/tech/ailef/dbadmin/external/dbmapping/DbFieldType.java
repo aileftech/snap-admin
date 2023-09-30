@@ -14,6 +14,9 @@ import jakarta.persistence.OneToOne;
 import tech.ailef.dbadmin.external.dto.CompareOperator;
 import tech.ailef.dbadmin.external.exceptions.DbAdminException;
 
+/**
+ * The list of supported field types 
+ */
 public enum DbFieldType {
 	INTEGER {
 		@Override
@@ -27,7 +30,6 @@ public enum DbFieldType {
 		}
 
 		@Override
-
 		public Class<?> getJavaClass() {
 			return Integer.class;
 		}

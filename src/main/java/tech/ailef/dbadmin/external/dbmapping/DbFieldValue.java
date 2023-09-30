@@ -4,6 +4,10 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+/**
+ * Wrapper for the value of a field 
+ *
+ */
 public class DbFieldValue {
 	private Object value;
 	

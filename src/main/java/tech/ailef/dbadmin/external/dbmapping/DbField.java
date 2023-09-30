@@ -13,13 +13,25 @@ import tech.ailef.dbadmin.external.annotations.Filterable;
 import tech.ailef.dbadmin.external.annotations.FilterableType;
 
 public class DbField {
+	/**
+	 * The inferred name of this field on the database
+	 */
 	protected String dbName;
 
+	/**
+	 * The name of this field in the Java code (instance variable)
+	 */
 	protected String javaName;
 	
+	/**
+	 * The type of this field
+	 */
 	protected DbFieldType type;
 	
 	@JsonIgnore
+	/**
+	 * The primitive Field object from the Class
+	 */
 	protected Field field;
 	
 	/**
@@ -29,12 +41,25 @@ public class DbField {
 	@JsonIgnore
 	private Class<?> connectedType;
 	
+	/**
+	 * Whether this field is a primary key
+	 */
 	private boolean primaryKey;
 	
+	/**
+	 * Whether this field is nullable
+	 */
 	private boolean nullable;
 	
+	/**
+	 * The optional format to apply to this field, if the `@DisplayFormat` 
+	 * annotation has been applied.
+	 */
 	private String format;
 	
+	/**
+	 * The schema this field belongs to
+	 */
 	@JsonIgnore
 	private DbObjectSchema schema;
 	
