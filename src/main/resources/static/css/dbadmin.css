@@ -184,6 +184,7 @@ AUTOCOMPLETE
 ul.categorical-select {
 	list-style-type: none;
 	margin-bottom: 0px;
+	padding-left: 0px;
 }
 
 ul.categorical-select button {
@@ -200,7 +201,7 @@ ul.categorical-select button {
 .thumb-image {
 	max-width: 128px;
 }
+
 .img-muted {
     filter: brightness(50%);
-     
 }
