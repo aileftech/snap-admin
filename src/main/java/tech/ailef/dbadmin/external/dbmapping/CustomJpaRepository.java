@@ -153,7 +153,12 @@ public class CustomJpaRepository extends SimpleJpaRepository {
         	String fieldName = dbField.getJavaName();
         	String v = filter.getValue();
         	
-        	Object value = dbField.getType().parseValue(v);
+        	Object value;
+        	try {
+        		value = dbField.getType().parseValue(v);
+        	} catch (Exception e) {
+        		throw new DbAdminException("Invalid value `" + v + "` specified for field `" + dbField.getName() + "`");
+        	}
         	
 			if (op == CompareOperator.STRING_EQ) {
 				if (value == null)

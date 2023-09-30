@@ -47,7 +47,7 @@
 									
 									<input type="hidden" name="page" value="1">
 									<input type="hidden" name="pageSize" 
-										th:value="${page.getPagination().getPageSize()}">
+										th:value="${page != null ? page.getPagination().getPageSize() : '50'}">
 			    				</form>
 								<div class="separator mb-4 mt-4"></div>
 							
@@ -67,8 +67,10 @@
 									</h3>
 								</div>
 								
-								<div th:replace="~{fragments/table_selectable :: table(results=${page.getResults()}, schema=${schema})}">
-								</div>
+								<th:block th:if="${page}">
+									<div th:replace="~{fragments/table_selectable :: table(results=${page.getResults()}, schema=${schema})}">
+									</div>
+								</th:block>
 							</div>
 		    			</div>
 		    			<div th:if="${!schema.getFilterableFields().isEmpty()}" class="col-3">

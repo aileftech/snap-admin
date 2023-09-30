@@ -59,7 +59,7 @@
 						<div class="input-group pe-2">
 							<!-- Reset page when applying filter to start back at page 1 -->
 							<input type="hidden" name="page" value="1">
-							<input type="hidden" name="pageSize" th:value="${page.getPagination().getPageSize()}">
+							<input type="hidden" name="pageSize" th:value="${page != null ? page.getPagination().getPageSize() : '50'}">
 							<input type="hidden" name="query" th:value="${query}">
 							<input type="hidden" name="filter_field" th:value="${field.getJavaName()}">
 	
@@ -139,7 +139,7 @@
 									
 									<!-- Reset page when applying filter to start back at page 1 -->
 									<input type="hidden" name="page" value="1">
-									<input type="hidden" name="pageSize" th:value="${page.getPagination().getPageSize()}">
+									<input type="hidden" name="pageSize" th:value="${page != null ? page.getPagination().getPageSize() : '50'}">
 									<input type="hidden" name="query" th:value="${query}">
 									<input type="hidden" name="filter_field" th:value="${field.getJavaName()}">
 

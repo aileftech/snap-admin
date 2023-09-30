@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.springframework.util.MultiValueMap;
 
+import tech.ailef.dbadmin.external.dbmapping.DbField;
 import tech.ailef.dbadmin.external.dbmapping.DbObjectSchema;
 import tech.ailef.dbadmin.external.dto.CompareOperator;
 import tech.ailef.dbadmin.external.dto.QueryFilter;
@@ -81,9 +82,16 @@ public interface Utils {
 			String op = ops.get(i);
 			String field = fields.get(i);
 			String value = values.get(i);
-			
-			QueryFilter queryFilter = new QueryFilter(schema.getFieldByJavaName(field), CompareOperator.valueOf(op.toUpperCase()), value);
-			filters.add(queryFilter);
+
+			// Check if the field can actually be found before creating the filter
+			// This shouldn't normally happen because this parameter is not provided
+			// by the user; but there's the chance of a stale bookmarked link referring
+			// to a non-existing schema or the user fiddling with the URL
+			DbField dbField = schema.getFieldByJavaName(field);
+			if (dbField != null) {
+				QueryFilter queryFilter = new QueryFilter(dbField, CompareOperator.valueOf(op.toUpperCase()), value);
+				filters.add(queryFilter);
+			}
 		}
 		
 		return filters;

@@ -37,6 +37,7 @@ import tech.ailef.dbadmin.external.dto.FacetedSearchRequest;
 import tech.ailef.dbadmin.external.dto.LogsSearchRequest;
 import tech.ailef.dbadmin.external.dto.PaginatedResult;
 import tech.ailef.dbadmin.external.dto.QueryFilter;
+import tech.ailef.dbadmin.external.exceptions.DbAdminException;
 import tech.ailef.dbadmin.external.exceptions.InvalidPageException;
 import tech.ailef.dbadmin.external.misc.Utils;
 import tech.ailef.dbadmin.internal.model.UserAction;
@@ -184,6 +185,16 @@ public class DefaultDbAdminController {
 			
 		} catch (InvalidPageException e) {
 			return "redirect:/" + properties.getBaseUrl() + "/model/" + className;
+		} catch (DbAdminException e) {
+			model.addAttribute("error", e.getMessage());
+			model.addAttribute("errorTitle", "Invalid request");
+			model.addAttribute("schema", schema);
+			model.addAttribute("activePage", "entities");
+			model.addAttribute("sortKey", sortKey);
+			model.addAttribute("query", query);
+			model.addAttribute("sortOrder", sortOrder);
+			model.addAttribute("activeFilters", queryFilters);
+			return "model/list";
 		}
 	}
 	
