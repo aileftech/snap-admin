@@ -109,7 +109,7 @@ public class DbAdmin {
 	
 	/**
 	 * Finds a schema by its class object
-	 * @param the `@Entity` class you want to find the schema for
+	 * @param klass the `@Entity` class you want to find the schema for
 	 * @return the schema for the `@Entity` class
 	 * @throws DbAdminException if corresponding schema not found
 	 */
