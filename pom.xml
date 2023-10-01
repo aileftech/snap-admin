@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>tech.ailef</groupId>
 	<artifactId>spring-boot-db-admin</artifactId>
-	<version>0.1.3-SNAPSHOT</version>
+	<version>0.1.3</version>
 	<name>spring-boot-db-admin</name>
 	<description>Srping Boot Database Admin is an auto-generated CRUD admin panel for Spring Boot apps</description>
 	<properties>

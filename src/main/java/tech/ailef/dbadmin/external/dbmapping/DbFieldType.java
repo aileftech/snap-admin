@@ -34,7 +34,7 @@ import tech.ailef.dbadmin.external.dto.CompareOperator;
 import tech.ailef.dbadmin.external.exceptions.DbAdminException;
 
 /**
- * The list of supported field types 
+ * The enum for supported database field types. 
  */
 public enum DbFieldType {
 	INTEGER {

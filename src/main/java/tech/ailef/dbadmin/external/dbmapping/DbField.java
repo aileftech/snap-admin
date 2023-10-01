@@ -31,6 +31,9 @@ import tech.ailef.dbadmin.external.annotations.DisplayImage;
 import tech.ailef.dbadmin.external.annotations.Filterable;
 import tech.ailef.dbadmin.external.annotations.FilterableType;
 
+/**
+ * Represent a field on the database, generated from an Entity class instance variable.
+ */
 public class DbField {
 	/**
 	 * The inferred name of this field on the database

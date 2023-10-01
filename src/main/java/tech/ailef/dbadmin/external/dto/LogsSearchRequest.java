@@ -142,7 +142,6 @@ public class LogsSearchRequest implements FilterRequest {
 
 	/**
 	 * Returns the requested sort order, possibly null
-	 * @param sortOrder
 	 */
 
 	public String getSortOrder() {
