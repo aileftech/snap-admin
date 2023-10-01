@@ -55,8 +55,8 @@ import tech.ailef.dbadmin.external.misc.Utils;
 
 /**
  * The main DbAdmin class responsible for the initialization phase. This class scans
- * the user provided package containing the `@Entity` definitions and tries to map each
- * entity to a DbObjectSchema instance.
+ * the user provided package containing the {@code Entity} definitions and tries to map each
+ * entity to a {@link DbObjectSchema} instance.
  * 
  * This process involves determining the correct type for each class field and its 
  * configuration at the database level. An exception will be thrown if it's not possible

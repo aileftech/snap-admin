@@ -92,7 +92,7 @@ public class CustomActionRepositoryImpl implements CustomActionRepository {
     
     /**
      * Returns the count that match the filtering parameters, used for pagination.
-     * @return
+     * @return the number of user actions matching the filtering parameters
      */
     @Override
     public long countActions(String table, String actionType, String itemId) {

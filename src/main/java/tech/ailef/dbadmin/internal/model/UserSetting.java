@@ -23,7 +23,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
 /**
- * A single variable in the settings.
+ * A single variable in the user settings.
  */
 @Entity
 public class UserSetting {

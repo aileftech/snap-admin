@@ -49,9 +49,9 @@ public class AutocompleteController {
 	
 	/**
 	 * Returns a list of entities from a given table that match an input query.
-	 * @param className
-	 * @param query
-	 * @return
+	 * @param className full qualified class name; only search items for this entity
+	 * @param query the query to search for
+	 * @return a list of {@link AutocompleteSearchResult}
 	 */
 	@GetMapping("/{className}")
 	public ResponseEntity<?> autocomplete(@PathVariable String className, @RequestParam String query) {

@@ -41,8 +41,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import tech.ailef.dbadmin.internal.InternalDbAdminConfiguration;
 
 /**
- * The configuration class that adds and configures the "internal" data source.
- *
+ * The configuration class for "internal" data source. This is not the
+ * source connected to the user's data/entities, but rather an internal
+ * H2 database which is used by Spring Boot Database Admin to store user
+ * settings and other information like operations history. 
  */
 @ConditionalOnProperty(name = "dbadmin.enabled", matchIfMissing = true)
 @ComponentScan

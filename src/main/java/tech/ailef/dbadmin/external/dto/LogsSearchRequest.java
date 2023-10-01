@@ -46,25 +46,30 @@ public class LogsSearchRequest implements FilterRequest {
 	private String itemId;
 	
 	/**
-	 * The requested page
+	 * The requested page number
 	 */
 	private int page;
 	
 	/**
-	 * The requested page size
+	 * The requested number of elements per page
 	 */
 	private int pageSize;
 	
 	/**
-	 * The requested sort key
+	 * The requested sort key, possibly null
 	 */
 	private String sortKey;
 	
 	/**
-	 * The requested sort order
+	 * The requested sort order, possibly null
 	 */
 	private String sortOrder;
 
+	/**
+	 * Returns the table specified in this search request. If the value is blank or 'Any',
+	 * the method returns null in order ignore the field in subsequent queries.
+	 * @return
+	 */
 	public String getTable() {
 		return table == null || table.isBlank() || table.equalsIgnoreCase("Any") ? null : table;
 	}
@@ -73,6 +78,11 @@ public class LogsSearchRequest implements FilterRequest {
 		this.table = table;
 	}
 
+	/**
+	 * Returns the actionType specified in this search request. If the value is blank or 'Any',
+	 * the method returns null in order ignore the field in subsequent queries.
+	 * @return
+	 */
 	public String getActionType() {
 		return actionType == null || actionType.isBlank() || actionType.equalsIgnoreCase("Any") ? null : actionType;
 	}
@@ -81,6 +91,11 @@ public class LogsSearchRequest implements FilterRequest {
 		this.actionType = actionType;
 	}
 
+	/**
+	 * Returns the itemId specified in this search request. If the value is blank or 'Any',
+	 * the method returns null in order ignore the field in subsequent queries.
+	 * @return
+	 */
 	public String getItemId() {
 		return itemId == null || itemId.isBlank() ? null : itemId;
 	}
@@ -89,6 +104,10 @@ public class LogsSearchRequest implements FilterRequest {
 		this.itemId = itemId;
 	}
 
+	/**
+	 * Returns the requested page number
+	 * @return
+	 */
 	public int getPage() {
 		return page;
 	}
@@ -97,6 +116,10 @@ public class LogsSearchRequest implements FilterRequest {
 		this.page = page;
 	}
 
+	/**
+	 * Returns the requested number of elements per page
+	 * @return
+	 */
 	public int getPageSize() {
 		return pageSize;
 	}
@@ -105,6 +128,10 @@ public class LogsSearchRequest implements FilterRequest {
 		this.pageSize = pageSize;
 	}
 
+	/**
+	 * Returns the requested sort key, possibly null
+	 * @return
+	 */
 	public String getSortKey() {
 		return sortKey;
 	}
@@ -112,6 +139,11 @@ public class LogsSearchRequest implements FilterRequest {
 	public void setSortKey(String sortKey) {
 		this.sortKey = sortKey;
 	}
+
+	/**
+	 * Returns the requested sort order, possibly null
+	 * @param sortOrder
+	 */
 
 	public String getSortOrder() {
 		return sortOrder;

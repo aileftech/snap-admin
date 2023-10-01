@@ -33,6 +33,10 @@ import tech.ailef.dbadmin.internal.model.UserAction;
 import tech.ailef.dbadmin.internal.repository.CustomActionRepositoryImpl;
 import tech.ailef.dbadmin.internal.repository.UserActionRepository;
 
+/**
+ * Service class to retrieve user actions through the {@link CustomActionRepositoryImpl}. 
+ *
+ */
 @Service
 public class UserActionService {
 	@Autowired
@@ -46,6 +50,11 @@ public class UserActionService {
 		return repo.save(a);
 	}
 	
+	/**
+	 * Retruns a page of results of user actions that match the given input request.
+	 * @param request a request containing filtering parameters for user actions
+	 * @return a page of results matching the input request
+	 */
 	public PaginatedResult<UserAction> findActions(LogsSearchRequest request) {
 		String table = request.getTable();
 		String actionType = request.getActionType();
