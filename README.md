@@ -1,5 +1,7 @@
 [![javadoc](https://javadoc.io/badge2/tech.ailef/spring-boot-db-admin/javadoc.svg)](https://javadoc.io/doc/tech.ailef/spring-boot-db-admin) 
 
+> **LIVE DEMO** Check if it's up at http://dbadmin.ailef.tech/admin. Feel free to edit the content, it's an in-memory database that reset every hour.
+
 # Spring Boot Database Admin Panel
 
 Generate a powerful CRUD management dashboard for your Spring Boot application in a few minutes. 
