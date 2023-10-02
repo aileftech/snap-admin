@@ -21,40 +21,44 @@
 	        			<div class="col">
 	        			
 	        				<div class="box">
-	        					<table class="table table-striped mt-4" th:if="${!schemas.isEmpty()}">
-		        					<tr>
-		        						<th>Table</th>
-		        						<th>Rows</th>
-		        						<th>Java class</th>
-		        						<th></th>
-		        					</tr>
-		        					<tr th:each="schema : ${schemas}">
-		        						<td>
-											<a th:text="${schema.getTableName()}"
-											th:href="|/${baseUrl}/model/${schema.getClassName()}|"></a>
-										</td>
-										<td>
-											<span th:text="${counts.get(schema.getClassName())}"></span>
-										</td>
-										<td>
-											<span th:text="${schema.getClassName()}"></span>
-										</td>
-										<td class="text-end row-icons">
-											<a title="List all" th:href="|/${baseUrl}/model/${schema.getClassName()}|"><i class="bi bi-list"></i></i></a>
-											<a title="Create new" th:href="|/${baseUrl}/model/${schema.getClassName()}/create|"><i class="bi bi-plus-square"></i></a>
-										</td>
-									</tr>
-								</table>
-								<div class="p-0 m-0" th:if="${schemas.isEmpty()}">
-									No entities have been loaded from Java classes.
-									
-									<ul class="mt-3">
-										<li>Make sure you are initializing Spring Boot DB Admin Panel correctly and double check
-										that the package you have set in the CommandLineRunner is the correct one.</li>
-										<li>Check that the Java classes in the package have been correctly marked with 
-										the <code>@Entity</code> annotation.</li> 
-									</ul>
-								</div>
+	        					<th:block th:each="package : ${schemas.keySet()}">
+	        						<h4 class="fw-bold" th:text="${package}"></h4>
+		        					<table class="table table-striped mt-4" th:if="${!schemas.isEmpty()}">
+			        					<tr>
+			        						<th>Table</th>
+			        						<th>Rows</th>
+			        						<th>Java class</th>
+			        						<th></th>
+			        					</tr>
+			        					<tr th:each="schema : ${schemas.get(package)}">
+			        						<td>
+												<a th:text="${schema.getTableName()}"
+												th:href="|/${baseUrl}/model/${schema.getClassName()}|"></a>
+											</td>
+											<td>
+												<span th:text="${counts.get(schema.getClassName())}"></span>
+											</td>
+											<td>
+												<span th:text="${schema.getClassName()}"></span>
+											</td>
+											<td class="text-end row-icons">
+												<a title="List all" th:href="|/${baseUrl}/model/${schema.getClassName()}|"><i class="bi bi-list"></i></i></a>
+												<a title="Create new" th:href="|/${baseUrl}/model/${schema.getClassName()}/create|"><i class="bi bi-plus-square"></i></a>
+											</td>
+										</tr>
+									</table>
+								
+									<div class="p-0 m-0" th:if="${schemas.isEmpty()}">
+										No entities have been loaded from Java classes.
+										
+										<ul class="mt-3">
+											<li>Make sure you are initializing Spring Boot DB Admin Panel correctly and double check
+											that the package you have set in the CommandLineRunner is the correct one.</li>
+											<li>Check that the Java classes in the package have been correctly marked with 
+											the <code>@Entity</code> annotation.</li> 
+										</ul>
+									</div>
+								</th:block>
 							</div>
 	        			</div>
 	        		</div>

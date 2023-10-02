@@ -23,6 +23,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -70,7 +71,7 @@ public class DbAdmin {
 	
 	private List<DbObjectSchema> schemas = new ArrayList<>();
 	
-	private String modelsPackage;
+	private List<String> modelsPackage;
 	
 	/**
 	 * Builds the DbAdmin instance by scanning the `@Entity` beans and loading
@@ -79,18 +80,21 @@ public class DbAdmin {
 	 * @param properties	the configuration properties
 	 */
 	public DbAdmin(@Autowired EntityManager entityManager, @Autowired DbAdminProperties properties) {
-		this.modelsPackage = properties.getModelsPackage();
+		this.modelsPackage = Arrays.stream(properties.getModelsPackage().split(",")).map(String::trim).toList();
 		this.entityManager = entityManager;
 		
 		ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
 		provider.addIncludeFilter(new AnnotationTypeFilter(Entity.class));
 		
-		Set<BeanDefinition> beanDefs = provider.findCandidateComponents(modelsPackage);
-		for (BeanDefinition bd : beanDefs) {
-			schemas.add(processBeanDefinition(bd));
+		for (String currentPackage : modelsPackage) {
+			Set<BeanDefinition> beanDefs = provider.findCandidateComponents(currentPackage);
+			for (BeanDefinition bd : beanDefs) {
+				schemas.add(processBeanDefinition(bd));
+			}
+			logger.info("Scanned package '" + currentPackage + "'. Loaded " + beanDefs.size() + " schemas.");
 		}
 
-		logger.info("Spring Boot Database Admin initialized. Loaded " + schemas.size() + " table definitions");
+		logger.info("Spring Boot Database Admin initialized. Loaded " + schemas.size() + " schemas from " + modelsPackage.size() + " packages");
 		logger.info("Spring Boot Database Admin web interface at: http://YOUR_HOST:YOUR_PORT/" + properties.getBaseUrl());
 	}
 
@@ -153,6 +157,7 @@ public class DbAdmin {
 			DbObjectSchema schema = new DbObjectSchema(klass, this);
 			CustomJpaRepository simpleJpaRepository = new CustomJpaRepository(schema, entityManager);
 			schema.setJpaRepository(simpleJpaRepository);
+			
 			
 			logger.debug("Processing class: "  + klass + " - Table: " + schema.getTableName());
 			

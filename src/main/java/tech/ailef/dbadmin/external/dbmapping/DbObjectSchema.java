@@ -115,6 +115,10 @@ public class DbObjectSchema {
 		}
 	}
 	
+	public String getBasePackage() {
+		return entityClass.getPackageName();
+	}
+	
 	/**
 	 * Returns the DbAdmin instance
 	 * @return the DbAdmin instance
