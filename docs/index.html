@@ -177,6 +177,7 @@ public double totalSpent() {
 </pre>
 
 <p>This annotation can be used to add values computed at runtime that are shown like additional columns.</p>
+<p><b>NOTE</b> If your computed columns are computationally expensive (e.g because they use joins) they can affect the interface loading speed. In particular, the list view is the most affected, as these methods will have to be called for each item in the list.</p>
 
 <h4 id="filterable">3.1.4 @Filterable</h4>
 <h6>Supported parameters</h6>
