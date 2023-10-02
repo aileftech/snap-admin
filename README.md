@@ -52,7 +52,8 @@ dbadmin.enabled=true
 # The first-level part of the URL path: http://localhost:8080/${baseUrl}/
 dbadmin.baseUrl=admin
 
-# The package that contains your @Entity classes
+# The package(s) that contain your @Entity classes
+# accepts multiple comma separated values
 dbadmin.modelsPackage=put.your.models.package.here
 ```
 
