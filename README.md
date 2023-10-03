@@ -80,9 +80,9 @@ Available at: https://aileftech.github.io/spring-boot-database-admin/.
 
 ## Issues
 
-If you find a problem or a bug, please report it as issue. When doing so, include as much information as possible, and in particular:
+If you find a problem or a bug, please report it as an issue. When doing so, include as much information as possible, and in particular:
 
- * provide the code for the involved `@Entity` classes, if possible
+ * provide the code for the involved `@Entity` classes, if possible/relevant
  * provide the full stack trace of the error
  * specify if you are using any particular configuration either in your `application.properties` or through annotations
 
