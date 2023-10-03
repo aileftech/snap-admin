@@ -30,6 +30,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import tech.ailef.dbadmin.external.annotations.DisplayImage;
 import tech.ailef.dbadmin.external.annotations.Filterable;
 import tech.ailef.dbadmin.external.annotations.FilterableType;
+import tech.ailef.dbadmin.external.annotations.ReadOnly;
 
 /**
  * Represent a field on the database, generated from an Entity class instance variable.
@@ -188,6 +189,10 @@ public class DbField {
 	public boolean isFilterableCategorical() {
 		Filterable filterable = getPrimitiveField().getAnnotation(Filterable.class);
 		return filterable != null && filterable.type() == FilterableType.CATEGORICAL;
+	}
+	
+	public boolean isReadOnly() {
+		return getPrimitiveField().getAnnotation(ReadOnly.class) != null;
 	}
 	
 	public Set<DbFieldValue> getAllValues() {
