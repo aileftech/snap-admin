@@ -36,6 +36,7 @@ import org.springframework.context.annotation.ClassPathScanningCandidateComponen
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.stereotype.Component;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityManager;
@@ -73,6 +74,8 @@ public class DbAdmin {
 	
 	private List<String> modelsPackage;
 	
+	private DbAdminProperties properties;
+	
 	/**
 	 * Builds the DbAdmin instance by scanning the `@Entity` beans and loading
 	 * the schemas.
@@ -82,6 +85,19 @@ public class DbAdmin {
 	public DbAdmin(@Autowired EntityManager entityManager, @Autowired DbAdminProperties properties) {
 		this.modelsPackage = Arrays.stream(properties.getModelsPackage().split(",")).map(String::trim).toList();
 		this.entityManager = entityManager;
+		this.properties = properties;
+	}
+	
+	@PostConstruct
+	private void init() {
+		// Test different class loaders printing
+//		try {
+//			Class<?> klass = Class.forName("modelsPackage");
+//			System.out.println("DamEntity class loader: " + klass.getClassLoader());
+//			System.out.println("EntityManager class loader: " + entityManager.getClass().getClassLoader());
+//		} catch (ClassNotFoundException e) {
+//			throw new RuntimeException(e);
+//		}
 		
 		ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
 		provider.addIncludeFilter(new AnnotationTypeFilter(Entity.class));
