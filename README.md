@@ -42,7 +42,7 @@ The code is still in a very early stage and it might not be robust if you use no
 <dependency>
 	<groupId>tech.ailef</groupId>
 	<artifactId>spring-boot-db-admin</artifactId>
-	<version>0.1.3</version>
+	<version>0.1.4</version>
 </dependency>
 ```
 
@@ -87,6 +87,9 @@ If you find a problem or a bug, please report it as an issue. When doing so, inc
  * specify if you are using any particular configuration either in your `application.properties` or through annotations
 
 ## Changelog
+
+**0.1.4**
+- Fixed critical issue which was preventing correct startup ([#1](https://github.com/aileftech/spring-boot-database-admin/issues/1))
 
 **0.1.3**
 - `@HiddenColumn`
