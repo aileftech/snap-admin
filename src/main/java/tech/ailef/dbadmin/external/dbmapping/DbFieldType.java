@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -31,6 +32,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import tech.ailef.dbadmin.external.dto.CompareOperator;
+import tech.ailef.dbadmin.external.dto.FragmentContext;
 import tech.ailef.dbadmin.external.exceptions.DbAdminException;
 
 /**
@@ -39,7 +41,7 @@ import tech.ailef.dbadmin.external.exceptions.DbAdminException;
 public enum DbFieldType {
 	INTEGER {
 		@Override
-		public String getHTMLName() {
+		public String getFragmentName(FragmentContext c) {
 			return "number";
 		}
 
@@ -60,7 +62,7 @@ public enum DbFieldType {
 	},
 	DOUBLE {
 		@Override
-		public String getHTMLName() {
+		public String getFragmentName(FragmentContext c) {
 			return "number";
 		}
 
@@ -81,7 +83,7 @@ public enum DbFieldType {
 	},
 	LONG {
 		@Override
-		public String getHTMLName() {
+		public String getFragmentName(FragmentContext c) {
 			return "number";
 		}
 
@@ -102,7 +104,7 @@ public enum DbFieldType {
 	},
 	FLOAT {
 		@Override
-		public String getHTMLName() {
+		public String getFragmentName(FragmentContext c) {
 			return "number";
 		}
 
@@ -121,9 +123,32 @@ public enum DbFieldType {
 			return List.of(CompareOperator.GT, CompareOperator.EQ, CompareOperator.LT);
 		}
 	},
+	OFFSET_DATE_TIME {
+		@Override
+		public String getFragmentName(FragmentContext c) {
+			return "offset_datetime";
+		}
+
+		@Override
+		public Object parseValue(Object value) {
+			if (value == null) return null;
+			return OffsetDateTime.parse(value.toString());
+		}
+
+		@Override
+		public Class<?> getJavaClass() {
+			return OffsetDateTime.class;
+		}
+
+		@Override
+		public List<CompareOperator> getCompareOperators() {
+			return List.of(CompareOperator.AFTER, CompareOperator.STRING_EQ, CompareOperator.BEFORE);
+		}
+		
+	},
 	LOCAL_DATE {
 		@Override
-		public String getHTMLName() {
+		public String getFragmentName(FragmentContext c) {
 			return "date";
 		}
 
@@ -145,8 +170,8 @@ public enum DbFieldType {
 	},
 	LOCAL_DATE_TIME {
 		@Override
-		public String getHTMLName() {
-			return "datetime-local";
+		public String getFragmentName(FragmentContext c) {
+			return "datetime";
 		}
 
 		@Override
@@ -167,7 +192,7 @@ public enum DbFieldType {
 	},
 	STRING {
 		@Override
-		public String getHTMLName() {
+		public String getFragmentName(FragmentContext c) {
 			return "text";
 		}
 
@@ -188,8 +213,10 @@ public enum DbFieldType {
 	},
 	TEXT {
 		@Override
-		public String getHTMLName() {
-			return "textarea";
+		public String getFragmentName(FragmentContext c) {
+			if (c == FragmentContext.CREATE)
+				return "textarea";
+			return "text";
 		}
 
 		@Override
@@ -210,7 +237,7 @@ public enum DbFieldType {
 	},
 	BOOLEAN {
 		@Override
-		public String getHTMLName() {
+		public String getFragmentName(FragmentContext c) {
 			return "text";
 		}
 
@@ -231,7 +258,7 @@ public enum DbFieldType {
 	}, 
 	BIG_DECIMAL {
 		@Override
-		public String getHTMLName() {
+		public String getFragmentName(FragmentContext c) {
 			return "number";
 		}
 
@@ -252,7 +279,7 @@ public enum DbFieldType {
 	}, 
 	BYTE_ARRAY {
 		@Override
-		public String getHTMLName() {
+		public String getFragmentName(FragmentContext c) {
 			return "file";
 		}
 
@@ -277,7 +304,7 @@ public enum DbFieldType {
 	},
 	ONE_TO_MANY {
 		@Override
-		public String getHTMLName() {
+		public String getFragmentName(FragmentContext c) {
 			throw new UnsupportedOperationException();
 		}
 
@@ -308,7 +335,7 @@ public enum DbFieldType {
 	},
 	ONE_TO_ONE {
 		@Override
-		public String getHTMLName() {
+		public String getFragmentName(FragmentContext c) {
 			throw new UnsupportedOperationException();
 		}
 
@@ -339,7 +366,7 @@ public enum DbFieldType {
 	},
 	MANY_TO_MANY {
 		@Override
-		public String getHTMLName() {
+		public String getFragmentName(FragmentContext c) {
 			throw new UnsupportedOperationException();
 		}
 
@@ -370,7 +397,7 @@ public enum DbFieldType {
 	}, 
 	COMPUTED {
 		@Override
-		public String getHTMLName() {
+		public String getFragmentName(FragmentContext c) {
 			throw new UnsupportedOperationException();
 		}
 
@@ -390,7 +417,7 @@ public enum DbFieldType {
 		}
 	};
 
-	public abstract String getHTMLName();
+	public abstract String getFragmentName(FragmentContext c);
 	
 	public abstract Object parseValue(Object value);
 	
@@ -423,6 +450,8 @@ public enum DbFieldType {
 			return BIG_DECIMAL;
 		} else if (klass == byte[].class) {
 			return BYTE_ARRAY;
+		} else if (klass == OffsetDateTime.class) {
+			return OFFSET_DATE_TIME;
 		} else {
 			throw new DbAdminException("Unsupported field type: " + klass);
 		}

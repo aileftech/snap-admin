@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+	<textarea th:fragment="textarea(field, create, name, value)" placeholder="NULL"  
+		th:name="${name}"
+		th:text="${value}"
+		class="form-control" th:id="|__id_${field.getName()}|"
+		th:required="${!field.isNullable() && !field.isPrimaryKey()}"
+		rows="5"
+		th:classAppend="|${field.isReadOnly() && !create ? 'disable' : ''}|"
+		></textarea>
+	<input placeholder="NULL" th:fragment="text(field, create, name, value)" 
+		type="text" 
+		th:value="${value}"
+		th:name="${name}" 
+		class="form-control " th:id="|__id_${field.getName()}|"
+		th:classAppend="|${(field.isPrimaryKey() && object != null) ||
+		 	(field.isReadOnly() && !create) ? 'disable' : ''}|"
+		
+		th:required="${!field.isNullable() && !field.isPrimaryKey()}"
+		></input>
+	<input placeholder="NULL" th:fragment="number(field, create, name, value)" 
+		type="number" 
+		th:value="${value}"
+		th:name="${name}" 
+		class="form-control " th:id="|__id_${field.getName()}|"
+		th:classAppend="|${(field.isPrimaryKey() && object != null) ||
+		 	(field.isReadOnly() && !create) ? 'disable' : ''}|"
+		
+		th:required="${!field.isNullable() && !field.isPrimaryKey()}"
+		step="any"
+		></input>
+	<input placeholder="NULL" th:fragment="datetime(field, create, name, value)" 
+		type="datetime-local"
+		th:value="${value}" 
+		th:name="${name}" 
+		class="form-control " th:id="|__id_${field.getName()}|"
+		th:classAppend="|${create != null && ((field.isPrimaryKey() && object != null) ||
+		 	(field.isReadOnly() && !create)) ? 'disable' : ''}|"
+		
+		th:required="${!field.isNullable() && !field.isPrimaryKey()}"
+		></input>
+	<th:block th:fragment="offset_datetime(field, create, name, value)">
+		<div class="form-group">
+			<input placeholder="NULL"  
+				type="datetime-local"
+				th:value="${value}" 
+				th:name="${name}" 
+				class="form-control " th:id="|__id_${field.getName()}|"
+				th:classAppend="|${(field.isPrimaryKey() && object != null) ||
+				 	(field.isReadOnly() && !create) ? 'disable' : ''}|"
+				
+				th:required="${!field.isNullable() && !field.isPrimaryKey()}"
+				>
+			</input>
+			<select name="offset" class="form-select">
+				<option value="0">0</option>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6">6</option>
+			</select>
+		</div>
+	</th:block>
+	<input placeholder="NULL" th:fragment="date(field, create, name, value)" 
+		type="date" 
+		th:value="${value}"
+		th:name="${name}" 
+		class="form-control " th:id="|__id_${field.getName()}|"
+		th:classAppend="|${create != null && ((field.isPrimaryKey() && object != null) ||
+		 	(field.isReadOnly() && !create)) ? 'disable' : ''}|"
+		
+		th:required="${!field.isNullable() && !field.isPrimaryKey()}"
+		></input>
+	<th:block th:if="${field.isBinary()}"  th:fragment="file(field, create, name, value)" >
+		<!--/*--> Edit options <!--*/-->
+		<div th:if="${!create && object.get(field).getValue() != null}">
+			<input type="checkbox"
+				class="binary-field-checkbox"
+				th:data-fieldname="${field.getName()}"
+				th:id="|__keep_${name}|"
+				checked
+				th:classAppend="|${(field.isPrimaryKey() && object != null) ||
+					 	(field.isReadOnly() && !create) ? 'disable' : ''}|"
+		
+				th:name="|__keep_${name}|">
+				<span>Keep current data</span>
+			<div th:if="${field.isImage()}" class="mb-2">
+				<img class="thumb-image"
+					th:id="|__thumb_${name}|"
+					th:src="|/${baseUrl}/download/${schema.getClassName()}/${field.getJavaName()}/${object.getPrimaryKeyValue()}/image|">
+			</div>
+		</div>
+		<!--/*--> File input <!--*/-->
+		<input
+			th:if="${field.isBinary()}" placeholder="NULL" type="file" 
+			th:name="${name}" 
+			th:class="|form-control mt-2|"
+			th:classAppend="|${(field.isPrimaryKey() && object != null) ||
+			 	(field.isReadOnly() && !create) ? 'disable' : ''}|"
+		
+			th:id="|__id_${name}|"
+			th:required="${!field.isNullable()}"
+			></input>
+	</th:block>
+</html>

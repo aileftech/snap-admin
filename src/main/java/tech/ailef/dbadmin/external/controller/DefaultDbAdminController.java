@@ -53,6 +53,7 @@ import tech.ailef.dbadmin.external.dbmapping.DbObject;
 import tech.ailef.dbadmin.external.dbmapping.DbObjectSchema;
 import tech.ailef.dbadmin.external.dto.CompareOperator;
 import tech.ailef.dbadmin.external.dto.FacetedSearchRequest;
+import tech.ailef.dbadmin.external.dto.FragmentContext;
 import tech.ailef.dbadmin.external.dto.LogsSearchRequest;
 import tech.ailef.dbadmin.external.dto.PaginatedResult;
 import tech.ailef.dbadmin.external.dto.QueryFilter;
@@ -271,6 +272,7 @@ public class DefaultDbAdminController {
 		model.addAttribute("title", "Entities | " + schema.getJavaClass().getSimpleName() + " | Create");
 		model.addAttribute("activePage", "entities");
 		model.addAttribute("create", true);
+		model.addAttribute("fragmentContext", FragmentContext.CREATE);
 		
 		return "model/create";
 	}
@@ -291,6 +293,7 @@ public class DefaultDbAdminController {
 		model.addAttribute("schema", schema);
 		model.addAttribute("activePage", "entities");
 		model.addAttribute("create", false);
+		model.addAttribute("fragmentContext", FragmentContext.CREATE);
 		
 		return "model/create";
 	}
