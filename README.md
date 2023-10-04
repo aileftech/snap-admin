@@ -35,7 +35,7 @@ The behaviour you specify with these annotations should be applied automatically
 The code is still in a very early stage and it might not be robust if you use not-yet-supported JPA annotations and/or other custom configurations (e.g., custom naming strategy). If you find a bug with your settings, please report it as an issue and I will try to take a look at it.
 
 **Known incompatibilities**
- * Spring Boot Devtools: see issue #1, #8
+ * Spring Boot Devtools: see issues ([#1](https://github.com/aileftech/spring-boot-database-admin/issues/1)), ([#8](https://github.com/aileftech/spring-boot-database-admin/issues/8))
 
 ## Installation
 
