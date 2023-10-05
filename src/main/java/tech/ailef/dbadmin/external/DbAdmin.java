@@ -52,7 +52,9 @@ import tech.ailef.dbadmin.external.dbmapping.CustomJpaRepository;
 import tech.ailef.dbadmin.external.dbmapping.DbField;
 import tech.ailef.dbadmin.external.dbmapping.DbFieldType;
 import tech.ailef.dbadmin.external.dbmapping.DbObjectSchema;
+import tech.ailef.dbadmin.external.dto.MappingError;
 import tech.ailef.dbadmin.external.exceptions.DbAdminException;
+import tech.ailef.dbadmin.external.exceptions.UnsupportedFieldTypeException;
 import tech.ailef.dbadmin.external.misc.Utils;
 
 /**
@@ -174,17 +176,21 @@ public class DbAdmin {
 			CustomJpaRepository simpleJpaRepository = new CustomJpaRepository(schema, entityManager);
 			schema.setJpaRepository(simpleJpaRepository);
 			
-			
 			logger.debug("Processing class: "  + klass + " - Table: " + schema.getTableName());
 			
 			Field[] fields = klass.getDeclaredFields();
 			for (Field f : fields) {
-				DbField field = mapField(f, schema);
-				if (field == null) {
-					throw new DbAdminException("Impossible to map field: " + f);
+				try {
+					DbField field = mapField(f, schema);
+					field.setSchema(schema);
+					schema.addField(field);
+				} catch (UnsupportedFieldTypeException e) {
+					schema.addError(
+						new MappingError(
+							"The class contains the field `" + f.getName() + "` of type `" + f.getType().getSimpleName() + "`, which is not supported"
+						)
+					);
 				}
-				field.setSchema(schema);
-				schema.addField(field);
 			}
 			
 			logger.debug("Processed " + klass + ", extracted " + schema.getSortedFields().size() + " fields");
@@ -280,7 +286,7 @@ public class DbAdmin {
 		}
 		
 		if (fieldType == null) {
-			throw new DbAdminException("Unable to determine fieldType for " + f.getType());
+			throw new UnsupportedFieldTypeException("Unable to determine fieldType for " + f.getType());
 		}
 		
 		DisplayFormat displayFormat = f.getAnnotation(DisplayFormat.class);

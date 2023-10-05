@@ -39,6 +39,7 @@
 		
 		th:required="${!field.isNullable() && !field.isPrimaryKey()}"
 		></input>
+	<!--
 	<th:block th:fragment="offset_datetime(field, create, name, value)">
 		<div class="form-group">
 			<input placeholder="NULL"  
@@ -63,6 +64,7 @@
 			</select>
 		</div>
 	</th:block>
+	-->
 	<input placeholder="NULL" th:fragment="date(field, create, name, value)" 
 		type="date" 
 		th:value="${value}"

@@ -25,12 +25,19 @@
 	        						<h4 class="fw-bold" th:text="${package}"></h4>
 		        					<table class="table table-striped mt-4" th:if="${!schemas.isEmpty()}">
 			        					<tr>
+			        						<th></th>
 			        						<th>Table</th>
 			        						<th>Rows</th>
 			        						<th>Java class</th>
 			        						<th></th>
 			        					</tr>
 			        					<tr th:each="schema : ${schemas.get(package)}">
+			        						<td class="warning-col">
+			        							<a th:if="${!schema.getErrors().isEmpty()}"
+			        								title="Some errors or warnings were raised during processing of this schema."
+			        								th:href="|/${baseUrl}/model/${schema.getClassName()}/schema|">
+			        								<i class="bi bi-exclamation-triangle"></i></a>
+			        						</td>
 			        						<td>
 												<a th:text="${schema.getTableName()}"
 												th:href="|/${baseUrl}/model/${schema.getClassName()}|"></a>

@@ -67,6 +67,12 @@
 										<td th:text="${field.isNullable()}"></td>
 									</tr>
 								</table>
+								<div class="separator mb-2 mt-2"></div>
+								<h3 th:if="${!schema.getErrors().isEmpty()}" class="fw-bold"><i class="bi bi-exclamation-triangle"></i> Errors</h3>
+								<ul>
+									<li th:each="error : ${schema.getErrors()}" th:text="${error.getMessage()}">
+									</li>
+								</ul>
 							</div>
 		    			</div>
 		    		</div>

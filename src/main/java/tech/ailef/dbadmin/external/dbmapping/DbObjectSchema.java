@@ -39,6 +39,7 @@ import jakarta.persistence.Table;
 import tech.ailef.dbadmin.external.DbAdmin;
 import tech.ailef.dbadmin.external.annotations.ComputedColumn;
 import tech.ailef.dbadmin.external.annotations.HiddenColumn;
+import tech.ailef.dbadmin.external.dto.MappingError;
 import tech.ailef.dbadmin.external.exceptions.DbAdminException;
 import tech.ailef.dbadmin.external.misc.Utils;
 
@@ -78,6 +79,8 @@ public class DbObjectSchema {
 	 * The name of this table on the database
 	 */
 	private String tableName;
+	
+	private List<MappingError> errors = new ArrayList<>();
 	
 	/**
 	 * Initializes this schema for the specific `@Entity` class. 
@@ -155,6 +158,10 @@ public class DbObjectSchema {
 		return Collections.unmodifiableList(fields);
 	}
 	
+	public List<MappingError> getErrors() {
+		return Collections.unmodifiableList(errors);
+	}
+	
 	/**
 	 * Get a field by its Java name, i.e. the name of the instance variable
 	 * in the `@Entity` class
@@ -182,6 +189,10 @@ public class DbObjectSchema {
 	 */
 	public void addField(DbField f) {
 		fields.add(f);
+	}
+	
+	public void addError(MappingError error) {
+		errors.add(error);
 	}
 	
 	/**

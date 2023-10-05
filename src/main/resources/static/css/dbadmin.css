@@ -59,6 +59,14 @@ tr.table-data-row td:last-child, tr.table-data-row th:last-child {
 	width: 96px;
 }
 
+.warning-col {
+	width: 32px;
+}
+
+.warning-col a .bi {
+	color: red !important; 
+}
+
 h1 .bi {
 	font-size: 2rem;
 }

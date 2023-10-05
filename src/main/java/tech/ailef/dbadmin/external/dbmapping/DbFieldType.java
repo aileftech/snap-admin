@@ -123,29 +123,29 @@ public enum DbFieldType {
 			return List.of(CompareOperator.GT, CompareOperator.EQ, CompareOperator.LT);
 		}
 	},
-	OFFSET_DATE_TIME {
-		@Override
-		public String getFragmentName(FragmentContext c) {
-			return "offset_datetime";
-		}
-
-		@Override
-		public Object parseValue(Object value) {
-			if (value == null) return null;
-			return OffsetDateTime.parse(value.toString());
-		}
-
-		@Override
-		public Class<?> getJavaClass() {
-			return OffsetDateTime.class;
-		}
-
-		@Override
-		public List<CompareOperator> getCompareOperators() {
-			return List.of(CompareOperator.AFTER, CompareOperator.STRING_EQ, CompareOperator.BEFORE);
-		}
-		
-	},
+//	OFFSET_DATE_TIME {
+//		@Override
+//		public String getFragmentName(FragmentContext c) {
+//			return "text";
+//		}
+//
+//		@Override
+//		public Object parseValue(Object value) {
+//			if (value == null) return null;
+//			return OffsetDateTime.parse(value.toString());
+//		}
+//
+//		@Override
+//		public Class<?> getJavaClass() {
+//			return OffsetDateTime.class;
+//		}
+//
+//		@Override
+//		public List<CompareOperator> getCompareOperators() {
+//			return List.of(CompareOperator.AFTER, CompareOperator.STRING_EQ, CompareOperator.BEFORE);
+//		}
+//		
+//	},
 	LOCAL_DATE {
 		@Override
 		public String getFragmentName(FragmentContext c) {
@@ -450,8 +450,8 @@ public enum DbFieldType {
 			return BIG_DECIMAL;
 		} else if (klass == byte[].class) {
 			return BYTE_ARRAY;
-		} else if (klass == OffsetDateTime.class) {
-			return OFFSET_DATE_TIME;
+//		} else if (klass == OffsetDateTime.class) {
+//			return OFFSET_DATE_TIME;
 		} else {
 			throw new DbAdminException("Unsupported field type: " + klass);
 		}
