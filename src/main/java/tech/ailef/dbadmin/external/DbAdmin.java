@@ -185,6 +185,8 @@ public class DbAdmin {
 					field.setSchema(schema);
 					schema.addField(field);
 				} catch (UnsupportedFieldTypeException e) {
+					logger.warn("The class " + klass.getSimpleName()  + " contains the field `" 
+								+ f.getName() + "` of type `" + f.getType().getSimpleName() + "`, which is not supported");
 					schema.addError(
 						new MappingError(
 							"The class contains the field `" + f.getName() + "` of type `" + f.getType().getSimpleName() + "`, which is not supported"
