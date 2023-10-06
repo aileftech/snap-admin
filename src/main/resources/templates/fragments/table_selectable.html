@@ -19,7 +19,9 @@
 				</a>
 			</th:block>
 		</th:block>
-		<div class="table-selectable table-responsive" th:fragment="table(results, schema)">
+		<div class="table-selectable table-responsive" th:fragment="table(results, schema)"
+			th:data-deleteenabled="${schema.isDeleteEnabled()}"
+			th:data-editenabled="${schema.isEditEnabled()}">
 			<div th:if="${results.isEmpty()}">
 				<p>This table contains no data.</p>
 			</div>
@@ -30,7 +32,8 @@
 				</nav>
 				<table class="table table-striped align-middle mt-3">
 					<tr class="table-data-row">
-						<th class="table-checkbox"><input type="checkbox" class="form-check-input check-all"></th>
+						<th class="table-checkbox"><input type="checkbox" class="form-check-input check-all"
+							th:classAppend="|${!schema.isDeleteEnabled() ? 'disable' : ''}|"></th>
 						<th></th>
 						<th class="table-data-row" th:each="field : ${schema.getSortedFields()}">
 							<div class="m-0 p-0 d-flex justify-content-between">

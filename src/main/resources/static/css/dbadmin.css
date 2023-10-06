@@ -30,6 +30,15 @@ a {
 	background: #EDECEF;
 }
 
+.btn-secondary.disable {
+	background-color: #A8ADB3; 
+	border: 1px solid #A8ADB3;
+}
+
+form.delete-form button.disable .bi {
+	color: #9298A0 !important;
+}
+
 .null-label {
 	background-color: #EEE;
 	border-radius: 5px;

@@ -1,7 +1,16 @@
 function updateBulkActions(table, selected) {
+	let deleteEnabled = table.dataset.deleteenabled;
+	
 	let divs = document.querySelectorAll(".bulk-actions");
 	divs.forEach(div => {
-		div.innerHTML = `${selected} items selected <input type="submit" form="multi-delete-form" class="ui-btn btn btn-secondary" value="Delete">`;
+		if (deleteEnabled === "true") {
+			div.innerHTML = `${selected} items selected 
+				<input type="submit" form="multi-delete-form" 
+					class="ui-btn btn btn-secondary ${deleteEnabled === "false" ? 'disable' : ''} " value="Delete">`;
+		} else {
+			
+			div.innerHTML = `<p class="text-muted m-0 mt-1">DELETE not allowed on this table</p>`;
+		}
 	});
 }
 

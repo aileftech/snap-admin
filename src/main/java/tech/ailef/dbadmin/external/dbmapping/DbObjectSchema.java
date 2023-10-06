@@ -38,6 +38,9 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import tech.ailef.dbadmin.external.DbAdmin;
 import tech.ailef.dbadmin.external.annotations.ComputedColumn;
+import tech.ailef.dbadmin.external.annotations.DisableCreate;
+import tech.ailef.dbadmin.external.annotations.DisableDelete;
+import tech.ailef.dbadmin.external.annotations.DisableEdit;
 import tech.ailef.dbadmin.external.annotations.HiddenColumn;
 import tech.ailef.dbadmin.external.dto.MappingError;
 import tech.ailef.dbadmin.external.exceptions.DbAdminException;
@@ -333,6 +336,18 @@ public class DbObjectSchema {
 		return getSortedFields().stream().filter(f -> { 
 			return !f.isBinary() && !f.isPrimaryKey() && f.isFilterable();
 		}).toList();
+	}
+	
+	public boolean isDeleteEnabled() {
+		return entityClass.getAnnotation(DisableDelete.class) == null;
+	}
+	
+	public boolean isEditEnabled() {
+		return entityClass.getAnnotation(DisableEdit.class) == null;
+	}
+	
+	public boolean isCreateEnabled() {
+		return entityClass.getAnnotation(DisableCreate.class) == null;
 	}
 	
 	/**

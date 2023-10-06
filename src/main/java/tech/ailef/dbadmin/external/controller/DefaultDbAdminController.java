@@ -309,6 +309,12 @@ public class DefaultDbAdminController {
 	public String delete(@PathVariable String className, @PathVariable String id, RedirectAttributes attr) {
 		DbObjectSchema schema = dbAdmin.findSchemaByClassName(className);
 		
+		if (!schema.isDeleteEnabled()) {
+			attr.addFlashAttribute("errorTitle", "Unable to DELETE row");
+			attr.addFlashAttribute("error", "DELETE operations have been disabled on this table.");
+			return "redirect:/" + properties.getBaseUrl() + "/model/" + className;
+		}
+		
 		try {
 			repository.delete(schema, id);
 		} catch (DataIntegrityViolationException e) {
@@ -331,6 +337,12 @@ public class DefaultDbAdminController {
 	 */
 	public String delete(@PathVariable String className, @RequestParam String[] ids, RedirectAttributes attr) {
 		DbObjectSchema schema = dbAdmin.findSchemaByClassName(className);
+		
+		if (!schema.isDeleteEnabled()) {
+			attr.addFlashAttribute("errorTitle", "Unable to DELETE rows");
+			attr.addFlashAttribute("error", "DELETE operations have been disabled on this table.");
+			return "redirect:/" + properties.getBaseUrl() + "/model/" + className;
+		}
 		
 		int countDeleted = 0;
 		for (String id : ids) {
