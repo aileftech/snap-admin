@@ -27,7 +27,7 @@
 			<div class="container">
 				<nav class="navbar navbar-expand-lg bg-light">
 				  <div class="container-fluid">
-				    <a class="navbar-brand fw-bold" href="#">Spring Boot Database Admin Docs</a>
+				    <a class="navbar-brand fw-bold" href="#">Spring Boot Database Admin Docs <span class="text-muted">v0.1.5</span></a>
 				    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 				      <span class="navbar-toggler-icon"></span>
 				    </button>
@@ -53,7 +53,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-3 pt-3">
-					<ol id="toc" class="toc" style="position: fixed">
+					<ol id="toc" class="toc" style="position: sticky;">
 						
 					</ol>
 				</div>
@@ -75,7 +75,7 @@
 <code class="language-xml">&lt;dependency&gt;
 	&lt;groupId&gt;tech.ailef&lt;/groupId&gt;
 	&lt;artifactId&gt;spring-boot-db-admin&lt;/artifactId&gt;
-	&lt;version&gt;0.1.2&lt;/version&gt;
+	&lt;version&gt;0.1.5&lt;/version&gt;
 &lt;/dependency&gt;
 </code>
 </pre>
@@ -94,6 +94,9 @@ dbadmin.baseUrl=admin
 # The package(s) that contain your @Entity classes
 # accepts multiple comma separated values
 dbadmin.modelsPackage=your.models.package,your.second.models.package
+
+## It is required to have open-in-view set to true
+# spring.jpa.open-in-view=true
 
 # OPTIONAL PARAMETERS
 # Whether to enable to web interface
@@ -253,7 +256,7 @@ private byte[] image;
 
 <h4 id="hidde-column">3.1.6 @HiddenColumn</h4>
 <h6>Code example</h6>
-<pre>
+<pre >
 <code>@HiddenColumn
 private String cardNumber;
 </code>
@@ -264,13 +267,24 @@ private String cardNumber;
 
 <h4 id="read-only">3.1.7 @ReadOnly</h4>
 <h6>Code example</h6>
-<pre>
+<pre class="language-java">
 <code>@ReadOnly
 private LocalDate createdAt;
 </code>
 </pre>
 
 <p>Marks a field as read-only. The field can be filled at creation time, but it will be shown as disabled during edits, making it impossible to change its value after creation. </p>
+
+
+<h4 id="disable-create">3.1.8 @DisableCreate, @DisableEdit, @DisableDelete</h4>
+<h6>Code example</h6>
+<pre >
+<code class="language-java">@Entity
+@DisableCreate
+public class Product { ... }</code>
+</pre>
+
+<p>Disables the possibility of creating/editing/deleting items for the specific table.</p>
 
 
 <div class="separator"></div>
