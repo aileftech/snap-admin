@@ -129,18 +129,22 @@ dbadmin.modelsPackage=your.models.package,your.second.models.package
 
 <h4>2.3.2 Supported field types</h4>
 <ul>
-    <li>Double, Integer, Float, BigDecimal</li>
+    <li>Double, Integer, Short, Float, BigDecimal, BigInteger</li>
     <li>Boolean</li>
     <li>String</li>
-	<li>LocalDate, LocalDateTime</li>
+	<li>Date, LocalDate, LocalDateTime, OffsetDateTime</li>
     <li>byte[]</li>
 </ul>
 
+<p>For these field types, the interface will be already customized. For example, a file upload input is provided to fill a <code>byte[]</code> field or a date-picker for the various date types.</p>
+
 <p>Unsupported field types are handled as gracefully as possible, meaning that when such a field is detected the application will run anyway but this field will never be displayed in the web interface. This also means that it will not be possible to enter the value for this field when editing or creating, leaving it as the default NULL value. If the field is not nullable, you will thus not be able to create items.</p>
+<p>If you think this field type should be supported, please <a href="https://github.com/aileftech/spring-boot-database-admin/issues" target="_blank">open an issue on Github</a>.</p>
+
 <p>To check if your code contains unsupported fields:</p>
 <ul>
 	<li>In the Spring Boot Database Admin home page, a red icon is shown next to each table if problems have been detected; click this icon to get the detailed list of errors.</li>
-	<li>At startup, detected unsupported field types are printed in the logs.</li>
+	<li>At startup, detected unsupported field types are printed in the logs (you should see some message if you <code>grep DbAdmin</code>).</li>
 </ul>
 
 <div class="separator"></div>
