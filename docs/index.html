@@ -120,14 +120,14 @@ dbadmin.modelsPackage=your.models.package,your.second.models.package
 
 <h3 id="supported-features">2.3 Supported features</h3>
 </p>
-<h4>2.3.1 Supported JPA annotations</h4>
+<h4 id="supported-annotations">2.3.1 Supported JPA annotations</h4>
 <ul>
     <li><b>Core</b>: @Entity, @Table, @Column, @Lob, @Id</li>
     <li><b>Relationships</b>: @OneToMany, @ManyToOne, @ManyToMany, @OneToOne</li>
 </ul>
 <p>The behaviour you specify with these annotations should be applied automatically by Spring Boot Database Admin as well. Keep in mind that using non-supported annotations will not necessarily result in an error, as they are simply ignored. Depending on what the annotation actually does, this could be just fine or result in an error if it interferes with something that Spring Boot Database Admin relies on.</p>
 
-<h4>2.3.2 Supported field types</h4>
+<h4 id="supported-field-types">2.3.2 Supported field types</h4>
 <ul>
     <li>Double, Integer, Short, Float, BigDecimal, BigInteger</li>
     <li>Boolean</li>
