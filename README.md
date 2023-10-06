@@ -34,9 +34,6 @@ The behaviour you specify with these annotations should be applied automatically
 
 The code is still in a very early stage and it might not be robust if you use not-yet-supported JPA annotations and/or other custom configurations (e.g., custom naming strategy). If you find a bug with your settings, please report it as an issue and I will try to take a look at it.
 
-**Known incompatibilities**
- * Spring Boot Devtools: see issues ([#1](https://github.com/aileftech/spring-boot-database-admin/issues/1)), ([#8](https://github.com/aileftech/spring-boot-database-admin/issues/8))
-
 ## Installation
 
 1. Spring Boot Database Admin is distributed on Maven. For the latest stable release you can simply include the following snippet in your `pom.xml` file:
@@ -45,7 +42,7 @@ The code is still in a very early stage and it might not be robust if you use no
 <dependency>
 	<groupId>tech.ailef</groupId>
 	<artifactId>spring-boot-db-admin</artifactId>
-	<version>0.1.4</version>
+	<version>0.1.5</version>
 </dependency>
 ```
 
@@ -56,6 +53,9 @@ a sample database and already configured code.
 Otherwise, go ahead and add these to your `application.properties` file:
 
 ```
+## It is required to have open-in-view set to true
+# spring.jpa.open-in-view=true
+
 # Optional, default true
 dbadmin.enabled=true
 
@@ -90,6 +90,12 @@ If you find a problem or a bug, please report it as an issue. When doing so, inc
  * specify if you are using any particular configuration either in your `application.properties` or through annotations
 
 ## Changelog
+
+**0.1.5**
+- Access-control annotations ([#5](https://github.com/aileftech/spring-boot-database-admin/issues/5))
+- Added support for `OffsetDateTime` ([#7](https://github.com/aileftech/spring-boot-database-admin/issues/7))
+- Unsupported field types are now handled gracefully ([#9](https://github.com/aileftech/spring-boot-database-admin/issues/9))
+- Solved Spring Boot Devtools incompatibility
 
 **0.1.4**
 - Fixed critical issue which was preventing correct startup ([#1](https://github.com/aileftech/spring-boot-database-admin/issues/1))
