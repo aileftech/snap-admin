@@ -33,16 +33,32 @@
 	    					</div>
 		    				<div class="box with-navigation">
 		    					<div class="d-flex justify-content-between">
-									<h3 class="fw-bold mb-4 align-baseline">
+									<h3 class="fw-bold align-baseline">
 										<span title="Java class name"> [[ ${schema.getJavaClass().getSimpleName()} ]] </span>
 										<span title="Database table name" class="ms-3 label label-primary label-gray font-monospace">
 											[[ ${schema.getTableName()} ]]
-										</span> 
+										</span>
 									</h3>
 									<h3><a title="Create new item" 
 										th:href="|/${baseUrl}/model/${schema.getClassName()}/create|"><i class="bi bi-plus-square"></i></a></h3>
 								</div>
-
+								<div class="mb-4 operations-badges">
+									<span class="align-middle noselect badge"
+										th:classAppend="|${schema.isCreateEnabled() ? 'bg-enabled' : 'bg-disabled'}|">
+										<i class="bi" 
+											th:classAppend="|${schema.isCreateEnabled() ? 'bi-check-circle-fill' : 'bi-x-circle-fill'}|"></i> Create
+									</span>
+									<span class="align-middle noselect badge"
+										th:classAppend="|${schema.isEditEnabled() ? 'bg-enabled' : 'bg-disabled'}|">
+										<i class="bi"
+											th:classAppend="|${schema.isEditEnabled() ? 'bi-check-circle-fill' : 'bi-x-circle-fill'}|"></i> Edit
+									</span>
+									<span class="align-middle noselect badge"
+										th:classAppend="|${schema.isDeleteEnabled() ? 'bg-enabled' : 'bg-disabled'}|">
+										<i class="bi"
+											th:classAppend="|${schema.isDeleteEnabled() ? 'bi-check-circle-fill' : 'bi-x-circle-fill'}|"></i> Delete
+									</span>
+								</div>
 								<table class="table table-striped align-middle">
 									<tr class="table-data-row">
 										<th style="width: 32px"></th>
@@ -67,7 +83,7 @@
 										<td th:text="${field.isNullable()}"></td>
 									</tr>
 								</table>
-								<div class="separator mb-2 mt-2"></div>
+								<div th:if="${!schema.getErrors().isEmpty()}"  class="separator mb-2 mt-2"></div>
 								<h3 th:if="${!schema.getErrors().isEmpty()}" 
 									class="fw-bold mt-3 mb-3"><i class="bi bi-exclamation-triangle"></i> Errors</h3>
 								<ul class="mapping-errors">

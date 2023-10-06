@@ -39,6 +39,17 @@ form.delete-form button.disable .bi {
 	color: #9298A0 !important;
 }
 
+.badge.bg-enabled {
+	background-color: green;
+	color: white;	
+}
+
+.badge.bg-disabled {
+	background-color: #999;
+	color: white;	
+}
+
+
 .null-label {
 	background-color: #EEE;
 	border-radius: 5px;
@@ -162,7 +173,7 @@ td.table-checkbox, th.table-checkbox {
 
 
 .noselect {
-	cursor: pointer; -webkit-user-select: none; 
+	-webkit-user-select: none; 
   	-ms-user-select: none; 
   	user-select: none;
 }
@@ -213,6 +224,10 @@ ul.categorical-select button {
 
 .filterable-fields .card-body .input-group input {
 	width: 50%;
+}
+
+.operations-badges {
+	font-size: 1.2rem;
 }
 
 
