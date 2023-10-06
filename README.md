@@ -26,10 +26,10 @@ for your database schema. No modifications required to your existing code (well,
 The behaviour you specify with these annotations should be applied automatically by Spring Boot Database Admin as well. Keep in mind that using non-supported annotations will not necessarily result in an error, as they are simply ignored. Depending on what the annotation actually does, this could be just fine or result in an error if it interferes with something that Spring Boot Database Admin relies on.
 
 **Supported field types**
- * Double, Integer, Float, BigDecimal
+ * Double, Integer, Short, Float, BigDecimal, BigInteger
  * Boolean
  * String
- * LocalDate, LocalDateTime
+ * Date, LocalDate, LocalDateTime, OffsetDateTime
  * byte[]
 
 The code is still in a very early stage and it might not be robust if you use not-yet-supported JPA annotations and/or other custom configurations (e.g., custom naming strategy). If you find a bug with your settings, please report it as an issue and I will try to take a look at it.
