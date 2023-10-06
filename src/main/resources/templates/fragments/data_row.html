@@ -9,7 +9,9 @@
 					th:classAppend="|${!schema.isDeleteEnabled() ? 'disable' : ''}|">
 			</td>
 			<td class="text-center row-icons">
-				<a class="ps-1" th:href="|/${baseUrl}/model/${schema.getJavaClass().getName()}/edit/${row.getPrimaryKeyValue()}|">
+				<a class="ps-1"
+					th:classAppend="|${!schema.isEditEnabled() ? 'disable' : ''}|" 
+					th:href="|/${baseUrl}/model/${schema.getJavaClass().getName()}/edit/${row.getPrimaryKeyValue()}|">
 					<i class="bi bi-pencil-square"></i></a>
 				<form class="delete-form" method="POST" 
 					th:action="|/${baseUrl}/model/${schema.getJavaClass().getName()}/delete/${row.getPrimaryKeyValue()}|">

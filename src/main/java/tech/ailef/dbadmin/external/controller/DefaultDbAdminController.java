@@ -284,8 +284,14 @@ public class DefaultDbAdminController {
 	}
 	
 	@GetMapping("/model/{className}/edit/{id}")
-	public String edit(Model model, @PathVariable String className, @PathVariable String id) {
+	public String edit(Model model, @PathVariable String className, @PathVariable String id, RedirectAttributes attr) {
 		DbObjectSchema schema = dbAdmin.findSchemaByClassName(className);
+		
+		if (!schema.isEditEnabled()) {
+			attr.addFlashAttribute("errorTitle", "Unauthorized");
+			attr.addFlashAttribute("error", "EDIT operations have been disabled on this type (" + schema.getJavaClass().getSimpleName() + ").");
+			return "redirect:/" + properties.getBaseUrl() + "/model/" + className;
+		}
 		
 		DbObject object = repository.findById(schema, id).orElseThrow(() -> {
 			return new ResponseStatusException(

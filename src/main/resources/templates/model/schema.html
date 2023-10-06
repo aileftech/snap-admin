@@ -39,7 +39,7 @@
 											[[ ${schema.getTableName()} ]]
 										</span>
 									</h3>
-									<h3><a  th:title="|${!schema.isCreateEnabled() ? 'CREATE disabled for this type' : 'Create new item'}|"  
+									<h3 class="create-button"><a  th:title="|${!schema.isCreateEnabled() ? 'CREATE disabled for this type' : 'Create new item'}|"  
 										th:href="|/${baseUrl}/model/${schema.getClassName()}/create|"
 										th:class="|${!schema.isCreateEnabled() ? 'disable' : ''}|"><i class="bi bi-plus-square"></i></a></h3>
 								</div>
