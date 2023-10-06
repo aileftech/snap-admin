@@ -21,10 +21,15 @@ package tech.ailef.dbadmin.external.dbmapping;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,6 +44,49 @@ import tech.ailef.dbadmin.external.exceptions.DbAdminException;
  * The enum for supported database field types. 
  */
 public enum DbFieldType {
+	SHORT {
+		@Override
+		public String getFragmentName(FragmentContext c) {
+			return "number";
+		}
+
+		@Override
+		public Object parseValue(Object value) {
+			return Short.parseShort(value.toString());
+		}
+
+		@Override
+		public Class<?> getJavaClass() {
+			return Short.class;
+		}
+
+		@Override
+		public List<CompareOperator> getCompareOperators() {
+			return List.of(CompareOperator.GT, CompareOperator.EQ, CompareOperator.LT);
+		}
+	},
+	BIG_INTEGER {
+		@Override
+		public String getFragmentName(FragmentContext c) {
+			return "number";
+		}
+
+		@Override
+		public Object parseValue(Object value) {
+			if (value == null) return null;
+			return new BigInteger(value.toString());
+		}
+
+		@Override
+		public Class<?> getJavaClass() {
+			return BigInteger.class;
+		}
+
+		@Override
+		public List<CompareOperator> getCompareOperators() {
+			return List.of(CompareOperator.GT, CompareOperator.EQ, CompareOperator.LT);
+		}
+	},
 	INTEGER {
 		@Override
 		public String getFragmentName(FragmentContext c) {
@@ -145,6 +193,33 @@ public enum DbFieldType {
 			return List.of(CompareOperator.AFTER, CompareOperator.STRING_EQ, CompareOperator.BEFORE);
 		}
 		
+	},
+	DATE {
+		@Override
+		public String getFragmentName(FragmentContext c) {
+			return "date";
+		}
+
+		@Override
+		public Object parseValue(Object value) {
+			if (value == null) return null;
+			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+			try {
+				return format.parse(value.toString());
+			} catch (ParseException e) {
+				throw new RuntimeException(e);
+			}
+		}
+
+		@Override
+		public Class<?> getJavaClass() {
+			return Date.class;
+		}
+		
+		@Override
+		public List<CompareOperator> getCompareOperators() {
+			return List.of(CompareOperator.AFTER, CompareOperator.STRING_EQ, CompareOperator.BEFORE);
+		}
 	},
 	LOCAL_DATE {
 		@Override
@@ -276,7 +351,7 @@ public enum DbFieldType {
 		public List<CompareOperator> getCompareOperators() {
 			return List.of(CompareOperator.GT, CompareOperator.EQ, CompareOperator.LT);
 		}
-	}, 
+	},
 	BYTE_ARRAY {
 		@Override
 		public String getFragmentName(FragmentContext c) {
@@ -436,10 +511,16 @@ public enum DbFieldType {
 			return LONG;
 		} else if (klass == Integer.class || klass == int.class) {
 			return INTEGER;
+		} else if (klass == BigInteger.class) {
+			return BIG_INTEGER;
+		} else if (klass == Short.class || klass == short.class) {
+			return SHORT;
 		} else if (klass == String.class) {
 			return STRING;
 		} else if (klass == LocalDate.class) {
 			return LOCAL_DATE;
+		} else if (klass == Date.class) {
+			return DATE;
 		} else if (klass == LocalDateTime.class) {
 			return LOCAL_DATE_TIME;
 		} else if (klass == Float.class || klass == float.class) {
