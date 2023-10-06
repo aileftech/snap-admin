@@ -9,7 +9,7 @@ function updateBulkActions(table, selected) {
 					class="ui-btn btn btn-secondary ${deleteEnabled === "false" ? 'disable' : ''} " value="Delete">`;
 		} else {
 			
-			div.innerHTML = `<p class="text-muted m-0 mt-1">DELETE not allowed on this table</p>`;
+			div.innerHTML = `<p class=" badge bg-secondary text-white m-0 mt-2">DELETE not allowed on this table</p>`;
 		}
 	});
 }
