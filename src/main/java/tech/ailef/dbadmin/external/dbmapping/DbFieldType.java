@@ -492,12 +492,38 @@ public enum DbFieldType {
 		}
 	};
 
+	/**
+	 * Returns the name of the Thymeleaf fragments in the 'inputs.html'
+	 * file, used to render an input field for this specific type.
+	 * For example, a fragment using a file input is used for binary fields.
+	 * 
+	 * For some types, the fragment to be used varies in different context.
+	 * 
+	 * @param c the context in which this fragment has to be rendered
+	 */
 	public abstract String getFragmentName(FragmentContext c);
 	
+	/**
+	 * Parse the value received through an HTML form into a instance
+	 * of an object of this specific type. This usually involves a conversion
+	 * from string, but, for example, files are sent as MultipartFile instead.
+	 * @param value the value to parse
+	 * @return
+	 */
 	public abstract Object parseValue(Object value);
 	
+	/**
+	 * Returns the Java class corresponding to this field type.
+	 * @return
+	 */
 	public abstract Class<?> getJavaClass();
 	
+	/**
+	 * Returns a list of compare operators that can be used to compare
+	 * two values for this field type. Used in the faceted search to provide
+	 * more operators than just equality (e.g. after/before for dates).
+	 * @return
+	 */
 	public abstract List<CompareOperator> getCompareOperators();
 	
 	public boolean isRelationship() {
