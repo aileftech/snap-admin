@@ -27,7 +27,14 @@ a {
 
 .disable {
 	pointer-events: none;
+}
+
+input.disable {
 	background: #EDECEF;
+}
+
+a.disable .bi {
+	color: #9298A0 !important;
 }
 
 .btn-secondary.disable {

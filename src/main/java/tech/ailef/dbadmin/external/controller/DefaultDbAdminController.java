@@ -264,8 +264,14 @@ public class DefaultDbAdminController {
 	
 	
 	@GetMapping("/model/{className}/create")
-	public String create(Model model, @PathVariable String className) {
+	public String create(Model model, @PathVariable String className, RedirectAttributes attr) {
 		DbObjectSchema schema = dbAdmin.findSchemaByClassName(className);
+		
+		if (!schema.isCreateEnabled()) {
+			attr.addFlashAttribute("errorTitle", "Unauthorized");
+			attr.addFlashAttribute("error", "CREATE operations have been disabled on this type (" + schema.getJavaClass().getSimpleName() + ").");
+			return "redirect:/" + properties.getBaseUrl() + "/model/" + className;
+		}
 		
 		model.addAttribute("className", className);
 		model.addAttribute("schema", schema);
@@ -411,6 +417,12 @@ public class DefaultDbAdminController {
 		boolean create = Boolean.parseBoolean(c);
 		
 		DbObjectSchema schema = dbAdmin.findSchemaByClassName(className);
+		
+		if (!schema.isCreateEnabled() && create) {
+			attr.addFlashAttribute("errorTitle", "Unauthorized");
+			attr.addFlashAttribute("error", "CREATE operations have been disabled on this type (" + schema.getJavaClass().getSimpleName() + ").");
+			return "redirect:/" + properties.getBaseUrl() + "/model/" + className;
+		}
 
 		String pkValue = params.get(schema.getPrimaryKey().getName());
 		if (pkValue == null || pkValue.isBlank()) {

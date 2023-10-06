@@ -62,7 +62,8 @@
 									</h3>
 									
 									<h3>
-										<a title="Create new item" 
+										<a th:title="|${!schema.isCreateEnabled() ? 'CREATE disabled for this type' : 'Create new item'}|" 
+											th:class="|${!schema.isCreateEnabled() ? 'disable' : ''}|"
 											th:href="|/${baseUrl}/model/${schema.getClassName()}/create|"><i class="bi bi-plus-square"></i></a>
 									</h3>
 								</div>

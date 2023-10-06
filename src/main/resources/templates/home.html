@@ -50,7 +50,10 @@
 											</td>
 											<td class="text-end row-icons">
 												<a title="List all" th:href="|/${baseUrl}/model/${schema.getClassName()}|"><i class="bi bi-list"></i></i></a>
-												<a title="Create new" th:href="|/${baseUrl}/model/${schema.getClassName()}/create|"><i class="bi bi-plus-square"></i></a>
+												<a  th:title="|${!schema.isCreateEnabled() ? 'CREATE disabled for this type' : 'Create new item'}|" 
+													th:class="|${!schema.isCreateEnabled() ? 'disable' : ''}|" 
+													th:href="|/${baseUrl}/model/${schema.getClassName()}/create|"><i class="bi bi-plus-square"></i>
+												</a>
 											</td>
 										</tr>
 									</table>
