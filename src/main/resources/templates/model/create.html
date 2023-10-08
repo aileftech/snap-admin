@@ -47,7 +47,7 @@
 										</th:block>
 										<th:block th:unless="${field.isForeignKey()}">
 											<th:block th:replace="~{fragments/inputs :: 
-												__${field.getFragmentName(fragmentContext)}__(
+												__${field.getFragmentName()}__(
 													field=${field},
 													create=${create},
 													name=${field.getName()},
