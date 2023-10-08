@@ -87,7 +87,7 @@ This will autoconfigure Spring Boot Database Admin when your application starts.
 ## Documentation
 
 * [Latest Javadoc](https://javadoc.io/doc/tech.ailef/spring-boot-db-admin)
-* [Refernce Guide](https://aileftech.github.io/spring-boot-database-admin/)
+* [Reference Guide](https://aileftech.github.io/spring-boot-database-admin/)
 
 ## Issues
 
