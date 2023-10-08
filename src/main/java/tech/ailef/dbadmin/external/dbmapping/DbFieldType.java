@@ -535,10 +535,6 @@ public enum DbFieldType {
 	 * Returns the name of the Thymeleaf fragments in the 'inputs.html'
 	 * file, used to render an input field for this specific type.
 	 * For example, a fragment using a file input is used for binary fields.
-	 * 
-	 * For some types, the fragment to be used varies in different context.
-	 * 
-	 * @param c the context in which this fragment has to be rendered
 	 */
 	public abstract String getFragmentName();
 	
