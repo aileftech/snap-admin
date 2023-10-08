@@ -352,6 +352,48 @@ public enum DbFieldType {
 			return List.of(CompareOperator.GT, CompareOperator.EQ, CompareOperator.LT);
 		}
 	},
+	CHAR {
+		@Override
+		public String getFragmentName(FragmentContext c) {
+			return "char";
+		}
+
+		@Override
+		public Object parseValue(Object value) {
+			return value.toString().charAt(0);
+		}
+
+		@Override
+		public Class<?> getJavaClass() {
+			return char.class;
+		}
+		
+		@Override
+		public List<CompareOperator> getCompareOperators() {
+			return List.of(CompareOperator.STRING_EQ);
+		}
+	},
+	BYTE {
+		@Override
+		public String getFragmentName(FragmentContext c) {
+			return "number";
+		}
+
+		@Override
+		public Object parseValue(Object value) {
+			return value.toString().getBytes()[0];
+		}
+
+		@Override
+		public Class<?> getJavaClass() {
+			return byte.class;
+		}
+		
+		@Override
+		public List<CompareOperator> getCompareOperators() {
+			throw new DbAdminException("Binary fields are not comparable");
+		}
+	},
 	BYTE_ARRAY {
 		@Override
 		public String getFragmentName(FragmentContext c) {
@@ -559,6 +601,10 @@ public enum DbFieldType {
 			return BYTE_ARRAY;
 		} else if (klass == OffsetDateTime.class) {
 			return OFFSET_DATE_TIME;
+		} else if (klass == byte.class || klass == Byte.class) {
+			return BYTE;
+		} else if (klass == char.class || klass == Character.class) {
+			return CHAR;
 		} else {
 			throw new DbAdminException("Unsupported field type: " + klass);
 		}
