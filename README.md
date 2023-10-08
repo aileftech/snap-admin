@@ -55,18 +55,23 @@ a sample database and already configured code.
 Otherwise, go ahead and add these to your `application.properties` file:
 
 ```
-## It is required to have open-in-view set to true
-# spring.jpa.open-in-view=true
-
-# Optional, default true
-dbadmin.enabled=true
-
-# The first-level part of the URL path: http://localhost:8080/${baseUrl}/
+## The first-level part of the URL path: http://localhost:8080/${baseUrl}/
 dbadmin.baseUrl=admin
 
-# The package(s) that contain your @Entity classes
-# accepts multiple comma separated values
-dbadmin.modelsPackage=put.your.models.package.here
+## The package(s) that contain your @Entity classes
+## accepts multiple comma separated values
+dbadmin.modelsPackage=your.models.package,your.second.models.package
+
+## At the moment, it's required to have open-in-view set to true.
+# spring.jpa.open-in-view=true
+
+## OPTIONAL PARAMETERS
+## Whether to enable Spring Boot Database Admin
+# dbadmin.enabled=true
+#
+## Set to true if you need to run the tests, as it will customize
+## the database configuration for the internal DataSource
+# dbadmin.testMode=false
 ```
 
 Now annotate your `@SpringBootApplication` class containing the `main` method with the following:
@@ -90,42 +95,3 @@ If you find a problem or a bug, please report it as an issue. When doing so, inc
  * provide the code for the involved `@Entity` classes, if possible/relevant
  * provide the full stack trace of the error
  * specify if you are using any particular configuration either in your `application.properties` or through annotations
-
-## Changelog
-
-**0.1.5**
-- Access-control annotations ([#5](https://github.com/aileftech/spring-boot-database-admin/issues/5))
-- Added support for `OffsetDateTime` ([#7](https://github.com/aileftech/spring-boot-database-admin/issues/7))
-- Unsupported field types are now handled gracefully ([#9](https://github.com/aileftech/spring-boot-database-admin/issues/9))
-- Solved Spring Boot Devtools incompatibility
-
-**0.1.4**
-- Fixed critical issue which was preventing correct startup ([#1](https://github.com/aileftech/spring-boot-database-admin/issues/1))
-
-**0.1.3**
-- `@HiddenColumn`
-- Improved UI on action logs page and several other improvements to faceted search
-- Bugfixes
-
-**0.1.2**
-- Better handling of large text fields (shown as `textarea`)
-- Added `CATEGORICAL` option to `Filterable`
-- Several bug fixes
-
-**0.1.0**
-- Implemented action logs
-- Implemented user settings
-
-**0.0.4**
-- Simplified setup/configuration: now it only requires a couple of config properties and 1 annotation
-- Support of custom base url for the web UI, instead of hardcoded "/dbadmin"
-- Continued implementation of automated testing with Selenium
-
-**0.0.3**
-- @DisplayImage; Selenium tests; Fixed/greatly improved edit page;
-
-**0.0.2**
-- Faceted search with `@Filterable` annotation
-
-**0.0.1**
-- First alpha release (basic CRUD features)
