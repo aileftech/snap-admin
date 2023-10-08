@@ -92,27 +92,27 @@ public class DbAdmin {
 	
 	@PostConstruct
 	private void init() {
-		// Test different class loaders printing
-//		try {
-//			Class<?> klass = Class.forName("modelsPackage");
-//			System.out.println("DamEntity class loader: " + klass.getClassLoader());
-//			System.out.println("EntityManager class loader: " + entityManager.getClass().getClassLoader());
-//		} catch (ClassNotFoundException e) {
-//			throw new RuntimeException(e);
-//		}
-		
 		ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
 		provider.addIncludeFilter(new AnnotationTypeFilter(Entity.class));
 		
+		logger.debug("Initializing Spring Boot Database Admin...");
+		
 		for (String currentPackage : modelsPackage) {
+			logger.debug("Scanning package " + currentPackage);
+			
 			Set<BeanDefinition> beanDefs = provider.findCandidateComponents(currentPackage);
+			logger.debug("Found " + beanDefs.size() + " candidate @Entity classes");
+			
 			for (BeanDefinition bd : beanDefs) {
 				schemas.add(processBeanDefinition(bd));
 			}
+			
 			logger.info("Scanned package '" + currentPackage + "'. Loaded " + beanDefs.size() + " schemas.");
 		}
 
-		logger.info("Spring Boot Database Admin initialized. Loaded " + schemas.size() + " schemas from " + modelsPackage.size() + " packages");
+		boolean hasErrors = schemas.stream().flatMap(s -> s.getErrors().stream()).count() > 0;
+		logger.info("Spring Boot Database Admin initialized. Loaded " + schemas.size() 
+				+ " schemas from " + modelsPackage.size() + " packages"	+ (hasErrors ? " (with errors)" : ""));
 		logger.info("Spring Boot Database Admin web interface at: http://YOUR_HOST:YOUR_PORT/" + properties.getBaseUrl());
 	}
 
@@ -250,6 +250,7 @@ public class DbAdmin {
 	 * @return
 	 */
 	private DbField mapField(Field f, DbObjectSchema schema) {
+		logger.debug("Processing field " + f.getName());
 		OneToMany oneToMany = f.getAnnotation(OneToMany.class);
 		ManyToMany manyToMany = f.getAnnotation(ManyToMany.class);
 		ManyToOne manyToOne = f.getAnnotation(ManyToOne.class);

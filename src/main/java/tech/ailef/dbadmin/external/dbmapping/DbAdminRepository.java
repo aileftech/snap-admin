@@ -20,6 +20,7 @@
 package tech.ailef.dbadmin.external.dbmapping;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -70,8 +71,10 @@ public class DbAdminRepository {
 		Optional optional = repository.findById(id);
 		if (optional.isEmpty())
 			return Optional.empty();
-		else
-			return Optional.of(new DbObject(optional.get(), schema));
+		else {
+			DbObject obj = new DbObject(optional.get(), schema);
+			return Optional.of(obj);
+		}
 	}
 
 	public long count(DbObjectSchema schema) {
