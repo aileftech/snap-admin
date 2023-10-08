@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+f<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
@@ -88,22 +88,22 @@
 <p>The first one is configuring your <code>application.properties</code> file:</p>
 
 	<pre>
-<code class="language-properties"># The first-level part of the URL path: http://localhost:8080/${baseUrl}/
+<code class="language-properties">## The first-level part of the URL path: http://localhost:8080/${baseUrl}/
 dbadmin.baseUrl=admin
 
-# The package(s) that contain your @Entity classes
-# accepts multiple comma separated values
+## The package(s) that contain your @Entity classes
+## accepts multiple comma separated values
 dbadmin.modelsPackage=your.models.package,your.second.models.package
 
-## It is required to have open-in-view set to true
+## At the moment, it's required to have open-in-view set to true.
 # spring.jpa.open-in-view=true
 
-# OPTIONAL PARAMETERS
-# Whether to enable to web interface
+## OPTIONAL PARAMETERS
+## Whether to enable Spring Boot Database Admin
 # dbadmin.enabled=true
 #
-# Set to true if you need to run the tests, as it will customize
-# the database configuration for the internal DataSource
+## Set to true if you need to run the tests, as it will customize
+## the database configuration for the internal DataSource
 # dbadmin.testMode=false
 </code>
 </pre>
