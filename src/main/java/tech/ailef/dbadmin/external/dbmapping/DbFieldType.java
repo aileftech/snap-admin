@@ -37,7 +37,6 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import tech.ailef.dbadmin.external.dto.CompareOperator;
-import tech.ailef.dbadmin.external.dto.FragmentContext;
 import tech.ailef.dbadmin.external.exceptions.DbAdminException;
 
 /**
@@ -46,7 +45,7 @@ import tech.ailef.dbadmin.external.exceptions.DbAdminException;
 public enum DbFieldType {
 	SHORT {
 		@Override
-		public String getFragmentName(FragmentContext c) {
+		public String getFragmentName() {
 			return "number";
 		}
 
@@ -67,7 +66,7 @@ public enum DbFieldType {
 	},
 	BIG_INTEGER {
 		@Override
-		public String getFragmentName(FragmentContext c) {
+		public String getFragmentName() {
 			return "number";
 		}
 
@@ -89,7 +88,7 @@ public enum DbFieldType {
 	},
 	INTEGER {
 		@Override
-		public String getFragmentName(FragmentContext c) {
+		public String getFragmentName() {
 			return "number";
 		}
 
@@ -110,7 +109,7 @@ public enum DbFieldType {
 	},
 	DOUBLE {
 		@Override
-		public String getFragmentName(FragmentContext c) {
+		public String getFragmentName() {
 			return "number";
 		}
 
@@ -131,7 +130,7 @@ public enum DbFieldType {
 	},
 	LONG {
 		@Override
-		public String getFragmentName(FragmentContext c) {
+		public String getFragmentName() {
 			return "number";
 		}
 
@@ -152,7 +151,7 @@ public enum DbFieldType {
 	},
 	FLOAT {
 		@Override
-		public String getFragmentName(FragmentContext c) {
+		public String getFragmentName() {
 			return "number";
 		}
 
@@ -173,7 +172,7 @@ public enum DbFieldType {
 	},
 	OFFSET_DATE_TIME {
 		@Override
-		public String getFragmentName(FragmentContext c) {
+		public String getFragmentName() {
 			return "datetime";
 		}
 
@@ -196,7 +195,7 @@ public enum DbFieldType {
 	},
 	DATE {
 		@Override
-		public String getFragmentName(FragmentContext c) {
+		public String getFragmentName() {
 			return "date";
 		}
 
@@ -223,7 +222,7 @@ public enum DbFieldType {
 	},
 	LOCAL_DATE {
 		@Override
-		public String getFragmentName(FragmentContext c) {
+		public String getFragmentName() {
 			return "date";
 		}
 
@@ -245,7 +244,7 @@ public enum DbFieldType {
 	},
 	LOCAL_DATE_TIME {
 		@Override
-		public String getFragmentName(FragmentContext c) {
+		public String getFragmentName() {
 			return "datetime";
 		}
 
@@ -267,7 +266,7 @@ public enum DbFieldType {
 	},
 	STRING {
 		@Override
-		public String getFragmentName(FragmentContext c) {
+		public String getFragmentName() {
 			return "text";
 		}
 
@@ -288,10 +287,8 @@ public enum DbFieldType {
 	},
 	TEXT {
 		@Override
-		public String getFragmentName(FragmentContext c) {
-			if (c == FragmentContext.CREATE)
-				return "textarea";
-			return "text";
+		public String getFragmentName() {
+			return "textarea";
 		}
 
 		@Override
@@ -312,7 +309,7 @@ public enum DbFieldType {
 	},
 	BOOLEAN {
 		@Override
-		public String getFragmentName(FragmentContext c) {
+		public String getFragmentName() {
 			return "text";
 		}
 
@@ -333,7 +330,7 @@ public enum DbFieldType {
 	}, 
 	BIG_DECIMAL {
 		@Override
-		public String getFragmentName(FragmentContext c) {
+		public String getFragmentName() {
 			return "number";
 		}
 
@@ -354,7 +351,7 @@ public enum DbFieldType {
 	},
 	CHAR {
 		@Override
-		public String getFragmentName(FragmentContext c) {
+		public String getFragmentName() {
 			return "char";
 		}
 
@@ -375,7 +372,7 @@ public enum DbFieldType {
 	},
 	BYTE {
 		@Override
-		public String getFragmentName(FragmentContext c) {
+		public String getFragmentName() {
 			return "number";
 		}
 
@@ -396,7 +393,7 @@ public enum DbFieldType {
 	},
 	BYTE_ARRAY {
 		@Override
-		public String getFragmentName(FragmentContext c) {
+		public String getFragmentName() {
 			return "file";
 		}
 
@@ -421,7 +418,7 @@ public enum DbFieldType {
 	},
 	ONE_TO_MANY {
 		@Override
-		public String getFragmentName(FragmentContext c) {
+		public String getFragmentName() {
 			throw new UnsupportedOperationException();
 		}
 
@@ -452,7 +449,7 @@ public enum DbFieldType {
 	},
 	ONE_TO_ONE {
 		@Override
-		public String getFragmentName(FragmentContext c) {
+		public String getFragmentName() {
 			throw new UnsupportedOperationException();
 		}
 
@@ -483,7 +480,7 @@ public enum DbFieldType {
 	},
 	MANY_TO_MANY {
 		@Override
-		public String getFragmentName(FragmentContext c) {
+		public String getFragmentName() {
 			throw new UnsupportedOperationException();
 		}
 
@@ -514,7 +511,7 @@ public enum DbFieldType {
 	}, 
 	COMPUTED {
 		@Override
-		public String getFragmentName(FragmentContext c) {
+		public String getFragmentName() {
 			throw new UnsupportedOperationException();
 		}
 
@@ -543,7 +540,7 @@ public enum DbFieldType {
 	 * 
 	 * @param c the context in which this fragment has to be rendered
 	 */
-	public abstract String getFragmentName(FragmentContext c);
+	public abstract String getFragmentName();
 	
 	/**
 	 * Parse the value received through an HTML form into a instance

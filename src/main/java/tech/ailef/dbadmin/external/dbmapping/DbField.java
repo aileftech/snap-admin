@@ -31,7 +31,6 @@ import tech.ailef.dbadmin.external.annotations.DisplayImage;
 import tech.ailef.dbadmin.external.annotations.Filterable;
 import tech.ailef.dbadmin.external.annotations.FilterableType;
 import tech.ailef.dbadmin.external.annotations.ReadOnly;
-import tech.ailef.dbadmin.external.dto.FragmentContext;
 
 /**
  * Represent a field on the database, generated from an Entity class instance variable.
@@ -188,17 +187,8 @@ public class DbField {
 	 * the input for this field.
 	 * @return
 	 */
-	public String getFragmentName(FragmentContext c) {
-		return type.getFragmentName(c);
-	}
-	
-	/**
-	 * Returns the name of the Thymeleaf fragment used to render
-	 * the input for this field.
-	 * @return
-	 */
 	public String getFragmentName() {
-		return type.getFragmentName(FragmentContext.DEFAULT);
+		return type.getFragmentName();
 	}
 	
 	public boolean isFilterable() {

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+	
+	<input placeholder="NULL" th:fragment="textarea(field, create, name, value)"  
+		type="text" 
+		th:value="${value}"
+		th:name="${name}" 
+		class="form-control " th:id="|__id_${field.getName()}|"
+		th:classAppend="|${(field.isPrimaryKey() && object != null) ||
+		 	(field.isReadOnly() && !create) ? 'disable' : ''}|"
+		
+		th:required="${!field.isNullable() && !field.isPrimaryKey()}"
+	></input>
+		
+	<input placeholder="NULL" th:fragment="char(field, create, name, value)"  
+		type="text" 
+		th:value="${value}"
+		th:name="${name}" 
+		class="form-control " th:id="|__id_${field.getName()}|"
+		th:classAppend="|${(field.isPrimaryKey() && object != null) ||
+		 	(field.isReadOnly() && !create) ? 'disable' : ''}|"
+		maxlength="1"
+		th:required="${!field.isNullable() && !field.isPrimaryKey()}"
+	></input>
+	
+	
+	<input placeholder="NULL" th:fragment="text(field, create, name, value)"  
+		type="text" 
+		th:value="${value}"
+		th:name="${name}" 
+		class="form-control " th:id="|__id_${field.getName()}|"
+		th:classAppend="|${(field.isPrimaryKey() && object != null) ||
+		 	(field.isReadOnly() && !create) ? 'disable' : ''}|"
+		
+		th:required="${!field.isNullable() && !field.isPrimaryKey()}"
+	></input>
+	
+	
+	<input placeholder="NULL" th:fragment="number(field, create, name, value)"  
+		type="number" 
+		th:value="${value}"
+		th:name="${name}" 
+		class="form-control " th:id="|__id_${field.getName()}|"
+		th:classAppend="|${(field.isPrimaryKey() && object != null) ||
+		 	(field.isReadOnly() && !create) ? 'disable' : ''}|"
+		
+		th:required="${!field.isNullable() && !field.isPrimaryKey()}"
+		step="any"
+	></input>
+	
+	
+	<input placeholder="NULL" th:fragment="datetime(field, create, name, value)" 
+		type="datetime-local"
+		th:value="${value}" 
+		th:name="${name}" 
+		class="form-control " th:id="|__id_${field.getName()}|"
+		th:classAppend="|${create != null && ((field.isPrimaryKey() && object != null) ||
+		 	(field.isReadOnly() && !create)) ? 'disable' : ''}|"
+		
+		th:required="${!field.isNullable() && !field.isPrimaryKey()}"
+	></input>
+	
+	
+	<input placeholder="NULL" th:fragment="date(field, create, name, value)"
+		type="date" 
+		th:value="${value}"
+		th:name="${name}" 
+		class="form-control " th:id="|__id_${field.getName()}|"
+		th:classAppend="|${create != null && ((field.isPrimaryKey() && object != null) ||
+		 	(field.isReadOnly() && !create)) ? 'disable' : ''}|"
+		
+		th:required="${!field.isNullable() && !field.isPrimaryKey()}"
+	></input>
+	
+</html>
