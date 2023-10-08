@@ -28,7 +28,7 @@ The behaviour you specify with these annotations should be applied automatically
 **Supported field types**
 These are the supported types for fields inside your `@Entity` classes (excluding fields for relationships to other entities). Fields with unsupported types are ignored, but functionality may be limited; refer to the [documentation][https://aileftech.github.io/spring-boot-database-admin/index.html#supported-field-types] for more information.
 
- * Double, Integer, Short, Float, BigDecimal, BigInteger
+ * Double, Float, Integer, Short, Byte, Character, BigDecimal, BigInteger
  * Boolean
  * String
  * Date, LocalDate, LocalDateTime, OffsetDateTime
