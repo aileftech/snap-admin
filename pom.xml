@@ -13,7 +13,7 @@
 	<artifactId>spring-boot-db-admin</artifactId>
 	<version>0.1.4</version>
 	<name>spring-boot-db-admin</name>
-	<description>Srping Boot Database Admin is an auto-generated CRUD admin panel for Spring Boot apps</description>
+	<description>Spring Boot Database Admin is an auto-generated CRUD admin panel for Spring Boot apps</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
