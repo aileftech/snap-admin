@@ -12,6 +12,7 @@ for your database schema. No modifications required to your existing code (well,
 [![Example page listing products](https://i.imgur.com/Nz19f8e.png)](https://i.imgur.com/Nz19f8e.png)
 
 **Features:**
+
  * List objects with pagination and sorting
  * Object detail page, which also includes `@OneToMany` and `@ManyToMany` related objects
  * Create/Edit objects
@@ -20,12 +21,14 @@ for your database schema. No modifications required to your existing code (well,
  * Annotation-based customization
 
 **Supported JPA annotations**
+
  * Core: @Entity, @Table, @Column, @Lob, @Id
  * Relationships: @OneToMany, @ManyToOne, @ManyToMany, @OneToOne
 
 The behaviour you specify with these annotations should be applied automatically by Spring Boot Database Admin as well. Keep in mind that using non-supported annotations will not necessarily result in an error, as they are simply ignored. Depending on what the annotation actually does, this could be just fine or result in an error if it interferes with something that Spring Boot Database Admin relies on.
 
 **Supported field types**
+
 These are the supported types for fields inside your `@Entity` classes (excluding fields for relationships to other entities). Fields with unsupported types are ignored, but functionality may be limited; refer to the [documentation][https://aileftech.github.io/spring-boot-database-admin/index.html#supported-field-types] for more information.
 
  * Double, Float, Integer, Short, Byte, Character, BigDecimal, BigInteger
