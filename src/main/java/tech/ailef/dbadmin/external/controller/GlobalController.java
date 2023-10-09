@@ -22,11 +22,14 @@ package tech.ailef.dbadmin.external.controller;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import jakarta.servlet.http.HttpServletRequest;
 import tech.ailef.dbadmin.external.DbAdminProperties;
+import tech.ailef.dbadmin.external.exceptions.DbAdminNotFoundException;
 import tech.ailef.dbadmin.internal.UserConfiguration;
 
 /**
@@ -41,6 +44,16 @@ public class GlobalController {
 
 	@Autowired
 	private UserConfiguration userConf;
+	
+	@ExceptionHandler(DbAdminNotFoundException.class)
+	public String handleNotFound(Exception e, Model model) {
+		model.addAttribute("status", "404");
+		model.addAttribute("error", "Error");
+		model.addAttribute("message", e.getMessage());
+		model.addAttribute("userConf", userConf);
+		model.addAttribute("baseUrl", getBaseUrl());
+		return "other/error";
+	}
 	
 	/**
 	 * A multi valued map containing the query parameters. It is used primarily

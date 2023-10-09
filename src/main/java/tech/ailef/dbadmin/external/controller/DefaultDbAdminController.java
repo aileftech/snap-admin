@@ -57,6 +57,7 @@ import tech.ailef.dbadmin.external.dto.LogsSearchRequest;
 import tech.ailef.dbadmin.external.dto.PaginatedResult;
 import tech.ailef.dbadmin.external.dto.QueryFilter;
 import tech.ailef.dbadmin.external.exceptions.DbAdminException;
+import tech.ailef.dbadmin.external.exceptions.DbAdminNotFoundException;
 import tech.ailef.dbadmin.external.exceptions.InvalidPageException;
 import tech.ailef.dbadmin.external.misc.Utils;
 import tech.ailef.dbadmin.internal.model.UserAction;
@@ -248,10 +249,11 @@ public class DefaultDbAdminController {
 		DbObjectSchema schema = dbAdmin.findSchemaByClassName(className);
 		
 		DbObject object = repository.findById(schema, id).orElseThrow(() -> {
-			return new ResponseStatusException(
-			  HttpStatus.NOT_FOUND, "Object " + className + " with id " + id + " not found"
+			return new DbAdminNotFoundException(
+			  "Object " + className + " with id " + id + " not found"
 			);
 		});
+		
 		
 		model.addAttribute("title", "Entities | " + schema.getJavaClass().getSimpleName() + " | " + object.getDisplayName());
 		model.addAttribute("object", object);
@@ -292,8 +294,8 @@ public class DefaultDbAdminController {
 		}
 		
 		DbObject object = repository.findById(schema, id).orElseThrow(() -> {
-			return new ResponseStatusException(
-			  HttpStatus.NOT_FOUND, "Object " + className + " with id " + id + " not found"
+			return new DbAdminNotFoundException(
+			  "Object " + className + " with id " + id + " not found"
 			);
 		});
 		

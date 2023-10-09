@@ -54,6 +54,7 @@ import tech.ailef.dbadmin.external.dbmapping.DbFieldType;
 import tech.ailef.dbadmin.external.dbmapping.DbObjectSchema;
 import tech.ailef.dbadmin.external.dto.MappingError;
 import tech.ailef.dbadmin.external.exceptions.DbAdminException;
+import tech.ailef.dbadmin.external.exceptions.DbAdminNotFoundException;
 import tech.ailef.dbadmin.external.exceptions.UnsupportedFieldTypeException;
 import tech.ailef.dbadmin.external.misc.Utils;
 
@@ -132,7 +133,7 @@ public class DbAdmin {
 	 */
 	public DbObjectSchema findSchemaByClassName(String className) {
 		return schemas.stream().filter(s -> s.getClassName().equals(className)).findFirst().orElseThrow(() -> {
-			return new DbAdminException("Schema " + className + " not found.");
+			return new DbAdminNotFoundException("Schema " + className + " not found.");
 		});
 	}
 	
