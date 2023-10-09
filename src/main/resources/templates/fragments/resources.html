@@ -16,7 +16,7 @@
 		<script th:inline="javascript">
 		    let baseUrl = [[ ${baseUrl} ]];
 		</script>
-		<style type="text/css">
+		<style type="text/css" th:if="${userConf != null}">
 			[( ${userConf.get('additionalCss')} )]
 		</style>
 	</head>
