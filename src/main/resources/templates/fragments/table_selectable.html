@@ -4,17 +4,17 @@
 	<body>
 		<th:block th:fragment="sort_arrow(sortKey, sortOrder, fieldName)">
 			<th:block th:if="${sortKey != fieldName}" >
-				<a th:href="@{|${requestUrl}${page.getPagination().getSortedPageLink(fieldName, 'DESC')}|}">
+				<a th:href="@{|${dbadmin_requestUrl}${page.getPagination().getSortedPageLink(fieldName, 'DESC')}|}">
 				<i title="Sort" class="bi bi-caret-up"></i>
 				</a>
 			</th:block>
 			<th:block th:unless="${sortKey != fieldName}">
 				<a th:if="${sortOrder == 'DESC'}" 
-					th:href="@{|${requestUrl}${page.getPagination().getSortedPageLink(fieldName, 'ASC')}|}">
+					th:href="@{|${dbadmin_requestUrl}${page.getPagination().getSortedPageLink(fieldName, 'ASC')}|}">
 					<i title="Sort" class="bi bi-caret-down-fill"></i>
 				</a>
 				<a th:if="${sortOrder == 'ASC'}" 
-					th:href="@{|${requestUrl}${page.getPagination().getSortedPageLink(fieldName, 'DESC')}|}">
+					th:href="@{|${dbadmin_requestUrl}${page.getPagination().getSortedPageLink(fieldName, 'DESC')}|}">
 					<i title="Sort" class="bi bi-caret-up-fill"></i>
 				</a>
 			</th:block>
@@ -26,7 +26,7 @@
 				<p>This table contains no data.</p>
 			</div>
 			<div th:if="${results.size() > 0}">
-				<form id="multi-delete-form" th:action="|/${baseUrl}/model/${schema.getClassName()}/delete|" method="POST">
+				<form id="multi-delete-form" th:action="|/${dbadmin_baseUrl}/model/${schema.getClassName()}/delete|" method="POST">
 				</form>
 				<nav th:replace="~{fragments/resources :: pagination(${page})}">
 				</nav>

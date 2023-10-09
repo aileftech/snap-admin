@@ -14,10 +14,10 @@
 		<script type="text/javascript" src="/js/create.js"></script>
 		<title th:text="${title != null ? title + ' | Spring Boot DB Admin Panel' : 'Spring Boot DB Admin Panel'}"></title>
 		<script th:inline="javascript">
-		    let baseUrl = [[ ${baseUrl} ]];
+		    let baseUrl = [[ ${dbadmin_baseUrl} ]];
 		</script>
-		<style type="text/css" th:if="${userConf != null}">
-			[( ${userConf.get('additionalCss')} )]
+		<style type="text/css" th:if="${dbadmin_userConf != null}">
+			[( ${dbadmin_userConf.get('additionalCss')} )]
 		</style>
 	</head>
 	
@@ -35,7 +35,7 @@
 	<nav class="navbar fixed-top navbar-expand-lg bg-accent color-white" th:fragment="navbar">
 	    <div class="container-fluid">
 	        <a class=" fw-bold navbar-brand" href="/"><i class="bi bi-hexagon-fill"></i>
-	        	[[ ${userConf.get('brandName')} ]]
+	        	[[ ${dbadmin_userConf.get('brandName')} ]]
 	        </a>
 	        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 	            <span class="navbar-toggler-icon"></span>
@@ -47,7 +47,7 @@
         	<h6 class="fw-bold pt-2 ms-3 menu-subheading d-none d-md-block">MENU</h6>
         	<ul class="sidebar-menu pb-0 mb-0 ">
         		<li th:class="${#strings.equals(activePage, 'entities') ? 'active' : ''}">
-    				<a th:href="|/${baseUrl}|">
+    				<a th:href="|/${dbadmin_baseUrl}|">
 	        			<div class="d-flex align-items-center">
 	        				<div class="menu-icon">
 	        					<i class="bi bi-database"></i>
@@ -59,7 +59,7 @@
     				</a>
         		</li>
         		<li th:class="${#strings.equals(activePage, 'logs') ? 'active' : ''}">
-        			<a th:href="|/${baseUrl}/logs|">
+        			<a th:href="|/${dbadmin_baseUrl}/logs|">
 	        			<div class="d-flex align-items-center">
 	        				<div class="menu-icon">
 	        					<i class="bi bi-file-text"></i>
@@ -71,7 +71,7 @@
     				</a>
         		</li>
         		<li th:class="${#strings.equals(activePage, 'settings') ? 'active' : ''}">
-        			<a th:href="|/${baseUrl}/settings|">
+        			<a th:href="|/${dbadmin_baseUrl}/settings|">
 	        			<div class="d-flex align-items-center">
 	        				<div class="menu-icon">
 	        					<i class="bi bi-gear"></i>
@@ -114,7 +114,7 @@
         		<div class="separator"></div>
 	    		<ul class="sidebar-menu mb-0 pb-0">
 	        		<li th:class="${#strings.equals(page, 'about') ? 'active' : ''}">
-	        			<a th:href="|/${baseUrl}/about|">
+	        			<a th:href="|/${dbadmin_baseUrl}/about|">
 		        			<div class="d-flex align-items-center">
 		        				<div class="menu-icon">
 		        					<i class="bi bi-question-circle"></i>
@@ -137,7 +137,7 @@
 				<ul class="pagination me-3">
 					<li class="page-item" th:if="${page.getPagination().getCurrentPage() != 1}">
 						<a class="page-link" 
-						th:href="@{|${requestUrl}${page.getPagination().getLink(page.getPagination.getCurrentPage() - 1)}|}" 
+						th:href="@{|${dbadmin_requestUrl}${page.getPagination().getLink(page.getPagination.getCurrentPage() - 1)}|}" 
 						aria-label="Previous">
 						    <span aria-hidden="true">&laquo;</span>
 						    <span class="sr-only">Previous</span>
@@ -146,7 +146,7 @@
 				    
 				    <li class="page-item" th:each="p : ${page.getPagination().getBeforePages()}">
 				    	<a class="page-link" 
-				    	th:href="@{|${requestUrl}${page.getPagination().getLink(p)}|}" th:text="${p}"></a>
+				    	th:href="@{|${dbadmin_requestUrl}${page.getPagination().getLink(p)}|}" th:text="${p}"></a>
 				    </li>
 				    
 				   	<li class="page-item active">
@@ -155,13 +155,13 @@
 			
 				    <li class="page-item" th:each="p : ${page.getPagination().getAfterPages()}">
 				    	<a class="page-link" 
-				    	th:href="@{|${requestUrl}${page.getPagination().getLink(p)}|}"
+				    	th:href="@{|${dbadmin_requestUrl}${page.getPagination().getLink(p)}|}"
 				    	th:text="${p}"></a>
 				    </li>
 				    <li class="page-item">
 					      <a class="page-link"
 					      th:if="${!page.getPagination().isLastPage()}"
-					      th:href="@{|${requestUrl}${page.getPagination().getLink(page.getPagination.getCurrentPage() + 1)}|}"
+					      th:href="@{|${dbadmin_requestUrl}${page.getPagination().getLink(page.getPagination.getCurrentPage() + 1)}|}"
 					      aria-label="Next">
 					        <span class="sr-only">Next</span>
 					        <span aria-hidden="true">&raquo;</span>
@@ -169,12 +169,12 @@
 				    </li>
 				</ul>
 				<div class="me-3">
-					<form method="GET" th:action="@{|${requestUrl}|}">
+					<form method="GET" th:action="@{|${dbadmin_requestUrl}|}">
 				  		<input type="hidden" th:value="${page.getPagination().getCurrentPage()}" th:name="page">
 				  		<input type="hidden" th:value="${query}" th:name="query">
 				  		<input type="hidden" name="pageSize">
-				  		<th:block th:each="p : ${queryParams.keySet()}">
-	                    	<input th:each="v : ${queryParams.get(p)}" 
+				  		<th:block th:each="p : ${dbadmin_queryParams.keySet()}">
+	                    	<input th:each="v : ${dbadmin_queryParams.get(p)}" 
 	                    		th:name="${p}" th:value="${v}" type="hidden"
 	                    		th:if="${p.startsWith('filter_')}">
 	                    </th:block>
@@ -197,7 +197,7 @@
 			
 			<div class="d-flex align-items-center"  th:if="${page.getPagination().getMaxPage() == 1}">
 				<div class="me-3">
-					<form method="GET" th:action="@{|${requestUrl}|}">
+					<form method="GET" th:action="@{|${dbadmin_requestUrl}|}">
 				  		<input type="hidden" th:value="${page.getPagination().getCurrentPage()}" th:name="page">
 				  		<input type="hidden" th:value="${query}" th:name="query">
 				  		<input type="hidden" name="pageSize">

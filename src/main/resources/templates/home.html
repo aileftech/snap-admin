@@ -9,7 +9,7 @@
 	        	<div th:replace="~{fragments/resources :: sidebar('entities')}"></div>
 	        	<div class="main-content bg-lighter">
 					<h1 class="fw-bold mb-4"><i class="align-middle bi bi-database"></i><span class="align-middle"> Entities</span></h1>
-					<form th:action="|/${baseUrl}|" method="GET">
+					<form th:action="|/${dbadmin_baseUrl}|" method="GET">
     					<div class="input-group">
     						<input type="text" th:value="${query}"
     						placeholder="Type a class or a table name and press ENTER to search" 
@@ -35,12 +35,12 @@
 			        						<td class="warning-col">
 			        							<a th:if="${!schema.getErrors().isEmpty()}"
 			        								title="Some errors or warnings were raised during processing of this schema."
-			        								th:href="|/${baseUrl}/model/${schema.getClassName()}/schema|">
+			        								th:href="|/${dbadmin_baseUrl}/model/${schema.getClassName()}/schema|">
 			        								<i class="bi bi-exclamation-triangle"></i></a>
 			        						</td>
 			        						<td>
 												<a th:text="${schema.getTableName()}"
-												th:href="|/${baseUrl}/model/${schema.getClassName()}|"></a>
+												th:href="|/${dbadmin_baseUrl}/model/${schema.getClassName()}|"></a>
 											</td>
 											<td>
 												<span th:text="${counts.get(schema.getClassName())}"></span>
@@ -49,10 +49,10 @@
 												<span th:text="${schema.getClassName()}"></span>
 											</td>
 											<td class="text-end row-icons">
-												<a title="List all" th:href="|/${baseUrl}/model/${schema.getClassName()}|"><i class="bi bi-list"></i></i></a>
+												<a title="List all" th:href="|/${dbadmin_baseUrl}/model/${schema.getClassName()}|"><i class="bi bi-list"></i></i></a>
 												<a  th:title="|${!schema.isCreateEnabled() ? 'CREATE disabled for this type' : 'Create new item'}|" 
 													th:class="|${!schema.isCreateEnabled() ? 'disable' : ''}|" 
-													th:href="|/${baseUrl}/model/${schema.getClassName()}/create|"><i class="bi bi-plus-square"></i>
+													th:href="|/${dbadmin_baseUrl}/model/${schema.getClassName()}/create|"><i class="bi bi-plus-square"></i>
 												</a>
 											</td>
 										</tr>

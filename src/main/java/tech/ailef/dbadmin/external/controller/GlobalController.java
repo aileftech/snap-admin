@@ -33,8 +33,8 @@ import tech.ailef.dbadmin.external.exceptions.DbAdminNotFoundException;
 import tech.ailef.dbadmin.internal.UserConfiguration;
 
 /**
- * This class registers some ModelAttribute objects that are
- * used in all templates. 
+ * This class registers some global ModelAttributes and exception handlers.
+ * 
  */
 @ControllerAdvice
 public class GlobalController {
@@ -50,7 +50,7 @@ public class GlobalController {
 		model.addAttribute("status", "404");
 		model.addAttribute("error", "Error");
 		model.addAttribute("message", e.getMessage());
-		model.addAttribute("userConf", userConf);
+		model.addAttribute("dbadmin_userConf", userConf);
 		model.addAttribute("baseUrl", getBaseUrl());
 		return "other/error";
 	}
@@ -61,7 +61,7 @@ public class GlobalController {
 	 * @param request the incoming request
 	 * @return multi valued map of request parameters
 	 */
-	@ModelAttribute("queryParams")
+	@ModelAttribute("dbadmin_queryParams")
 	public Map<String, String[]> getQueryParams(HttpServletRequest request) {
 		return request.getParameterMap();
 	}
@@ -70,7 +70,7 @@ public class GlobalController {
 	 * The baseUrl as specified in the properties file by the user
 	 * @return
 	 */
-	@ModelAttribute("baseUrl")
+	@ModelAttribute("dbadmin_baseUrl")
 	public String getBaseUrl() {
 		return props.getBaseUrl();
 	}
@@ -80,7 +80,7 @@ public class GlobalController {
 	 * @param request
 	 * @return
 	 */
-	@ModelAttribute("requestUrl")
+	@ModelAttribute("dbadmin_requestUrl")
 	public String getRequestUrl(HttpServletRequest request) {
 		return request.getRequestURI();
 	}
@@ -90,7 +90,7 @@ public class GlobalController {
 	 * in the settings table.
 	 * @return
 	 */
-	@ModelAttribute("userConf")
+	@ModelAttribute("dbadmin_userConf")
 	public UserConfiguration getUserConf() {
 		return userConf;
 	}

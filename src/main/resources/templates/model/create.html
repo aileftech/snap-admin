@@ -13,9 +13,9 @@
 
 					<h1 class="fw-bold mb-4">
 						<i class="align-middle bi bi-database"></i> 
-						<span class="align-middle"><a th:href="|/${baseUrl}|">Entities</a></span>
+						<span class="align-middle"><a th:href="|/${dbadmin_baseUrl}|">Entities</a></span>
 						<i class="align-middle bi bi-chevron-double-right"></i> 
-						<a class="align-middle" th:href="|/${baseUrl}/model/${schema.getJavaClass().getName()}|">
+						<a class="align-middle" th:href="|/${dbadmin_baseUrl}/model/${schema.getJavaClass().getName()}|">
 						 [[ ${schema.getJavaClass().getSimpleName()} ]] </a>
 						<i class="align-middle bi bi-chevron-double-right"></i> 
 						<span class="align-middle" th:text="${create ? 'Create' : 'Edit'}"></span>
@@ -28,7 +28,7 @@
 		    			<div class="col">
 		    				<div class="box">
 								<h3 class="fw-bold mb-4" th:text="${create ? schema.getJavaClass().getSimpleName() : object.getDisplayName()}"></h3>
-		        				<form class="form" enctype="multipart/form-data" method="post" th:action="|/${baseUrl}/model/${className}/create|">
+		        				<form class="form" enctype="multipart/form-data" method="post" th:action="|/${dbadmin_baseUrl}/model/${className}/create|">
 		        					<input type="hidden" name="__dbadmin_create" th:value="${create}">
 									<div th:each="field : ${schema.getSortedFields(false)}" class="mt-2">
 										<label th:for="|__id_${field.getName()}|" class="mb-1 fw-bold">
@@ -69,7 +69,7 @@
 
 									
 									<div class="d-flex mt-4 justify-content-between">
-										<a th:href="|/${baseUrl}/model/${schema.getClassName()}|" class="ui-btn btn btn-secondary">Cancel</a>
+										<a th:href="|/${dbadmin_baseUrl}/model/${schema.getClassName()}|" class="ui-btn btn btn-secondary">Cancel</a>
 										<input type="submit" class="ui-btn btn btn-primary" th:value="${object != null ? 'Save' : 'Create'}">
 									</div>
 								</form>

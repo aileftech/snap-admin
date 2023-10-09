@@ -10,19 +10,19 @@
 		    	<div class="main-content bg-lighter">
 		    		<th:block th:replace="~{fragments/resources :: alerts}"></th:block>
 					<h1 class="fw-bold mb-4"><i class="align-middle bi bi-database"></i>
-						<span class="align-middle"><a th:href="|/${baseUrl}|">Entities</a></span> 
+						<span class="align-middle"><a th:href="|/${dbadmin_baseUrl}|">Entities</a></span> 
 						<i class="align-middle bi bi-chevron-double-right"></i> 
 						<span class="align-middle"> [[ ${schema.getJavaClass().getSimpleName()} ]] </span>
 					</h1>
 		    		<div class="row mt-4">
 		    			<div th:class="${schema.getFilterableFields().isEmpty() ? 'col' : 'col-9'}">
 	    					<div class="w-100 d-flex inner-navigation">
-	    						<a th:href="|/${baseUrl}/model/${className}|" class="active">
+	    						<a th:href="|/${dbadmin_baseUrl}/model/${className}|" class="active">
 		    						<div class="ui-tab ps-5 pe-5 p-3">
 		    							<i class="bi bi-database pe-2"></i> DATA
 		    						</div>
 		    					</a>
-		    					<a th:href="|/${baseUrl}/model/${className}/schema|">
+		    					<a th:href="|/${dbadmin_baseUrl}/model/${className}/schema|">
 		    						<div class="ui-tab ps-5 pe-5 p-3">
 		    							<i class="bi bi-table pe-2"></i> SCHEMA
 		    						</div>
@@ -31,7 +31,7 @@
 		    					</div>
 	    					</div>
 							<div class="box with-navigation">
-								<form th:action="|/${baseUrl}/model/${className}|" method="GET" class="mb-3">
+								<form th:action="|/${dbadmin_baseUrl}/model/${className}|" method="GET" class="mb-3">
 			    					<div class="input-group">
 			    						<span class="input-group-text"><i class="bi bi-search"></i></span>
 			    						<input type="text" th:value="${query}"
@@ -39,8 +39,8 @@
 			    						class="ui-text-input form-control" name="query" autofocus>
 			    						<button class="ui-btn btn btn-primary">Search</button>
 			    					</div>
-			    					<th:block th:each="queryParam : ${queryParams.keySet()}">
-										<input th:each="paramValue : ${queryParams.get(queryParam)}"
+			    					<th:block th:each="queryParam : ${dbadmin_queryParams.keySet()}">
+										<input th:each="paramValue : ${dbadmin_queryParams.get(queryParam)}"
 											th:if="${queryParam.startsWith('filter_')}" 
 											th:name="${queryParam}" th:value="${paramValue}" type="hidden">
 									</th:block>
@@ -64,7 +64,7 @@
 									<h3 class="create-button">
 										<a th:title="|${!schema.isCreateEnabled() ? 'CREATE disabled for this type' : 'Create new item'}|" 
 											th:class="|${!schema.isCreateEnabled() ? 'disable' : ''}|"
-											th:href="|/${baseUrl}/model/${schema.getClassName()}/create|"><i class="bi bi-plus-square"></i></a>
+											th:href="|/${dbadmin_baseUrl}/model/${schema.getClassName()}/create|"><i class="bi bi-plus-square"></i></a>
 									</h3>
 								</div>
 								
@@ -88,8 +88,8 @@
 											[[ ${filter}]] <i class="bi bi-x-circle"></i>
 										</span>
 										<form action="" th:id="${filter.toString()}" method="GET">
-											<th:block th:each="p : ${queryParams.keySet()}">
-												<input th:each="v : ${queryParams.get(p)}" th:name="${p}" th:value="${v}" type="hidden">
+											<th:block th:each="p : ${dbadmin_queryParams.keySet()}">
+												<input th:each="v : ${dbadmin_queryParams.get(p)}" th:name="${p}" th:value="${v}" type="hidden">
 											</th:block>
 											<input type="hidden" name="remove_field" th:value="${filter.getField().getJavaName()}">
 											<input type="hidden" name="remove_op" th:value="${filter.getOp()}">

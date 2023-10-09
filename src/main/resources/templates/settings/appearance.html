@@ -10,17 +10,17 @@
 		    	<div class="main-content bg-lighter">
 		    		<th:block th:replace="~{fragments/resources :: alerts}"></th:block>
 					<h1 class="fw-bold mb-4"><i class="align-middle bi bi-gear"></i>
-						<span class="align-middle"><a th:href="|/${baseUrl}|">Settings</a></span> 
+						<span class="align-middle"><a th:href="|/${dbadmin_baseUrl}|">Settings</a></span> 
 					</h1>
 		    		<div class="row mt-4">
 		    			<div class="col">
 	    					<div class="w-100 d-flex inner-navigation">
-	    						<a th:href="|/${baseUrl}/settings|">
+	    						<a th:href="|/${dbadmin_baseUrl}/settings|">
 		    						<div class="ui-tab ps-5 pe-5 p-3">
 		    							<i class="bi bi-database pe-2"></i> GENERAL
 		    						</div>
 		    					</a>
-		    					<a th:href="|/${baseUrl}/settings/appearance|" class="active">
+		    					<a th:href="|/${dbadmin_baseUrl}/settings/appearance|" class="active">
 		    						<div class="ui-tab ps-5 pe-5 p-3">
 		    							<i class="bi bi-table pe-2"></i> APPEARANCE
 		    						</div>
@@ -30,13 +30,13 @@
 	    					</div>
 		    				<div class="box with-navigation">
 								<h3 class="fw-bold">Appearance</h3>
-								<form th:action="|/${baseUrl}/settings|" method="POST">
+								<form th:action="|/${dbadmin_baseUrl}/settings|" method="POST">
 									<input type="hidden" name="next" value="settings/appearance">
 									<label for="additionalCss">Additional CSS</label>
 									<span class="m-0 p-0 text-muted">Additional CSS code that is added automatically to all pages</span>
 									<textarea class="form-control mt-2"  
 										id="additionalCss" name="additionalCss" rows="8"
-										th:text="${userConf.get('additionalCss')}"></textarea>
+										th:text="${dbadmin_userConf.get('additionalCss')}"></textarea>
 									<button class="ui-btn btn btn-primary mt-3">Save</button>
 								</form>						
 							</div>
