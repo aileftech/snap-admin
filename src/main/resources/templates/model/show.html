@@ -23,9 +23,13 @@
 		    					<div class="d-flex justify-content-between">
 		    						<h3 class="mb-3 fw-bold" th:text="${object.getDisplayName()}"></h3>
 									<h3><a
-										th:class="|${!schema.isEditEnabled() ? 'disable' : ''}|" 
+										th:class="|${!schema.isEditEnabled() ? 'disable' : ''} me-2|" 
 										th:href="|/${dbadmin_baseUrl}/model/${schema.getClassName()}/edit/${object.getPrimaryKeyValue()}|">
 										<i class="bi bi-pencil"></i></a>
+										
+										<a th:title="|${!schema.isCreateEnabled() ? 'CREATE disabled for this type' : 'Create new item'}|" 
+											th:class="|${!schema.isCreateEnabled() ? 'disable' : ''}|"
+											th:href="|/${dbadmin_baseUrl}/model/${schema.getClassName()}/create|"><i class="bi bi-plus-square"></i></a>
 									</h3>
 								</div>
 								

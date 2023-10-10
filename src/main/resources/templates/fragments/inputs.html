@@ -60,11 +60,11 @@
 			></input>
 		</div>
 	</th:block>
-	<th:block  th:fragment="datetime(field, create, name, value)"
-		<span class="input-group-text font-monospace">
-			[[ ${field.getType()} ]]
-		</span>
+	<th:block  th:fragment="datetime(field, create, name, value)">
 		<div class="input-group">
+			<span class="input-group-text font-monospace">
+				[[ ${field.getType()} ]]
+			</span>
 			<input placeholder="NULL" 
 				type="datetime-local"
 				th:value="${value}" 
