@@ -22,6 +22,10 @@ public class ValidationErrorsContainer {
 		return errors.getOrDefault(name, new ArrayList<>());
 	}
 	
+	public boolean hasErrors(String name) {
+		return forField(name).size() > 0;
+	}
+	
 	public boolean isEmpty() {
 		return errors.isEmpty();
 	}

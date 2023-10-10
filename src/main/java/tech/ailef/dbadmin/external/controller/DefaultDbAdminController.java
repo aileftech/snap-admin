@@ -439,67 +439,45 @@ public class DefaultDbAdminController {
 			pkValue = null;
 		}
 		
-		if (pkValue == null) {
-			try {
+		try {
+			if (pkValue == null) {
 				Object newPrimaryKey = repository.create(schema, params, files, pkValue);
 				repository.attachManyToMany(schema, newPrimaryKey, multiValuedParams);				
 				pkValue = newPrimaryKey.toString();
 				attr.addFlashAttribute("message", "Item created successfully.");
 				saveAction(new UserAction(schema.getTableName(), pkValue, "CREATE", schema.getClassName()));
-			} catch (DataIntegrityViolationException | UncategorizedSQLException | IdentifierGenerationException e) {
-				attr.addFlashAttribute("errorTitle", "Unable to INSERT row");
-				attr.addFlashAttribute("error", e.getMessage());
-				attr.addFlashAttribute("params", params);
-			} catch (ConstraintViolationException e) {
-				attr.addFlashAttribute("errorTitle", "Unable to INSERT row (validation error)");
-				attr.addFlashAttribute("error", "See below for details");
-				attr.addFlashAttribute("validationErrors", new ValidationErrorsContainer(e));
-				attr.addFlashAttribute("params", params);
-			}
-			
-		} else {
-			Optional<DbObject> object = repository.findById(schema, pkValue);
-			
-			if (!object.isEmpty()) {
-				if (create) {
-					attr.addFlashAttribute("errorTitle", "Unable to create item");
-					attr.addFlashAttribute("error", "Item with id " + object.get().getPrimaryKeyValue() + " already exists.");
-					attr.addFlashAttribute("params", params);
-				} else {
-					try {
+			} else {
+				Optional<DbObject> object = repository.findById(schema, pkValue);
+				
+				if (!object.isEmpty()) {
+					if (create) {
+						attr.addFlashAttribute("errorTitle", "Unable to create item");
+						attr.addFlashAttribute("error", "Item with id " + object.get().getPrimaryKeyValue() + " already exists.");
+						attr.addFlashAttribute("params", params);
+					} else {
 						repository.update(schema, params, files);
 						repository.attachManyToMany(schema, pkValue, multiValuedParams);
 						attr.addFlashAttribute("message", "Item saved successfully.");
 						saveAction(new UserAction(schema.getTableName(), pkValue, "EDIT", schema.getClassName()));
-					} catch (DataIntegrityViolationException | UncategorizedSQLException | IdentifierGenerationException e) {
-						attr.addFlashAttribute("errorTitle", "Unable to UPDATE row (no changes applied)");
-						attr.addFlashAttribute("error", e.getMessage());
-						attr.addFlashAttribute("params", params);
-					} catch (ConstraintViolationException e) {
-						attr.addFlashAttribute("errorTitle", "Unable to INSERT row (validation error)");
-						attr.addFlashAttribute("error", "See below for details");
-						attr.addFlashAttribute("validationErrors", new ValidationErrorsContainer(e));
-						attr.addFlashAttribute("params", params);
 					}
-				}
-			} else {
-				try {
-					Object newPrimaryKey = repository.create(schema, params, files, pkValue);
-					repository.attachManyToMany(schema, newPrimaryKey, multiValuedParams);
-					attr.addFlashAttribute("message", "Item created successfully");
-					saveAction(new UserAction(schema.getTableName(), pkValue, "CREATE", schema.getClassName()));
-				} catch (DataIntegrityViolationException | UncategorizedSQLException | IdentifierGenerationException e) {
-					attr.addFlashAttribute("errorTitle", "Unable to INSERT row (no changes applied)");
-					attr.addFlashAttribute("error", e.getMessage());
-					attr.addFlashAttribute("params", params);
-				} catch (ConstraintViolationException e) {
-					attr.addFlashAttribute("errorTitle", "Unable to INSERT row (validation error)");
-					attr.addFlashAttribute("error", "See below for details");
-					attr.addFlashAttribute("validationErrors", new ValidationErrorsContainer(e));
-					attr.addFlashAttribute("params", params);
+				} else {
+						Object newPrimaryKey = repository.create(schema, params, files, pkValue);
+						repository.attachManyToMany(schema, newPrimaryKey, multiValuedParams);
+						attr.addFlashAttribute("message", "Item created successfully");
+						saveAction(new UserAction(schema.getTableName(), pkValue, "CREATE", schema.getClassName()));
 				}
 			}
+		} catch (DataIntegrityViolationException | UncategorizedSQLException | IdentifierGenerationException e) {
+			attr.addFlashAttribute("errorTitle", "Error");
+			attr.addFlashAttribute("error", e.getMessage());
+			attr.addFlashAttribute("params", params);
+		} catch (ConstraintViolationException e) {
+			attr.addFlashAttribute("errorTitle", "Validation error");
+			attr.addFlashAttribute("error", "See below for details");
+			attr.addFlashAttribute("validationErrors", new ValidationErrorsContainer(e));
+			attr.addFlashAttribute("params", params);
 		}
+
 
 		if (attr.getFlashAttributes().containsKey("error")) {
 			if (create)

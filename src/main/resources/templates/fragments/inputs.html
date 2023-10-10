@@ -34,7 +34,7 @@
 				type="text" 
 				th:value="${value}"
 				th:name="${name}" 
-				class="form-control " th:id="|__id_${field.getName()}|"
+				class="form-control" th:id="|__id_${field.getName()}|"
 				th:classAppend="|${(field.isPrimaryKey() && object != null) ||
 				 	(field.isReadOnly() && !create) ? 'disable' : ''}|"
 				

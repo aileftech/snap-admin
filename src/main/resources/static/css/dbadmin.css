@@ -2,6 +2,10 @@
 	color: red;
 }
 
+div.invalid input {
+	border-color: red !important;
+}
+
 .separator-light {
 	opacity: 25%;
 }
