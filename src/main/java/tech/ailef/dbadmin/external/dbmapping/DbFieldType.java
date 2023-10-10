@@ -51,6 +51,7 @@ public enum DbFieldType {
 
 		@Override
 		public Object parseValue(Object value) {
+			if (value == null || value.toString().isBlank()) return null;
 			return Short.parseShort(value.toString());
 		}
 
@@ -72,7 +73,7 @@ public enum DbFieldType {
 
 		@Override
 		public Object parseValue(Object value) {
-			if (value == null) return null;
+			if (value == null || value.toString().isBlank()) return null;
 			return new BigInteger(value.toString());
 		}
 
@@ -94,6 +95,7 @@ public enum DbFieldType {
 
 		@Override
 		public Object parseValue(Object value) {
+			if (value == null || value.toString().isBlank()) return null;
 			return Integer.parseInt(value.toString());
 		}
 
@@ -115,6 +117,7 @@ public enum DbFieldType {
 
 		@Override
 		public Object parseValue(Object value) {
+			if (value == null || value.toString().isBlank()) return null;
 			return Double.parseDouble(value.toString());
 		}
 
@@ -136,6 +139,7 @@ public enum DbFieldType {
 
 		@Override
 		public Object parseValue(Object value) {
+			if (value == null || value.toString().isBlank()) return null;
 			return Long.parseLong(value.toString());
 		}
 
@@ -157,6 +161,7 @@ public enum DbFieldType {
 
 		@Override
 		public Object parseValue(Object value) {
+			if (value == null || value.toString().isBlank()) return null;
 			return Float.parseFloat(value.toString());
 		}
 
@@ -178,7 +183,7 @@ public enum DbFieldType {
 
 		@Override
 		public Object parseValue(Object value) {
-			if (value == null) return null;
+			if (value == null || value.toString().isBlank()) return null;
 			return OffsetDateTime.parse(value.toString());
 		}
 
@@ -201,7 +206,7 @@ public enum DbFieldType {
 
 		@Override
 		public Object parseValue(Object value) {
-			if (value == null) return null;
+			if (value == null || value.toString().isBlank()) return null;
 			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
 			try {
 				return format.parse(value.toString());
@@ -228,7 +233,7 @@ public enum DbFieldType {
 
 		@Override
 		public Object parseValue(Object value) {
-			if (value == null) return null;
+			if (value == null || value.toString().isBlank()) return null;
 			return LocalDate.parse(value.toString());
 		}
 
@@ -272,7 +277,8 @@ public enum DbFieldType {
 
 		@Override
 		public Object parseValue(Object value) {
-			return value;
+			if (value == null || value.toString().isBlank()) return null;
+			return value.toString();
 		}
 
 		@Override
@@ -293,7 +299,8 @@ public enum DbFieldType {
 
 		@Override
 		public Object parseValue(Object value) {
-			return value;
+			if (value == null || value.toString().isBlank()) return null;
+			return value.toString();
 		}
 
 		@Override
@@ -315,6 +322,7 @@ public enum DbFieldType {
 
 		@Override
 		public Object parseValue(Object value) {
+			if (value == null || value.toString().isBlank()) return null;
 			return Boolean.parseBoolean(value.toString());
 		}
 
@@ -336,6 +344,7 @@ public enum DbFieldType {
 
 		@Override
 		public Object parseValue(Object value) {
+			if (value == null || value.toString().isBlank()) return null;
 			return new BigDecimal(value.toString());
 		}
 
@@ -357,6 +366,8 @@ public enum DbFieldType {
 
 		@Override
 		public Object parseValue(Object value) {
+			if (value == null || value.toString().isBlank()) return null;
+			if (value.toString().isBlank()) return null;
 			return value.toString().charAt(0);
 		}
 
@@ -378,6 +389,7 @@ public enum DbFieldType {
 
 		@Override
 		public Object parseValue(Object value) {
+			if (value == null || value.toString().isBlank()) return null;
 			return value.toString().getBytes()[0];
 		}
 
@@ -399,6 +411,7 @@ public enum DbFieldType {
 
 		@Override
 		public Object parseValue(Object value) {
+			if (value == null || value.toString().isBlank()) return null;
 			try {
 				return ((MultipartFile)value).getBytes();
 			} catch (IOException e) {

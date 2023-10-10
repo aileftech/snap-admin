@@ -39,6 +39,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
 import tech.ailef.dbadmin.external.dto.FacetedSearchRequest;
 import tech.ailef.dbadmin.external.dto.PaginatedResult;
 import tech.ailef.dbadmin.external.dto.PaginationInfo;
@@ -151,13 +155,22 @@ public class DbAdminRepository {
 	 */
 	@Transactional("transactionManager")
 	public void update(DbObjectSchema schema, Map<String, String> params, Map<String, MultipartFile> files) {
+		DbObject obj = schema.buildObject(params, files);
+		
+		Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+		Set<ConstraintViolation<Object>> violations = validator.validate(obj.getUnderlyingInstance());
+		
+		if (violations.size() > 0) {
+			throw new ConstraintViolationException(violations);
+		}
+		
 		schema.getJpaRepository().update(schema, params, files);
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Transactional("transactionManager")
-	private void save(DbObjectSchema schema, DbObject o) {
-		schema.getJpaRepository().save(o.getUnderlyingInstance());
+	private Object save(DbObjectSchema schema, DbObject o) {
+		return schema.getJpaRepository().save(o.getUnderlyingInstance());
 	}
 	
 	@Transactional("transactionManager")
@@ -185,7 +198,7 @@ public class DbAdminRepository {
 			}
 			
 			dbObject.set(
-				fieldName, 
+				field.getJavaName(), 
 				traverseMany.stream().map(o -> o.getUnderlyingInstance()).collect(Collectors.toList())
 			);
 		}
@@ -200,7 +213,17 @@ public class DbAdminRepository {
 	 * @param values
 	 * @param primaryKey
 	 */
+	@Transactional("transactionManager")
 	public Object create(DbObjectSchema schema, Map<String, String> values, Map<String, MultipartFile> files, String primaryKey) {
+		DbObject obj = schema.buildObject(values, files);
+		
+		Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+		Set<ConstraintViolation<Object>> violations = validator.validate(obj.getUnderlyingInstance());
+		
+		if (violations.size() > 0) {
+			throw new ConstraintViolationException(violations);
+		}
+		
 		SimpleJdbcInsert insert = new SimpleJdbcInsert(jdbcTemplate).withTableName(schema.getTableName());
 		
 		Map<String, Object> allValues = new HashMap<>();

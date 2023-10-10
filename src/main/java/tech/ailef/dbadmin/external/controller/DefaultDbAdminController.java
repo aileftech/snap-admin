@@ -27,6 +27,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.hibernate.id.IdentifierGenerationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -46,6 +47,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.ConstraintViolationException;
 import tech.ailef.dbadmin.external.DbAdmin;
 import tech.ailef.dbadmin.external.DbAdminProperties;
 import tech.ailef.dbadmin.external.dbmapping.DbAdminRepository;
@@ -417,7 +419,7 @@ public class DefaultDbAdminController {
  		String c = params.get("__dbadmin_create");
 		if (c == null) {
 			throw new ResponseStatusException(
-			  HttpStatus.INTERNAL_SERVER_ERROR, "Missing required param __dbadmin_create"
+				HttpStatus.BAD_REQUEST, "Missing required param __dbadmin_create"
 			);
 		}
 		
@@ -443,13 +445,13 @@ public class DefaultDbAdminController {
 				pkValue = newPrimaryKey.toString();
 				attr.addFlashAttribute("message", "Item created successfully.");
 				saveAction(new UserAction(schema.getTableName(), pkValue, "CREATE", schema.getClassName()));
-			} catch (DataIntegrityViolationException e) {
+			} catch (DataIntegrityViolationException | UncategorizedSQLException | IdentifierGenerationException e) {
 				attr.addFlashAttribute("errorTitle", "Unable to INSERT row");
 				attr.addFlashAttribute("error", e.getMessage());
 				attr.addFlashAttribute("params", params);
-			} catch (UncategorizedSQLException e) {
-				attr.addFlashAttribute("errorTitle", "Unable to INSERT row");
-				attr.addFlashAttribute("error", e.getMessage());
+			} catch (ConstraintViolationException e) {
+				attr.addFlashAttribute("errorTitle", "Unable to INSERT row (no changes applied)");
+				attr.addFlashAttribute("error", e.toString());
 				attr.addFlashAttribute("params", params);
 			}
 			
@@ -467,13 +469,13 @@ public class DefaultDbAdminController {
 						repository.attachManyToMany(schema, pkValue, multiValuedParams);
 						attr.addFlashAttribute("message", "Item saved successfully.");
 						saveAction(new UserAction(schema.getTableName(), pkValue, "EDIT", schema.getClassName()));
-					} catch (DataIntegrityViolationException e) {
+					} catch (DataIntegrityViolationException | UncategorizedSQLException | IdentifierGenerationException e) {
 						attr.addFlashAttribute("errorTitle", "Unable to UPDATE row (no changes applied)");
 						attr.addFlashAttribute("error", e.getMessage());
 						attr.addFlashAttribute("params", params);
-					} catch (IllegalArgumentException e) {
-						attr.addFlashAttribute("errorTitle", "Unable to UPDATE row (no changes applied)");
-						attr.addFlashAttribute("error", e.getMessage());
+					} catch (ConstraintViolationException e) {
+						attr.addFlashAttribute("errorTitle", "Unable to INSERT row (no changes applied)");
+						attr.addFlashAttribute("error", e.toString());
 						attr.addFlashAttribute("params", params);
 					}
 				}
@@ -483,9 +485,13 @@ public class DefaultDbAdminController {
 					repository.attachManyToMany(schema, newPrimaryKey, multiValuedParams);
 					attr.addFlashAttribute("message", "Item created successfully");
 					saveAction(new UserAction(schema.getTableName(), pkValue, "CREATE", schema.getClassName()));
-				} catch (DataIntegrityViolationException e) {
+				} catch (DataIntegrityViolationException | UncategorizedSQLException | IdentifierGenerationException e) {
 					attr.addFlashAttribute("errorTitle", "Unable to INSERT row (no changes applied)");
 					attr.addFlashAttribute("error", e.getMessage());
+					attr.addFlashAttribute("params", params);
+				} catch (ConstraintViolationException e) {
+					attr.addFlashAttribute("errorTitle", "Unable to INSERT row (no changes applied)");
+					attr.addFlashAttribute("error", e.toString());
 					attr.addFlashAttribute("params", params);
 				}
 			}

@@ -108,6 +108,7 @@ public class CustomJpaRepository extends SimpleJpaRepository {
 
 		Root root = update.from(schema.getJavaClass());
 
+		boolean hasUpdate = false;
 		for (DbField field : schema.getSortedFields()) {
 			if (field.isPrimaryKey()) continue;
 			if (field.isReadOnly()) continue;
@@ -136,7 +137,10 @@ public class CustomJpaRepository extends SimpleJpaRepository {
 				value = field.getConnectedSchema().getJpaRepository().findById(value).get();
 			
 			update.set(root.get(field.getJavaName()), value);
+			hasUpdate = true;
 		}
+		
+		if (!hasUpdate) return 0;
 		
 		String pkName = schema.getPrimaryKey().getJavaName();
 		update.where(cb.equal(root.get(pkName), params.get(schema.getPrimaryKey().getName())));

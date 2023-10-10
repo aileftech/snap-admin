@@ -198,8 +198,7 @@ public class DbObject {
 	}
 	
 	
-	private Method findSetter(String fieldName) {
-		fieldName = Utils.snakeToCamel(fieldName);
+	protected Method findSetter(String fieldName) {
 		String capitalize = Character.toUpperCase(fieldName.charAt(0)) + fieldName.substring(1);
 		Method[] methods = instance.getClass().getDeclaredMethods();
 		
@@ -211,7 +210,7 @@ public class DbObject {
 		return null;
 	}
 	
-	private Method findGetter(String fieldName) {
+	protected Method findGetter(String fieldName) {
 		String capitalize = Character.toUpperCase(fieldName.charAt(0)) + fieldName.substring(1);
 		Method[] methods = instance.getClass().getDeclaredMethods();
 		

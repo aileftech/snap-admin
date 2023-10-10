@@ -27,6 +27,10 @@ import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import tech.ailef.dbadmin.external.annotations.DisplayImage;
 import tech.ailef.dbadmin.external.annotations.Filterable;
 import tech.ailef.dbadmin.external.annotations.FilterableType;
@@ -202,6 +206,18 @@ public class DbField {
 	
 	public boolean isReadOnly() {
 		return getPrimitiveField().getAnnotation(ReadOnly.class) != null;
+	}
+	
+	/**
+	 * Returns if this field is settable with a raw value, i.e.
+	 * a field that is not a relationship to another entity;
+	 * @return
+	 */
+	public boolean isSettable() {
+		return getPrimitiveField().getAnnotation(ManyToOne.class) == null
+			&& getPrimitiveField().getAnnotation(OneToMany.class) == null
+			&& getPrimitiveField().getAnnotation(OneToOne.class) == null
+			&& getPrimitiveField().getAnnotation(ManyToMany.class) == null;
 	}
 	
 	public Set<DbFieldValue> getAllValues() {

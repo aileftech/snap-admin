@@ -19,6 +19,7 @@
 
 package tech.ailef.dbadmin.external.dbmapping;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,6 +30,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -359,6 +362,56 @@ public class DbObjectSchema {
 		return r.stream().map(o -> new DbObject(o, this)).toList();
 	}
 
+	public DbObject buildObject(Map<String, String> params, Map<String, MultipartFile> files) {
+		try {
+			Object instance = getJavaClass().getConstructor().newInstance();
+			DbObject dbObject = new DbObject(instance, this);
+			
+			for (String param : params.keySet()) {
+				// Parameters starting with __ are hidden and not related to the object creation
+				if (param.startsWith("__")) continue;
+				
+				String javaFieldName = getFieldByName(param).getJavaName();
+				Method setter = dbObject.findSetter(javaFieldName);
+				
+				if (setter ==  null) {
+					throw new RuntimeException("Cannot find setter for " + javaFieldName);
+				}
+				
+				Object parsedFieldValue = 
+					getFieldByName(param).getType().parseValue(params.get(param));
+				
+				if (parsedFieldValue != null && getFieldByName(param).isSettable()) {
+					setter.invoke(instance, parsedFieldValue);
+				}
+			}
+			
+			for (String fileParam : files.keySet()) {
+				if (fileParam.startsWith("__")) continue;
+
+				String javaFieldName = getFieldByName(fileParam).getJavaName();
+				Method setter = dbObject.findSetter(javaFieldName);
+				
+				if (setter ==  null) {
+					throw new RuntimeException("Cannot find setter for " + fileParam);
+				}
+				
+				Object parsedFieldValue = 
+						getFieldByName(fileParam).getType().parseValue(params.get(fileParam));
+				
+				if (parsedFieldValue != null && getFieldByName(fileParam).isSettable()) {
+					setter.invoke(instance, parsedFieldValue);
+				}
+			}
+			
+			return dbObject;
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+				| NoSuchMethodException | SecurityException e) {
+			throw new RuntimeException(e);
+		}
+		
+	}
+	
 	@Override
 	public String toString() {
 		return "DbObjectSchema [fields=" + fields + ", className=" + entityClass.getName() + "]";
