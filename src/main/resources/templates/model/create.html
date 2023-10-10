@@ -13,7 +13,7 @@
 
 					<h1 class="fw-bold mb-4">
 						<i class="align-middle bi bi-database"></i> 
-						<span class="align-middle"><a th:href="|/${dbadmin_baseUrl}|">Entities</a></span>
+						<span class="align-middle"><a th:href="|/${dbadmin_baseUrl}|">Entities </a></span>
 						<i class="align-middle bi bi-chevron-double-right"></i> 
 						<a class="align-middle" th:href="|/${dbadmin_baseUrl}/model/${schema.getJavaClass().getName()}|">
 						 [[ ${schema.getJavaClass().getSimpleName()} ]] </a>
@@ -58,8 +58,8 @@
 												"></th:block>
 											
 										</th:block>
-										<ul class="text-red mt-2" th:if="${validationErrors != null && !validationErrors.isEmpty()}">
-											<li th:each="error : ${validationErrors.forField(field.getName())}"
+										<ul class="text-red mt-2" th:if="${validationErrors != null && validationErrors.hasErrors(field.getJavaName())}">
+											<li th:each="error : ${validationErrors.forField(field.getJavaName())}"
 												th:text="${error.getMessage()}"></li>
 										</ul>
 										<div class="separator mt-3 mb-2 separator-light"></div>
