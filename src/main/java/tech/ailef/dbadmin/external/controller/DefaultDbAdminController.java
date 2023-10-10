@@ -58,6 +58,7 @@ import tech.ailef.dbadmin.external.dto.FacetedSearchRequest;
 import tech.ailef.dbadmin.external.dto.LogsSearchRequest;
 import tech.ailef.dbadmin.external.dto.PaginatedResult;
 import tech.ailef.dbadmin.external.dto.QueryFilter;
+import tech.ailef.dbadmin.external.dto.ValidationErrorsContainer;
 import tech.ailef.dbadmin.external.exceptions.DbAdminException;
 import tech.ailef.dbadmin.external.exceptions.DbAdminNotFoundException;
 import tech.ailef.dbadmin.external.exceptions.InvalidPageException;
@@ -450,8 +451,9 @@ public class DefaultDbAdminController {
 				attr.addFlashAttribute("error", e.getMessage());
 				attr.addFlashAttribute("params", params);
 			} catch (ConstraintViolationException e) {
-				attr.addFlashAttribute("errorTitle", "Unable to INSERT row (no changes applied)");
-				attr.addFlashAttribute("error", e.toString());
+				attr.addFlashAttribute("errorTitle", "Unable to INSERT row (validation error)");
+				attr.addFlashAttribute("error", "See below for details");
+				attr.addFlashAttribute("validationErrors", new ValidationErrorsContainer(e));
 				attr.addFlashAttribute("params", params);
 			}
 			
@@ -474,8 +476,9 @@ public class DefaultDbAdminController {
 						attr.addFlashAttribute("error", e.getMessage());
 						attr.addFlashAttribute("params", params);
 					} catch (ConstraintViolationException e) {
-						attr.addFlashAttribute("errorTitle", "Unable to INSERT row (no changes applied)");
-						attr.addFlashAttribute("error", e.toString());
+						attr.addFlashAttribute("errorTitle", "Unable to INSERT row (validation error)");
+						attr.addFlashAttribute("error", "See below for details");
+						attr.addFlashAttribute("validationErrors", new ValidationErrorsContainer(e));
 						attr.addFlashAttribute("params", params);
 					}
 				}
@@ -490,8 +493,9 @@ public class DefaultDbAdminController {
 					attr.addFlashAttribute("error", e.getMessage());
 					attr.addFlashAttribute("params", params);
 				} catch (ConstraintViolationException e) {
-					attr.addFlashAttribute("errorTitle", "Unable to INSERT row (no changes applied)");
-					attr.addFlashAttribute("error", e.toString());
+					attr.addFlashAttribute("errorTitle", "Unable to INSERT row (validation error)");
+					attr.addFlashAttribute("error", "See below for details");
+					attr.addFlashAttribute("validationErrors", new ValidationErrorsContainer(e));
 					attr.addFlashAttribute("params", params);
 				}
 			}

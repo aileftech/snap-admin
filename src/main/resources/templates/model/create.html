@@ -57,6 +57,10 @@
 												"></th:block>
 											
 										</th:block>
+										<ul class="text-red mt-2" th:if="${validationErrors != null && !validationErrors.isEmpty()}">
+											<li th:each="error : ${validationErrors.forField(field.getName())}"
+												th:text="${error.getMessage()}"></li>
+										</ul>
 										<div class="separator mt-3 mb-2 separator-light"></div>
 									</div>
 									
