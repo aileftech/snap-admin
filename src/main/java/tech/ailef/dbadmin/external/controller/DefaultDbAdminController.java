@@ -461,10 +461,10 @@ public class DefaultDbAdminController {
 						saveAction(new UserAction(schema.getTableName(), pkValue, "EDIT", schema.getClassName()));
 					}
 				} else {
-						Object newPrimaryKey = repository.create(schema, params, files, pkValue);
-						repository.attachManyToMany(schema, newPrimaryKey, multiValuedParams);
-						attr.addFlashAttribute("message", "Item created successfully");
-						saveAction(new UserAction(schema.getTableName(), pkValue, "CREATE", schema.getClassName()));
+					Object newPrimaryKey = repository.create(schema, params, files, pkValue);
+					repository.attachManyToMany(schema, newPrimaryKey, multiValuedParams);
+					attr.addFlashAttribute("message", "Item created successfully");
+					saveAction(new UserAction(schema.getTableName(), pkValue, "CREATE", schema.getClassName()));
 				}
 			}
 		} catch (DataIntegrityViolationException | UncategorizedSQLException | IdentifierGenerationException e) {
