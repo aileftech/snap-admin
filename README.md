@@ -1,6 +1,8 @@
 [![javadoc](https://javadoc.io/badge2/tech.ailef/spring-boot-db-admin/javadoc.svg)](https://javadoc.io/doc/tech.ailef/spring-boot-db-admin) 
 
+<!--
 > **LIVE DEMO** Check if it's up at http://dbadmin.ailef.tech/admin. Feel free to edit the content, it's an in-memory database that resets every hour with the same sample data.
+-->
 
 # Spring Boot Database Admin Panel
 
