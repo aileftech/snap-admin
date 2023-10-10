@@ -298,7 +298,25 @@ public class Product { ... }</code>
 
 <h2>4. Security</h2>
 <p>Spring Boot Database Admin does not implement authentication and/or authorization mechanisms. However, you can use a standard Spring security configuration in order to limit access to the web UI or specific parts of it.</p>
-<p>All Spring Boot Database Admin routes start with the value of <code>dbadmin.baseUrl</code> property, and all write operations (edit, create, delete) are implemented as <code>POST</code> calls.</p>
+<p>All Spring Boot Database Admin routes start with the value of <code>dbadmin.baseUrl</code> property, and all write operations (edit, create, delete) are implemented as <code>POST</code> calls. The following code provides an example security configuration (assuming Spring Boot Database Admin runs at <code>/admin</code>):</p>
+
+
+<pre>
+<code class="language-java">@Bean
+public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    return http.authorizeHttpRequests(auth -> {
+        // POST methods (create, edit and delete) require ADMIN role
+        auth.requestMatchers(HttpMethod.POST, "/admin/**").hasAuthority("ADMIN")
+            // Read-only Spring Boot Database Admin routes require authentication (any role)
+            .requestMatchers("/admin/**").authenticated()
+            // The other routes are not protected (adapt to your needs)
+            .requestMatchers("/**").permitAll();
+    })
+    .formLogin(l -> l.loginPage("/login").permitAll())
+    .build();
+}</code></pre>
+
+
 <div class="separator"></div>
 
 
