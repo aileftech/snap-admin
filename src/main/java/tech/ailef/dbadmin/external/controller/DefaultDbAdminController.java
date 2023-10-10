@@ -334,7 +334,9 @@ public class DefaultDbAdminController {
 		}
 		
 		saveAction(new UserAction(schema.getTableName(), id, "DELETE", schema.getClassName()));
-		
+		attr.addFlashAttribute("message", "Deleted " + schema.getJavaClass().getSimpleName() + " with " 
+				+ schema.getPrimaryKey().getName() + "=" + id);
+
 		return "redirect:/" + properties.getBaseUrl() + "/model/" + className;
 	}
 	
