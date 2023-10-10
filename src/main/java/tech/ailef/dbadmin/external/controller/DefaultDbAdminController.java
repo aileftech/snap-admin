@@ -518,10 +518,10 @@ public class DefaultDbAdminController {
 		return "settings/settings";
 	}
 	
-	@GetMapping("/about")
+	@GetMapping("/help")
 	public String about(Model model) {
-		model.addAttribute("activePage", "about");
-		return "about";
+		model.addAttribute("activePage", "help");
+		return "help";
 	}
 	
 	@GetMapping("/settings/appearance")
