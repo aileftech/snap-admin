@@ -34,7 +34,7 @@
 	
 	<nav class="navbar fixed-top navbar-expand-lg bg-accent color-white" th:fragment="navbar">
 	    <div class="container-fluid">
-	        <a class=" fw-bold navbar-brand" href="/"><i class="bi bi-hexagon-fill"></i>
+	        <a class=" fw-bold navbar-brand" th:href="|/${dbadmin_baseUrl}|"><i class="bi bi-hexagon-fill"></i>
 	        	[[ ${dbadmin_userConf.get('brandName')} ]]
 	        </a>
 	        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
