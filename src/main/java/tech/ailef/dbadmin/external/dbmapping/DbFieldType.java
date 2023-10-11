@@ -38,6 +38,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import tech.ailef.dbadmin.external.dto.CompareOperator;
 import tech.ailef.dbadmin.external.exceptions.DbAdminException;
+import tech.ailef.dbadmin.external.exceptions.UnsupportedFieldTypeException;
 
 /**
  * The enum for supported database field types. 
@@ -429,6 +430,29 @@ public enum DbFieldType {
 			throw new DbAdminException("Binary fields are not comparable");
 		}
 	},
+	UUID {
+
+		@Override
+		public String getFragmentName() {
+			return "text";
+		}
+
+		@Override
+		public Object parseValue(Object value) {
+			return java.util.UUID.fromString(value.toString());
+		}
+
+		@Override
+		public Class<?> getJavaClass() {
+			return java.util.UUID.class;
+		}
+
+		@Override
+		public List<CompareOperator> getCompareOperators() {
+			return List.of(CompareOperator.STRING_EQ, CompareOperator.CONTAINS);
+		}
+		
+	},
 	ONE_TO_MANY {
 		@Override
 		public String getFragmentName() {
@@ -609,10 +633,12 @@ public enum DbFieldType {
 			return OFFSET_DATE_TIME;
 		} else if (klass == byte.class || klass == Byte.class) {
 			return BYTE;
+		} else if (klass == java.util.UUID.class) {
+			return UUID;
 		} else if (klass == char.class || klass == Character.class) {
 			return CHAR;
 		} else {
-			throw new DbAdminException("Unsupported field type: " + klass);
+			throw new UnsupportedFieldTypeException("Unsupported field type: " + klass);
 		}
 	}
 }

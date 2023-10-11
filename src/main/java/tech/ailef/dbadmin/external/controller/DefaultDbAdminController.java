@@ -252,7 +252,9 @@ public class DefaultDbAdminController {
 	public String show(Model model, @PathVariable String className, @PathVariable String id) {
 		DbObjectSchema schema = dbAdmin.findSchemaByClassName(className);
 		
-		DbObject object = repository.findById(schema, id).orElseThrow(() -> {
+		Object pkValue = schema.getPrimaryKey().getType().parseValue(id);
+		
+		DbObject object = repository.findById(schema, pkValue).orElseThrow(() -> {
 			return new DbAdminNotFoundException(
 				schema.getJavaClass().getSimpleName() + " with ID " + id + " not found."
 			);
