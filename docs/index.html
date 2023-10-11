@@ -313,7 +313,7 @@ public class Product { ... }</code>
 <h3 id="settings-panel">3.2 The Settings panel</h3>
 <p>As mentioned earlier, the Settings panel primarily provides options to customize the branding/appearance of the web interface. These settings are persistent across restarts and are stored in an embedded H2 database (file named <code>dbadmin_internal</code>), along with other data required by Spring Boot Database Admin.</p>
 
-<h2>4. Security</h2>
+<h2 id="security">4. Security</h2>
 <p>Spring Boot Database Admin does not implement authentication and/or authorization mechanisms. However, you can use a standard Spring security configuration in order to limit access to the web UI or specific parts of it.</p>
 <p>All Spring Boot Database Admin routes start with the value of <code>dbadmin.baseUrl</code> property, and all write operations (edit, create, delete) are implemented as <code>POST</code> calls. The following code provides an example security configuration (assuming Spring Boot Database Admin runs at <code>/admin</code>):</p>
 
@@ -334,7 +334,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 }</code></pre>
 
 
-<div class="separator"></div>
+<div class="pb-5"></div>
 
 
 				</div>
