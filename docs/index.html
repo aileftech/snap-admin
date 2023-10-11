@@ -27,7 +27,7 @@
 			<div class="container">
 				<nav class="navbar navbar-expand-lg bg-light">
 				  <div class="container-fluid">
-				    <a class="navbar-brand fw-bold" href="#">Spring Boot Database Admin <span class="text-muted">v0.1.5</span></a>
+				    <a class="navbar-brand fw-bold" href="#">Spring Boot Database Admin <span class="text-muted">v0.1.6</span></a>
 				    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 				      <span class="navbar-toggler-icon"></span>
 				    </button>
@@ -60,7 +60,7 @@
 				<div class="col-9 main-content pt-3 ps-4">
 
 <h1 class="m-0">Reference Guide</h1>
-<h2 class="text-muted mt-0">Spring Boot Database Admin v0.1.5</h2>
+<h2 class="text-muted mt-0">Spring Boot Database Admin v0.1.6</h2>
 
 <h2 id="introduction">1. Introduction</h2>
 
@@ -82,7 +82,7 @@
 <code class="language-xml">&lt;dependency&gt;
 	&lt;groupId&gt;tech.ailef&lt;/groupId&gt;
 	&lt;artifactId&gt;spring-boot-db-admin&lt;/artifactId&gt;
-	&lt;version&gt;0.1.5&lt;/version&gt;
+	&lt;version&gt;0.1.6&lt;/version&gt;
 &lt;/dependency&gt;
 </code>
 </pre>
@@ -136,11 +136,11 @@ dbadmin.modelsPackage=your.models.package,your.second.models.package
 <p>The behaviours specified with these annotations should be applied automatically by Spring Boot Database Admin. Using non-supported annotations will not necessarily result in an error, as they are simply ignored. Depending on what the annotation actually does, this could be just fine or result in an error if it interferes with something that Spring Boot Database Admin relies on.</p>
 
 <p>The following list documents the most significant interactions between the JPA annotations and Spring Boot Database Admin.</p>
-<h5>@Entity</h5>
+<h6>@Entity</h6>
 <p>Used to detect the candidate classes to scan.</p>
-<h5>@Column</h5>
+<h6>@Column</h6>
 <p>Used to detect the column name and its nullability.</p>
-<h5>@GeneratedValue</h5>
+<h6>@GeneratedValue</h6>
 <p>When you have an <code>@Id</code> marked as a <code>@GeneratedValue</code>, you won't be asked to enter it when creating new items, as it will be automatically generated.</p>
 
 <h4 id="supported-field-types">2.3.2 Supported field types</h4>
