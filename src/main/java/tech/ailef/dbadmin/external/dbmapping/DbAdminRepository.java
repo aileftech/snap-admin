@@ -52,8 +52,6 @@ import tech.ailef.dbadmin.external.exceptions.InvalidPageException;
  */
 @Component
 public class DbAdminRepository {
-	private JdbcTemplate jdbcTemplate;
-	
 	public DbAdminRepository(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
 	}
@@ -215,47 +213,7 @@ public class DbAdminRepository {
 		DbObject obj = schema.buildObject(values, files);
 		Object save = save(schema, obj);
 		return new DbObject(save, schema).getPrimaryKeyValue();
-//		return save;
-//		System.out.println(obj);
-//		Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-//		validator.va
-//		Set<ConstraintViolation<Object>> violations = validator.validate(obj.getUnderlyingInstance());
-//		
-//		if (violations.size() > 0) {
-//			throw new ConstraintViolationException(violations);
-//		}
-//		
-//		SimpleJdbcInsert insert = new SimpleJdbcInsert(jdbcTemplate).withTableName(schema.getTableName());
-//		
-//		Map<String, Object> allValues = new HashMap<>();
-//		allValues.putAll(values);
-//		
-//		values.keySet().forEach(fieldName -> {
-//			if (values.get(fieldName).isBlank()) {
-//				allValues.put(fieldName, null);
-//			}
-//		});
-//		
-//		files.keySet().forEach(f -> {
-//			try {
-//				// The file parameter gets sent even if empty, so it's needed
-//				// to check if the file has actual content, to avoid storing an empty file
-//				if (files.get(f).getSize() > 0)
-//					allValues.put(f, files.get(f).getBytes());
-//			} catch (IOException e) {
-//				throw new DbAdminException(e);
-//			}
-//		});
-//
-//		if (primaryKey == null) {
-//			insert = insert.usingGeneratedKeyColumns(schema.getPrimaryKey().getName());
-//			return insert.executeAndReturnKey(allValues);
-//		} else {
-//			insert.execute(allValues);
-//			return primaryKey;
-//		}
 	}
-	
 	
 	/**
 	 * Fuzzy search on primary key value and display name
