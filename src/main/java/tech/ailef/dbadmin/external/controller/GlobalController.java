@@ -51,7 +51,7 @@ public class GlobalController {
 		model.addAttribute("error", "Error");
 		model.addAttribute("message", e.getMessage());
 		model.addAttribute("dbadmin_userConf", userConf);
-		model.addAttribute("baseUrl", getBaseUrl());
+		model.addAttribute("dbadmin_baseUrl", getBaseUrl());
 		return "other/error";
 	}
 	
