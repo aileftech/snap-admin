@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -208,6 +209,12 @@ public class DbField {
 		return getPrimitiveField().getAnnotation(ReadOnly.class) != null;
 	}
 	
+	public boolean isToOne() {
+		return  (getPrimitiveField().getAnnotation(OneToOne.class) != null &&
+				getPrimitiveField().getAnnotation(OneToOne.class).mappedBy().isBlank())
+				|| getPrimitiveField().getAnnotation(ManyToOne.class) != null;
+	}
+	
 	/**
 	 * Returns if this field is settable with a raw value, i.e.
 	 * a field that is not a relationship to another entity;
@@ -218,6 +225,10 @@ public class DbField {
 			&& getPrimitiveField().getAnnotation(OneToMany.class) == null
 			&& getPrimitiveField().getAnnotation(OneToOne.class) == null
 			&& getPrimitiveField().getAnnotation(ManyToMany.class) == null;
+	}
+	
+	public boolean isGeneratedValue() {
+		return getPrimitiveField().getAnnotation(GeneratedValue.class) != null;
 	}
 	
 	public Set<DbFieldValue> getAllValues() {

@@ -384,6 +384,10 @@ public class DbObjectSchema {
 				if (parsedFieldValue != null && getFieldByName(param).isSettable()) {
 					setter.invoke(instance, parsedFieldValue);
 				}
+				
+				if (parsedFieldValue != null && getFieldByName(param).isToOne()) {
+					dbObject.setRelationship(param, parsedFieldValue);
+				}
 			}
 			
 			for (String fileParam : files.keySet()) {

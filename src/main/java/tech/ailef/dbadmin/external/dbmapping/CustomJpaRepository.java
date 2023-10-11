@@ -89,7 +89,7 @@ public class CustomJpaRepository extends SimpleJpaRepository {
             .where(
             	cb.or(
             		cb.and(finalPredicates.toArray(new Predicate[finalPredicates.size()])), // query search on String fields
-            		cb.equal(root.get(schema.getPrimaryKey().getName()), q)
+            		cb.equal(root.get(schema.getPrimaryKey().getName()).as(String.class), q)
             	)
             	
             );

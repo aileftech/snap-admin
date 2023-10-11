@@ -33,6 +33,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.TransactionSystemException;
 import org.springframework.ui.Model;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -476,6 +477,20 @@ public class DefaultDbAdminController {
 			attr.addFlashAttribute("error", "See below for details");
 			attr.addFlashAttribute("validationErrors", new ValidationErrorsContainer(e));
 			attr.addFlashAttribute("params", params);
+		} catch (DbAdminException e) {
+			attr.addFlashAttribute("errorTitle", "Error");
+			attr.addFlashAttribute("error", e.getMessage());
+			attr.addFlashAttribute("params", params);
+		} catch (TransactionSystemException e) {
+			if (e.getRootCause() instanceof ConstraintViolationException) {
+				ConstraintViolationException ee = (ConstraintViolationException)e.getRootCause();
+				attr.addFlashAttribute("errorTitle", "Validation error");
+				attr.addFlashAttribute("error", "See below for details");
+				attr.addFlashAttribute("validationErrors", new ValidationErrorsContainer(ee));
+				attr.addFlashAttribute("params", params);
+			} else {
+				throw new RuntimeException(e);
+			}
 		}
 
 

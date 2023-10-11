@@ -19,9 +19,7 @@
 
 package tech.ailef.dbadmin.external.dbmapping;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -34,7 +32,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -216,43 +213,47 @@ public class DbAdminRepository {
 	@Transactional("transactionManager")
 	public Object create(DbObjectSchema schema, Map<String, String> values, Map<String, MultipartFile> files, String primaryKey) {
 		DbObject obj = schema.buildObject(values, files);
-		
-		Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-		Set<ConstraintViolation<Object>> violations = validator.validate(obj.getUnderlyingInstance());
-		
-		if (violations.size() > 0) {
-			throw new ConstraintViolationException(violations);
-		}
-		
-		SimpleJdbcInsert insert = new SimpleJdbcInsert(jdbcTemplate).withTableName(schema.getTableName());
-		
-		Map<String, Object> allValues = new HashMap<>();
-		allValues.putAll(values);
-		
-		values.keySet().forEach(fieldName -> {
-			if (values.get(fieldName).isBlank()) {
-				allValues.put(fieldName, null);
-			}
-		});
-		
-		files.keySet().forEach(f -> {
-			try {
-				// The file parameter gets sent even if empty, so it's needed
-				// to check if the file has actual content, to avoid storing an empty file
-				if (files.get(f).getSize() > 0)
-					allValues.put(f, files.get(f).getBytes());
-			} catch (IOException e) {
-				throw new DbAdminException(e);
-			}
-		});
-
-		if (primaryKey == null) {
-			insert = insert.usingGeneratedKeyColumns(schema.getPrimaryKey().getName());
-			return insert.executeAndReturnKey(allValues);
-		} else {
-			insert.execute(allValues);
-			return primaryKey;
-		}
+		Object save = save(schema, obj);
+		return new DbObject(save, schema).getPrimaryKeyValue();
+//		return save;
+//		System.out.println(obj);
+//		Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+//		validator.va
+//		Set<ConstraintViolation<Object>> violations = validator.validate(obj.getUnderlyingInstance());
+//		
+//		if (violations.size() > 0) {
+//			throw new ConstraintViolationException(violations);
+//		}
+//		
+//		SimpleJdbcInsert insert = new SimpleJdbcInsert(jdbcTemplate).withTableName(schema.getTableName());
+//		
+//		Map<String, Object> allValues = new HashMap<>();
+//		allValues.putAll(values);
+//		
+//		values.keySet().forEach(fieldName -> {
+//			if (values.get(fieldName).isBlank()) {
+//				allValues.put(fieldName, null);
+//			}
+//		});
+//		
+//		files.keySet().forEach(f -> {
+//			try {
+//				// The file parameter gets sent even if empty, so it's needed
+//				// to check if the file has actual content, to avoid storing an empty file
+//				if (files.get(f).getSize() > 0)
+//					allValues.put(f, files.get(f).getBytes());
+//			} catch (IOException e) {
+//				throw new DbAdminException(e);
+//			}
+//		});
+//
+//		if (primaryKey == null) {
+//			insert = insert.usingGeneratedKeyColumns(schema.getPrimaryKey().getName());
+//			return insert.executeAndReturnKey(allValues);
+//		} else {
+//			insert.execute(allValues);
+//			return primaryKey;
+//		}
 	}
 	
 	

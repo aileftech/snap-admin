@@ -32,7 +32,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import tech.ailef.dbadmin.external.annotations.DisplayName;
 import tech.ailef.dbadmin.external.exceptions.DbAdminException;
-import tech.ailef.dbadmin.external.misc.Utils;
 
 /**
  * Wrapper for all objects retrieved from the database.
@@ -183,6 +182,29 @@ public class DbObject {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
+	public void setRelationship(String fieldName, Object primaryKeyValue) {
+		DbField field = schema.getFieldByName(fieldName);
+		DbObjectSchema linkedSchema = field.getConnectedSchema();
+		Optional<?> obj = linkedSchema.getJpaRepository().findById(primaryKeyValue);
+		
+		if (!obj.isPresent()) {
+			throw new DbAdminException("Invalid value " + primaryKeyValue + " for " + fieldName
+					+ ": item does not exist.");
+		}
+		
+		Method setter = findSetter(field.getJavaName());
+		
+		if (setter == null) {
+			throw new DbAdminException("Unable to find setter method for " + fieldName + " in " + schema.getClassName());
+		}
+		
+		try {
+			setter.invoke(instance, obj.get());
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+		}
+	}
+	
 	public void set(String fieldName, Object value) {
 		Method setter = findSetter(fieldName);
 		
@@ -229,4 +251,11 @@ public class DbObject {
 		
 		return null;
 	}
+
+	@Override
+	public String toString() {
+		return "DbObject [instance=" + instance + ", schema=" + schema + "]";
+	}
+	
+	
 }
