@@ -64,13 +64,19 @@
 
 <h2 id="introduction">1. Introduction</h2>
 
-<p>This guide outlines how to install, configure and customize Spring Boot Database Admin panel. Refer to this document for troubleshooting and if you still encounter problems, please <a href="https://github.com/aileftech/spring-boot-database-admin/issues" target="_blank">report it as an issue on Github</a>.</p>
+<p>Spring Boot Database Admin is a tool to easily build customizable database management interfaces with CRUD operations (and more!) for Spring Boot+JPA apps.</p>
+<p>It does so by scanning your JPA-annotated <code>@Entity</code> classes and building the required functionality at runtime. With this approach it becomes trivial to integrate it, as it won't produce code that you have to integrate into your own or use as a starting point. Moreover, every time you update your classes, all changes will be reflected automatically on the web UI. 
+</p>
+<p>On the other hand, this approach requires to interact correctly with all JPA annotations and adapt our behaviour accordingly. This is not an easy task given the large surface area of possible behaviours introduced with annotations and can sometimes introduce bugs. If you encounter problems, please <a href="https://github.com/aileftech/spring-boot-database-admin/issues" target="_blank">report it as an issue on Github</a>.</p>
+
+<p>The rest of this guide outlines how to install, configure and customize Spring Boot Database Admin panel and, where applicable, it documents known interactions with JPA annotations.</p>
 <div class="separator"></div>
 <h2 id="getting-started">2. Getting started</h2>
 <p>Getting started with Spring Boot Database Admin requires including it as a dependency and then performing a simple configuration step.</p>
 
+
 <h3 id="installation">2.1 Installation</h3>
-<p>Since Spring Boot Database Admin is distributed on Maven, the easiest way to start is to include this dependency in your <code>pom.xml</code>:</p>
+<p>Since Spring Boot Database Admin is distributed on Maven, the easiest way to start is to include it in your <code>pom.xml</code>:</p>
 
 <pre>
 <code class="language-xml">&lt;dependency&gt;
@@ -82,7 +88,7 @@
 </pre>
 <p class="tip"><span class="title"><i class="bi bi-info-circle"></i> TIP</span> Go to the <a href="https://mvnrepository.com/artifact/tech.ailef/spring-boot-db-admin" target="_blank">Maven repository</a> to retrieve the exact snippet for the latest stable release.</p>
 
-<p>If you want the latest unstable release, you can clone the <code>main</code> branch of the Github repo and execute <code>mvn install -D skipTests</code> in the project's directory. This will install the library in your local repository, which you can then include using the same snippet as above, but replacing the version number with the one contained in the <code>pom.xml</code> file of the code you pulled from Github.</p>
+<p>Alternatively, if you want the latest unstable release, you can clone the <code>main</code> branch of the Github repo and execute <code>mvn install -D skipTests</code> in the project's directory. This will install the library in your local repository, which you can then include using the same snippet as above, but replacing the version number with the one contained in the <code>pom.xml</code> file of the code you pulled from Github.</p>
 
 <h3 id="configuration">2.2 Configuration</h3>
 <p>After including the dependency, a few configuration steps are required on your end in order to integrate the library into your project. </p>
@@ -117,16 +123,25 @@ dbadmin.modelsPackage=your.models.package,your.second.models.package
 </pre>
 
 <p>This will autoconfigure the various Spring Boot Database Admin components when your application starts.</p>
-<p>If everything is setup correctly, you will see Spring Boot Database Admin confirming it in the log messages that appear when you start your application. Keep in mind that if you specify the wrong models package, it will still work but provide you an empty interface. To check, visit <a target="_blank" href="http://localhost:8080/admin">http://localhost:8080/admin</a>.</p>
+<p>If everything is setup correctly, you will see Spring Boot Database Admin confirming it in the log messages that appear when you start your application. Keep in mind that if you specify the wrong models package, it will still work but provide you an empty interface. Visit <a target="_blank" href="http://localhost:8080/admin">http://localhost:8080/admin</a> (replace the correct port and base path with your settings) to check if everything is working correctly.</p>
 
 <h3 id="supported-features">2.3 Supported features</h3>
 </p>
 <h4 id="supported-annotations">2.3.1 Supported JPA annotations</h4>
 <ul>
-    <li><b>Core</b>: @Entity, @Table, @Column, @Lob, @Id</li>
+    <li><b>Core</b>: @Entity, @Table, @Column, @Lob, @Id, @GeneratedValue</li>
     <li><b>Relationships</b>: @OneToMany, @ManyToOne, @ManyToMany, @OneToOne</li>
+    <li><b>Validation</b>: all JPA validation annotations (<code>jakarta.validation.constraints.*</code>)</li>
 </ul>
-<p>The behaviour you specify with these annotations should be applied automatically by Spring Boot Database Admin as well. Keep in mind that using non-supported annotations will not necessarily result in an error, as they are simply ignored. Depending on what the annotation actually does, this could be just fine or result in an error if it interferes with something that Spring Boot Database Admin relies on.</p>
+<p>The behaviours specified with these annotations should be applied automatically by Spring Boot Database Admin. Using non-supported annotations will not necessarily result in an error, as they are simply ignored. Depending on what the annotation actually does, this could be just fine or result in an error if it interferes with something that Spring Boot Database Admin relies on.</p>
+
+<p>The following list documents the most significant interactions between the JPA annotations and Spring Boot Database Admin.</p>
+<h5>@Entity</h5>
+<p>Used to detect the candidate classes to scan.</p>
+<h5>@Column</h5>
+<p>Used to detect the column name and its nullability.</p>
+<h5>@GeneratedValue</h5>
+<p>When you have an <code>@Id</code> marked as a <code>@GeneratedValue</code>, you won't be asked to enter it when creating new items, as it will be automatically generated.</p>
 
 <h4 id="supported-field-types">2.3.2 Supported field types</h4>
 <ul>
@@ -139,13 +154,14 @@ dbadmin.modelsPackage=your.models.package,your.second.models.package
 
 <p>For these field types, the interface will be already customized. For example, a file upload input is provided to fill a <code>byte[]</code> field or a date-picker for the various date types.</p>
 
-<p>Unsupported field types are handled as gracefully as possible, meaning that when such a field is detected the application will run anyway but this field will never be displayed in the web interface. This also means that it will not be possible to enter the value for this field when editing or creating, leaving it as the default NULL value. If the field is not nullable, you will thus not be able to create items.</p>
-<p>If you think this field type should be supported, please <a href="https://github.com/aileftech/spring-boot-database-admin/issues" target="_blank">open an issue on Github</a>.</p>
+<p>Unsupported field types are handled as gracefully as possible, meaning that when such a field is detected the application will still run. However, this field will never be displayed in the web interface. This means that it won't be possible to enter values for this field when editing or creating, leaving it with the default NULL value. If the field is not nullable, this implies you won't be able to create items.</p>
+
+<p>If you're using a field type that you think should be supported, please <a href="https://github.com/aileftech/spring-boot-database-admin/issues" target="_blank">open an issue on Github</a>.</p>
 
 <p>To check if your code contains unsupported fields:</p>
 <ul>
 	<li>In the Spring Boot Database Admin home page, a red icon is shown next to each table if problems have been detected; click this icon to get the detailed list of errors.</li>
-	<li>At startup, detected unsupported field types are printed in the logs (you should see some message if you <code>grep DbAdmin</code>).</li>
+	<li>At startup, unsupported field types are printed in the logs (you should see them if you <code>grep DbAdmin</code>).</li>
 </ul>
 
 <div class="separator"></div>
