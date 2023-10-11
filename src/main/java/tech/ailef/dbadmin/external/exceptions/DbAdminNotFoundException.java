@@ -9,5 +9,10 @@ public class DbAdminNotFoundException extends ResponseStatusException {
 	public DbAdminNotFoundException(String message) {
 		super(HttpStatus.NOT_FOUND, message);
 	}
+	
+	@Override
+	public String getMessage() {
+		return getReason();
+	}
 
 }

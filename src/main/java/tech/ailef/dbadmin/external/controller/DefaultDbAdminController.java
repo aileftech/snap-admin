@@ -254,7 +254,7 @@ public class DefaultDbAdminController {
 		
 		DbObject object = repository.findById(schema, id).orElseThrow(() -> {
 			return new DbAdminNotFoundException(
-			  "Object " + className + " with id " + id + " not found"
+				schema.getJavaClass().getSimpleName() + " with ID " + id + " not found."
 			);
 		});
 		
