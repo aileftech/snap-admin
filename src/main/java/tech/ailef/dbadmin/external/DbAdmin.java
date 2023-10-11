@@ -79,7 +79,9 @@ public class DbAdmin {
 	
 	private DbAdminProperties properties;
 	
-	/**
+	private final String version = "0.1.6";
+    
+    /**
 	 * Builds the DbAdmin instance by scanning the `@Entity` beans and loading
 	 * the schemas.
 	 * @param entityManager	the entity manager
@@ -112,11 +114,21 @@ public class DbAdmin {
 		}
 
 		boolean hasErrors = schemas.stream().flatMap(s -> s.getErrors().stream()).count() > 0;
+		
 		logger.info("Spring Boot Database Admin initialized. Loaded " + schemas.size() 
 				+ " schemas from " + modelsPackage.size() + " packages"	+ (hasErrors ? " (with errors)" : ""));
 		logger.info("Spring Boot Database Admin web interface at: http://YOUR_HOST:YOUR_PORT/" + properties.getBaseUrl());
+		
 	}
 
+	/**
+	 * Returns the current version 
+	 * @return
+	 */
+	public String getVersion() {
+		return version;
+	}
+	
 	/**
 	 * Returns all the loaded schemas (i.e. entity classes)
 	 * @return the list of loaded schemas from the `@Entity` classes
@@ -352,4 +364,6 @@ public class DbAdmin {
 			throw new DbAdminException(e);
 		}
 	}
+	
+
 }

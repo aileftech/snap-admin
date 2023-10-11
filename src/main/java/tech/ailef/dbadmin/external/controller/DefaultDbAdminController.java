@@ -258,7 +258,6 @@ public class DefaultDbAdminController {
 			);
 		});
 		
-		
 		model.addAttribute("title", "Entities | " + schema.getJavaClass().getSimpleName() + " | " + object.getDisplayName());
 		model.addAttribute("object", object);
 		model.addAttribute("activePage", "entities");
