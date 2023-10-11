@@ -65,14 +65,14 @@
 <h2 id="introduction">1. Introduction</h2>
 
 <p>Spring Boot Database Admin is a tool to easily build customizable database management interfaces with CRUD operations (and more!) for Spring Boot+JPA apps.</p>
-<p>It does so by scanning your JPA-annotated <code>@Entity</code> classes and building the required functionality at runtime. With this approach it becomes trivial to integrate it, as it won't produce code that you have to integrate into your own or use as a starting point. Moreover, every time you update your classes, all changes will be reflected automatically on the web UI. 
+<p>It does so by scanning your JPA-annotated <code>@Entity</code> classes and building the required functionality at runtime. Since it won't generate actual code you won't have to change your existing code base, and this makes it easy to integrate. Moreover, every time you update your classes, all changes will be reflected automatically on the web UI. 
 </p>
 <p>On the other hand, this approach requires to interact correctly with all JPA annotations and adapt our behaviour accordingly. This is not an easy task given the large surface area of possible behaviours introduced with annotations and can sometimes introduce bugs. If you encounter problems, please <a href="https://github.com/aileftech/spring-boot-database-admin/issues" target="_blank">report it as an issue on Github</a>.</p>
 
-<p>The rest of this guide outlines how to install, configure and customize Spring Boot Database Admin panel and, where applicable, it documents known interactions with JPA annotations.</p>
+<p>The rest of this guide outlines how to install, configure and customize Spring Boot Database Admin and, where applicable, it documents known interactions with JPA annotations.</p>
 <div class="separator"></div>
 <h2 id="getting-started">2. Getting started</h2>
-<p>Getting started with Spring Boot Database Admin requires including it as a dependency and then performing a simple configuration step.</p>
+<p>Getting started with Spring Boot Database Admin requires including it as a dependency and minimal configuration.</p>
 
 
 <h3 id="installation">2.1 Installation</h3>
@@ -91,8 +91,8 @@
 <p>Alternatively, if you want the latest unstable release, you can clone the <code>main</code> branch of the Github repo and execute <code>mvn install -D skipTests</code> in the project's directory. This will install the library in your local repository, which you can then include using the same snippet as above, but replacing the version number with the one contained in the <code>pom.xml</code> file of the code you pulled from Github.</p>
 
 <h3 id="configuration">2.2 Configuration</h3>
-<p>After including the dependency, a few configuration steps are required on your end in order to integrate the library into your project. </p>
-<p>The first one is configuring your <code>application.properties</code> file:</p>
+<p>After including the dependency, a few configuration steps are required on your end in order to integrate it into your project. </p>
+<p>Configure your <code>application.properties</code> file:</p>
 
 	<pre>
 <code class="language-properties">## The first-level part of the URL path: http://localhost:8080/${baseUrl}/
@@ -147,7 +147,7 @@ dbadmin.modelsPackage=your.models.package,your.second.models.package
 <ul>
     <li>Double, Float, Integer, Short, Byte, Character, BigDecimal, BigInteger</li>
     <li>Boolean</li>
-    <li>String</li>
+    <li>String, UUID</li>
 	<li>Date, LocalDate, LocalDateTime, OffsetDateTime</li>
     <li>byte[]</li>
 </ul>
@@ -217,11 +217,11 @@ private Double price;
 	<pre>
 <code class="language-java">@ComputedColumn
 public double totalSpent() {
-	double total = 0;
-	for (Order o : orders) {
-		total += o.total();
-	}
-	return total;
+    double total = 0;
+    for (Order o : orders) {
+        total += o.total();
+    }
+    return total;
 }
 </code>
 </pre>
