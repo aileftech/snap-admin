@@ -31,7 +31,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -52,8 +51,7 @@ import tech.ailef.dbadmin.external.exceptions.InvalidPageException;
  */
 @Component
 public class DbAdminRepository {
-	public DbAdminRepository(JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
+	public DbAdminRepository() {
 	}
 
 	/**
@@ -168,6 +166,12 @@ public class DbAdminRepository {
 		return schema.getJpaRepository().save(o.getUnderlyingInstance());
 	}
 	
+	/**
+	 * Attaches multiple many to many relationships to an object, parsed from a multi -valued map.
+	 * @param schema	the entity class that owns this relationship
+	 * @param id	the primary key of the entity where these relationships have to be attached to
+	 * @param params	the multi-valued map containing the many-to-many relationships
+	 */
 	@Transactional("transactionManager")
 	public void attachManyToMany(DbObjectSchema schema, Object id, Map<String, List<String>> params) {
 		Optional<DbObject> optional = findById(schema, id);
