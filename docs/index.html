@@ -333,8 +333,14 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     .build();
 }</code></pre>
 
+<div class="separator"></div>
+<h2 id="troubleshooting">5. Troubleshooting</h2>
 
-<div class="pb-5"></div>
+<p>When setting up Spring Boot Database Admin for the first time, problems most commonly occur at startup, causing the application to stop. If this is the case, first check that you have correctly configured your <code>application.properties</code> file. If everything is correct here, the problem might be related to one or more of your <code>@Entity</code> classes (or the rest of your code in general) which might be using some unsupported feature and/or annotation. </p>
+<p>
+You can enable <code>DEBUG</code>-level logs (e.g. with <code>logging.level.root=DEBUG</code>) to pinpoint the cause error. Looking at those in combination with the stack trace should provide enough information to understand what is going wrong. Keep in mind that if the application doesn't start at all, it's probably a bug: you can <a href="https://github.com/aileftech/spring-boot-database-admin/issues" target="_blank">open an issue on Github</a>, providing the stacktrace, the debug logs and all other relevant information.</p>
+
+<div class="pt-3 pb-5"></div>
 
 
 				</div>
