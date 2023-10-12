@@ -26,6 +26,7 @@ for your database schema. No modifications required to your existing code (well,
 
  * Core: @Entity, @Table, @Column, @Lob, @Id, @GeneratedValue
  * Relationships: @OneToMany, @ManyToOne, @ManyToMany, @OneToOne
+ * Validation: all JPA validation annotations (`jakarta.validation.constraints.*`)
 
 The behaviour you specify with these annotations should be applied automatically by Spring Boot Database Admin as well. Keep in mind that using non-supported annotations will not necessarily result in an error, as they are simply ignored. Depending on what the annotation actually does, this could be just fine or result in an error if it interferes with something that Spring Boot Database Admin relies on.
 
