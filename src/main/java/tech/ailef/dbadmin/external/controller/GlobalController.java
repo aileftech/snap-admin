@@ -22,12 +22,15 @@ package tech.ailef.dbadmin.external.controller;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import tech.ailef.dbadmin.external.DbAdmin;
 import tech.ailef.dbadmin.external.DbAdminProperties;
 import tech.ailef.dbadmin.external.exceptions.DbAdminNotFoundException;
@@ -50,13 +53,14 @@ public class GlobalController {
 	private DbAdmin dbAdmin;
 	
 	@ExceptionHandler(DbAdminNotFoundException.class)
-	public String handleNotFound(Exception e, Model model) {
+	public String handleNotFound(Exception e, Model model, HttpServletResponse response) {
 		model.addAttribute("status", "404");
 		model.addAttribute("error", "Error");
 		model.addAttribute("message", e.getMessage());
 		model.addAttribute("dbadmin_userConf", userConf);
 		model.addAttribute("dbadmin_baseUrl", getBaseUrl());
 		model.addAttribute("dbadmin_version", dbAdmin.getVersion());
+		response.setStatus(404);
 		return "other/error";
 	}
 	
