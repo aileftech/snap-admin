@@ -338,6 +338,7 @@ public class DefaultDbAdminController {
 		} catch (DataIntegrityViolationException e) {
 			attr.addFlashAttribute("errorTitle", "Unable to DELETE row");
 			attr.addFlashAttribute("error", e.getMessage());
+			return "redirect:/" + properties.getBaseUrl() + "/model/" + className;
 		}
 		
 		saveAction(new UserAction(schema.getTableName(), id, "DELETE", schema.getClassName()));
