@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>tech.ailef</groupId>
 	<artifactId>spring-boot-db-admin</artifactId>
-	<version>0.1.5</version>
+	<version>0.1.6</version>
 	<name>spring-boot-db-admin</name>
 	<description>Spring Boot Database Admin is an auto-generated CRUD admin panel for Spring Boot apps</description>
 	<properties>
@@ -20,7 +20,7 @@
 	<licenses>
 		<license>
 			<name>GPL-v3.0</name>
-      		<url>http://www.gnu.org/licenses/gpl-3.0.txt</url>
+			<url>http://www.gnu.org/licenses/gpl-3.0.txt</url>
 		</license>
 	</licenses>
 
@@ -72,6 +72,7 @@
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-source-plugin</artifactId>
 						<version>3.2.1</version>
+
 						<executions>
 							<execution>
 								<id>attach-source</id>
