@@ -292,13 +292,15 @@ public class DefaultDbAdminController {
 	public String edit(Model model, @PathVariable String className, @PathVariable String id, RedirectAttributes attr) {
 		DbObjectSchema schema = dbAdmin.findSchemaByClassName(className);
 		
+		Object pkValue = schema.getPrimaryKey().getType().parseValue(id);
+		
 		if (!schema.isEditEnabled()) {
 			attr.addFlashAttribute("errorTitle", "Unauthorized");
 			attr.addFlashAttribute("error", "EDIT operations have been disabled on this type (" + schema.getJavaClass().getSimpleName() + ").");
 			return "redirect:/" + properties.getBaseUrl() + "/model/" + className;
 		}
 		
-		DbObject object = repository.findById(schema, id).orElseThrow(() -> {
+		DbObject object = repository.findById(schema, pkValue).orElseThrow(() -> {
 			return new DbAdminNotFoundException(
 			  "Object " + className + " with id " + id + " not found"
 			);
@@ -449,7 +451,9 @@ public class DefaultDbAdminController {
 				attr.addFlashAttribute("message", "Item created successfully.");
 				saveAction(new UserAction(schema.getTableName(), pkValue, "CREATE", schema.getClassName()));
 			} else {
-				Optional<DbObject> object = repository.findById(schema, pkValue);
+				Object parsedPkValue = schema.getPrimaryKey().getType().parseValue(pkValue);
+
+				Optional<DbObject> object = repository.findById(schema, parsedPkValue);
 				
 				if (!object.isEmpty()) {
 					if (create) {
@@ -458,9 +462,9 @@ public class DefaultDbAdminController {
 						attr.addFlashAttribute("params", params);
 					} else {
 						repository.update(schema, params, files);
-						repository.attachManyToMany(schema, pkValue, multiValuedParams);
+						repository.attachManyToMany(schema, parsedPkValue, multiValuedParams);
 						attr.addFlashAttribute("message", "Item saved successfully.");
-						saveAction(new UserAction(schema.getTableName(), pkValue, "EDIT", schema.getClassName()));
+						saveAction(new UserAction(schema.getTableName(), parsedPkValue.toString(), "EDIT", schema.getClassName()));
 					}
 				} else {
 					Object newPrimaryKey = repository.create(schema, params, files, pkValue);

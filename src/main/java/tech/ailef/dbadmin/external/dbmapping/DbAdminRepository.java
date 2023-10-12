@@ -39,6 +39,7 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
+import tech.ailef.dbadmin.external.annotations.ReadOnly;
 import tech.ailef.dbadmin.external.dto.FacetedSearchRequest;
 import tech.ailef.dbadmin.external.dto.PaginatedResult;
 import tech.ailef.dbadmin.external.dto.PaginationInfo;
@@ -142,14 +143,18 @@ public class DbAdminRepository {
 	}
 	
 	/**
-	 * Update an existing object with new values
-	 * @param schema
-	 * @param params
+	 * Update an existing object with new values. We don't use the "standard"
+	 * JPA repository save method in this case (like we do on create) because
+	 * we need to handle several edge cases in terms of how missing values
+	 * are handled and also {@linkplain ReadOnly} fields. For this reason, we
+	 * also need to call the validation manually.
+	 * @param schema the schema where we need to update an item
+	 * @param params the String-valued params coming from the HTML form
+	 * @param files the file params coming from the HTML form
 	 */
 	@Transactional("transactionManager")
 	public void update(DbObjectSchema schema, Map<String, String> params, Map<String, MultipartFile> files) {
 		DbObject obj = schema.buildObject(params, files);
-		
 		Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 		Set<ConstraintViolation<Object>> violations = validator.validate(obj.getUnderlyingInstance());
 		
