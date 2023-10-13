@@ -87,6 +87,17 @@ public class DbAdminRepository {
 	public long count(DbObjectSchema schema, String query, Set<QueryFilter> queryFilters) {
 		return schema.getJpaRepository().count(query, queryFilters);
 	}
+
+	public List<DbObject> search(DbObjectSchema schema, String query, Set<QueryFilter> queryFilters) {
+		CustomJpaRepository jpaRepository = schema.getJpaRepository();
+        
+		long maxElement = count(schema, query, queryFilters);
+
+		return jpaRepository.search(query, queryFilters).stream()
+			.map(o  -> new DbObject(o, schema))
+			.toList();
+
+	}
 	
 	
 	/**

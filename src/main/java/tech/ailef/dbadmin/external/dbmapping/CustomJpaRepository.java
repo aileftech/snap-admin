@@ -101,6 +101,12 @@ public class CustomJpaRepository extends SimpleJpaRepository {
         			.setFirstResult((page - 1) * pageSize).getResultList();
 	}
 	
+	
+	public List<Object> search(String query, Set<QueryFilter> filters) {
+		return search(query, 1, Integer.MAX_VALUE, null, null, filters);
+	}
+
+	
 
 	@SuppressWarnings("unchecked")
 	public int update(DbObjectSchema schema, Map<String, String> params, Map<String, MultipartFile> files) {

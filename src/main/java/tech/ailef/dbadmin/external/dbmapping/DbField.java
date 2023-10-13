@@ -227,6 +227,16 @@ public class DbField {
 			&& getPrimitiveField().getAnnotation(ManyToMany.class) == null;
 	}
 	
+	/**
+	 * Returns whether this field is exportable into a CSV file.
+	 * 
+	 * @return
+	 */
+	public boolean isExportable() {
+		return !isBinary();
+	}
+	
+	
 	public boolean isGeneratedValue() {
 		return getPrimitiveField().getAnnotation(GeneratedValue.class) != null;
 	}

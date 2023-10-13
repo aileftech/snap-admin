@@ -48,7 +48,7 @@ import tech.ailef.dbadmin.external.exceptions.DbAdminException;
  */
 @Controller
 @RequestMapping(value = {"/${dbadmin.baseUrl}/download", "/${dbadmin.baseUrl}/download/"})
-public class DownloadController {
+public class FileDownloadController {
 	@Autowired
 	private DbAdminRepository repository;
 	
