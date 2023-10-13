@@ -1,5 +1,11 @@
 # Changelog
 
+**0.1.6**
+- Support for JPA validation (#12)
+- Support for UUID type (#13)
+- Improved handling of 404 errors
+- Bugfixes
+
 **0.1.5**
 - Access-control annotations ([#5](https://github.com/aileftech/spring-boot-database-admin/issues/5))
 - Added support for `OffsetDateTime` ([#7](https://github.com/aileftech/spring-boot-database-admin/issues/7)) and several other field types (`char`, `short`, `byte`, `Date`).
