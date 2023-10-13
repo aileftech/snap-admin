@@ -41,18 +41,34 @@ public class PaginatedResult<T> {
 		this.results = page;
 	}
 
+	/**
+	 * Returns the pagination settings used to produce this output
+	 * @return
+	 */
 	public PaginationInfo getPagination() {
 		return pagination;
 	}
 
+	/**
+	 * Returns the list of results in the current page
+	 * @return
+	 */
 	public List<T> getResults() {
 		return results;
 	}
 	
+	/**
+	 * Returns whether the results are empty
+	 * @return
+	 */
 	public boolean isEmpty() {
 		return results.isEmpty();
 	}
 	
+	/**
+	 * Returns the number of results for the current page
+	 * @return
+	 */
 	public int getNumberOfResults() {
 		return getResults().size();
 	}

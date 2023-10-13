@@ -19,14 +19,15 @@
 
 package tech.ailef.dbadmin.external.dto;
 
+import tech.ailef.dbadmin.external.controller.rest.AutocompleteController;
 import tech.ailef.dbadmin.external.dbmapping.DbObject;
 
 /**
- * An object to hold autocomplete results returned from the 
- * respective AutocompleteController
+ * An object to hold autocomplete results returned from the {@linkplain AutocompleteController}. 
  *
  */
 public class AutocompleteSearchResult {
+	
 	private Object id;
 	
 	private String value;
@@ -39,20 +40,19 @@ public class AutocompleteSearchResult {
 		this.value = o.getDisplayName();
 	}
 	
+	/**
+	 * Returns the primary key for the object
+	 * @return
+	 */
 	public Object getId() {
 		return id;
 	}
 
-	public void setId(Object id) {
-		this.id = id;
-	}
-
+	/**
+	 * Returns the readable name for the object
+	 * @return
+	 */
 	public String getValue() {
 		return value;
 	}
-
-	public void setValue(String value) {
-		this.value = value;
-	}
-	
 }

@@ -39,12 +39,12 @@ public class PaginationInfo {
 	private static final int PAGE_RANGE = 3;
 	
 	/**
-	 * The current page of results
+	 * The current requested page
 	 */
 	private int currentPage;
 	
 	/**
-	 * The last page for which there are results
+	 * The last page for which there are results available
 	 */
 	private int maxPage;
 	
@@ -68,6 +68,9 @@ public class PaginationInfo {
 		this.filterRequest = request;
 	}
 
+	/**
+	 * Returns the current requested page
+	 */
 	public int getCurrentPage() {
 		return currentPage;
 	}
@@ -75,7 +78,11 @@ public class PaginationInfo {
 	public void setCurrentPage(int currentPage) {
 		this.currentPage = currentPage;
 	}
-
+	
+	/**
+	 * Returns the last page for which there are results available
+	 * @return
+	 */
 	public int getMaxPage() {
 		return maxPage;
 	}
@@ -84,6 +91,10 @@ public class PaginationInfo {
 		this.maxPage = maxPage;
 	}
 
+	/**
+	 * Returns the current number of elements per page
+	 * @return
+	 */
 	public int getPageSize() {
 		return pageSize;
 	}
@@ -92,10 +103,22 @@ public class PaginationInfo {
 		this.pageSize = pageSize;
 	}
 	
+	/**
+	 * Returns the total count of elements for all pages
+	 * @return
+	 */
 	public long getMaxElement() {
 		return maxElement;
 	}
 	
+	/**
+	 * Returns a link to the current page by preserving all the other
+	 * filtering parameters but changing the sort order.
+	 * 
+	 * @param sortKey the field to use for sorting
+	 * @param sortOrder the order, DESC or ASC
+	 * @return a link to change the sort order for the current page
+	 */
 	public String getSortedPageLink(String sortKey, String sortOrder) {
 		MultiValueMap<String, String> params = FilterRequest.empty();
 		
@@ -115,6 +138,13 @@ public class PaginationInfo {
 		return Utils.getQueryString(params);
 	}
 	
+	/**
+	 * Returns a link to the specified page by preserving all the other
+	 * filtering parameters 
+	 * 
+	 * @param page the page to generate the link for
+	 * @return	
+	 */
 	public String getLink(int page) {
 		MultiValueMap<String, String> params = FilterRequest.empty();
 		
@@ -132,22 +162,26 @@ public class PaginationInfo {
 		return Utils.getQueryString(params);
 	}
 
+	/**
+	 * Returns the pages before the current one
+	 * @return
+	 */
 	public List<Integer> getBeforePages() {
 		return IntStream.range(Math.max(currentPage - PAGE_RANGE,  1), currentPage).boxed().collect(Collectors.toList());
 	}
 	
+	/**
+	 * Returns the pages after the current one
+	 * @return
+	 */
 	public List<Integer> getAfterPages() {
 		return IntStream.range(currentPage + 1, Math.min(currentPage + PAGE_RANGE,  maxPage + 1)).boxed().collect(Collectors.toList());
 	}
-//	
-//	public String getSortKey() {
-//		return sortKey;
-//	}
-//	
-//	public String getSortOrder() {
-//		return sortOrder;
-//	}
 	
+	/**
+	 * Returns whether the current page is the last one
+	 * @return
+	 */
 	public boolean isLastPage() {
 		return currentPage == maxPage;
 	}

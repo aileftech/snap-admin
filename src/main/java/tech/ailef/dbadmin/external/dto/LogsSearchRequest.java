@@ -112,6 +112,10 @@ public class LogsSearchRequest implements FilterRequest {
 		return page;
 	}
 
+	/**
+	 * Sets the page for this request
+	 * @param page
+	 */
 	public void setPage(int page) {
 		this.page = page;
 	}
@@ -124,6 +128,10 @@ public class LogsSearchRequest implements FilterRequest {
 		return pageSize;
 	}
 
+	/**
+	 * Sets the page size for this request
+	 * @param pageSize
+	 */
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
 	}
@@ -143,11 +151,15 @@ public class LogsSearchRequest implements FilterRequest {
 	/**
 	 * Returns the requested sort order, possibly null
 	 */
-
 	public String getSortOrder() {
 		return sortOrder;
 	}
 
+	/**
+	 * Sets the sort order for this request
+	 * 
+	 * @param sortOrder
+	 */
 	public void setSortOrder(String sortOrder) {
 		this.sortOrder = sortOrder;
 	}
