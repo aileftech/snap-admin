@@ -53,7 +53,6 @@ public class PaginationInfo {
 	 */
 	private int pageSize;
 	
-	// TODO: Check if used
 	private long maxElement;
 	
 	private FilterRequest filterRequest;

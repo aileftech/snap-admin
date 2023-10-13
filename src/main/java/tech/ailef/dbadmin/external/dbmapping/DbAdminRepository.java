@@ -91,12 +91,9 @@ public class DbAdminRepository {
 	public List<DbObject> search(DbObjectSchema schema, String query, Set<QueryFilter> queryFilters) {
 		CustomJpaRepository jpaRepository = schema.getJpaRepository();
         
-		long maxElement = count(schema, query, queryFilters);
-
 		return jpaRepository.search(query, queryFilters).stream()
 			.map(o  -> new DbObject(o, schema))
 			.toList();
-
 	}
 	
 	
