@@ -48,13 +48,11 @@ public class DataExportController {
 		
 		Set<QueryFilter> queryFilters = Utils.computeFilters(schema, otherParams);
 		
-		System.out.println("QF = " + queryFilters);
-		
 		List<DbObject> results = repository.search(schema, query, queryFilters);
 
 		String result = toCsv(results, schema.getSortedFields());
 		return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
-				"attachment; filename=\"export_" + schema.getClass().getSimpleName() + ".csv\"")
+				"attachment; filename=\"export_" + schema.getJavaClass().getSimpleName() + ".csv\"")
 				.body(result.getBytes());
 	}
 	
@@ -63,14 +61,21 @@ public class DataExportController {
 		
 		StringWriter sw = new StringWriter();
 
+		String[] header = fields.stream().map(f -> f.getName()).toArray(String[]::new);
+		
 	    CSVFormat csvFormat = CSVFormat.DEFAULT.builder()
-//	        .setHeader(HEADERS)
+	        .setHeader(header)
 	        .build();
 	    
 	    try (final CSVPrinter printer = new CSVPrinter(sw, csvFormat)) {
 	        for (DbObject item : items) {
 	        	printer.printRecord(fields.stream().map(f -> {
-	        		return item.get(f).getFormattedValue();
+	        		if (f.isForeignKey()) {
+	        			DbObject linkedItem = item.traverse(f);
+	        			return linkedItem.getPrimaryKeyValue() + " (" + linkedItem.getDisplayName() + ")";
+	        		} else {
+	        			return item.get(f).getFormattedValue();
+	        		}
 	        	}));
 	        }
 	        

@@ -6,6 +6,7 @@
 		<!-- Modal -->
 		<div class="modal fade" id="csvExportModal" tabindex="-1" aria-labelledby="csvExportModalLabel" aria-hidden="true">
 			<form th:action="|/${dbadmin_baseUrl}/export/${schema.getClassName()}|" method="GET">
+				<input type="hidden" name="query" th:value="${query}">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -14,6 +15,10 @@
 						</div>
 						<div class="modal-body">
 							<div class="container-fluid">
+								<p class="text-muted">The export file will contain all the pages in the results. If the table is big,
+								this might take some time.</p>
+								
+								
 								<h5 class="fw-bold">Include columns</h5>
 								<div th:each="field : ${schema.getSortedFields()}" th:if="${field.isExportable()}">
 									<div class="form-check">
@@ -26,22 +31,38 @@
 										</label>
 									</div>
 								</div>
-								<h5 class="fw-bold mt-3" th:if="${!activeFilters.isEmpty()}">Active filters</h5>
-								<div th:each="filter : ${activeFilters}">
-									<span class="active-filter badge bg-primary me-1 mb-2 p-2 font-monospace noselect">
-										[[ ${filter}]]
-									</span>
+								<div th:if="${!activeFilters.isEmpty()}">
+									<h5 class="fw-bold mt-3 mb-0">Active filters</h5>
+									<p class="text-muted">Remove them from the right sidebar.</p>
+									<div th:each="filter : ${activeFilters}">
+										<span class="active-filter badge bg-primary me-1 mb-2 p-2 font-monospace noselect">
+											[[ ${filter}]]
+										</span>
+									</div>
+									<!--/*--> Propagate query filters with hidden fields <!--*/-->
+					                <th:block th:each="filter : ${activeFilters}">
+					                	<input type="hidden"
+					                		name="filter_field" 
+					                		th:value="${filter.getField().getJavaName()}">
+					                	<input type="hidden"
+					                		name="filter_op" 
+					                		th:value="${filter.getOp()}">
+					                	<input type="hidden"
+					                		name="filter_value" 
+					                		th:value="${filter.getValue()}"> 
+					                </th:block>
 								</div>
 								<h5 class="fw-bold mt-3">Export format</h3>
 								<select name="format" class="form-select">
 									<option value="csv">CSV</option>
 									<option value="xlsx">XLSX</option>
 								</select>
+								
 							</div>
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-							<button type="submit" class="btn btn-primary">Save changes</button>
+							<button type="submit" class="btn btn-primary">Export [[ ${page.getPagination().getMaxElement()} ]] rows</button>
 						</div>
 					</div>
 				</div>
