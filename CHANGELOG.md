@@ -1,5 +1,8 @@
 # Changelog
 
+**0.1.7**
+- Added support of `dbadmin.prepend-base-url-to-resources-path` configuration option
+
 **0.1.6**
 - Support for JPA validation (#12)
 - Support for UUID type (#13)

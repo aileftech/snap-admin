@@ -59,6 +59,7 @@ public class GlobalController {
 		model.addAttribute("message", e.getMessage());
 		model.addAttribute("dbadmin_userConf", userConf);
 		model.addAttribute("dbadmin_baseUrl", getBaseUrl());
+		model.addAttribute("dbadmin_resourcesPath", getResourcesPath());
 		model.addAttribute("dbadmin_version", dbAdmin.getVersion());
 		response.setStatus(404);
 		return "other/error";
@@ -107,6 +108,16 @@ public class GlobalController {
 	@ModelAttribute("dbadmin_userConf")
 	public UserConfiguration getUserConf() {
 		return userConf;
+	}
+
+
+	/**
+	 * The resources path, either empty, or equals to baseUrl depending of
+	 * @return
+	 */
+	@ModelAttribute("dbadmin_resourcesPath")
+	public String getResourcesPath() {
+		return props.getResourcesPath();
 	}
 }
 

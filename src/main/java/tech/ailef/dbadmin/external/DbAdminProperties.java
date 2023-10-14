@@ -41,6 +41,11 @@ public class DbAdminProperties {
 	private String baseUrl;
 
 	/**
+	 * Set to true to prepend baseUrl to static resources path (css, js)
+	 */
+	private boolean prependBaseUrlToResourcesPath;
+
+	/**
 	 * The path of the package that contains your JPA `@Entity` classes to be scanned.
 	 */
 	private String modelsPackage;
@@ -65,7 +70,15 @@ public class DbAdminProperties {
 	public void setBaseUrl(String baseUrl) {
 		this.baseUrl = baseUrl;
 	}
-	
+
+	public void setPrependBaseUrlToResourcesPath(boolean prependBaseUrlToResourcesPath) {
+		this.prependBaseUrlToResourcesPath = prependBaseUrlToResourcesPath;
+	}
+
+	public boolean isPrependBaseUrlToResourcesPath() {
+		return prependBaseUrlToResourcesPath;
+	}
+
 	public String getModelsPackage() {
 		return modelsPackage;
 	}
@@ -81,11 +94,16 @@ public class DbAdminProperties {
 	public void setTestMode(boolean testMode) {
 		this.testMode = testMode;
 	}
-	
+
+	public String getResourcesPath() {
+		return prependBaseUrlToResourcesPath ? "/"+baseUrl : "";
+	}
+
 	public Map<String, String> toMap() {
 		Map<String, String> conf = new HashMap<>();
 		conf.put("enabled", enabled + "");
 		conf.put("baseUrl", baseUrl);
+		conf.put("resourcesPath", getResourcesPath());
 		conf.put("modelsPackage", modelsPackage);
 		conf.put("testMode", testMode + "");
 		return conf;

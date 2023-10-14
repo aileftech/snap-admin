@@ -78,6 +78,11 @@ dbadmin.modelsPackage=your.models.package,your.second.models.package
 ## Set to true if you need to run the tests, as it will customize
 ## the database configuration for the internal DataSource
 # dbadmin.testMode=false
+#
+## Set to true if you need to set the static resources path
+## to the same than application path, can be useful if the application
+## is hosted behind a reverse proxy with a prefix path
+# dbadmin.prepend-base-url-to-resources-path=true
 ```
 
 Now annotate your `@SpringBootApplication` class containing the `main` method with the following:

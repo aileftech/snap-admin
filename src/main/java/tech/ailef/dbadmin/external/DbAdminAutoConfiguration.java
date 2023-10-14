@@ -37,7 +37,7 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
+import tech.ailef.dbadmin.external.controller.MvcConfig;
 import tech.ailef.dbadmin.internal.InternalDbAdminConfiguration;
 
 /**
@@ -56,7 +56,10 @@ import tech.ailef.dbadmin.internal.InternalDbAdminConfiguration;
 	basePackages = { "tech.ailef.dbadmin.internal.repository" }
 )
 @EnableTransactionManagement
-@Import(InternalDbAdminConfiguration.class)
+@Import({
+	InternalDbAdminConfiguration.class,
+	MvcConfig.class
+})
 public class DbAdminAutoConfiguration {
 	@Autowired
 	private DbAdminProperties props;
