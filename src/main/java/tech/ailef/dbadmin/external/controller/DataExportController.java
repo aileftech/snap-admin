@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import tech.ailef.dbadmin.external.DbAdmin;
 import tech.ailef.dbadmin.external.dbmapping.DbAdminRepository;
 import tech.ailef.dbadmin.external.dbmapping.DbField;
+import tech.ailef.dbadmin.external.dbmapping.DbFieldValue;
 import tech.ailef.dbadmin.external.dbmapping.DbObject;
 import tech.ailef.dbadmin.external.dbmapping.DbObjectSchema;
 import tech.ailef.dbadmin.external.dto.DataExportFormat;
@@ -50,8 +51,8 @@ public class DataExportController {
 	@GetMapping("/{className}")
 	@ResponseBody
 	public ResponseEntity<byte[]> export(@PathVariable String className, @RequestParam(required = false) String query,
-			@RequestParam(required = false) String format, @RequestParam MultiValueMap<String, String> otherParams) {
-
+			@RequestParam String format, @RequestParam(required=false) Boolean raw, 
+			@RequestParam MultiValueMap<String, String> otherParams) {
 		if (format == null)
 			format = "CSV";
 		DataExportFormat exportFormat = null;
@@ -72,17 +73,20 @@ public class DataExportController {
 
 		List<DbObject> results = repository.search(schema, query, queryFilters);
 
+		if (raw == null) raw = false;
+		
 		switch (exportFormat) {
 		case CSV:
 			return ResponseEntity.ok()
 					.header(HttpHeaders.CONTENT_DISPOSITION,
 							"attachment; filename=\"export_" + schema.getJavaClass().getSimpleName() + ".csv\"")
-					.body(toCsv(results, fields).getBytes());
+					.body(toCsv(results, fields, raw).getBytes());
 		case XLSX:
+			String sheetName = schema.getJavaClass().getSimpleName();
 			return ResponseEntity.ok()
 					.header(HttpHeaders.CONTENT_DISPOSITION,
 					"attachment; filename=\"export_" + schema.getJavaClass().getSimpleName() + ".xlsx\"")
-					.body(toXlsx(results, fields));
+					.body(toXlsx(sheetName, results, fields, raw));
 		case JSON:
 			throw new DbAdminException("JSON TODO");
 		default:
@@ -91,10 +95,10 @@ public class DataExportController {
 
 	}
 
-	private byte[] toXlsx(List<DbObject> items, List<DbField> fields) {
+	private byte[] toXlsx(String sheetName, List<DbObject> items, List<DbField> fields, boolean raw) {
 		Workbook workbook = new XSSFWorkbook();
 
-		Sheet sheet = workbook.createSheet("SchemaName");
+		Sheet sheet = workbook.createSheet(sheetName);
 
 		int rowIndex = 0;
 		for (DbObject item : items) {
@@ -102,12 +106,27 @@ public class DataExportController {
 			int cellIndex = 0;
 			for (DbField field : fields) {
 				Cell cell = row.createCell(cellIndex++);
-				if (field.isForeignKey()) {
-					DbObject linkedItem = item.traverse(field);
-					cell.setCellValue(linkedItem.getPrimaryKeyValue() + " (" + linkedItem.getDisplayName() + ")");
+				
+				if (raw) {
+					if (field.isForeignKey()) {
+						String cellValue = "";
+						DbObject traverse = item.traverse(field);
+						if (traverse != null) cellValue = traverse.getPrimaryKeyValue().toString();
+						cell.setCellValue(cellValue);
+					} else {
+						String cellValue = "";
+						DbFieldValue fieldValue = item.get(field);
+						if (fieldValue.getValue() != null) cellValue = fieldValue.getValue().toString();
+						cell.setCellValue(cellValue);
+					}
 				} else {
-					cell.setCellValue(item.get(field).getFormattedValue());
-				}				
+					if (field.isForeignKey()) {
+						DbObject linkedItem = item.traverse(field);
+						cell.setCellValue(linkedItem.getPrimaryKeyValue() + " (" + linkedItem.getDisplayName() + ")");
+					} else {
+						cell.setCellValue(item.get(field).getFormattedValue());
+					}
+				}
 			}
 		}
 		// lets write the excel data to file now
@@ -115,13 +134,16 @@ public class DataExportController {
 		try {
 			workbook.write(fos);
 			fos.close();
+			workbook.close();
 		} catch (IOException e) {
 			throw new DbAdminException("Error writing XLSX file");
 		}
+		
+		
 		return fos.toByteArray();
 	}
 
-	private String toCsv(List<DbObject> items, List<DbField> fields) {
+	private String toCsv(List<DbObject> items, List<DbField> fields, boolean raw) {
 		if (items.isEmpty())
 			return "";
 
@@ -134,11 +156,24 @@ public class DataExportController {
 		try (final CSVPrinter printer = new CSVPrinter(sw, csvFormat)) {
 			for (DbObject item : items) {
 				printer.printRecord(fields.stream().map(f -> {
-					if (f.isForeignKey()) {
-						DbObject linkedItem = item.traverse(f);
-						return linkedItem.getPrimaryKeyValue() + " (" + linkedItem.getDisplayName() + ")";
+					if (raw) {
+						if (f.isForeignKey()) {
+							DbObject traverse = item.traverse(f);
+							if (traverse == null) return "";
+							else return traverse.getPrimaryKeyValue().toString();
+						} else {
+							DbFieldValue fieldValue = item.get(f);
+							if (fieldValue.getValue() == null) return "";
+							else return fieldValue.getValue().toString();
+						}
+						
 					} else {
-						return item.get(f).getFormattedValue();
+						if (f.isForeignKey()) {
+							DbObject linkedItem = item.traverse(f);
+							return linkedItem.getPrimaryKeyValue() + " (" + linkedItem.getDisplayName() + ")";
+						} else {
+							return item.get(f).getFormattedValue();
+						}
 					}
 				}));
 			}
