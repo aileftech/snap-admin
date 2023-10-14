@@ -87,7 +87,7 @@ public class DataExportController {
 					.header(HttpHeaders.CONTENT_DISPOSITION,
 					"attachment; filename=\"export_" + schema.getJavaClass().getSimpleName() + ".xlsx\"")
 					.body(toXlsx(sheetName, results, fields, raw));
-		case JSON:
+		case JSONL:
 			throw new DbAdminException("JSON TODO");
 		default:
 			throw new DbAdminException("Unable to detect export format");

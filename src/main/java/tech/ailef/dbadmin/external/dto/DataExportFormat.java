@@ -1,5 +1,5 @@
 package tech.ailef.dbadmin.external.dto;
 
 public enum DataExportFormat {
-	CSV, XLSX, JSON;
+	CSV, XLSX, JSONL;
 }
