@@ -4,7 +4,7 @@
 	</head>
 	<body>
 		<!-- Modal -->
-		<div class="modal fade" id="csvExportModal" tabindex="-1" aria-labelledby="csvExportModalLabel" aria-hidden="true">
+		<div class="modal modal-lg fade" id="csvExportModal" tabindex="-1" aria-labelledby="csvExportModalLabel" aria-hidden="true">
 			<form th:action="|/${dbadmin_baseUrl}/export/${schema.getClassName()}|" method="GET">
 				<input type="hidden" name="query" th:value="${query}">
 				<div class="modal-dialog">
@@ -65,6 +65,11 @@
 									<label class="form-check-label" for="__check_raw">
 								    	Export raw values
 									</label>
+									<p class="text-muted">
+										Whether to export the raw values as they appear in the database table
+										or to perform the default processing (e.g., formatting and foreign key
+										resolution) and export what you see with the web interface.
+									</p>
 								</div>
 							</div>
 						</div>
@@ -136,7 +141,7 @@
 											[[ ${schema.getTableName()} ]]
 										</span>
 										<button type="button" class="btn p-0 m-0 ms-3"  data-bs-toggle="modal" data-bs-target="#csvExportModal">
-											<i class="bi bi-filetype-csv" style="font-size: 1.5rem;"></i>
+											<i class="bi bi-file-earmark-spreadsheet" style="font-size: 1.5rem;"></i>
 										</button>
 									</h3>
 									
