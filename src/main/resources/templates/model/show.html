@@ -27,6 +27,11 @@
 										th:href="|/${dbadmin_baseUrl}/model/${schema.getClassName()}/edit/${object.getPrimaryKeyValue()}|">
 										<i class="bi bi-pencil"></i></a>
 										
+										<form class="delete-form me-2" method="POST" 
+											th:action="|/${dbadmin_baseUrl}/model/${schema.getJavaClass().getName()}/delete/${object.getPrimaryKeyValue()}|">
+											<button th:class="|${!schema.isDeleteEnabled() ? 'disable' : ''}|"><i class="bi bi-trash"></i></button>
+										</form>
+										
 										<a th:title="|${!schema.isCreateEnabled() ? 'CREATE disabled for this type' : 'Create new item'}|" 
 											th:class="|${!schema.isCreateEnabled() ? 'disable' : ''}|"
 											th:href="|/${dbadmin_baseUrl}/model/${schema.getClassName()}/create|"><i class="bi bi-plus-square"></i></a>
