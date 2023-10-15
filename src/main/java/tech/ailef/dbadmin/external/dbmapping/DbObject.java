@@ -168,6 +168,10 @@ public class DbObject {
 		return schema.getComputedColumnNames();
 	}
 	
+	public DbObjectSchema getSchema() {
+		return schema;
+	}
+	
 	public Object compute(String column) {
 		Method method = schema.getComputedColumn(column);
 		

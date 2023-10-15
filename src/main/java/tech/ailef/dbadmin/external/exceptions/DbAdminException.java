@@ -29,6 +29,10 @@ public class DbAdminException extends RuntimeException {
 	public DbAdminException() {
 	}
 	
+	public DbAdminException(String msg, Throwable e) {
+		super(msg, e);
+	}
+	
 	public DbAdminException(Throwable e) {
 		super(e);
 	}
