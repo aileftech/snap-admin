@@ -1,0 +1,2 @@
+Hi and thanks for your interest in contributing to Spring Boot Database Admin. At this moment, I am not accepting PRs for this repo.
+You can still contribute, however, by reporting bugs and issues. I am actively looking at them and they are a huge help already.
