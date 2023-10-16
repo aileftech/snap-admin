@@ -21,6 +21,7 @@ for your database schema. No modifications required to your existing code (well,
  * Action logs: history of all write operations executed through the web UI
  * Advanced search and filtering
  * Annotation-based customization
+ * Data export (CSV, XLSX)
 
 **Supported JPA annotations**
 
