@@ -22,8 +22,10 @@
 	        			
 	        				<div class="box">
 	        					<th:block th:each="package : ${schemas.keySet()}">
-	        						<h4 class="fw-bold" th:text="${package}"></h4>
-		        					<table class="table table-striped mt-4" th:if="${!schemas.isEmpty()}">
+	        						<h4 class="fw-bold">
+	        							<i class="bi bi-box align-middle"></i> [[ ${package} ]]
+	        						</h4>
+		        					<table class="table table-striped mt-4 mb-3" th:if="${!schemas.isEmpty()}">
 			        					<tr>
 			        						<th></th>
 			        						<th>Table</th>
@@ -34,7 +36,7 @@
 			        					<tr th:each="schema : ${schemas.get(package)}">
 			        						<td class="warning-col">
 			        							<a th:if="${!schema.getErrors().isEmpty()}"
-			        								title="Some errors or warnings were raised during processing of this schema."
+			        								title="Some errors or warnings were raised while processing this table."
 			        								th:href="|/${dbadmin_baseUrl}/model/${schema.getClassName()}/schema|">
 			        								<i class="bi bi-exclamation-triangle"></i></a>
 			        						</td>
