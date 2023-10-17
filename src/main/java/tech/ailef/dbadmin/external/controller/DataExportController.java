@@ -61,6 +61,11 @@ public class DataExportController {
 		if (raw == null) raw = false;
 		
 		DbObjectSchema schema = dbAdmin.findSchemaByClassName(className);
+		
+		if (!schema.isExportEnabled()) {
+			throw new DbAdminException("Export is not enabled for this table: " +  schema.getTableName());
+		}
+		
 		List<String> fieldsToInclude = otherParams.getOrDefault("fields[]", new ArrayList<>());
 		
 		DataExportFormat exportFormat = null;

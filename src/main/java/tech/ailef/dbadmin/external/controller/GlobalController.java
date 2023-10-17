@@ -31,6 +31,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import tech.ailef.dbadmin.external.DbAdmin;
 import tech.ailef.dbadmin.external.DbAdminProperties;
+import tech.ailef.dbadmin.external.exceptions.DbAdminException;
 import tech.ailef.dbadmin.external.exceptions.DbAdminNotFoundException;
 import tech.ailef.dbadmin.internal.UserConfiguration;
 
@@ -49,6 +50,17 @@ public class GlobalController {
 	
 	@Autowired
 	private DbAdmin dbAdmin;
+	
+	@ExceptionHandler(DbAdminException.class)
+	public String handleException(Exception e, Model model, HttpServletResponse response) {
+		model.addAttribute("status", "");
+		model.addAttribute("error", "Error");
+		model.addAttribute("message", e.getMessage());
+		model.addAttribute("dbadmin_userConf", userConf);
+		model.addAttribute("dbadmin_baseUrl", getBaseUrl());
+		model.addAttribute("dbadmin_version", dbAdmin.getVersion());
+		return "other/error";
+	}
 	
 	@ExceptionHandler(DbAdminNotFoundException.class)
 	public String handleNotFound(Exception e, Model model, HttpServletResponse response) {

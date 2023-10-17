@@ -151,7 +151,8 @@
 										<span title="Database table name" class="ms-3 label label-primary label-gray font-monospace">
 											[[ ${schema.getTableName()} ]]
 										</span>
-										<button title="Open export data window" type="button" class="btn"  data-bs-toggle="modal" data-bs-target="#csvExportModal">
+										<button th:if="${schema.isExportEnabled()}" title="Open export data window" type="button" 
+											class="btn"  data-bs-toggle="modal" data-bs-target="#csvExportModal">
 											<i class="bi bi-file-earmark-spreadsheet export-icon" style="font-size: 1.5rem;"></i>
 										</button>
 									</h3>
