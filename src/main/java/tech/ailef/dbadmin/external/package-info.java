@@ -17,6 +17,9 @@
  */
 
 /**
- * Root package of Spring Boot Database Admin
+ * Root package of Spring Boot Database Admin.
+ * 
+ * It contains the configuration class which handles the initialization
+ * and the main {@link tech.ailef.dbadmin.external.DbAdmin} class.
  */
 package tech.ailef.dbadmin.external;

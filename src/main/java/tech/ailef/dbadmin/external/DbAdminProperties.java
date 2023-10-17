@@ -50,6 +50,10 @@ public class DbAdminProperties {
 	 */
 	private boolean testMode = false;
 	
+	/**
+	 * Whether Spring Boot Database Admin is enabled
+	 * @return
+	 */
 	public boolean isEnabled() {
 		return enabled;
 	}
@@ -58,6 +62,10 @@ public class DbAdminProperties {
 		this.enabled = enabled;
 	}
 
+	/**
+	 * Returns the prefix that is prepended to all routes registered by Spring Boot Database Admin.
+	 * @return
+	 */
 	public String getBaseUrl() {
 		return baseUrl;
 	}
@@ -66,6 +74,10 @@ public class DbAdminProperties {
 		this.baseUrl = baseUrl;
 	}
 	
+	/**
+	 * Returns the path of the package that contains your JPA `@Entity` classes to be scanned.
+	 * @return
+	 */
 	public String getModelsPackage() {
 		return modelsPackage;
 	}

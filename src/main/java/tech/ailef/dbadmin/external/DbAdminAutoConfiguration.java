@@ -61,6 +61,11 @@ public class DbAdminAutoConfiguration {
 	@Autowired
 	private DbAdminProperties props;
 
+	/**
+	 * Builds and returns the internal data source.
+	 * 
+	 * @return
+	 */
 	@Bean
 	public DataSource internalDataSource() {
 		DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();

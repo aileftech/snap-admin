@@ -25,7 +25,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Disables delete actions on the Entity class.
+ * Disables the export functionality on a specific class.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)

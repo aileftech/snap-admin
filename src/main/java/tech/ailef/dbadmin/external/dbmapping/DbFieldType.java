@@ -602,6 +602,11 @@ public enum DbFieldType {
 		return false;
 	}
 	
+	/**
+	 * Returns the corresponding {@linkplain DbFieldType} from a Class object.
+	 * @param klass
+	 * @return
+	 */
 	public static DbFieldType fromClass(Class<?> klass) {
 		if (klass == Boolean.class || klass == boolean.class) {
 			return BOOLEAN;
