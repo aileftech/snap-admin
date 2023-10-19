@@ -79,7 +79,7 @@ public class DbAdmin {
 	
 	private DbAdminProperties properties;
 	
-	private final String version = "0.1.6";
+	private final String version = "0.1.7";
     
     /**
 	 * Builds the DbAdmin instance by scanning the `@Entity` beans and loading
