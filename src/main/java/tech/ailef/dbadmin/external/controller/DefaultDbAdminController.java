@@ -19,6 +19,8 @@
 
 package tech.ailef.dbadmin.external.controller;
 
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -543,8 +545,35 @@ public class DefaultDbAdminController {
 		model.addAttribute("activePage", "console");
 		
 		if (query != null) {
-			jdbTemplate.execute(query);
+			List<Map<String, Object>> results = jdbTemplate.query(query, (rs, rowNum) -> {
+				Map<String, Object> result = new HashMap<>();
+				
+				ResultSetMetaData metaData = rs.getMetaData();
+				int cols = metaData.getColumnCount();
+				
+				for (int i = 0; i < cols; i++) {
+					Object o = rs.getObject(i + 1);
+					String columnName = metaData.getColumnName(i + 1);
+					result.put(columnName, o);
+				}
+				
+				return result;
+			});
+			
+			
+			/*
+			 * Print each map in a tabular format
+			 */
+			for (Map<String, Object> obj : results) {
+				System.out.println("-----------------------------------------------------------");
+				for (String key : obj.keySet()) {
+					System.out.printf("%-20s | %s\n", key, obj.get(key));
+				}
+			
+			}
 		}
+		
+		
 		
 		return "console";
 	}
