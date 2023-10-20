@@ -32,6 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.UncategorizedSQLException;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.ui.Model;
@@ -87,6 +88,8 @@ public class DefaultDbAdminController {
 	@Autowired
 	private UserActionService userActionService;
 	
+	@Autowired
+	private JdbcTemplate jdbTemplate; 
 
 	@Autowired
 	private UserSettingsRepository userSettingsRepo;
@@ -533,6 +536,17 @@ public class DefaultDbAdminController {
 	public String about(Model model) {
 		model.addAttribute("activePage", "help");
 		return "help";
+	}
+	
+	@GetMapping("/console")
+	public String console(Model model, @RequestParam(required=false) String query) {
+		model.addAttribute("activePage", "console");
+		
+		if (query != null) {
+			jdbTemplate.execute(query);
+		}
+		
+		return "console";
 	}
 	
 	@GetMapping("/settings/appearance")

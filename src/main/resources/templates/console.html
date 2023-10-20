@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+	<head th:replace="~{fragments/resources::head}">
+	</head>
+	<body>
+    	<div class="bg-light main-wrapper">
+    		<nav th:replace="~{fragments/resources :: navbar}"></nav>
+	        <div class="d-flex">
+	        	<div th:replace="~{fragments/resources :: sidebar('console')}"></div>
+	        	<div class="main-content bg-lighter">
+					<h1 class="fw-bold mb-4"><i class="align-middle bi bi-terminal"></i><span class="align-middle"> SQL console</span></h1>
+	        		<div class="row mt-4">
+	        			<div class="col">
+	        				<div class="box">
+	        					<form th:action="|/${dbadmin_baseUrl}/console|" method="GET">
+		        					<textarea class="form-control" rows="6" name="query"></textarea>
+		        					<input class="ui-btn btn btn-primary" type="submit" value="Run">
+	        					</form>
+							</div>
+	        			</div>
+	        		</div>
+	        	</div>
+	        </div>
+	    </div>
+	</body>
+</html>

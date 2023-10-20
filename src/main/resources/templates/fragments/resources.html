@@ -82,9 +82,9 @@
 	        			</div>
     				</a>
         		</li>
-        		<!--
+        		
         		<li th:class="${#strings.equals(activePage, 'console') ? 'active' : ''}">
-        			<a href="/live">
+        			<a th:href="|/${dbadmin_baseUrl}/console|">
 	        			<div class="d-flex align-items-center">
 	        				<div class="menu-icon">
 	        					<i class="bi bi-terminal"></i>
@@ -95,6 +95,7 @@
 	        			</div>
     				</a>
         		</li>
+        		<!--
         		<li th:class="${#strings.equals(activePage, 'ai') ? 'active' : ''}">
         			<a href="/search">
 	        			<div class="d-flex align-items-center">
