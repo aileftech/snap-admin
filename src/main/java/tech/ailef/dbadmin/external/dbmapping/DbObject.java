@@ -22,7 +22,9 @@ package tech.ailef.dbadmin.external.dbmapping;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -254,6 +256,54 @@ public class DbObject {
 		}
 		
 		return null;
+	}
+	
+	/**
+	 * Converts this object to map where each key is a field name,
+	 * including only the specified fields.
+	 * If raw, values are not processed and are included as they are
+	 * in the database table.
+	 * 
+	 * @return
+	 */
+	public Map<String, Object> toMap(List<String> fields, boolean raw) {
+		Map<String, Object> result = new HashMap<>();
+		
+		for (String field : fields) {
+			DbField dbField = schema.getFieldByName(field);
+			
+			if (dbField == null) {
+				// The field is a computed column
+				Object computedValue = compute(field);
+				result.put(field, computedValue);
+			} else {
+				if (dbField.isForeignKey()) {
+					DbObject linkedItem = traverse(dbField);
+					
+					if (linkedItem == null) result.put(field, null);
+					else {
+						if (raw) {
+							result.put(field, linkedItem.getPrimaryKeyValue().toString());
+						} else {
+							result.put(field, linkedItem.getPrimaryKeyValue() + " (" + linkedItem.getDisplayName() + ")");
+						}
+					}
+				} else {
+					if (raw) {
+						DbFieldValue fieldValue = get(dbField);
+						if (fieldValue.getValue() == null) result.put(field, null);
+						else result.put(field, fieldValue.getValue().toString());
+					} else {
+						
+						result.put(field, get(dbField).getFormattedValue());
+					}
+					
+				}
+			}
+		}
+		
+		
+		return result;
 	}
 
 	@Override

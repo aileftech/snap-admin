@@ -6,6 +6,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -31,6 +32,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import tech.ailef.dbadmin.external.DbAdmin;
 import tech.ailef.dbadmin.external.dbmapping.DbAdminRepository;
 import tech.ailef.dbadmin.external.dbmapping.DbField;
@@ -52,6 +56,9 @@ public class DataExportController {
 
 	@Autowired
 	private DbAdminRepository repository;
+	
+	@Autowired
+	private ObjectMapper mapper;
 
 	@GetMapping("/{className}")
 	@ResponseBody
@@ -90,6 +97,12 @@ public class DataExportController {
 					.header(HttpHeaders.CONTENT_DISPOSITION,
 					"attachment; filename=\"export_" + schema.getJavaClass().getSimpleName() + ".xlsx\"")
 					.body(toXlsx(sheetName, results, fieldsToInclude, raw));
+		case JSONL:
+			return ResponseEntity.ok()
+					.header(HttpHeaders.CONTENT_DISPOSITION,
+							"attachment; filename=\"export_" + schema.getJavaClass().getSimpleName() + ".jsonl\"")
+					.body(toJsonl(results, fieldsToInclude, raw).getBytes());
+		
 		default:
 			throw new DbAdminException("Invalid DataExportFormat");
 		}
@@ -139,6 +152,35 @@ public class DataExportController {
 		return fos.toByteArray();
 	}
 
+	/**
+	 * Converts a list of DbObjects to a string containing their JSONL representation.
+	 * One item per line in JSON format.
+	 * @param items	the items to be serialized
+	 * @param fields	the fields to take from each item
+	 * @param raw	whether to use raw values or not
+	 * @return	a string containing the items serialized in JSONL format
+	 */
+	private String toJsonl(List<DbObject> items, List<String> fields, boolean raw) {
+		if (items.isEmpty())
+			return "";
+
+		StringBuilder sb = new StringBuilder();
+		
+		for (DbObject item : items) {
+			Map<String, Object> map = item.toMap(fields, raw);
+			try {
+				String json = mapper.writeValueAsString(map);
+				sb.append(json);
+			} catch (JsonProcessingException e) {
+				throw new DbAdminException(e);
+			}
+			
+			sb.append("\n");
+		}
+
+		return sb.toString();
+	}
+	
 	private String toCsv(List<DbObject> items, List<String> fields, boolean raw) {
 		if (items.isEmpty())
 			return "";
@@ -219,4 +261,5 @@ public class DataExportController {
 		return record;
 	}
 
+	
 }
