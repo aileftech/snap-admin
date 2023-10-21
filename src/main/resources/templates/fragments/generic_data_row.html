@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+	<head></head>
+	<body>
+		<tr th:fragment="data_row(row)" class="table-data-row">
+			<td th:each="field : ${row.getSortedFields()}"
+				th:classAppend="${field.isBinary() ? 'text-center' : ''}">
+				<th:block th:replace="~{fragments/generic_data_row :: data_row_field(field=${field}, object=${row})}"></th:block>
+			</td>
+		</tr>
+		
+		
+		<!-- data-row-field fragment -->
+		<th:block th:fragment="data_row_field(field, object)">
+			<span th:text="${object.get(field)}"></span>
+		</th:block>
+		<!-- end data-row-field fragment -->
+	</body>
+</html>
+
+
+
+

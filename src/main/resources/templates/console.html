@@ -13,9 +13,14 @@
 	        			<div class="col">
 	        				<div class="box">
 	        					<form th:action="|/${dbadmin_baseUrl}/console|" method="GET">
-		        					<textarea class="form-control" rows="6" name="query"></textarea>
-		        					<input class="ui-btn btn btn-primary" type="submit" value="Run">
+		        					<textarea class="form-control" rows="6" name="query"
+		        						th:text="${query}"></textarea>
+		        					<input class="ui-btn btn btn-primary mt-3" type="submit" value="Run">
 	        					</form>
+	        					<div class="separator mt-3 mb-3"></div>
+	        					<div th:replace="~{fragments/generic_table :: table(results=${results})}"></div>
+	        				
+	        					
 							</div>
 	        			</div>
 	        		</div>

@@ -19,7 +19,6 @@
 
 package tech.ailef.dbadmin.external.controller;
 
-import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,6 +56,9 @@ import tech.ailef.dbadmin.external.DbAdminProperties;
 import tech.ailef.dbadmin.external.dbmapping.DbAdminRepository;
 import tech.ailef.dbadmin.external.dbmapping.DbObject;
 import tech.ailef.dbadmin.external.dbmapping.DbObjectSchema;
+import tech.ailef.dbadmin.external.dbmapping.query.DbQueryOutputField;
+import tech.ailef.dbadmin.external.dbmapping.query.DbQueryResult;
+import tech.ailef.dbadmin.external.dbmapping.query.DbQueryResultRow;
 import tech.ailef.dbadmin.external.dto.CompareOperator;
 import tech.ailef.dbadmin.external.dto.FacetedSearchRequest;
 import tech.ailef.dbadmin.external.dto.LogsSearchRequest;
@@ -543,10 +545,10 @@ public class DefaultDbAdminController {
 	@GetMapping("/console")
 	public String console(Model model, @RequestParam(required=false) String query) {
 		model.addAttribute("activePage", "console");
-		
+		model.addAttribute("query", query == null ? "" : query);		
 		if (query != null) {
-			List<Map<String, Object>> results = jdbTemplate.query(query, (rs, rowNum) -> {
-				Map<String, Object> result = new HashMap<>();
+			List<DbQueryResultRow> results = jdbTemplate.query(query, (rs, rowNum) -> {
+				Map<DbQueryOutputField, Object> result = new HashMap<>();
 				
 				ResultSetMetaData metaData = rs.getMetaData();
 				int cols = metaData.getColumnCount();
@@ -554,23 +556,15 @@ public class DefaultDbAdminController {
 				for (int i = 0; i < cols; i++) {
 					Object o = rs.getObject(i + 1);
 					String columnName = metaData.getColumnName(i + 1);
-					result.put(columnName, o);
+					String tableName = metaData.getTableName(i + 1);
+					DbQueryOutputField field = new DbQueryOutputField(columnName, tableName, dbAdmin);
+					
+					result.put(field, o);
 				}
 				
-				return result;
+				return new DbQueryResultRow(result, query);
 			});
-			
-			
-			/*
-			 * Print each map in a tabular format
-			 */
-			for (Map<String, Object> obj : results) {
-				System.out.println("-----------------------------------------------------------");
-				for (String key : obj.keySet()) {
-					System.out.printf("%-20s | %s\n", key, obj.get(key));
-				}
-			
-			}
+			model.addAttribute("results", new DbQueryResult(results));
 		}
 		
 		
