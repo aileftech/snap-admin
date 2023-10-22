@@ -34,7 +34,7 @@
 									<input type="text" class="form-control mb-3" 
 									 		name="queryTitle" th:value="${activeQuery.getTitle()}">
 									<span class="text-muted fw-bold mb-1 d-inline-block">SQL</span>
-		        					<textarea class="form-control" rows="6" name="query"
+		        					<textarea class="form-control font-monospace" rows="6" name="query"
 		        						th:text="${activeQuery.getSql()}"></textarea>
 		        					<input class="ui-btn btn btn-primary mt-3" type="submit" value="Run">
 		        					<a href="#" class="ms-4 ui-btn btn btn-danger mt-3" id="console-delete-btn">Delete</a>
@@ -48,6 +48,9 @@
 	        					
 	        					<div th:if="${error == null && activeQuery.getSql() != null}">
 									<div class="separator mt-3 mb-3"></div>
+									<span class="text-muted mb-1 d-inline-block">
+										[[ ${results.size()} ]] results in [[ ${elapsedTime} ]] seconds
+									</span>
 	        						<div th:replace="~{fragments/generic_table :: table(results=${results})}"></div>
 	        					</div>
 	        					<div th:if="${error != null}">

@@ -20,6 +20,7 @@
 package tech.ailef.dbadmin.external.controller;
 
 import java.sql.ResultSetMetaData;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -596,6 +597,8 @@ public class DefaultDbAdminController {
 	public String consoleRun(Model model, @RequestParam(required = false) String query,
 			@RequestParam(required = false) String queryTitle,
 			@PathVariable String queryId) {
+		long startTime = System.currentTimeMillis();
+		
 		if (!properties.isSqlConsoleEnabled()) {
 			throw new DbAdminException("SQL console not enabled");
 		}
@@ -644,7 +647,9 @@ public class DefaultDbAdminController {
 				model.addAttribute("error", e.getMessage());
 			}
 		}
-		
+
+		double elapsedTime = (System.currentTimeMillis() - startTime) / 1000.0;
+		model.addAttribute("elapsedTime", new DecimalFormat("0.0#").format(elapsedTime));
 		return "console";
 	}
 	
