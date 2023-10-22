@@ -83,7 +83,8 @@
     				</a>
         		</li>
         		
-        		<li th:class="${#strings.equals(activePage, 'console') ? 'active' : ''}">
+        		<li th:if="${dbadmin_properties.isSqlConsoleEnabled()}"
+        		    th:class="${#strings.equals(activePage, 'console') ? 'active' : ''}">
         			<a th:href="|/${dbadmin_baseUrl}/console|">
 	        			<div class="d-flex align-items-center">
 	        				<div class="menu-icon">

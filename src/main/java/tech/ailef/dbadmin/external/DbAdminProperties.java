@@ -19,9 +19,6 @@
 
 package tech.ailef.dbadmin.external;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -51,6 +48,11 @@ public class DbAdminProperties {
 	private boolean testMode = false;
 	
 	/**
+	 * Whether the SQL console feature is enabled
+	 */
+	private boolean sqlConsoleEnabled = true;
+	
+	/**
 	 * Whether Spring Boot Database Admin is enabled
 	 * @return
 	 */
@@ -60,6 +62,14 @@ public class DbAdminProperties {
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+	}
+	
+	public boolean isSqlConsoleEnabled() {
+		return sqlConsoleEnabled;
+	}
+	
+	public void setSqlConsoleEnabled(boolean sqlConsoleEnabled) {
+		this.sqlConsoleEnabled = sqlConsoleEnabled;
 	}
 
 	/**
@@ -94,14 +104,15 @@ public class DbAdminProperties {
 		this.testMode = testMode;
 	}
 	
-	public Map<String, String> toMap() {
-		Map<String, String> conf = new HashMap<>();
-		conf.put("enabled", enabled + "");
-		conf.put("baseUrl", baseUrl);
-		conf.put("modelsPackage", modelsPackage);
-		conf.put("testMode", testMode + "");
-		return conf;
-	}
+//	public Map<String, String> toMap() {
+//		Map<String, String> conf = new HashMap<>();
+//		conf.put("enabled", enabled + "");
+//		conf.put("baseUrl", baseUrl);
+//		conf.put("modelsPackage", modelsPackage);
+//		conf.put("testMode", testMode + "");
+//		conf.put("sqlConsoleEnabled", sqlConsoleEnabled + "");
+//		return conf;
+//	}
 	
 	
 }

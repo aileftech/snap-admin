@@ -59,6 +59,7 @@ public class GlobalController {
 		model.addAttribute("dbadmin_userConf", userConf);
 		model.addAttribute("dbadmin_baseUrl", getBaseUrl());
 		model.addAttribute("dbadmin_version", dbAdmin.getVersion());
+		model.addAttribute("dbadmin_properties", props);
 		return "other/error";
 	}
 	
@@ -70,6 +71,7 @@ public class GlobalController {
 		model.addAttribute("dbadmin_userConf", userConf);
 		model.addAttribute("dbadmin_baseUrl", getBaseUrl());
 		model.addAttribute("dbadmin_version", dbAdmin.getVersion());
+		model.addAttribute("dbadmin_properties", props);
 		response.setStatus(404);
 		return "other/error";
 	}
@@ -118,5 +120,11 @@ public class GlobalController {
 	public UserConfiguration getUserConf() {
 		return userConf;
 	}
+	
+	@ModelAttribute("dbadmin_properties")
+	public DbAdminProperties getProps() {
+		return props;
+	}
+	
 }
 

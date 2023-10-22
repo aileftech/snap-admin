@@ -40,19 +40,51 @@ public class DbQueryOutputField {
 	public boolean isPrimaryKey() {
 		return dbField != null && dbField.isPrimaryKey();
 	}
-	
+
+	/**
+	 * Returns true if this field is a foreign key, only in the case
+	 * the field has been mapped to a table
+	 */
 	public boolean isForeignKey() {
 		return dbField != null && dbField.isForeignKey();
 	}
-	
+
+	/**
+	 * Returns true if this field is a binary field (BLOB, etc.), only in the case
+	 * the field has been mapped to a table
+	 * @return
+	 */
 	public boolean isBinary() {
 		return dbField != null && dbField.isBinary();
 	}
 	
+	/**
+	 * Returns true if this field is mapped to a table
+	 * @return
+	 */
+	public boolean isMapped() {
+		return dbField != null;
+	}
+	
+	/**
+	 * Returns the type of the field, only in the case the field
+	 * has been mapped to a table
+	 * @return
+	 */
 	public String getType() {
 		if (dbField != null)
 			return dbField.getType().toString();
 		return "-";
+	}
+	
+	public String getJavaName() {
+		if (dbField == null) return null;
+		return dbField.getJavaName();
+	}
+	
+	public String getEntityClassName() {
+		if (dbField == null) return null;
+		return dbField.getSchema().getClassName();
 	}
 	
 	@Override

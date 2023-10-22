@@ -551,6 +551,10 @@ public class DefaultDbAdminController {
 	
 	@GetMapping("/console/new")
 	public String consoleNew(Model model) {
+		if (!properties.isSqlConsoleEnabled()) {
+			throw new DbAdminException("SQL console not enabled");
+		}
+		
 		model.addAttribute("activePage", "console");
 		
 		ConsoleQuery q = new ConsoleQuery();
@@ -560,6 +564,10 @@ public class DefaultDbAdminController {
 	
 	@GetMapping("/console")
 	public String console(Model model) {
+		if (!properties.isSqlConsoleEnabled()) {
+			throw new DbAdminException("SQL console not enabled");
+		}
+		
 		List<ConsoleQuery> tabs = consoleQueryRepository.findAll();
 		
 		if (tabs.isEmpty()) {
@@ -574,6 +582,10 @@ public class DefaultDbAdminController {
 	
 	@PostMapping("/console/delete/{queryId}")
 	public String consoleDelete(@PathVariable String queryId, Model model) {
+		if (!properties.isSqlConsoleEnabled()) {
+			throw new DbAdminException("SQL console not enabled");
+		}
+		
 		consoleQueryRepository.deleteById(queryId);
 		return "redirect:/" + properties.getBaseUrl() + "/console";
 	}
@@ -584,6 +596,10 @@ public class DefaultDbAdminController {
 	public String consoleRun(Model model, @RequestParam(required = false) String query,
 			@RequestParam(required = false) String queryTitle,
 			@PathVariable String queryId) {
+		if (!properties.isSqlConsoleEnabled()) {
+			throw new DbAdminException("SQL console not enabled");
+		}
+		
 		ConsoleQuery activeQuery = consoleQueryRepository.findById(queryId).orElseThrow(() -> {
 			return new DbAdminNotFoundException("Query with ID " + queryId + " not found.");
 		});

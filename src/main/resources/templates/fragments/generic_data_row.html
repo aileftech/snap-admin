@@ -12,7 +12,14 @@
 		
 		<!-- data-row-field fragment -->
 		<th:block th:fragment="data_row_field(field, object)">
-			<span th:text="${object.get(field)}"></span>
+			<th:block th:if="${field.isBinary()}">
+				<th:block th:if="${object.get(field)}">
+					<span class="font-monospace null-label">BINARY</span>
+				</th:block>
+			</th:block>
+			<th:block th:if="${!field.isBinary()}">
+				<span th:text="${object.get(field)}"></span>
+			</th:block>
 		</th:block>
 		<!-- end data-row-field fragment -->
 	</body>
