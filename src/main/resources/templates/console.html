@@ -11,16 +11,27 @@
 					<h1 class="fw-bold mb-4"><i class="align-middle bi bi-terminal"></i><span class="align-middle"> SQL console</span></h1>
 	        		<div class="row mt-4">
 	        			<div class="col">
-	        				<div class="box">
+							<div class="w-100 d-flex inner-navigation">
+	    						<a th:each="query : ${tabs}" th:href="|/${dbadmin_baseUrl}/console/${query.getId()}|">
+		    						<div class="ui-tab ps-5 pe-5 p-3">
+		    							<i class="bi bi-filetype-sql pe-2"></i> Untitled Query
+		    						</div>
+		    					</a>
+		    					<div class="inner-navigation-border flex-grow-1">
+		    					</div>
+	    					</div>
+							<div class="box with-navigation">
 	        					<form th:action="|/${dbadmin_baseUrl}/console|" method="GET">
 		        					<textarea class="form-control" rows="6" name="query"
 		        						th:text="${query}"></textarea>
 		        					<input class="ui-btn btn btn-primary mt-3" type="submit" value="Run">
 	        					</form>
-	        					<div class="separator mt-3 mb-3"></div>
-	        					<div th:replace="~{fragments/generic_table :: table(results=${results})}"></div>
-	        				
 	        					
+	        					<div th:if="${query != null && !query.isBlank() && error == null}">
+									<div class="separator mt-3 mb-3"></div>
+	        						<div th:replace="~{fragments/generic_table :: table(results=${results})}"></div>
+	        					</div>
+	        					<th:block th:replace="~{fragments/resources :: alerts}"></th:block>
 							</div>
 	        			</div>
 	        		</div>

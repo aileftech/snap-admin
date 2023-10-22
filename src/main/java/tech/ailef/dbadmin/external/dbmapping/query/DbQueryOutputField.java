@@ -50,7 +50,9 @@ public class DbQueryOutputField {
 	}
 	
 	public String getType() {
-		return "TODO TYPE";
+		if (dbField != null)
+			return dbField.getType().toString();
+		return "-";
 	}
 	
 	@Override

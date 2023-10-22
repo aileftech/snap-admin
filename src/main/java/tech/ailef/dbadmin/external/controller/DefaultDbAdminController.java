@@ -30,6 +30,7 @@ import java.util.stream.Collectors;
 
 import org.hibernate.id.IdentifierGenerationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.UncategorizedSQLException;
@@ -69,8 +70,10 @@ import tech.ailef.dbadmin.external.exceptions.DbAdminException;
 import tech.ailef.dbadmin.external.exceptions.DbAdminNotFoundException;
 import tech.ailef.dbadmin.external.exceptions.InvalidPageException;
 import tech.ailef.dbadmin.external.misc.Utils;
+import tech.ailef.dbadmin.internal.model.ConsoleQuery;
 import tech.ailef.dbadmin.internal.model.UserAction;
 import tech.ailef.dbadmin.internal.model.UserSetting;
+import tech.ailef.dbadmin.internal.repository.ConsoleQueryRepository;
 import tech.ailef.dbadmin.internal.repository.UserSettingsRepository;
 import tech.ailef.dbadmin.internal.service.UserActionService;
 
@@ -91,6 +94,9 @@ public class DefaultDbAdminController {
 	
 	@Autowired
 	private UserActionService userActionService;
+	
+	@Autowired
+	private ConsoleQueryRepository consoleQueryRepository;
 	
 	@Autowired
 	private JdbcTemplate jdbTemplate; 
@@ -545,26 +551,38 @@ public class DefaultDbAdminController {
 	@GetMapping("/console")
 	public String console(Model model, @RequestParam(required=false) String query) {
 		model.addAttribute("activePage", "console");
-		model.addAttribute("query", query == null ? "" : query);		
+		model.addAttribute("query", query == null ? "" : query);
+		List<ConsoleQuery> tabs = consoleQueryRepository.findAll();
+		
+		if (tabs.isEmpty()) {
+			ConsoleQuery q = new ConsoleQuery();
+			consoleQueryRepository.save(q);
+			tabs.add(q);
+		}
+		model.addAttribute("tabs", tabs);
 		if (query != null) {
-			List<DbQueryResultRow> results = jdbTemplate.query(query, (rs, rowNum) -> {
-				Map<DbQueryOutputField, Object> result = new HashMap<>();
-				
-				ResultSetMetaData metaData = rs.getMetaData();
-				int cols = metaData.getColumnCount();
-				
-				for (int i = 0; i < cols; i++) {
-					Object o = rs.getObject(i + 1);
-					String columnName = metaData.getColumnName(i + 1);
-					String tableName = metaData.getTableName(i + 1);
-					DbQueryOutputField field = new DbQueryOutputField(columnName, tableName, dbAdmin);
+			try {
+				List<DbQueryResultRow> results = jdbTemplate.query(query, (rs, rowNum) -> {
+					Map<DbQueryOutputField, Object> result = new HashMap<>();
 					
-					result.put(field, o);
-				}
-				
-				return new DbQueryResultRow(result, query);
-			});
-			model.addAttribute("results", new DbQueryResult(results));
+					ResultSetMetaData metaData = rs.getMetaData();
+					int cols = metaData.getColumnCount();
+					
+					for (int i = 0; i < cols; i++) {
+						Object o = rs.getObject(i + 1);
+						String columnName = metaData.getColumnName(i + 1);
+						String tableName = metaData.getTableName(i + 1);
+						DbQueryOutputField field = new DbQueryOutputField(columnName, tableName, dbAdmin);
+						
+						result.put(field, o);
+					}
+					
+					return new DbQueryResultRow(result, query);
+				});
+				model.addAttribute("results", new DbQueryResult(results));
+			} catch (DataAccessException e) {
+				model.addAttribute("error", e.getMessage());
+			}
 		}
 		
 		
