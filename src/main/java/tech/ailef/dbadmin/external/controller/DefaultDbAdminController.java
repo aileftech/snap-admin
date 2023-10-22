@@ -574,13 +574,18 @@ public class DefaultDbAdminController {
 	}
 	
 	@GetMapping("/console/run/{queryId}")
-	public String consoleRun(Model model, @RequestParam(required = false) String query, @PathVariable String queryId) {
+	public String consoleRun(Model model, @RequestParam(required = false) String query,
+			@RequestParam(required = false) String queryTitle,
+			@PathVariable String queryId) {
 		ConsoleQuery activeQuery = consoleQueryRepository.findById(queryId).orElseThrow(() -> {
 			return new DbAdminNotFoundException("Query with ID " + queryId + " not found.");
 		});
 		
 		if (query != null && !query.isBlank()) {
 			activeQuery.setSql(query);
+		}
+		if (queryTitle != null && !queryTitle.isBlank()) {
+			activeQuery.setTitle(queryTitle);
 		}
 		
 		activeQuery.setUpdatedAt(LocalDateTime.now());

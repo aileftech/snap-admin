@@ -16,8 +16,8 @@
 	    							class="d-inline-block"
 	    							th:classAppend="${query.getId() == activeQuery.getId() ? 'active' : ''}">
 		    						<div class="ui-tab ps-5 pe-5 p-3">
-		    							<i class="bi bi-filetype-sql pe-2"></i> Untitled Query
-		    							
+		    							<i class="bi bi-filetype-sql pe-2"></i>
+		    							<span th:text="${query.getTitle()}"></span>
 		    						</div>
 		    					</a>
 		    					<div class="inner-navigation-border flex-grow-1 align-items-center d-flex">
@@ -30,16 +30,21 @@
 	    					</div>
 							<div class="box with-navigation">
 	        					<form th:action="|/${dbadmin_baseUrl}/console/run/${activeQuery.getId()}|" method="GET">
+									<input type="text" class="form-control mb-3" 
+									 		name="queryTitle" th:value="${activeQuery.getTitle()}">
 		        					<textarea class="form-control" rows="6" name="query"
 		        						th:text="${activeQuery.getSql()}"></textarea>
 		        					<input class="ui-btn btn btn-primary mt-3" type="submit" value="Run">
 	        					</form>
 	        					
-	        					<div th:if="${error == null}">
+	        					<div th:if="${error == null && activeQuery.getSql() != null}">
 									<div class="separator mt-3 mb-3"></div>
 	        						<div th:replace="~{fragments/generic_table :: table(results=${results})}"></div>
 	        					</div>
-	        					<th:block th:replace="~{fragments/resources :: alerts}"></th:block>
+	        					<div th:if="${error != null}">
+									<div class="separator mt-3 mb-3"></div>
+	        						<th:block th:replace="~{fragments/resources :: alerts}"></th:block>
+	        					</div>
 							</div>
 	        			</div>
 	        		</div>
