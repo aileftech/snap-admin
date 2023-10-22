@@ -29,13 +29,22 @@
 		    					</div>
 	    					</div>
 							<div class="box with-navigation">
-	        					<form th:action="|/${dbadmin_baseUrl}/console/run/${activeQuery.getId()}|" method="GET">
+								<form th:action="|/${dbadmin_baseUrl}/console/run/${activeQuery.getId()}|" method="GET">
+									<span class="text-muted fw-bold mb-1 d-inline-block">Query title</span>
 									<input type="text" class="form-control mb-3" 
 									 		name="queryTitle" th:value="${activeQuery.getTitle()}">
+									<span class="text-muted fw-bold mb-1 d-inline-block">SQL</span>
 		        					<textarea class="form-control" rows="6" name="query"
 		        						th:text="${activeQuery.getSql()}"></textarea>
 		        					<input class="ui-btn btn btn-primary mt-3" type="submit" value="Run">
+		        					<a href="#" class="ms-4 ui-btn btn btn-danger mt-3" id="console-delete-btn">Delete</a>
 	        					</form>
+	        					<div class="d-flex justify-content-end">
+									<form th:action="|/${dbadmin_baseUrl}/console/delete/${activeQuery.getId()}|" method="POST"
+										id="console-delete-form">
+		        					</form>
+								</div>
+	        					
 	        					
 	        					<div th:if="${error == null && activeQuery.getSql() != null}">
 									<div class="separator mt-3 mb-3"></div>
@@ -51,5 +60,6 @@
 	        	</div>
 	        </div>
 	    </div>
+	    <script type="text/javascript" th:src="|/${dbadmin_baseUrl}/js/console.js|"></script>
 	</body>
 </html>

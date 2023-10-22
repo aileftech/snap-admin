@@ -570,8 +570,15 @@ public class DefaultDbAdminController {
 		} else {
 			return "redirect:/" + properties.getBaseUrl() + "/console/run/" + tabs.get(0).getId();
 		}
-		
 	}
+	
+	@PostMapping("/console/delete/{queryId}")
+	public String consoleDelete(@PathVariable String queryId, Model model) {
+		consoleQueryRepository.deleteById(queryId);
+		return "redirect:/" + properties.getBaseUrl() + "/console";
+	}
+	
+	
 	
 	@GetMapping("/console/run/{queryId}")
 	public String consoleRun(Model model, @RequestParam(required = false) String query,
