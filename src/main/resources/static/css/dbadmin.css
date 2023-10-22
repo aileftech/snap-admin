@@ -120,6 +120,7 @@ h1 a:hover {
 	border-top-right-radius: 5px;
 	border-top-left-radius: 5px;
 	background-color: #FAFAFA;
+	overflow-x: auto;
 }
 
 .inner-navigation a:first-child {
@@ -129,6 +130,10 @@ h1 a:hover {
 
 .inner-navigation-border {
 	border-bottom: 4px solid #F0F0F0;
+}
+
+.inner-navigation .inner-navigation-border a {
+	border-bottom: none !important;
 }
 
 .inner-navigation a {

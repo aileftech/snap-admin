@@ -20,6 +20,7 @@
 package tech.ailef.dbadmin.external.controller;
 
 import java.sql.ResultSetMetaData;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -548,21 +549,52 @@ public class DefaultDbAdminController {
 		return "help";
 	}
 	
-	@GetMapping("/console")
-	public String console(Model model, @RequestParam(required=false) String query) {
+	@GetMapping("/console/new")
+	public String consoleNew(Model model) {
 		model.addAttribute("activePage", "console");
-		model.addAttribute("query", query == null ? "" : query);
+		
+		ConsoleQuery q = new ConsoleQuery();
+		consoleQueryRepository.save(q);
+		return "redirect:/" + properties.getBaseUrl() + "/console/run/" + q.getId();
+	}
+	
+	@GetMapping("/console")
+	public String console(Model model) {
 		List<ConsoleQuery> tabs = consoleQueryRepository.findAll();
 		
 		if (tabs.isEmpty()) {
 			ConsoleQuery q = new ConsoleQuery();
 			consoleQueryRepository.save(q);
 			tabs.add(q);
+			return "redirect:/" + properties.getBaseUrl() + "/console/run/" + q.getId();
+		} else {
+			return "redirect:/" + properties.getBaseUrl() + "/console/run/" + tabs.get(0).getId();
 		}
+		
+	}
+	
+	@GetMapping("/console/run/{queryId}")
+	public String consoleRun(Model model, @RequestParam(required = false) String query, @PathVariable String queryId) {
+		ConsoleQuery activeQuery = consoleQueryRepository.findById(queryId).orElseThrow(() -> {
+			return new DbAdminNotFoundException("Query with ID " + queryId + " not found.");
+		});
+		
+		if (query != null && !query.isBlank()) {
+			activeQuery.setSql(query);
+		}
+		
+		activeQuery.setUpdatedAt(LocalDateTime.now());
+		consoleQueryRepository.save(activeQuery);
+		
+		model.addAttribute("activePage", "console");
+		model.addAttribute("activeQuery", activeQuery);
+		
+		List<ConsoleQuery> tabs = consoleQueryRepository.findAll();
 		model.addAttribute("tabs", tabs);
-		if (query != null) {
+		
+		if (activeQuery.getSql() != null && !activeQuery.getSql().isBlank()) {
 			try {
-				List<DbQueryResultRow> results = jdbTemplate.query(query, (rs, rowNum) -> {
+				List<DbQueryResultRow> results = jdbTemplate.query(activeQuery.getSql(), (rs, rowNum) -> {
 					Map<DbQueryOutputField, Object> result = new HashMap<>();
 					
 					ResultSetMetaData metaData = rs.getMetaData();
@@ -584,8 +616,6 @@ public class DefaultDbAdminController {
 				model.addAttribute("error", e.getMessage());
 			}
 		}
-		
-		
 		
 		return "console";
 	}

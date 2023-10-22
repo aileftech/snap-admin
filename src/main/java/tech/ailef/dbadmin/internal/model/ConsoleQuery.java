@@ -1,5 +1,7 @@
 package tech.ailef.dbadmin.internal.model;
 
+import java.time.LocalDateTime;
+
 import org.hibernate.annotations.UuidGenerator;
 
 import jakarta.persistence.Entity;
@@ -16,9 +18,15 @@ public class ConsoleQuery {
 	private String sql;
 	
 	private String title;
+	
+	private LocalDateTime createdAt;
 
+	private LocalDateTime updatedAt;
+	
 	public ConsoleQuery() {
 		this.title = "Untitled Query";
+		this.createdAt = LocalDateTime.now();
+		this.updatedAt = LocalDateTime.now();
 	}
 	
 	public String getId() {
@@ -44,5 +52,28 @@ public class ConsoleQuery {
 	public void setTitle(String title) {
 		this.title = title;
 	}
+
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public LocalDateTime getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(LocalDateTime updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
+	@Override
+	public String toString() {
+		return "ConsoleQuery [id=" + id + ", sql=" + sql + ", title=" + title + ", createdAt=" + createdAt
+				+ ", updatedAt=" + updatedAt + "]";
+	}
+	
 	
 }
