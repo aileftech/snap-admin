@@ -19,8 +19,10 @@
 
 package tech.ailef.dbadmin.external.dbmapping;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -41,7 +43,7 @@ public class DbFieldValue {
 
 	public Object getValue() {
 		/*
-		 * Special handling of OffsetDateTime to be compatbile
+		 * Special handling of OffsetDateTime and Instant to be compatabile
 		 * with the HTML datetime-local input field: we "cast"
 		 * it to a LocalDateTime so the toString() method will
 		 * not produce the ending "Z" which prevents the datepicker
@@ -49,6 +51,12 @@ public class DbFieldValue {
 		 */
 		if (value instanceof OffsetDateTime) {
 			return LocalDateTime.from((OffsetDateTime)value);
+		}
+		
+		if (value instanceof Instant) {
+			Instant i = (Instant)value;
+			LocalDateTime result = LocalDateTime.ofInstant(i, ZoneId.of("UTC"));
+			return result;
 		}
 		
 		return value;

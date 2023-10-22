@@ -25,9 +25,11 @@ import java.math.BigInteger;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Locale;
 
@@ -263,6 +265,28 @@ public enum DbFieldType {
 		@Override
 		public Class<?> getJavaClass() {
 			return LocalDateTime.class;
+		}
+		
+		@Override
+		public List<CompareOperator> getCompareOperators() {
+			return List.of(CompareOperator.AFTER, CompareOperator.STRING_EQ, CompareOperator.BEFORE);
+		}
+	},
+	INSTANT {
+		@Override
+		public String getFragmentName() {
+			return "datetime";
+		}
+
+		@Override
+		public Object parseValue(Object value) {
+			if (value == null || value.toString().isBlank()) return null;
+			return LocalDateTime.parse(value.toString()).toInstant(ZoneOffset.UTC);
+		}
+
+		@Override
+		public Class<?> getJavaClass() {
+			return Instant.class;
 		}
 		
 		@Override
@@ -626,6 +650,8 @@ public enum DbFieldType {
 			return DATE;
 		} else if (klass == LocalDateTime.class) {
 			return LOCAL_DATE_TIME;
+		} else if (klass == Instant.class) {
+			return INSTANT;
 		} else if (klass == Float.class || klass == float.class) {
 			return FLOAT;
 		} else if (klass == Double.class || klass == double.class) {
