@@ -1,3 +1,23 @@
+/* 
+ * Spring Boot Database Admin - An automatically generated CRUD admin UI for Spring Boot apps
+
+ * Copyright (C) 2023 Ailef (http://ailef.tech)
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+
 package tech.ailef.dbadmin.external.controller;
 
 import java.io.ByteArrayOutputStream;
@@ -46,6 +66,7 @@ import tech.ailef.dbadmin.external.dbmapping.query.DbQueryResultRow;
 import tech.ailef.dbadmin.external.dto.DataExportFormat;
 import tech.ailef.dbadmin.external.dto.QueryFilter;
 import tech.ailef.dbadmin.external.exceptions.DbAdminException;
+import tech.ailef.dbadmin.external.exceptions.DbAdminNotFoundException;
 import tech.ailef.dbadmin.external.misc.Utils;
 import tech.ailef.dbadmin.internal.model.ConsoleQuery;
 import tech.ailef.dbadmin.internal.repository.ConsoleQueryRepository;
@@ -70,7 +91,7 @@ public class DataExportController {
 	@GetMapping("/console/export/{queryId}")
 	public ResponseEntity<byte[]> export(@PathVariable String queryId, @RequestParam String format, 
 			@RequestParam MultiValueMap<String, String> otherParams) {
-		ConsoleQuery query = queryRepository.findById(queryId).orElseThrow(() -> new DbAdminException("Query not found: " + queryId));
+		ConsoleQuery query = queryRepository.findById(queryId).orElseThrow(() -> new DbAdminNotFoundException("Query not found: " + queryId));
 		
 		DataExportFormat exportFormat = null;
 		try {
