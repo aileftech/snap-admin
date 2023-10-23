@@ -4,8 +4,10 @@ import java.util.Objects;
 
 import tech.ailef.dbadmin.external.DbAdmin;
 import tech.ailef.dbadmin.external.dbmapping.DbField;
+import tech.ailef.dbadmin.external.dbmapping.DbFieldType;
 import tech.ailef.dbadmin.external.dbmapping.DbObjectSchema;
 import tech.ailef.dbadmin.external.exceptions.DbAdminException;
+import tech.ailef.dbadmin.external.exceptions.UnsupportedFieldTypeException;
 
 public class DbQueryOutputField {
 	private String name;
@@ -13,6 +15,8 @@ public class DbQueryOutputField {
 	private String table;
 
 	private DbField dbField;
+	
+	private DbQueryResultRow result;
 	
 	public DbQueryOutputField(String name, String table, DbAdmin dbAdmin) {
 		this.name = name;
@@ -29,14 +33,26 @@ public class DbQueryOutputField {
 		}
 	}
 
+	/**
+	 * Returns the column name of the field
+	 * @return
+	 */
 	public String getName() {
 		return name;
 	}
 	
+	/**
+	 * Returns the table name of the field
+	 * @return
+	 */
 	public String getTable() {
 		return table;
 	}
 
+	/**
+	 * Returns true if this field is a primary key
+	 * @return
+	 */
 	public boolean isPrimaryKey() {
 		return dbField != null && dbField.isPrimaryKey();
 	}
@@ -67,24 +83,54 @@ public class DbQueryOutputField {
 	}
 	
 	/**
-	 * Returns the type of the field, only in the case the field
-	 * has been mapped to a table
+	 * Returns the type of the field.
+	 * If the field has been mapped to a table column returns the
+	 * type of the column, otherwise tries to parse the field 
+	 * field type from the raw value returned by the database.
 	 * @return
 	 */
 	public String getType() {
+		// If the field has been mapped to the database
 		if (dbField != null)
 			return dbField.getType().toString();
+		
+		// If the row this fields belongs to is defined
+		if (result != null) {
+			try {
+				DbFieldType type = DbFieldType.fromClass(result.get(this).getClass());
+				return type.toString();
+			} catch (UnsupportedFieldTypeException e) {
+				return "-";
+			}
+		}
+		
 		return "-";
 	}
 	
+	/**
+	 * Returns the Java name of the field, if mapped to a table column
+	 * @return
+	 */
 	public String getJavaName() {
 		if (dbField == null) return null;
 		return dbField.getJavaName();
 	}
 	
+	/**
+	 * Returns the Java class of the field, if mapped to a table column
+	 * @return
+	 */
 	public String getEntityClassName() {
 		if (dbField == null) return null;
 		return dbField.getSchema().getClassName();
+	}
+
+	/**
+	 * Sets the row object this field belongs to 
+	 * @param result
+	 */
+	public void setResult(DbQueryResultRow result) {
+		this.result = result;
 	}
 	
 	@Override

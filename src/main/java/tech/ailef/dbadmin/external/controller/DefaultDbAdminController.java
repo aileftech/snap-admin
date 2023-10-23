@@ -66,6 +66,7 @@ import tech.ailef.dbadmin.external.dto.CompareOperator;
 import tech.ailef.dbadmin.external.dto.FacetedSearchRequest;
 import tech.ailef.dbadmin.external.dto.LogsSearchRequest;
 import tech.ailef.dbadmin.external.dto.PaginatedResult;
+import tech.ailef.dbadmin.external.dto.PaginationInfo;
 import tech.ailef.dbadmin.external.dto.QueryFilter;
 import tech.ailef.dbadmin.external.dto.ValidationErrorsContainer;
 import tech.ailef.dbadmin.external.exceptions.DbAdminException;
@@ -101,7 +102,7 @@ public class DefaultDbAdminController {
 	private ConsoleQueryRepository consoleQueryRepository;
 	
 	@Autowired
-	private JdbcTemplate jdbTemplate; 
+	private JdbcTemplate jdbcTemplate; 
 
 	@Autowired
 	private UserSettingsRepository userSettingsRepo;
@@ -596,7 +597,13 @@ public class DefaultDbAdminController {
 	@GetMapping("/console/run/{queryId}")
 	public String consoleRun(Model model, @RequestParam(required = false) String query,
 			@RequestParam(required = false) String queryTitle,
+			@RequestParam(required = false) Integer page,
+			@RequestParam(required = false) Integer pageSize,
 			@PathVariable String queryId) {
+		
+		if (page == null || page <= 0) page = 1;
+		if (pageSize == null) pageSize = 50;
+		
 		long startTime = System.currentTimeMillis();
 		
 		if (!properties.isSqlConsoleEnabled()) {
@@ -623,9 +630,10 @@ public class DefaultDbAdminController {
 		List<ConsoleQuery> tabs = consoleQueryRepository.findAll();
 		model.addAttribute("tabs", tabs);
 		
+		List<DbQueryResultRow> results = new ArrayList<>();
 		if (activeQuery.getSql() != null && !activeQuery.getSql().isBlank()) {
 			try {
-				List<DbQueryResultRow> results = jdbTemplate.query(activeQuery.getSql(), (rs, rowNum) -> {
+				results = jdbcTemplate.query(activeQuery.getSql(), (rs, rowNum) -> {
 					Map<DbQueryOutputField, Object> result = new HashMap<>();
 					
 					ResultSetMetaData metaData = rs.getMetaData();
@@ -640,14 +648,32 @@ public class DefaultDbAdminController {
 						result.put(field, o);
 					}
 					
-					return new DbQueryResultRow(result, query);
+					DbQueryResultRow row = new DbQueryResultRow(result, query);
+					
+					result.keySet().forEach(f -> {
+						f.setResult(row);
+					});
+					
+					return row;
 				});
-				model.addAttribute("results", new DbQueryResult(results));
 			} catch (DataAccessException e) {
 				model.addAttribute("error", e.getMessage());
 			}
 		}
-
+		
+		if (!results.isEmpty()) {
+			int maxPage = (int)(Math.ceil ((double)results.size() / pageSize));
+			PaginationInfo pagination = new PaginationInfo(page, maxPage, pageSize, results.size(), null, null);
+			int startOffset = (page - 1) * pageSize;
+			int endOffset = (page) * pageSize;
+			
+			endOffset = Math.min(results.size(), endOffset);
+			
+			results = results.subList(startOffset, endOffset);
+			model.addAttribute("pagination", pagination);
+			model.addAttribute("results", new DbQueryResult(results));
+		}
+		
 		double elapsedTime = (System.currentTimeMillis() - startTime) / 1000.0;
 		model.addAttribute("elapsedTime", new DecimalFormat("0.0#").format(elapsedTime));
 		return "console";

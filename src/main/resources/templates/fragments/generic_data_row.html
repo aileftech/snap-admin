@@ -18,7 +18,9 @@
 				</th:block>
 			</th:block>
 			<th:block th:if="${!field.isBinary()}">
-				<span th:text="${object.get(field)}"></span>
+				
+				<span th:if="${object.get(field) != null}" th:text="${object.get(field)}"></span>
+				<span th:if="${object.get(field) == null}" class="null-label font-monospace">NULL</span>
 			</th:block>
 		</th:block>
 		<!-- end data-row-field fragment -->
