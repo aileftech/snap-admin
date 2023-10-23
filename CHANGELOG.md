@@ -1,5 +1,11 @@
 # Changelog
 
+**0.1.8**
+- SQL console to run custom SQL queries (#20)
+- Support for `Instant` (#21)
+- Added JSONL format to export options
+- Fixed other issues: #19,
+
 **0.1.7**
 - Export to CSV and XLSX
 
