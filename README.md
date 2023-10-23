@@ -22,6 +22,7 @@ for your database schema. No modifications required to your existing code (well,
  * Advanced search and filtering
  * Annotation-based customization
  * Data export (CSV, XLSX)
+ * SQL console to run custom queries
 
 **Supported JPA annotations**
 
@@ -76,9 +77,13 @@ dbadmin.modelsPackage=your.models.package,your.second.models.package
 ## Whether to enable Spring Boot Database Admin
 # dbadmin.enabled=true
 #
+#
 ## Set to true if you need to run the tests, as it will customize
 ## the database configuration for the internal DataSource
 # dbadmin.testMode=false
+#
+## SQL console enable/disable (true by default)
+# dbadmin.sqlConsoleEnabled=false
 ```
 
 Now annotate your `@SpringBootApplication` class containing the `main` method with the following:
