@@ -14,7 +14,15 @@ public class DbQueryResultRow {
 	}
 	
 	public List<DbQueryOutputField> getSortedFields() {
-		return values.keySet().stream().sorted((f1, f2) -> f1.getName().compareTo(f2.getName())).toList();
+		return values.keySet().stream().sorted((f1, f2) -> {
+			if (f1.isPrimaryKey() && !f2.isPrimaryKey()) {
+				return -1;
+			} else if (!f1.isPrimaryKey() && f2.isPrimaryKey()) {
+				return 1;
+			} else {
+				return f1.getName().compareTo(f2.getName());
+			}
+		}).toList();
 	}
 	
 	public String getQuery() {
