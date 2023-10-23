@@ -64,6 +64,11 @@ public class DbQueryOutputField {
 	public boolean isForeignKey() {
 		return dbField != null && dbField.isForeignKey();
 	}
+	
+	public Class<?> getConnectedType() {
+		if (dbField == null) return null;
+		return dbField.getConnectedType();
+	}
 
 	/**
 	 * Returns true if this field is a binary field (BLOB, etc.), only in the case

@@ -123,6 +123,10 @@ h1 a:hover {
 	overflow-x: auto;
 }
 
+.inner-navigation .query-tab {
+	min-width: 128px;
+}
+
 .inner-navigation a:first-child {
 	border-top-left-radius: 5px;
 	background-color: #FAFAFA;

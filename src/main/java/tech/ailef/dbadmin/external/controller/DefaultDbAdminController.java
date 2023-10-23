@@ -557,15 +557,13 @@ public class DefaultDbAdminController {
 			throw new DbAdminException("SQL console not enabled");
 		}
 		
-		model.addAttribute("activePage", "console");
-		
 		ConsoleQuery q = new ConsoleQuery();
 		consoleQueryRepository.save(q);
 		return "redirect:/" + properties.getBaseUrl() + "/console/run/" + q.getId();
 	}
 	
 	@GetMapping("/console")
-	public String console(Model model) {
+	public String console() {
 		if (!properties.isSqlConsoleEnabled()) {
 			throw new DbAdminException("SQL console not enabled");
 		}
@@ -575,7 +573,6 @@ public class DefaultDbAdminController {
 		if (tabs.isEmpty()) {
 			ConsoleQuery q = new ConsoleQuery();
 			consoleQueryRepository.save(q);
-			tabs.add(q);
 			return "redirect:/" + properties.getBaseUrl() + "/console/run/" + q.getId();
 		} else {
 			return "redirect:/" + properties.getBaseUrl() + "/console/run/" + tabs.get(0).getId();
@@ -600,7 +597,6 @@ public class DefaultDbAdminController {
 			@RequestParam(required = false) Integer page,
 			@RequestParam(required = false) Integer pageSize,
 			@PathVariable String queryId) {
-		
 		if (page == null || page <= 0) page = 1;
 		if (pageSize == null) pageSize = 50;
 		
@@ -674,6 +670,7 @@ public class DefaultDbAdminController {
 			model.addAttribute("results", new DbQueryResult(results));
 		}
 		
+		model.addAttribute("title", "SQL Console | " + activeQuery.getTitle());
 		double elapsedTime = (System.currentTimeMillis() - startTime) / 1000.0;
 		model.addAttribute("elapsedTime", new DecimalFormat("0.0#").format(elapsedTime));
 		return "console";

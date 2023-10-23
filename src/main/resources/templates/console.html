@@ -13,7 +13,7 @@
 	        			<div class="col">
 							<div class="w-100 d-flex inner-navigation">
 	    						<a th:each="query : ${tabs}" th:href="|/${dbadmin_baseUrl}/console/run/${query.getId()}|"
-	    							class="d-inline-block"
+	    							class="d-inline-block query-tab"
 	    							th:classAppend="${query.getId() == activeQuery.getId() ? 'active' : ''}">
 		    						<div class="ui-tab ps-5 pe-5 p-3">
 		    							<i class="bi bi-filetype-sql pe-2"></i>
