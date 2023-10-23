@@ -19,7 +19,6 @@
 
 package tech.ailef.dbadmin.external.controller;
 
-import java.sql.ResultSetMetaData;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -32,7 +31,6 @@ import java.util.stream.Collectors;
 
 import org.hibernate.id.IdentifierGenerationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.UncategorizedSQLException;
@@ -59,9 +57,7 @@ import tech.ailef.dbadmin.external.DbAdminProperties;
 import tech.ailef.dbadmin.external.dbmapping.DbAdminRepository;
 import tech.ailef.dbadmin.external.dbmapping.DbObject;
 import tech.ailef.dbadmin.external.dbmapping.DbObjectSchema;
-import tech.ailef.dbadmin.external.dbmapping.query.DbQueryOutputField;
 import tech.ailef.dbadmin.external.dbmapping.query.DbQueryResult;
-import tech.ailef.dbadmin.external.dbmapping.query.DbQueryResultRow;
 import tech.ailef.dbadmin.external.dto.CompareOperator;
 import tech.ailef.dbadmin.external.dto.FacetedSearchRequest;
 import tech.ailef.dbadmin.external.dto.LogsSearchRequest;
@@ -101,9 +97,6 @@ public class DefaultDbAdminController {
 	@Autowired
 	private ConsoleQueryRepository consoleQueryRepository;
 	
-	@Autowired
-	private JdbcTemplate jdbcTemplate; 
-
 	@Autowired
 	private UserSettingsRepository userSettingsRepo;
 	
@@ -589,8 +582,6 @@ public class DefaultDbAdminController {
 		return "redirect:/" + properties.getBaseUrl() + "/console";
 	}
 	
-	
-	
 	@GetMapping("/console/run/{queryId}")
 	public String consoleRun(Model model, @RequestParam(required = false) String query,
 			@RequestParam(required = false) String queryTitle,
@@ -626,36 +617,7 @@ public class DefaultDbAdminController {
 		List<ConsoleQuery> tabs = consoleQueryRepository.findAll();
 		model.addAttribute("tabs", tabs);
 		
-		List<DbQueryResultRow> results = new ArrayList<>();
-		if (activeQuery.getSql() != null && !activeQuery.getSql().isBlank()) {
-			try {
-				results = jdbcTemplate.query(activeQuery.getSql(), (rs, rowNum) -> {
-					Map<DbQueryOutputField, Object> result = new HashMap<>();
-					
-					ResultSetMetaData metaData = rs.getMetaData();
-					int cols = metaData.getColumnCount();
-					
-					for (int i = 0; i < cols; i++) {
-						Object o = rs.getObject(i + 1);
-						String columnName = metaData.getColumnName(i + 1);
-						String tableName = metaData.getTableName(i + 1);
-						DbQueryOutputField field = new DbQueryOutputField(columnName, tableName, dbAdmin);
-						
-						result.put(field, o);
-					}
-					
-					DbQueryResultRow row = new DbQueryResultRow(result, query);
-					
-					result.keySet().forEach(f -> {
-						f.setResult(row);
-					});
-					
-					return row;
-				});
-			} catch (DataAccessException e) {
-				model.addAttribute("error", e.getMessage());
-			}
-		}
+		DbQueryResult results = repository.executeQuery(activeQuery.getSql());
 		
 		if (!results.isEmpty()) {
 			int maxPage = (int)(Math.ceil ((double)results.size() / pageSize));
@@ -665,9 +627,9 @@ public class DefaultDbAdminController {
 			
 			endOffset = Math.min(results.size(), endOffset);
 			
-			results = results.subList(startOffset, endOffset);
+			results.crop(startOffset, endOffset);
 			model.addAttribute("pagination", pagination);
-			model.addAttribute("results", new DbQueryResult(results));
+			model.addAttribute("results", results);
 		}
 		
 		model.addAttribute("title", "SQL Console | " + activeQuery.getTitle());
@@ -675,6 +637,7 @@ public class DefaultDbAdminController {
 		model.addAttribute("elapsedTime", new DecimalFormat("0.0#").format(elapsedTime));
 		return "console";
 	}
+
 	
 	@GetMapping("/settings/appearance")
 	public String settingsAppearance(Model model) {

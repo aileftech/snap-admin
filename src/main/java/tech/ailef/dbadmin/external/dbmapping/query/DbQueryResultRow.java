@@ -1,7 +1,10 @@
 package tech.ailef.dbadmin.external.dbmapping.query;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import tech.ailef.dbadmin.external.exceptions.DbAdminException;
 
 public class DbQueryResultRow {
 	private Map<DbQueryOutputField, Object> values;
@@ -32,8 +35,24 @@ public class DbQueryResultRow {
 	public Object get(DbQueryOutputField field) {
 		return values.get(field);
 	}
+
+	public Object getFieldByName(String field) {
+		DbQueryOutputField key = 
+			values.keySet().stream().filter(f -> f.getName().equals(field)).findFirst().orElse(null);
+		if (key == null) {
+			throw new DbAdminException("Field " + field + " not found");
+		}
+		return get(key);
+	}
 	
-	
+	public Map<String, Object> toMap(List<String> fields) {
+		Map<String, Object> result = new HashMap<>();
+		for (String field : fields) {
+			result.put(field, getFieldByName(field));
+		}
+		return result;
+		
+	}
 	
 	
 }

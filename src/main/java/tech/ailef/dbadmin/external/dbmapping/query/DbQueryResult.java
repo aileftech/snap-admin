@@ -29,4 +29,8 @@ public class DbQueryResult {
 	public int size() {
 		return rows.size();
 	}
+	
+	public void crop(int startOffset, int endOffset) {
+		rows = rows.subList(startOffset, endOffset);
+	}
 }

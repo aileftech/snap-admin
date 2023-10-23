@@ -41,13 +41,17 @@ import tech.ailef.dbadmin.external.dbmapping.DbField;
 import tech.ailef.dbadmin.external.dbmapping.DbFieldValue;
 import tech.ailef.dbadmin.external.dbmapping.DbObject;
 import tech.ailef.dbadmin.external.dbmapping.DbObjectSchema;
+import tech.ailef.dbadmin.external.dbmapping.query.DbQueryResult;
+import tech.ailef.dbadmin.external.dbmapping.query.DbQueryResultRow;
 import tech.ailef.dbadmin.external.dto.DataExportFormat;
 import tech.ailef.dbadmin.external.dto.QueryFilter;
 import tech.ailef.dbadmin.external.exceptions.DbAdminException;
 import tech.ailef.dbadmin.external.misc.Utils;
+import tech.ailef.dbadmin.internal.model.ConsoleQuery;
+import tech.ailef.dbadmin.internal.repository.ConsoleQueryRepository;
 
 @Controller
-@RequestMapping(value = { "/${dbadmin.baseUrl}/export", "/${dbadmin.baseUrl}/export/" })
+@RequestMapping(value = { "/${dbadmin.baseUrl}/", "/${dbadmin.baseUrl}" })
 public class DataExportController {
 	private static final Logger logger = LoggerFactory.getLogger(DataExportFormat.class);
 	
@@ -58,9 +62,49 @@ public class DataExportController {
 	private DbAdminRepository repository;
 	
 	@Autowired
+	private ConsoleQueryRepository queryRepository;
+	
+	@Autowired
 	private ObjectMapper mapper;
 
-	@GetMapping("/{className}")
+	@GetMapping("/console/export/{queryId}")
+	public ResponseEntity<byte[]> export(@PathVariable String queryId, @RequestParam String format, 
+			@RequestParam MultiValueMap<String, String> otherParams) {
+		ConsoleQuery query = queryRepository.findById(queryId).orElseThrow(() -> new DbAdminException("Query not found: " + queryId));
+		
+		DataExportFormat exportFormat = null;
+		try {
+			exportFormat = DataExportFormat.valueOf(format.toUpperCase());
+		} catch (IllegalArgumentException e) {
+			throw new DbAdminException("Unsupported export format: " + format);
+		}
+		
+		List<String> fieldsToInclude = otherParams.getOrDefault("fields[]", new ArrayList<>());
+		DbQueryResult results = repository.executeQuery(query.getSql());
+		
+		switch (exportFormat) {
+		case CSV:
+			return ResponseEntity.ok()
+					.header(HttpHeaders.CONTENT_DISPOSITION,
+							"attachment; filename=\"export_" + query.getTitle().replaceAll("[^a-zA-Z0-9.-]", "_") + ".csv\"")
+					.body(toCsvQuery(results, fieldsToInclude).getBytes());
+		case XLSX:
+			String sheetName = query.getTitle();
+			return ResponseEntity.ok()
+					.header(HttpHeaders.CONTENT_DISPOSITION,
+					"attachment; filename=\"export_" + query.getTitle().replaceAll("[^a-zA-Z0-9.-]", "_") + ".xlsx\"")
+					.body(toXlsxQuery(sheetName, results, fieldsToInclude));
+		case JSONL:
+			return ResponseEntity.ok()
+					.header(HttpHeaders.CONTENT_DISPOSITION,
+							"attachment; filename=\"export_" + query.getTitle().replaceAll("[^a-zA-Z0-9.-]", "_") + ".jsonl\"")
+					.body(toJsonlQuery(results, fieldsToInclude).getBytes());
+		default:
+			throw new DbAdminException("Invalid DataExportFormat");
+		}
+	}
+	
+	@GetMapping("/export/{className}")
 	@ResponseBody
 	public ResponseEntity<byte[]> export(@PathVariable String className, @RequestParam(required = false) String query,
 			@RequestParam String format, @RequestParam(required=false) Boolean raw, 
@@ -151,6 +195,49 @@ public class DataExportController {
 		
 		return fos.toByteArray();
 	}
+	
+	private byte[] toXlsxQuery(String sheetName, DbQueryResult result, List<String> fields) {
+		Workbook workbook = new XSSFWorkbook();
+
+		Sheet sheet = workbook.createSheet(sheetName);
+
+		CellStyle headerStyle = workbook.createCellStyle();
+		Font headerFont = workbook.createFont();
+		headerFont.setBold(true);
+		headerStyle.setFont(headerFont);
+		
+		int rowIndex = 0;
+		Row headerRow = sheet.createRow(rowIndex++);
+		for (int i = 0; i < fields.size(); i++) {
+			Cell headerCell = headerRow.createCell(i);
+			headerCell.setCellValue(fields.get(i));
+			headerCell.setCellStyle(headerStyle);
+		}
+		
+		for (DbQueryResultRow item : result.getRows()) {
+			Row row = sheet.createRow(rowIndex++);
+			int cellIndex = 0;
+			
+			List<String> record = getRecord(item, fields);
+			
+			for (String value : record) {
+				Cell cell = row.createCell(cellIndex++);
+				cell.setCellValue(value);
+			}
+		}
+
+		ByteArrayOutputStream fos = new ByteArrayOutputStream();
+		try {
+			workbook.write(fos);
+			fos.close();
+			workbook.close();
+		} catch (IOException e) {
+			throw new DbAdminException("Error during serialization for XLSX workbook", e);
+		}
+		
+		
+		return fos.toByteArray();
+	}
 
 	/**
 	 * Converts a list of DbObjects to a string containing their JSONL representation.
@@ -181,6 +268,28 @@ public class DataExportController {
 		return sb.toString();
 	}
 	
+	private String toJsonlQuery(DbQueryResult result, List<String> fields) {
+		if (result.isEmpty())
+			return "";
+
+		StringBuilder sb = new StringBuilder();
+		
+		for (DbQueryResultRow item : result.getRows()) {
+			Map<String, Object> map = item.toMap(fields);
+			try {
+				String json = mapper.writeValueAsString(map);
+				sb.append(json);
+			} catch (JsonProcessingException e) {
+				throw new DbAdminException(e);
+			}
+			
+			sb.append("\n");
+		}
+
+		return sb.toString();
+	
+	}
+	
 	private String toCsv(List<DbObject> items, List<String> fields, boolean raw) {
 		if (items.isEmpty())
 			return "";
@@ -201,6 +310,40 @@ public class DataExportController {
 		} catch (IOException e) {
 			throw new DbAdminException("Error during creation of CSV file", e);
 		}
+	}
+	
+	private String toCsvQuery(DbQueryResult result, List<String> fields) {
+		if (result.isEmpty())
+			return "";
+
+		StringWriter sw = new StringWriter();
+
+		CSVFormat csvFormat = 
+			CSVFormat.DEFAULT.builder()
+					 .setHeader(fields.toArray(String[]::new))
+					 .build();
+
+		try (final CSVPrinter printer = new CSVPrinter(sw, csvFormat)) {
+			for (DbQueryResultRow item : result.getRows()) {
+				printer.printRecord(getRecord(item, fields));
+			}
+
+			return sw.toString();
+		} catch (IOException e) {
+			throw new DbAdminException("Error during creation of CSV file", e);
+		}
+	
+	}
+	
+	private List<String> getRecord(DbQueryResultRow row, List<String> fields) {
+		List<String> record = new ArrayList<>();
+		
+		for (String field : fields) {
+			Object value = row.getFieldByName(field);
+			record.add(value ==  null ? null : value.toString());
+		}
+		
+		return record;
 	}
 	
 	/**

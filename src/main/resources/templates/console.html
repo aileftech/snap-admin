@@ -3,6 +3,60 @@
 	<head th:replace="~{fragments/resources::head}">
 	</head>
 	<body>
+		<!-- Modal -->
+		<div class="modal modal-lg fade" id="csvQueryExportModal" tabindex="-1" aria-labelledby="csvQueryExportModalLabel" aria-hidden="true"
+			th:if="${results != null}">
+			<form th:action="|/${dbadmin_baseUrl}/console/export/${activeQuery.getId()}|" method="GET">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5" id="csvQueryExportModalLabel">Export settings</h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<div class="container-fluid">
+								<p class="text-muted">The export file will contain all the pages in the results. If the table is big,
+								this might take some time.</p>
+								
+								<h5 class="fw-bold">Include columns</h5>
+								<div th:each="field : ${results.getSortedFields()}" th:if="${field.isExportable()}">
+									<div class="form-check">
+										<input class="form-check-input" type="checkbox" 
+											th:value="${field.getName()}" th:id="|__check_${field.getName()}|"
+											th:name="fields[]" 
+											checked>
+										<label class="form-check-label" th:for="|__check_${field.getName()}|">
+									    	[[ ${field.getName()} ]]
+										</label>
+									</div>
+								</div>
+								<h5 class="fw-bold mt-3">Export format</h3>
+								<select name="format" class="form-select">
+									<option th:each="format : ${T(tech.ailef.dbadmin.external.dto.DataExportFormat).values()}"
+										th:value="${format}" th:text="${format}">
+									</option>
+								</select>
+								<div class="form-check mt-3">
+									<input class="form-check-input" type="checkbox" checked="checked"
+										disabled 
+										id="__check_raw"
+										th:name="raw">
+									<label class="form-check-label" for="__check_raw">
+								    	Export raw values
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+							<button type="submit" class="btn btn-primary">Export [[ ${pagination.getMaxElement()} ]] rows</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+		<!-- End modal -->
+		
     	<div class="bg-light main-wrapper">
     		<nav th:replace="~{fragments/resources :: navbar}"></nav>
 	        <div class="d-flex">
@@ -92,6 +146,10 @@
 														<i>Showing [[ ${results.size()} ]] of [[ ${pagination.getMaxElement()} ]] 
 															results in [[ ${elapsedTime} ]] seconds</i>
 													</p>
+													<button th:if="${results != null}" title="Open export data window" type="button" 
+														class="btn pb-0 pt-0"  data-bs-toggle="modal" data-bs-target="#csvQueryExportModal">
+														<i class="bi bi-file-earmark-spreadsheet export-icon" style="font-size: 1.6rem;"></i>
+													</button>
 												</div>
 											</div>
 											
@@ -100,13 +158,17 @@
 													<i>Showing [[ ${results.size()} ]] of [[ ${pagination.getMaxElement()} ]] 
 														results in [[ ${elapsedTime} ]] seconds</i>
 												</p>
+												<button th:if="${results != null}" title="Open export data window" type="button" 
+													class="btn pb-0 pt-0"  data-bs-toggle="modal" data-bs-target="#csvQueryExportModal">
+													<i class="bi bi-file-earmark-spreadsheet export-icon" style="font-size: 1.6rem;"></i>
+												</button>
 											</div>
 										</div>
 									</nav>
 								
-
 									
-	        						<div th:replace="~{fragments/generic_table :: table(results=${results})}"></div>
+									
+									<div th:replace="~{fragments/generic_table :: table(results=${results})}"></div>
 	        						
 	        						
 	        						
@@ -163,9 +225,9 @@
 												</p>
 											</div>
 										</div>
+										
 									</nav>
 								
-	        						
 	        					</div>
 	        					<div th:if="${error != null}">
 									<div class="separator mt-3 mb-3"></div>

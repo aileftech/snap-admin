@@ -24,8 +24,6 @@
 						<a th:href="|/${dbadmin_baseUrl}/model/${field.getConnectedType().getName()}/show/${object.get(field)}|">
 							<span th:text="${object.get(field)}"></span>
 						</a>
-						<p class="p-0 m-0"
-							th:text="${object.traverse(field).getDisplayName()}"></p>
 					</th:block>
 					<th:block th:if="${!field.isForeignKey()}">
 						<span th:text="${object.get(field)}"></span>

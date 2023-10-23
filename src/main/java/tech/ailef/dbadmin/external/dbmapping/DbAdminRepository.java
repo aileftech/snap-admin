@@ -19,7 +19,9 @@
 
 package tech.ailef.dbadmin.external.dbmapping;
 
+import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -27,10 +29,12 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,7 +43,11 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
+import tech.ailef.dbadmin.external.DbAdmin;
 import tech.ailef.dbadmin.external.annotations.ReadOnly;
+import tech.ailef.dbadmin.external.dbmapping.query.DbQueryOutputField;
+import tech.ailef.dbadmin.external.dbmapping.query.DbQueryResult;
+import tech.ailef.dbadmin.external.dbmapping.query.DbQueryResultRow;
 import tech.ailef.dbadmin.external.dto.FacetedSearchRequest;
 import tech.ailef.dbadmin.external.dto.PaginatedResult;
 import tech.ailef.dbadmin.external.dto.PaginationInfo;
@@ -52,6 +60,12 @@ import tech.ailef.dbadmin.external.exceptions.InvalidPageException;
  */
 @Component
 public class DbAdminRepository {
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
+	
+	@Autowired
+	private DbAdmin dbAdmin;
+	
 	public DbAdminRepository() {
 	}
 
@@ -270,6 +284,39 @@ public class DbAdminRepository {
 		return jpaRepository.search(query, 1, 50, null, null, null).stream()
 					.map(o  -> new DbObject(o, schema))
 					.toList();
+	}
+	
+	/**
+	 * Execute custom SQL query using jdbcTemplate
+	 */
+	public DbQueryResult executeQuery(String sql) {
+		List<DbQueryResultRow> results = new ArrayList<>();
+		if (sql != null && !sql.isBlank()) {
+			results = jdbcTemplate.query(sql, (rs, rowNum) -> {
+				Map<DbQueryOutputField, Object> result = new HashMap<>();
+				
+				ResultSetMetaData metaData = rs.getMetaData();
+				int cols = metaData.getColumnCount();
+				
+				for (int i = 0; i < cols; i++) {
+					Object o = rs.getObject(i + 1);
+					String columnName = metaData.getColumnName(i + 1);
+					String tableName = metaData.getTableName(i + 1);
+					DbQueryOutputField field = new DbQueryOutputField(columnName, tableName, dbAdmin);
+					
+					result.put(field, o);
+				}
+				
+				DbQueryResultRow row = new DbQueryResultRow(result, sql);
+				
+				result.keySet().forEach(f -> {
+					f.setResult(row);
+				});
+				
+				return row;
+			});
+		}
+		return new DbQueryResult(results);
 	}
 	
 	/**

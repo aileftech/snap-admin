@@ -64,6 +64,11 @@ public class DbQueryOutputField {
 	public boolean isForeignKey() {
 		return dbField != null && dbField.isForeignKey();
 	}
+
+	public boolean isExportable() {
+		if (dbField == null) return true;
+		return dbField.isExportable();
+	}
 	
 	public Class<?> getConnectedType() {
 		if (dbField == null) return null;
