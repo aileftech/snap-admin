@@ -77,6 +77,18 @@
 			></input>
 		</div>
 	</th:block>
+	<th:block th:fragment="select(field, create, name, value)">
+		<select th:name="${name}" class="form-select">
+			<option value=""
+				th:selected="${value == null}">NULL</option>
+			<option th:each="v : ${field.getType().getValues()}"
+				th:text="${v}"
+				th:value="${v}"
+				th:selected="${value == v}">
+				
+			</option>
+		</select>
+	</th:block>
 	<!--
 	<th:block th:fragment="offset_datetime(field, create, name, value)">
 		<div class="form-group">

@@ -33,6 +33,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import tech.ailef.dbadmin.external.annotations.DisplayName;
+import tech.ailef.dbadmin.external.dbmapping.fields.BooleanFieldType;
+import tech.ailef.dbadmin.external.dbmapping.fields.DbField;
 import tech.ailef.dbadmin.external.exceptions.DbAdminException;
 
 /**
@@ -246,7 +248,7 @@ public class DbObject {
 		if (dbField == null) return null;
 		
 		String prefix = "get";
-		if (dbField.getType() == DbFieldType.BOOLEAN) {
+		if (dbField.getType() instanceof BooleanFieldType) {
 			prefix = "is";
 		}
 		

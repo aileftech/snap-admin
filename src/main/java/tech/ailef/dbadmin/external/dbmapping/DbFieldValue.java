@@ -27,6 +27,8 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import tech.ailef.dbadmin.external.dbmapping.fields.DbField;
+
 /**
  * Wrapper for the value of a field 
  *

@@ -21,7 +21,7 @@ package tech.ailef.dbadmin.external.dto;
 
 import java.util.Objects;
 
-import tech.ailef.dbadmin.external.dbmapping.DbField;
+import tech.ailef.dbadmin.external.dbmapping.fields.DbField;
 import tech.ailef.dbadmin.external.exceptions.DbAdminException;
 
 /**

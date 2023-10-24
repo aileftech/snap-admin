@@ -20,12 +20,13 @@
 
 package tech.ailef.dbadmin.external.dbmapping.query;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
 
 import tech.ailef.dbadmin.external.DbAdmin;
-import tech.ailef.dbadmin.external.dbmapping.DbField;
-import tech.ailef.dbadmin.external.dbmapping.DbFieldType;
 import tech.ailef.dbadmin.external.dbmapping.DbObjectSchema;
+import tech.ailef.dbadmin.external.dbmapping.fields.DbField;
+import tech.ailef.dbadmin.external.dbmapping.fields.DbFieldType;
 import tech.ailef.dbadmin.external.exceptions.DbAdminException;
 import tech.ailef.dbadmin.external.exceptions.UnsupportedFieldTypeException;
 
@@ -127,9 +128,10 @@ public class DbQueryOutputField {
 		// If the row this fields belongs to is defined
 		if (result != null) {
 			try {
-				DbFieldType type = DbFieldType.fromClass(result.get(this).getClass());
+				DbFieldType type = DbFieldType.fromClass(result.get(this).getClass()).getConstructor().newInstance();
 				return type.toString();
-			} catch (UnsupportedFieldTypeException e) {
+			} catch (UnsupportedFieldTypeException | InstantiationException | IllegalAccessException | 
+					IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 				return "-";
 			}
 		}

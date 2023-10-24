@@ -17,7 +17,7 @@
  */
 
 
-package tech.ailef.dbadmin.external.dbmapping;
+package tech.ailef.dbadmin.external.dbmapping.fields;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -36,6 +36,9 @@ import tech.ailef.dbadmin.external.annotations.DisplayImage;
 import tech.ailef.dbadmin.external.annotations.Filterable;
 import tech.ailef.dbadmin.external.annotations.FilterableType;
 import tech.ailef.dbadmin.external.annotations.ReadOnly;
+import tech.ailef.dbadmin.external.dbmapping.DbFieldValue;
+import tech.ailef.dbadmin.external.dbmapping.DbObject;
+import tech.ailef.dbadmin.external.dbmapping.DbObjectSchema;
 
 /**
  * Represent a field on the database, generated from an Entity class instance variable.
@@ -172,7 +175,7 @@ public class DbField {
 	}
 
 	public boolean isBinary() {
-		return type == DbFieldType.BYTE_ARRAY;
+		return type instanceof ByteArrayFieldType;
 	}
 	
 	public boolean isImage() {
@@ -184,7 +187,7 @@ public class DbField {
 	}
 	
 	public boolean isText() {
-		return type == DbFieldType.TEXT;
+		return type instanceof TextFieldType;
 	}
 	
 	/**

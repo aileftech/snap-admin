@@ -57,10 +57,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import tech.ailef.dbadmin.external.DbAdmin;
 import tech.ailef.dbadmin.external.dbmapping.DbAdminRepository;
-import tech.ailef.dbadmin.external.dbmapping.DbField;
 import tech.ailef.dbadmin.external.dbmapping.DbFieldValue;
 import tech.ailef.dbadmin.external.dbmapping.DbObject;
 import tech.ailef.dbadmin.external.dbmapping.DbObjectSchema;
+import tech.ailef.dbadmin.external.dbmapping.fields.DbField;
 import tech.ailef.dbadmin.external.dbmapping.query.DbQueryResult;
 import tech.ailef.dbadmin.external.dbmapping.query.DbQueryResultRow;
 import tech.ailef.dbadmin.external.dto.DataExportFormat;

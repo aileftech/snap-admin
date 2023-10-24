@@ -40,6 +40,7 @@ import jakarta.annotation.PostConstruct;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
@@ -50,9 +51,12 @@ import jakarta.persistence.OneToOne;
 import tech.ailef.dbadmin.external.annotations.Disable;
 import tech.ailef.dbadmin.external.annotations.DisplayFormat;
 import tech.ailef.dbadmin.external.dbmapping.CustomJpaRepository;
-import tech.ailef.dbadmin.external.dbmapping.DbField;
-import tech.ailef.dbadmin.external.dbmapping.DbFieldType;
 import tech.ailef.dbadmin.external.dbmapping.DbObjectSchema;
+import tech.ailef.dbadmin.external.dbmapping.fields.DbField;
+import tech.ailef.dbadmin.external.dbmapping.fields.DbFieldType;
+import tech.ailef.dbadmin.external.dbmapping.fields.EnumFieldType;
+import tech.ailef.dbadmin.external.dbmapping.fields.StringFieldType;
+import tech.ailef.dbadmin.external.dbmapping.fields.TextFieldType;
 import tech.ailef.dbadmin.external.dto.MappingError;
 import tech.ailef.dbadmin.external.exceptions.DbAdminException;
 import tech.ailef.dbadmin.external.exceptions.DbAdminNotFoundException;
@@ -285,16 +289,26 @@ public class DbAdmin {
 		// foreign key, if any
 		Class<?> connectedType = null;
 		
-		// Try to assign default field type
+		// Try to assign default field type determining it by the raw field type and its annotations
 		DbFieldType fieldType = null;
 		try {
-			fieldType = DbFieldType.fromClass(f.getType());
+			Class<? extends DbFieldType> fieldTypeClass = DbFieldType.fromClass(f.getType());
 			
-			if (fieldType != null && lob != null && fieldType == DbFieldType.STRING) {
-				fieldType = DbFieldType.TEXT;
+			if (fieldTypeClass == StringFieldType.class && lob != null) {
+				fieldTypeClass = TextFieldType.class;
+			}
+			
+			// Enums are instantiated later because they call a different constructor
+			if (fieldTypeClass != EnumFieldType.class) {
+				try {
+					fieldType = fieldTypeClass.getConstructor().newInstance();
+				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+					// If failure, we try to map a relationship on this field later
+				}
 			}
 		} catch (DbAdminException e) {
-			// If failure, we try to map a relationship on this field
+			// If failure, we try to map a relationship on this field later
 		}
 
 		if (manyToOne != null || oneToOne != null) {
@@ -308,6 +322,14 @@ public class DbAdmin {
 	        Class<?> targetEntityClass = (Class<?>) stringListType.getActualTypeArguments()[0];
 	        fieldType = mapForeignKeyType(targetEntityClass);
 	        connectedType = targetEntityClass;
+		}
+		
+		// Check if field has @Enumerated annotation and process accordingly
+		if (fieldType == null) {
+			Enumerated enumerated = f.getAnnotation(Enumerated.class);
+			if (enumerated != null) {
+				fieldType = new EnumFieldType(f.getType());
+			}
 		}
 		
 		if (fieldType == null) {
@@ -367,7 +389,7 @@ public class DbAdmin {
 			if (linkType == null)
 				throw new DbAdminException("Unable to find @Id field in Entity class " + entityClass);
 			
-			return DbFieldType.fromClass(linkType);
+			return DbFieldType.fromClass(linkType).getConstructor().newInstance();
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
 				| InvocationTargetException | NoSuchMethodException | SecurityException e) {
 			throw new DbAdminException(e);

@@ -46,6 +46,7 @@ import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import tech.ailef.dbadmin.external.DbAdmin;
 import tech.ailef.dbadmin.external.annotations.ReadOnly;
+import tech.ailef.dbadmin.external.dbmapping.fields.DbField;
 import tech.ailef.dbadmin.external.dbmapping.query.DbQueryOutputField;
 import tech.ailef.dbadmin.external.dbmapping.query.DbQueryResult;
 import tech.ailef.dbadmin.external.dbmapping.query.DbQueryResultRow;

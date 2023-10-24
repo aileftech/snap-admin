@@ -46,6 +46,7 @@ import tech.ailef.dbadmin.external.annotations.DisableDelete;
 import tech.ailef.dbadmin.external.annotations.DisableEdit;
 import tech.ailef.dbadmin.external.annotations.DisableExport;
 import tech.ailef.dbadmin.external.annotations.HiddenColumn;
+import tech.ailef.dbadmin.external.dbmapping.fields.DbField;
 import tech.ailef.dbadmin.external.dto.MappingError;
 import tech.ailef.dbadmin.external.exceptions.DbAdminException;
 import tech.ailef.dbadmin.external.misc.Utils;

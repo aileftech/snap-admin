@@ -40,6 +40,9 @@ import jakarta.persistence.criteria.CriteriaUpdate;
 import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import tech.ailef.dbadmin.external.dbmapping.fields.DbField;
+import tech.ailef.dbadmin.external.dbmapping.fields.StringFieldType;
+import tech.ailef.dbadmin.external.dbmapping.fields.TextFieldType;
 import tech.ailef.dbadmin.external.dto.CompareOperator;
 import tech.ailef.dbadmin.external.dto.QueryFilter;
 import tech.ailef.dbadmin.external.exceptions.DbAdminException;
@@ -163,7 +166,7 @@ public class CustomJpaRepository extends SimpleJpaRepository {
 		List<Predicate> finalPredicates = new ArrayList<>();
         
         List<DbField> stringFields = 
-        	schema.getSortedFields().stream().filter(f -> f.getType() == DbFieldType.STRING || f.getType() == DbFieldType.TEXT)
+        	schema.getSortedFields().stream().filter(f -> f.getType() instanceof StringFieldType || f.getType() instanceof TextFieldType)
         			.collect(Collectors.toList());
         
         List<Predicate> queryPredicates = new ArrayList<>();

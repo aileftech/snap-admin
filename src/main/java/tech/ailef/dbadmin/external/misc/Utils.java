@@ -26,8 +26,8 @@ import java.util.Set;
 
 import org.springframework.util.MultiValueMap;
 
-import tech.ailef.dbadmin.external.dbmapping.DbField;
 import tech.ailef.dbadmin.external.dbmapping.DbObjectSchema;
+import tech.ailef.dbadmin.external.dbmapping.fields.DbField;
 import tech.ailef.dbadmin.external.dto.CompareOperator;
 import tech.ailef.dbadmin.external.dto.QueryFilter;
 import tech.ailef.dbadmin.external.exceptions.DbAdminException;
