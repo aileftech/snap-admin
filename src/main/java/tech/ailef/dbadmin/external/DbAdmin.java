@@ -47,6 +47,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import tech.ailef.dbadmin.external.annotations.Disable;
 import tech.ailef.dbadmin.external.annotations.DisplayFormat;
 import tech.ailef.dbadmin.external.dbmapping.CustomJpaRepository;
 import tech.ailef.dbadmin.external.dbmapping.DbField;
@@ -107,7 +108,10 @@ public class DbAdmin {
 			logger.debug("Found " + beanDefs.size() + " candidate @Entity classes");
 			
 			for (BeanDefinition bd : beanDefs) {
-				schemas.add(processBeanDefinition(bd));
+				// This can return null if the Entity has the @Disable annotation
+				DbObjectSchema schema = processBeanDefinition(bd);
+				if (schema != null)
+					schemas.add(schema);
 			}
 			
 			logger.info("Scanned package '" + currentPackage + "'. Loaded " + beanDefs.size() + " schemas.");
@@ -185,6 +189,11 @@ public class DbAdmin {
 		
 		try {
 			Class<?> klass = Class.forName(fullClassName);
+			
+			Disable disabled = klass.getAnnotation(Disable.class);
+			if (disabled != null)
+				return null;
+			
 			DbObjectSchema schema = new DbObjectSchema(klass, this);
 			CustomJpaRepository simpleJpaRepository = new CustomJpaRepository(schema, entityManager);
 			schema.setJpaRepository(simpleJpaRepository);
