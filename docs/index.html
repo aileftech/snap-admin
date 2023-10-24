@@ -125,6 +125,11 @@ dbadmin.modelsPackage=your.models.package,your.second.models.package
 <p>This will autoconfigure the various Spring Boot Database Admin components when your application starts.</p>
 <p>If everything is setup correctly, you will see Spring Boot Database Admin confirming it in the log messages that appear when you start your application. Keep in mind that if you specify the wrong models package, it will still work but provide you an empty interface. Visit <a target="_blank" href="http://localhost:8080/admin">http://localhost:8080/admin</a> (replace the correct port and base path with your settings) to check if everything is working correctly.</p>
 
+<h4 id="known-issues">2.2.1 Known issues</h4>
+<ul>
+	<li><strong>Transactional</strong>: If you're using <code>@Transactional</code> methods, you need to annotate your transaction manager with the <code>@Primary</code> annotation, as you may otherwise get a <code>NoUniqueBeanDefinitionException</code> (read <a href="https://github.com/aileftech/spring-boot-database-admin/issues/16" target="_blank">here</a> for more info).
+</ul>
+
 <h3 id="supported-features">2.3 Supported features</h3>
 </p>
 <h4 id="supported-annotations">2.3.1 Supported JPA annotations</h4>
@@ -148,7 +153,7 @@ dbadmin.modelsPackage=your.models.package,your.second.models.package
     <li>Double, Float, Integer, Short, Byte, Character, BigDecimal, BigInteger</li>
     <li>Boolean</li>
     <li>String, UUID</li>
-	<li>Date, LocalDate, LocalDateTime, OffsetDateTime</li>
+	<li>Date, LocalDate, LocalDateTime, OffsetDateTime, Instant</li>
     <li>byte[]</li>
 </ul>
 
@@ -317,6 +322,19 @@ public class User { ... }</code>
 </pre>
 
 <p>Disables the export functionality for this table.</p>
+
+
+<h4 id="disable">3.1.10 @Disable</h4>
+<h6>Code example</h6>
+<pre >
+<code class="language-java">@Entity
+@Disable
+public class Payment { ... }</code>
+</pre>
+
+<p>Disables Spring Boot Database Admin on this table, by ignoring it during the initialization phase.</p>
+
+
 
 
 <div class="separator"></div>
