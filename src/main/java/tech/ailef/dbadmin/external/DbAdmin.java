@@ -80,7 +80,7 @@ public class DbAdmin {
 	
 	private DbAdminProperties properties;
 	
-	private final String version = "0.1.7";
+	private static final String VERSION = "0.1.8";
     
     /**
 	 * Builds the DbAdmin instance by scanning the `@Entity` beans and loading
@@ -130,7 +130,7 @@ public class DbAdmin {
 	 * @return
 	 */
 	public String getVersion() {
-		return version;
+		return VERSION;
 	}
 	
 	/**
