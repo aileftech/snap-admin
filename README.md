@@ -21,7 +21,7 @@ for your database schema. No modifications required to your existing code (well,
  * Action logs: history of all write operations executed through the web UI
  * Advanced search and filtering
  * Annotation-based customization
- * Data export (CSV, XLSX)
+ * Data export (CSV, XLSX, JSONL)
  * SQL console to run custom queries
 
 **Supported JPA annotations**
@@ -39,7 +39,7 @@ These are the supported types for fields inside your `@Entity` classes (excludin
  * Double, Float, Integer, Short, Byte, Character, BigDecimal, BigInteger
  * Boolean
  * String, UUID
- * Date, LocalDate, LocalDateTime, OffsetDateTime
+ * Date, LocalDate, LocalDateTime, OffsetDateTime, Instant
  * byte[]
 
 The code is still in a very early stage and it might not be robust if you use not-yet-supported JPA annotations and/or other custom configurations (e.g., custom naming strategy). If you find a bug with your settings, please report it as an issue and I will take a look at it.
