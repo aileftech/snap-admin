@@ -40,6 +40,7 @@ import jakarta.annotation.PostConstruct;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -328,7 +329,9 @@ public class DbAdmin {
 		if (fieldType == null) {
 			Enumerated enumerated = f.getAnnotation(Enumerated.class);
 			if (enumerated != null) {
-				fieldType = new EnumFieldType(f.getType());
+				EnumType type = enumerated.value();
+				
+				fieldType = new EnumFieldType(f.getType(), type);
 			}
 		}
 		

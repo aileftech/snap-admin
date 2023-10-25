@@ -24,15 +24,19 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import jakarta.persistence.EnumType;
 import tech.ailef.dbadmin.external.dto.CompareOperator;
 import tech.ailef.dbadmin.external.exceptions.DbAdminException;
 
 public class EnumFieldType extends DbFieldType {
 
+	private EnumType type;
+	
 	private Class<?> klass;
 	
-	public EnumFieldType(Class<?> klass) {
+	public EnumFieldType(Class<?> klass, EnumType type) {
 		this.klass = klass;
+		this.type = type;
 	}
 	
 	@Override
@@ -55,6 +59,7 @@ public class EnumFieldType extends DbFieldType {
 	@Override
 	public Object parseValue(Object value) {
 		if (value == null || value.toString().isBlank()) return null;
+		
 		try {
 			Method valueOf = getJavaClass().getMethod("valueOf", String.class);
 			return valueOf.invoke(null, value.toString());
@@ -75,6 +80,10 @@ public class EnumFieldType extends DbFieldType {
 
 	@Override
 	public List<CompareOperator> getCompareOperators() {
-		return List.of(CompareOperator.STRING_EQ);
+		return List.of(CompareOperator.EQ);
+	}
+	
+	public EnumType getType() {
+		return type;
 	}
 }

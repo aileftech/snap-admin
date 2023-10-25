@@ -96,7 +96,7 @@ public class CustomJpaRepository extends SimpleJpaRepository {
             	)
             	
             );
-
+        
         if (sortKey !=  null)
         	query.orderBy(sortOrder.equals("DESC") ? cb.desc(root.get(sortKey)) : cb.asc(root.get(sortKey)));
         
