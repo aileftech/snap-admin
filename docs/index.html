@@ -112,6 +112,9 @@ dbadmin.modelsPackage=your.models.package,your.second.models.package
 ## Set to true if you need to run the tests, as it will customize
 ## the database configuration for the internal DataSource
 # dbadmin.testMode=false
+#
+## SQL console enable/disable (true by default)
+# dbadmin.sqlConsoleEnabled=false
 </code>
 </pre>
 
@@ -155,6 +158,7 @@ dbadmin.modelsPackage=your.models.package,your.second.models.package
     <li>String, UUID</li>
 	<li>Date, LocalDate, LocalDateTime, OffsetDateTime, Instant</li>
     <li>byte[]</li>
+    <li>Enum</li>
 </ul>
 
 <p>For these field types, the interface will be already customized. For example, a file upload input is provided to fill a <code>byte[]</code> field or a date-picker for the various date types.</p>
