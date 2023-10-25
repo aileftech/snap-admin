@@ -245,10 +245,17 @@ public class DbField {
 	}
 	
 	public Set<DbFieldValue> getAllValues() {
-		List<?> findAll = schema.getJpaRepository().findAll();
-		return findAll.stream()
-					.map(o -> new DbObject(o, schema).get(this))
-					.collect(Collectors.toSet());
+		if (type instanceof EnumFieldType) {
+			List<?> values = type.getValues();
+			return values.stream().map(v -> {
+				return new DbFieldValue(v, this);
+			}).collect(Collectors.toSet());
+		} else {
+			List<?> findAll = schema.getJpaRepository().findAll();
+			return findAll.stream()
+						.map(o -> new DbObject(o, schema).get(this))
+						.collect(Collectors.toSet());
+		}
 	}
 	
 	@Override
