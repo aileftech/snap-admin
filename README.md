@@ -49,7 +49,7 @@ The code is still in a very early stage and it might not be robust if you use no
 
 1. Spring Boot Database Admin is distributed on Maven. For the latest stable release you can simply include the following snippet in your `pom.xml` file:
 
-```
+```xml
 <dependency>
 	<groupId>tech.ailef</groupId>
 	<artifactId>spring-boot-db-admin</artifactId>
@@ -63,7 +63,7 @@ a sample database and already configured code.
 
 Otherwise, go ahead and add these to your `application.properties` file:
 
-```
+```properties
 ## The first-level part of the URL path: http://localhost:8080/${baseUrl}/
 dbadmin.baseUrl=admin
 
@@ -89,7 +89,7 @@ dbadmin.modelsPackage=your.models.package,your.second.models.package
 
 Now annotate your `@SpringBootApplication` class containing the `main` method with the following:
 
-```
+```java
 @ImportAutoConfiguration(DbAdminAutoConfiguration.class)
 ```
 
