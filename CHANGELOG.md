@@ -5,7 +5,7 @@
 - Support for `Instant` (#21)
 - Added JSONL format to export options
 - `@Disable` annotation to ignore entire table (#24)
-- Other fixed issues: #19,
+- Other fixed issues: #19
 
 **0.1.7**
 - Export to CSV and XLSX
