@@ -22,7 +22,7 @@ for your database schema. No modifications required to your existing code (well,
  * Advanced search and filtering
  * Annotation-based customization
  * Data export (CSV, XLSX, JSONL)
- * SQL console to run custom queries
+ * SQL console to run, save for later use and export results of custom SQL queries
 
 **Supported JPA annotations**
 
@@ -41,6 +41,7 @@ These are the supported types for fields inside your `@Entity` classes (excludin
  * String, UUID
  * Date, LocalDate, LocalDateTime, OffsetDateTime, Instant
  * byte[]
+ * Enum
 
 The code is still in a very early stage and it might not be robust if you use not-yet-supported JPA annotations and/or other custom configurations (e.g., custom naming strategy). If you find a bug with your settings, please report it as an issue and I will take a look at it.
 
