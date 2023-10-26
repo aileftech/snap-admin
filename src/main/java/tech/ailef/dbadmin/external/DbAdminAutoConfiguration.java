@@ -16,7 +16,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 package tech.ailef.dbadmin.external;
 
 import java.util.Properties;
@@ -37,6 +36,7 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import tech.ailef.dbadmin.internal.InternalDbAdminConfiguration;
 
@@ -52,7 +52,6 @@ import tech.ailef.dbadmin.internal.InternalDbAdminConfiguration;
 @Configuration
 @EnableJpaRepositories(
 	entityManagerFactoryRef = "internalEntityManagerFactory", 
-	transactionManagerRef = "internalTransactionManager", 
 	basePackages = { "tech.ailef.dbadmin.internal.repository" }
 )
 @EnableTransactionManagement
@@ -67,7 +66,7 @@ public class DbAdminAutoConfiguration {
 	 * @return
 	 */
 	@Bean
-	public DataSource internalDataSource() {
+	DataSource internalDataSource() {
 		DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
 		dataSourceBuilder.driverClassName("org.h2.Driver");
 		if (props.isTestMode()) {
@@ -82,7 +81,7 @@ public class DbAdminAutoConfiguration {
 	}
 
 	@Bean
-	public LocalContainerEntityManagerFactoryBean internalEntityManagerFactory() {
+	LocalContainerEntityManagerFactoryBean internalEntityManagerFactory() {
 		LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
 		factoryBean.setDataSource(internalDataSource());
 		factoryBean.setPersistenceUnitName("internal");
@@ -96,11 +95,23 @@ public class DbAdminAutoConfiguration {
 		return factoryBean;
 	}
 
-	@Bean
-	public PlatformTransactionManager internalTransactionManager() {
+	/**
+	 * The internal transaction manager. It is not defined as a bean
+	 * in order to avoid "colliding" with the default transactionManager
+	 * registered by the user. Internally, we use this to instantiate a
+	 * TransactionTemplate and run all transactions manually instead of
+	 * relying on the @link {@link Transactional} annotation.
+	 * @return
+	 */
+	PlatformTransactionManager internalTransactionManager() {
 		JpaTransactionManager transactionManager = new JpaTransactionManager();
 		transactionManager.setEntityManagerFactory(internalEntityManagerFactory().getObject());
 		return transactionManager;
+	}
+	
+	@Bean
+	TransactionTemplate internalTransactionTemplate() {
+	    return new TransactionTemplate(internalTransactionManager());
 	}
 
 }

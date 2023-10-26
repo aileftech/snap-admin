@@ -281,7 +281,5 @@ public class DbField {
 		DbField other = (DbField) obj;
 		return Objects.equals(dbName, other.dbName) && type == other.type;
 	}
-
-	
-
 }
+

@@ -24,7 +24,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import tech.ailef.dbadmin.external.dto.LogsSearchRequest;
 import tech.ailef.dbadmin.external.dto.PaginatedResult;
@@ -45,9 +45,13 @@ public class UserActionService {
 	@Autowired
 	private CustomActionRepositoryImpl customRepo;
 	
-	@Transactional("internalTransactionManager")
+	@Autowired
+	private TransactionTemplate internalTransactionTemplate;
+	
 	public UserAction save(UserAction a) {
-		return repo.save(a);
+		return internalTransactionTemplate.execute(status -> {
+			return repo.save(a);
+		});
 	}
 	
 	/**
