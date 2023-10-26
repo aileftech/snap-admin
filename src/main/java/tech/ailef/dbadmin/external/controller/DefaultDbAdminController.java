@@ -554,7 +554,7 @@ public class DefaultDbAdminController {
 		}
 		
 		ConsoleQuery q = new ConsoleQuery();
-		consoleQueryRepository.save(q);
+		consoleService.save(q);
 		return "redirect:/" + properties.getBaseUrl() + "/console/run/" + q.getId();
 	}
 	
