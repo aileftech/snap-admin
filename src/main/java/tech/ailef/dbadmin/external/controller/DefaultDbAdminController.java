@@ -72,8 +72,9 @@ import tech.ailef.dbadmin.internal.model.ConsoleQuery;
 import tech.ailef.dbadmin.internal.model.UserAction;
 import tech.ailef.dbadmin.internal.model.UserSetting;
 import tech.ailef.dbadmin.internal.repository.ConsoleQueryRepository;
-import tech.ailef.dbadmin.internal.repository.UserSettingsRepository;
+import tech.ailef.dbadmin.internal.service.ConsoleQueryService;
 import tech.ailef.dbadmin.internal.service.UserActionService;
+import tech.ailef.dbadmin.internal.service.UserSettingsService;
 
 /**
  * The main DbAdmin controller that register most of the routes of the web interface.
@@ -97,7 +98,10 @@ public class DefaultDbAdminController {
 	private ConsoleQueryRepository consoleQueryRepository;
 	
 	@Autowired
-	private UserSettingsRepository userSettingsRepo;
+	private ConsoleQueryService consoleService;
+	
+	@Autowired
+	private UserSettingsService userSettingsService;
 	
 	/**
 	 * Home page with list of schemas
@@ -564,7 +568,7 @@ public class DefaultDbAdminController {
 		
 		if (tabs.isEmpty()) {
 			ConsoleQuery q = new ConsoleQuery();
-			consoleQueryRepository.save(q);
+			consoleService.save(q);
 			return "redirect:/" + properties.getBaseUrl() + "/console/run/" + q.getId();
 		} else {
 			return "redirect:/" + properties.getBaseUrl() + "/console/run/" + tabs.get(0).getId();
@@ -608,7 +612,7 @@ public class DefaultDbAdminController {
 		}
 		
 		activeQuery.setUpdatedAt(LocalDateTime.now());
-		consoleQueryRepository.save(activeQuery);
+		consoleService.save(activeQuery);
 		
 		model.addAttribute("activePage", "console");
 		model.addAttribute("activeQuery", activeQuery);
@@ -651,7 +655,7 @@ public class DefaultDbAdminController {
 		for (String paramName : params.keySet()) {
 			if (paramName.equals("next")) continue;
 			
-			userSettingsRepo.save(new UserSetting(paramName, params.get(paramName)));
+			userSettingsService.save(new UserSetting(paramName, params.get(paramName)));
 		}
 		model.addAttribute("activePage", "settings");
 		return next;
