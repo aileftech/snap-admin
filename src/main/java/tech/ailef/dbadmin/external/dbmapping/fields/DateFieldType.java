@@ -18,13 +18,13 @@
 
 package tech.ailef.dbadmin.external.dbmapping.fields;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
-import java.util.Locale;
 
 import tech.ailef.dbadmin.external.dto.CompareOperator;
+import tech.ailef.dbadmin.external.exceptions.DbAdminException;
 
 public class DateFieldType extends DbFieldType {
 	@Override
@@ -35,11 +35,12 @@ public class DateFieldType extends DbFieldType {
 	@Override
 	public Object parseValue(Object value) {
 		if (value == null || value.toString().isBlank()) return null;
-		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+//		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 		try {
-			return format.parse(value.toString());
-		} catch (ParseException e) {
-			throw new RuntimeException(e);
+			LocalDate localDate = LocalDate.parse(value.toString());
+			return Date.valueOf(localDate);
+		} catch (DateTimeParseException e) {
+			throw new DbAdminException("Invalid date " + value, e);
 		}
 	}
 

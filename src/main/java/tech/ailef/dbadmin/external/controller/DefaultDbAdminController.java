@@ -496,6 +496,7 @@ public class DefaultDbAdminController {
 			attr.addFlashAttribute("validationErrors", new ValidationErrorsContainer(e));
 			attr.addFlashAttribute("params", params);
 		} catch (DbAdminException e) {
+			e.getCause().printStackTrace();
 			attr.addFlashAttribute("errorTitle", "Error");
 			attr.addFlashAttribute("error", e.getMessage());
 			attr.addFlashAttribute("params", params);

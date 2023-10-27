@@ -386,7 +386,10 @@ public class DbObjectSchema {
 				
 				Object parsedFieldValue = 
 					getFieldByName(param).getType().parseValue(params.get(param));
-				
+				System.out.println(param);
+				System.out.println(parsedFieldValue);
+				if (parsedFieldValue != null)
+					System.out.println(parsedFieldValue.getClass());
 				if (parsedFieldValue != null && getFieldByName(param).isSettable()) {
 					setter.invoke(instance, parsedFieldValue);
 				}
