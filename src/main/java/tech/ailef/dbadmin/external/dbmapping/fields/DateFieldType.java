@@ -35,7 +35,6 @@ public class DateFieldType extends DbFieldType {
 	@Override
 	public Object parseValue(Object value) {
 		if (value == null || value.toString().isBlank()) return null;
-//		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 		try {
 			LocalDate localDate = LocalDate.parse(value.toString());
 			return Date.valueOf(localDate);

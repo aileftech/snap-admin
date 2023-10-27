@@ -22,6 +22,7 @@ package tech.ailef.dbadmin.external.controller;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.hibernate.id.IdentifierGenerationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -82,6 +85,8 @@ import tech.ailef.dbadmin.internal.service.UserSettingsService;
 @Controller
 @RequestMapping(value= {"/${dbadmin.baseUrl}", "/${dbadmin.baseUrl}/"})
 public class DefaultDbAdminController {
+	private static final Logger logger = LoggerFactory.getLogger(DefaultDbAdminController.class);
+	
 	@Autowired
 	private DbAdminProperties properties;
 	
@@ -496,7 +501,8 @@ public class DefaultDbAdminController {
 			attr.addFlashAttribute("validationErrors", new ValidationErrorsContainer(e));
 			attr.addFlashAttribute("params", params);
 		} catch (DbAdminException e) {
-			e.getCause().printStackTrace();
+			Throwable cause = e.getCause() != null ? e.getCause() : e;
+			logger.error(Arrays.toString(cause.getStackTrace()));
 			attr.addFlashAttribute("errorTitle", "Error");
 			attr.addFlashAttribute("error", e.getMessage());
 			attr.addFlashAttribute("params", params);
