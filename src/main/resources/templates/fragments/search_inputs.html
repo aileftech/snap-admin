@@ -45,7 +45,7 @@
 		 	(field.isReadOnly() && !create) ? 'disable' : ''}|"
 		
 		th:required="${!field.isNullable() && !field.isPrimaryKey()}"
-		step="any"
+		th:step="${field.getStep()}"
 	></input>
 	
 	
