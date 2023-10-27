@@ -417,7 +417,7 @@ public class DbObjectSchema {
 			return dbObject;
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
 				| NoSuchMethodException | SecurityException e) {
-			throw new RuntimeException(e);
+			throw new DbAdminException(e);
 		}
 		
 	}

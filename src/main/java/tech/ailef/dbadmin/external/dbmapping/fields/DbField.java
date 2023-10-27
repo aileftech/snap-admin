@@ -191,6 +191,22 @@ public class DbField {
 	}
 	
 	/**
+	 * Returns the value to use in the "step" HTML attribute
+	 * for numeric data fields. For fields that are not numeric,
+	 * we just return the String "any", as it is not included
+	 * in the HTML template anyway.
+	 * @return
+	 */
+	public String getStep() {
+		if (getType() instanceof IntegerFieldType
+			|| getType() instanceof BigIntegerFieldType
+			|| getType() instanceof ByteFieldType) {
+			return "0";
+		}
+		return "any";
+	}
+	
+	/**
 	 * Returns the name of the Thymeleaf fragment used to render
 	 * the input for this field.
 	 * @return
