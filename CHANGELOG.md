@@ -1,5 +1,8 @@
 # Changelog
 
+**0.1.9**
+
+
 **0.1.8**
 - SQL console to run custom SQL queries (#20)
 - Support for `Instant` (#21)
