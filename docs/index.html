@@ -4,7 +4,7 @@
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css" integrity="sha384-b6lVK+yci+bfDmaY1u0zE8YYJt0TZxLEAFyYSLHId4xoVvsrQu3INevFKo+Xir8e" crossorigin="anonymous">
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js" integrity="sha512-1/RvZTcCDEUjY/CypiMz+iqqtaoQfAITmNSJY17Myp4Ms5mdxPS5UV7iOfdZoxcGhzFbOm6sntTKJppjvuhg4g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-		<title>Reference Guide | Spring Boot Database Admin</title>
+		<title>Reference Guide | SnapAdmin</title>
 		<link rel="stylesheet" type="text/css" href="style.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/default.min.css">
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
@@ -27,7 +27,7 @@
 			<div class="container">
 				<nav class="navbar navbar-expand-lg bg-light">
 				  <div class="container-fluid">
-				    <a class="navbar-brand fw-bold" href="#">Spring Boot Database Admin <span class="text-muted">v0.1.8</span></a>
+				    <a class="navbar-brand fw-bold" href="#">SnapAdmin <span class="text-muted">v0.1.8</span></a>
 				    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 				      <span class="navbar-toggler-icon"></span>
 				    </button>
@@ -60,23 +60,23 @@
 				<div class="col-9 main-content pt-3 ps-4">
 
 <h1 class="m-0">Reference Guide</h1>
-<h2 class="text-muted mt-0">Spring Boot Database Admin v0.1.8</h2>
+<h2 class="text-muted mt-0">SnapAdmin v0.1.8</h2>
 <div class="separator"></div>
 <h2 id="introduction">1. Introduction</h2>
 
-<p>Spring Boot Database Admin is a tool to easily build customizable database management interfaces with CRUD operations (and more!) for Spring Boot+JPA apps.</p>
+<p>SnapAdmin is a tool to easily build customizable database management interfaces with CRUD operations (and more!) for Spring Boot+JPA apps.</p>
 <p>It does so by scanning your JPA-annotated <code>@Entity</code> classes and building the required functionality at runtime. Since it won't generate actual code you won't have to change your existing code base, and this makes it easy to integrate. Moreover, every time you update your classes, all changes will be reflected automatically on the web UI. 
 </p>
 <p>On the other hand, this approach requires to interact correctly with all JPA annotations and adapt our behaviour accordingly. This is not an easy task given the large surface area of possible behaviours introduced with annotations and can sometimes introduce bugs. If you encounter problems, please <a href="https://github.com/aileftech/spring-boot-database-admin/issues" target="_blank">report it as an issue on Github</a>.</p>
 
-<p>The rest of this guide outlines how to install, configure and customize Spring Boot Database Admin and, where applicable, it documents known interactions with JPA annotations.</p>
+<p>The rest of this guide outlines how to install, configure and customize SnapAdmin and, where applicable, it documents known interactions with JPA annotations.</p>
 <div class="separator"></div>
 <h2 id="getting-started">2. Getting started</h2>
-<p>Getting started with Spring Boot Database Admin requires including it as a dependency and minimal configuration.</p>
+<p>Getting started with SnapAdmin requires including it as a dependency and minimal configuration.</p>
 
 
 <h3 id="installation">2.1 Installation</h3>
-<p>Since Spring Boot Database Admin is distributed on Maven, the easiest way to start is to include it in your <code>pom.xml</code>:</p>
+<p>Since SnapAdmin is distributed on Maven, the easiest way to start is to include it in your <code>pom.xml</code>:</p>
 
 <pre>
 <code class="language-xml">&lt;dependency&gt;
@@ -106,7 +106,7 @@ dbadmin.modelsPackage=your.models.package,your.second.models.package
 # spring.jpa.open-in-view=true
 
 ## OPTIONAL PARAMETERS
-## Whether to enable Spring Boot Database Admin
+## Whether to enable SnapAdmin
 # dbadmin.enabled=true
 #
 ## Set to true if you need to run the tests, as it will customize
@@ -118,15 +118,15 @@ dbadmin.modelsPackage=your.models.package,your.second.models.package
 </code>
 </pre>
 
-<p>After this, you must tell Spring to import the Spring Boot Database Admin configuration. To do this, annotate your <code>@SpringBootApplication</code> class containing the <code>main</code> method with the following:</p>
+<p>After this, you must tell Spring to import the SnapAdmin configuration. To do this, annotate your <code>@SpringBootApplication</code> class containing the <code>main</code> method with the following:</p>
 
 <pre>
 <code class="language-java">@ImportAutoConfiguration(DbAdminAutoConfiguration.class)
 </code>
 </pre>
 
-<p>This will autoconfigure the various Spring Boot Database Admin components when your application starts.</p>
-<p>If everything is setup correctly, you will see Spring Boot Database Admin confirming it in the log messages that appear when you start your application. Keep in mind that if you specify the wrong models package, it will still work but provide you an empty interface. Visit <a target="_blank" href="http://localhost:8080/admin">http://localhost:8080/admin</a> (replace the correct port and base path with your settings) to check if everything is working correctly.</p>
+<p>This will autoconfigure the various SnapAdmin components when your application starts.</p>
+<p>If everything is setup correctly, you will see SnapAdmin confirming it in the log messages that appear when you start your application. Keep in mind that if you specify the wrong models package, it will still work but provide you an empty interface. Visit <a target="_blank" href="http://localhost:8080/admin">http://localhost:8080/admin</a> (replace the correct port and base path with your settings) to check if everything is working correctly.</p>
 
 <h4 id="known-issues">2.2.1 Known issues</h4>
 <ul>
@@ -141,9 +141,9 @@ dbadmin.modelsPackage=your.models.package,your.second.models.package
     <li><b>Relationships</b>: @OneToMany, @ManyToOne, @ManyToMany, @OneToOne</li>
     <li><b>Validation</b>: all JPA validation annotations (<code>jakarta.validation.constraints.*</code>)</li>
 </ul>
-<p>The behaviours specified with these annotations should be applied automatically by Spring Boot Database Admin. Using non-supported annotations will not necessarily result in an error, as they are simply ignored. Depending on what the annotation actually does, this could be just fine or result in an error if it interferes with something that Spring Boot Database Admin relies on.</p>
+<p>The behaviours specified with these annotations should be applied automatically by SnapAdmin. Using non-supported annotations will not necessarily result in an error, as they are simply ignored. Depending on what the annotation actually does, this could be just fine or result in an error if it interferes with something that SnapAdmin relies on.</p>
 
-<p>The following list documents the most significant interactions between the JPA annotations and Spring Boot Database Admin.</p>
+<p>The following list documents the most significant interactions between the JPA annotations and SnapAdmin.</p>
 <h6>@Entity</h6>
 <p>Used to detect the candidate classes to scan.</p>
 <h6>@Column</h6>
@@ -169,13 +169,13 @@ dbadmin.modelsPackage=your.models.package,your.second.models.package
 
 <p>To check if your code contains unsupported fields:</p>
 <ul>
-	<li>In the Spring Boot Database Admin home page, a red icon is shown next to each table if problems have been detected; click this icon to get the detailed list of errors.</li>
+	<li>In the SnapAdmin home page, a red icon is shown next to each table if problems have been detected; click this icon to get the detailed list of errors.</li>
 	<li>At startup, unsupported field types are printed in the logs (you should see them if you <code>grep DbAdmin</code>).</li>
 </ul>
 
 <div class="separator"></div>
 <h2 id="customization">3. Customization</h2>
-<p>There are two ways to customize the appearance and behaviour of Spring Boot Database Admin:</p>
+<p>There are two ways to customize the appearance and behaviour of SnapAdmin:</p>
 <ol>
 	<li>Applying annotations on your <code>@Entity</code> classes, fields and methods</li>
 	<li>Using the Settings panel through the web interface</li>
@@ -336,7 +336,7 @@ public class User { ... }</code>
 public class Payment { ... }</code>
 </pre>
 
-<p>Disables Spring Boot Database Admin on this table, by ignoring it during the initialization phase.</p>
+<p>Disables SnapAdmin on this table, by ignoring it during the initialization phase.</p>
 
 
 
@@ -344,11 +344,11 @@ public class Payment { ... }</code>
 <div class="separator"></div>
 
 <h3 id="settings-panel">3.2 The Settings panel</h3>
-<p>As mentioned earlier, the Settings panel primarily provides options to customize the branding/appearance of the web interface. These settings are persistent across restarts and are stored in an embedded H2 database (file named <code>dbadmin_internal</code>), along with other data required by Spring Boot Database Admin.</p>
+<p>As mentioned earlier, the Settings panel primarily provides options to customize the branding/appearance of the web interface. These settings are persistent across restarts and are stored in an embedded H2 database (file named <code>dbadmin_internal</code>), along with other data required by SnapAdmin.</p>
 
 <h2 id="security">4. Security</h2>
-<p>Spring Boot Database Admin does not implement authentication and/or authorization mechanisms. However, you can use a standard Spring security configuration in order to limit access to the web UI or specific parts of it.</p>
-<p>All Spring Boot Database Admin routes start with the value of <code>dbadmin.baseUrl</code> property, and all write operations (edit, create, delete) are implemented as <code>POST</code> calls. The following code provides an example security configuration (assuming Spring Boot Database Admin runs at <code>/admin</code>):</p>
+<p>SnapAdmin does not implement authentication and/or authorization mechanisms. However, you can use a standard Spring security configuration in order to limit access to the web UI or specific parts of it.</p>
+<p>All SnapAdmin routes start with the value of <code>dbadmin.baseUrl</code> property, and all write operations (edit, create, delete) are implemented as <code>POST</code> calls. The following code provides an example security configuration (assuming SnapAdmin runs at <code>/admin</code>):</p>
 
 
 <pre>
@@ -357,7 +357,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     return http.authorizeHttpRequests(auth -> {
         // POST methods (create, edit and delete) require ADMIN role
         auth.requestMatchers(HttpMethod.POST, "/admin/**").hasAuthority("ADMIN")
-            // Read-only Spring Boot Database Admin routes require authentication (any role)
+            // Read-only SnapAdmin routes require authentication (any role)
             .requestMatchers("/admin/**").authenticated()
             // The other routes are not protected (adapt to your needs)
             .requestMatchers("/**").permitAll();
@@ -369,7 +369,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 <div class="separator"></div>
 <h2 id="troubleshooting">5. Troubleshooting</h2>
 
-<p>When setting up Spring Boot Database Admin for the first time, problems most commonly occur at startup, causing the application to stop. If this is the case, first check that you have correctly configured your <code>application.properties</code> file. If everything is correct here, the problem might be related to one or more of your <code>@Entity</code> classes (or the rest of your code in general) which might be using some unsupported feature and/or annotation. </p>
+<p>When setting up SnapAdmin for the first time, problems most commonly occur at startup, causing the application to stop. If this is the case, first check that you have correctly configured your <code>application.properties</code> file. If everything is correct here, the problem might be related to one or more of your <code>@Entity</code> classes (or the rest of your code in general) which might be using some unsupported feature and/or annotation. </p>
 <p>
 You can enable <code>DEBUG</code>-level logs (e.g. with <code>logging.level.root=DEBUG</code>) to pinpoint the cause error. Looking at those in combination with the stack trace should provide enough information to understand what is going wrong. Keep in mind that if the application doesn't start at all, it's probably a bug: you can <a href="https://github.com/aileftech/spring-boot-database-admin/issues" target="_blank">open an issue on Github</a>, providing the stacktrace, the debug logs and all other relevant information.</p>
 
