@@ -113,4 +113,4 @@ If you find a problem or a bug, please report it as an issue. When doing so, inc
  * provide the code for the involved `@Entity` classes, if possible/relevant
  * provide the full stack trace of the error
  * specify if you are using any particular configuration either in your `application.properties` or through annotations
- * if the problem occurs at startup, enable `DEBUG`-level logs and report what `grep DbAdmin` returns
+ * if the problem occurs at startup, enable `DEBUG`-level logs and report what `grep SnapAdmin` returns
