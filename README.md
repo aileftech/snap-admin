@@ -1,5 +1,9 @@
 [![javadoc](https://javadoc.io/badge2/tech.ailef/spring-boot-db-admin/javadoc.svg)](https://javadoc.io/doc/tech.ailef/spring-boot-db-admin) 
 
+> The project has been recently renamed from 'Spring Boot Database Admin' to 'SnapAdmin'.
+> If you were already using 'Spring Boot Database Admin' make sure to update your `pom.xml` and other
+> references with the new updated name.
+
 <!--
 > **LIVE DEMO** Check if it's up at http://dbadmin.ailef.tech/admin. Feel free to edit the content, it's an in-memory database that resets every hour with the same sample data.
 -->
