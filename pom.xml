@@ -10,10 +10,10 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>tech.ailef</groupId>
-	<artifactId>spring-boot-db-admin</artifactId>
-	<version>0.1.8</version>
-	<name>spring-boot-db-admin</name>
-	<description>Spring Boot Database Admin is an auto-generated CRUD admin panel for Spring Boot apps</description>
+	<artifactId>snap-admin</artifactId>
+	<version>0.1.9</version>
+	<name>SnapAdmin</name>
+	<description>SnapAdmin is an auto-generated CRUD admin panel for Spring Boot/JPA apps</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
