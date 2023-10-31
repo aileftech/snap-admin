@@ -65,7 +65,7 @@
 								</div>
 								<h5 class="fw-bold mt-3">Export format</h3>
 								<select name="format" class="form-select">
-									<option th:each="format : ${T(tech.ailef.dbadmin.external.dto.DataExportFormat).values()}"
+									<option th:each="format : ${T(tech.ailef.snapadmin.external.dto.DataExportFormat).values()}"
 										th:value="${format}" th:text="${format}">
 									</option>
 								</select>

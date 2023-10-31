@@ -52,7 +52,7 @@ import tech.ailef.snapadmin.internal.InternalDbAdminConfiguration;
 @Configuration
 @EnableJpaRepositories(
 	entityManagerFactoryRef = "internalEntityManagerFactory", 
-	basePackages = { "tech.ailef.dbadmin.internal.repository" }
+	basePackages = { "tech.ailef.snapadmin.internal.repository" }
 )
 @EnableTransactionManagement
 @Import(InternalDbAdminConfiguration.class)
@@ -85,7 +85,7 @@ public class SnapAdminAutoConfiguration {
 		LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
 		factoryBean.setDataSource(internalDataSource());
 		factoryBean.setPersistenceUnitName("internal");
-		factoryBean.setPackagesToScan("tech.ailef.dbadmin.internal.model");
+		factoryBean.setPackagesToScan("tech.ailef.snapadmin.internal.model");
 		factoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 		Properties properties = new Properties();
 		properties.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
