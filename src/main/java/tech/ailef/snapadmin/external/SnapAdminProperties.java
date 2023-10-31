@@ -1,5 +1,5 @@
 /* 
- * Spring Boot Database Admin - An automatically generated CRUD admin UI for Spring Boot apps
+ * SnapAdmin - An automatically generated CRUD admin UI for Spring Boot apps
  * Copyright (C) 2023 Ailef (http://ailef.tech)
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -28,12 +28,12 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("dbadmin")
 public class SnapAdminProperties {
 	/**
-	 * Whether Spring Boot Database Admin is enabled.
+	 * Whether SnapAdmin is enabled.
 	 */
 	public boolean enabled = true;
 	
 	/**
-	 * The prefix that is prepended to all routes registered by Spring Boot Database Admin.
+	 * The prefix that is prepended to all routes registered by SnapAdmin.
 	 */
 	private String baseUrl;
 
@@ -53,7 +53,7 @@ public class SnapAdminProperties {
 	private boolean sqlConsoleEnabled = true;
 	
 	/**
-	 * Whether Spring Boot Database Admin is enabled
+	 * Whether SnapAdmin is enabled
 	 * @return
 	 */
 	public boolean isEnabled() {
@@ -73,7 +73,7 @@ public class SnapAdminProperties {
 	}
 
 	/**
-	 * Returns the prefix that is prepended to all routes registered by Spring Boot Database Admin.
+	 * Returns the prefix that is prepended to all routes registered by SnapAdmin.
 	 * @return
 	 */
 	public String getBaseUrl() {

@@ -1,5 +1,5 @@
 /* 
- * Spring Boot Database Admin - An automatically generated CRUD admin UI for Spring Boot apps
+ * SnapAdmin - An automatically generated CRUD admin UI for Spring Boot apps
  * Copyright (C) 2023 Ailef (http://ailef.tech)
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -104,7 +104,7 @@ public class SnapAdmin {
 		ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
 		provider.addIncludeFilter(new AnnotationTypeFilter(Entity.class));
 		
-		logger.debug("Initializing Spring Boot Database Admin...");
+		logger.debug("Initializing SnapAdmin...");
 		
 		for (String currentPackage : modelsPackage) {
 			logger.debug("Scanning package " + currentPackage);
@@ -124,9 +124,9 @@ public class SnapAdmin {
 
 		boolean hasErrors = schemas.stream().flatMap(s -> s.getErrors().stream()).count() > 0;
 		
-		logger.info("Spring Boot Database Admin initialized. Loaded " + schemas.size() 
+		logger.info("SnapAdmin initialized. Loaded " + schemas.size() 
 				+ " schemas from " + modelsPackage.size() + " packages"	+ (hasErrors ? " (with errors)" : ""));
-		logger.info("Spring Boot Database Admin web interface at: http://YOUR_HOST:YOUR_PORT/" + properties.getBaseUrl());
+		logger.info("SnapAdmin web interface at: http://YOUR_HOST:YOUR_PORT/" + properties.getBaseUrl());
 		
 	}
 

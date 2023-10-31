@@ -1,5 +1,5 @@
 /*
- * Spring Boot Database Admin - An automatically generated CRUD admin UI for Spring Boot apps
+ * SnapAdmin - An automatically generated CRUD admin UI for Spring Boot apps
  * Copyright (C) 2023 Ailef (http://ailef.tech)
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -17,7 +17,7 @@
  */
 
 /**
- * Root package of Spring Boot Database Admin.
+ * Root package of SnapAdmin.
  * 
  * It contains the configuration class which handles the initialization
  * and the main {@link tech.ailef.snapadmin.external.SnapAdmin} class.

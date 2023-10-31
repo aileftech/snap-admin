@@ -1,5 +1,5 @@
 /* 
- * Spring Boot Database Admin - An automatically generated CRUD admin UI for Spring Boot apps
+ * SnapAdmin - An automatically generated CRUD admin UI for Spring Boot apps
  * Copyright (C) 2023 Ailef (http://ailef.tech)
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -56,7 +56,7 @@ public class UserConfiguration {
 	 */
 	private Map<String, String> defaultValues() {
 		Map<String, String> values = new HashMap<>();
-		values.put("brandName", "Spring Boot Database Admin");
+		values.put("brandName", "SnapAdmin");
 		return values;
 	}
 }

@@ -1,5 +1,5 @@
 /* 
- * Spring Boot Database Admin - An automatically generated CRUD admin UI for Spring Boot apps
+ * SnapAdmin - An automatically generated CRUD admin UI for Spring Boot apps
  * Copyright (C) 2023 Ailef (http://ailef.tech)
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -43,7 +43,7 @@ import tech.ailef.snapadmin.internal.InternalDbAdminConfiguration;
 /**
  * The configuration class for "internal" data source. This is not the
  * source connected to the user's data/entities, but rather an internal
- * H2 database which is used by Spring Boot Database Admin to store user
+ * H2 database which is used by SnapAdmin to store user
  * settings and other information like operations history. 
  */
 @ConditionalOnProperty(name = "dbadmin.enabled", matchIfMissing = true)

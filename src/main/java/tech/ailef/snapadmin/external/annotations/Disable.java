@@ -1,5 +1,5 @@
 /* 
- * Spring Boot Database Admin - An automatically generated CRUD admin UI for Spring Boot apps
+ * SnapAdmin - An automatically generated CRUD admin UI for Spring Boot apps
  * Copyright (C) 2023 Ailef (http://ailef.tech)
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Disables Spring Boot Database Admin on this table. 
+ * Disables SnapAdmin on this table. 
  * This means it is ignored during the initialization phase and not analyzed
  * at all.
  */
