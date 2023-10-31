@@ -121,7 +121,7 @@ dbadmin.modelsPackage=your.models.package,your.second.models.package
 <p>After this, you must tell Spring to import the SnapAdmin configuration. To do this, annotate your <code>@SpringBootApplication</code> class containing the <code>main</code> method with the following:</p>
 
 <pre>
-<code class="language-java">@ImportAutoConfiguration(DbAdminAutoConfiguration.class)
+<code class="language-java">@ImportAutoConfiguration(SnapAdminAutoConfiguration.class)
 </code>
 </pre>
 
@@ -170,7 +170,7 @@ dbadmin.modelsPackage=your.models.package,your.second.models.package
 <p>To check if your code contains unsupported fields:</p>
 <ul>
 	<li>In the SnapAdmin home page, a red icon is shown next to each table if problems have been detected; click this icon to get the detailed list of errors.</li>
-	<li>At startup, unsupported field types are printed in the logs (you should see them if you <code>grep DbAdmin</code>).</li>
+	<li>At startup, unsupported field types are printed in the logs (you should see them if you <code>grep SnapAdmin</code>).</li>
 </ul>
 
 <div class="separator"></div>
