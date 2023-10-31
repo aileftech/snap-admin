@@ -94,7 +94,7 @@ dbadmin.modelsPackage=your.models.package,your.second.models.package
 Now annotate your `@SpringBootApplication` class containing the `main` method with the following:
 
 ```java
-@ImportAutoConfiguration(DbAdminAutoConfiguration.class)
+@ImportAutoConfiguration(SnapAdminAutoConfiguration.class)
 ```
 
 This will autoconfigure SnapAdmin when your application starts. You are good to go!
