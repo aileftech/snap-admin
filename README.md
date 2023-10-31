@@ -4,7 +4,7 @@
 > **LIVE DEMO** Check if it's up at http://dbadmin.ailef.tech/admin. Feel free to edit the content, it's an in-memory database that resets every hour with the same sample data.
 -->
 
-# SnapAdmin Panel
+# SnapAdmin Database Panel
 
 Generate a powerful CRUD management dashboard for your Spring Boot application in a few minutes. 
 
