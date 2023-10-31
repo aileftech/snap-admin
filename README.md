@@ -91,6 +91,8 @@ dbadmin.modelsPackage=your.models.package,your.second.models.package
 # dbadmin.sqlConsoleEnabled=false
 ```
 
+**IMPORTANT**: The configuration prefix `dbadmin.` will be changed to `snapadmin.` starting from version 0.2.0. Remember to update your configuration files accordingly.
+
 Now annotate your `@SpringBootApplication` class containing the `main` method with the following:
 
 ```java
