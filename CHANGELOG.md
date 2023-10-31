@@ -1,7 +1,10 @@
 # Changelog
 
 **0.1.9**
-
+- Renamed project to SnapAdmin
+- Proper 'step' values for input type "number"
+- Fixed handling of java.sql.Date field type
+- Other fixed issues: #16
 
 **0.1.8**
 - SQL console to run custom SQL queries (#20)

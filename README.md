@@ -4,11 +4,11 @@
 > **LIVE DEMO** Check if it's up at http://dbadmin.ailef.tech/admin. Feel free to edit the content, it's an in-memory database that resets every hour with the same sample data.
 -->
 
-# Spring Boot Database Admin Panel
+# SnapAdmin Panel
 
 Generate a powerful CRUD management dashboard for your Spring Boot application in a few minutes. 
 
-Spring Boot Database Admin scans your `@Entity` classes and automatically builds a web UI with CRUD operations
+SnapAdmin scans your `@Entity` classes and automatically builds a web UI with CRUD operations
 for your database schema. No modifications required to your existing code (well, you will need to add **1 line** to it...)!
 
 [![Example page listing products](https://i.imgur.com/Nz19f8e.png)](https://i.imgur.com/Nz19f8e.png)
@@ -30,7 +30,7 @@ for your database schema. No modifications required to your existing code (well,
  * Relationships: @OneToMany, @ManyToOne, @ManyToMany, @OneToOne
  * Validation: all JPA validation annotations (`jakarta.validation.constraints.*`)
 
-The behaviour you specify with these annotations should be applied automatically by Spring Boot Database Admin as well. Keep in mind that using non-supported annotations will not necessarily result in an error, as they are simply ignored. Depending on what the annotation actually does, this could be just fine or result in an error if it interferes with something that Spring Boot Database Admin relies on.
+The behaviour you specify with these annotations should be applied automatically by SnapAdmin as well. Keep in mind that using non-supported annotations will not necessarily result in an error, as they are simply ignored. Depending on what the annotation actually does, this could be just fine or result in an error if it interferes with something that SnapAdmin relies on.
 
 **Supported field types**
 
@@ -47,7 +47,7 @@ The code is still in a very early stage and it might not be robust if you use no
 
 ## Installation
 
-1. Spring Boot Database Admin is distributed on Maven. For the latest stable release you can simply include the following snippet in your `pom.xml` file:
+1. SnapAdmin is distributed on Maven. For the latest stable release you can simply include the following snippet in your `pom.xml` file:
 
 ```xml
 <dependency>
@@ -75,7 +75,7 @@ dbadmin.modelsPackage=your.models.package,your.second.models.package
 # spring.jpa.open-in-view=true
 
 ## OPTIONAL PARAMETERS
-## Whether to enable Spring Boot Database Admin
+## Whether to enable SnapAdmin
 # dbadmin.enabled=true
 #
 #
@@ -93,7 +93,7 @@ Now annotate your `@SpringBootApplication` class containing the `main` method wi
 @ImportAutoConfiguration(DbAdminAutoConfiguration.class)
 ```
 
-This will autoconfigure Spring Boot Database Admin when your application starts. You are good to go!
+This will autoconfigure SnapAdmin when your application starts. You are good to go!
 
 3. At this point, when you run your application, you should be able to visit `http://localhost:${port}/${dbadmin.baseUrl}` and see the web interface.
 
