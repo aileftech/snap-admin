@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css" integrity="sha384-b6lVK+yci+bfDmaY1u0zE8YYJt0TZxLEAFyYSLHId4xoVvsrQu3INevFKo+Xir8e" crossorigin="anonymous">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js" integrity="sha512-1/RvZTcCDEUjY/CypiMz+iqqtaoQfAITmNSJY17Myp4Ms5mdxPS5UV7iOfdZoxcGhzFbOm6sntTKJppjvuhg4g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+		<title>Reference Guide | SnapAdmin</title>
+		<link rel="stylesheet" type="text/css" href="style.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/default.min.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/java.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/xml.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/properties.min.js"></script>
+		<script type="text/javascript">
+			document.addEventListener('DOMContentLoaded', function() {
+				document.querySelectorAll('h2, h3, h4, h5').forEach(heading => {
+					let tag = heading.tagName.replace('H', '');
+
+					document.getElementById('toc').innerHTML +=
+						`<li class="ms-${tag}"><a href="#${heading.id}">${heading.innerHTML}</li>`;
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div class="bg-light">
+			<div class="container">
+				<nav class="navbar navbar-expand-lg bg-light">
+				  <div class="container-fluid">
+				    <a class="navbar-brand fw-bold" href="#">SnapAdmin <span class="text-muted">v0.1.8</span></a>
+				    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				      <span class="navbar-toggler-icon"></span>
+				    </button>
+				    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+				      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+				        <li class="nav-item">
+				          <a class="nav-link" href="https://github.com/aileftech/spring-boot-database-admin" target="_blank">Github</a>
+				        </li>
+				      </ul>
+				      <!--
+				      <form class="d-flex" role="search">
+				        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+				        <button class="btn btn-outline-success" type="submit">Search</button>
+				      </form>
+				  	  -->
+				    </div>
+				  </div>
+				</nav>
+			</div>
+		</div>
+		<!-- End nav -->
+
+		<div class="container">
+			<div class="row">
+				<div class="col-3 pt-3">
+					<ol id="toc" class="toc" style="position: sticky;">
+						
+					</ol>
+				</div>
+				<div class="col-9 main-content pt-3 ps-4">
+
+<h1 class="m-0">Reference Guide</h1>
+<h2 class="text-muted mt-0">SnapAdmin v0.1.8</h2>
+<div class="separator"></div>
+<h2 id="introduction">1. Introduction</h2>
+
+<p>SnapAdmin is a tool to easily build customizable database management interfaces with CRUD operations (and more!) for Spring Boot+JPA apps.</p>
+<p>It does so by scanning your JPA-annotated <code>@Entity</code> classes and building the required functionality at runtime. Since it won't generate actual code you won't have to change your existing code base, and this makes it easy to integrate. Moreover, every time you update your classes, all changes will be reflected automatically on the web UI. 
+</p>
+<p>On the other hand, this approach requires to interact correctly with all JPA annotations and adapt our behaviour accordingly. This is not an easy task given the large surface area of possible behaviours introduced with annotations and can sometimes introduce bugs. If you encounter problems, please <a href="https://github.com/aileftech/spring-boot-database-admin/issues" target="_blank">report it as an issue on Github</a>.</p>
+
+<p>The rest of this guide outlines how to install, configure and customize SnapAdmin and, where applicable, it documents known interactions with JPA annotations.</p>
+<div class="separator"></div>
+<h2 id="getting-started">2. Getting started</h2>
+<p>Getting started with SnapAdmin requires including it as a dependency and minimal configuration.</p>
+
+
+<h3 id="installation">2.1 Installation</h3>
+<p>Since SnapAdmin is distributed on Maven, the easiest way to start is to include it in your <code>pom.xml</code>:</p>
+
+<pre>
+<code class="language-xml">&lt;dependency&gt;
+	&lt;groupId&gt;tech.ailef&lt;/groupId&gt;
+	&lt;artifactId&gt;spring-boot-db-admin&lt;/artifactId&gt;
+	&lt;version&gt;0.1.8&lt;/version&gt;
+&lt;/dependency&gt;
+</code>
+</pre>
+<p class="tip"><span class="title"><i class="bi bi-info-circle"></i> TIP</span> Go to the <a href="https://mvnrepository.com/artifact/tech.ailef/spring-boot-db-admin" target="_blank">Maven repository</a> to retrieve the exact snippet for the latest stable release.</p>
+
+<p>Alternatively, if you want the latest unstable release, you can clone the <code>main</code> branch of the Github repo and execute <code>mvn install -D skipTests</code> in the project's directory. This will install the library in your local repository, which you can then include using the same snippet as above, but replacing the version number with the one contained in the <code>pom.xml</code> file of the code you pulled from Github.</p>
+
+<h3 id="configuration">2.2 Configuration</h3>
+<p>After including the dependency, a few configuration steps are required on your end in order to integrate it into your project. </p>
+<p>Configure your <code>application.properties</code> file:</p>
+
+	<pre>
+<code class="language-properties">## The first-level part of the URL path: http://localhost:8080/${baseUrl}/
+dbadmin.baseUrl=admin
+
+## The package(s) that contain your @Entity classes
+## accepts multiple comma separated values
+dbadmin.modelsPackage=your.models.package,your.second.models.package
+
+## At the moment, it's required to have open-in-view set to true.
+# spring.jpa.open-in-view=true
+
+## OPTIONAL PARAMETERS
+## Whether to enable SnapAdmin
+# dbadmin.enabled=true
+#
+## Set to true if you need to run the tests, as it will customize
+## the database configuration for the internal DataSource
+# dbadmin.testMode=false
+#
+## SQL console enable/disable (true by default)
+# dbadmin.sqlConsoleEnabled=false
+</code>
+</pre>
+
+<p>After this, you must tell Spring to import the SnapAdmin configuration. To do this, annotate your <code>@SpringBootApplication</code> class containing the <code>main</code> method with the following:</p>
+
+<pre>
+<code class="language-java">@ImportAutoConfiguration(DbAdminAutoConfiguration.class)
+</code>
+</pre>
+
+<p>This will autoconfigure the various SnapAdmin components when your application starts.</p>
+<p>If everything is setup correctly, you will see SnapAdmin confirming it in the log messages that appear when you start your application. Keep in mind that if you specify the wrong models package, it will still work but provide you an empty interface. Visit <a target="_blank" href="http://localhost:8080/admin">http://localhost:8080/admin</a> (replace the correct port and base path with your settings) to check if everything is working correctly.</p>
+
+<h4 id="known-issues">2.2.1 Known issues</h4>
+<ul>
+	<li><strong>Transactional</strong>: If you're using <code>@Transactional</code> methods, you need to annotate your transaction manager with the <code>@Primary</code> annotation, as you may otherwise get a <code>NoUniqueBeanDefinitionException</code> (read <a href="https://github.com/aileftech/spring-boot-database-admin/issues/16" target="_blank">here</a> for more info).
+</ul>
+
+<h3 id="supported-features">2.3 Supported features</h3>
+</p>
+<h4 id="supported-annotations">2.3.1 Supported JPA annotations</h4>
+<ul>
+    <li><b>Core</b>: @Entity, @Table, @Column, @Lob, @Id, @GeneratedValue</li>
+    <li><b>Relationships</b>: @OneToMany, @ManyToOne, @ManyToMany, @OneToOne</li>
+    <li><b>Validation</b>: all JPA validation annotations (<code>jakarta.validation.constraints.*</code>)</li>
+</ul>
+<p>The behaviours specified with these annotations should be applied automatically by SnapAdmin. Using non-supported annotations will not necessarily result in an error, as they are simply ignored. Depending on what the annotation actually does, this could be just fine or result in an error if it interferes with something that SnapAdmin relies on.</p>
+
+<p>The following list documents the most significant interactions between the JPA annotations and SnapAdmin.</p>
+<h6>@Entity</h6>
+<p>Used to detect the candidate classes to scan.</p>
+<h6>@Column</h6>
+<p>Used to detect the column name and its nullability.</p>
+<h6>@GeneratedValue</h6>
+<p>When you have an <code>@Id</code> marked as a <code>@GeneratedValue</code>, you won't be asked to enter it when creating new items, as it will be automatically generated.</p>
+
+<h4 id="supported-field-types">2.3.2 Supported field types</h4>
+<ul>
+    <li>Double, Float, Integer, Short, Byte, Character, BigDecimal, BigInteger</li>
+    <li>Boolean</li>
+    <li>String, UUID</li>
+	<li>Date, LocalDate, LocalDateTime, OffsetDateTime, Instant</li>
+    <li>byte[]</li>
+    <li>Enum</li>
+</ul>
+
+<p>For these field types, the interface will be already customized. For example, a file upload input is provided to fill a <code>byte[]</code> field or a date-picker for the various date types.</p>
+
+<p>Unsupported field types are handled as gracefully as possible, meaning that when such a field is detected the application will still run. However, this field will never be displayed in the web interface. This means that it won't be possible to enter values for this field when editing or creating, leaving it with the default NULL value. If the field is not nullable, this implies you won't be able to create items.</p>
+
+<p>If you're using a field type that you think should be supported, please <a href="https://github.com/aileftech/spring-boot-database-admin/issues" target="_blank">open an issue on Github</a>.</p>
+
+<p>To check if your code contains unsupported fields:</p>
+<ul>
+	<li>In the SnapAdmin home page, a red icon is shown next to each table if problems have been detected; click this icon to get the detailed list of errors.</li>
+	<li>At startup, unsupported field types are printed in the logs (you should see them if you <code>grep DbAdmin</code>).</li>
+</ul>
+
+<div class="separator"></div>
+<h2 id="customization">3. Customization</h2>
+<p>There are two ways to customize the appearance and behaviour of SnapAdmin:</p>
+<ol>
+	<li>Applying annotations on your <code>@Entity</code> classes, fields and methods</li>
+	<li>Using the Settings panel through the web interface</li>
+</ol>
+<p>Annotations are used primarily to customize behaviour and add custom logic to your classes. If, instead, you're looking to customize appearance of the web UI, it's most likley through the Settings panel.</p>
+
+<h3 id="supported-annotations">3.1 Supported annotations</h3>
+
+<h4 id="display-name">3.1.1 @DisplayName</h4>
+<pre>
+<code class="language-java">@DisplayName
+public String getFullName() {
+    return firstName + " " + lastName;
+}	
+</code>
+</pre>
+
+<p>When displaying a reference to an item, we show its primary key by default. If a class has a <code>@DisplayName</code>, this method will be used in addition to the primary key whenever possible, giving the user a more readable option. <p>
+
+
+<h4 id="display-format">3.1.2 @DisplayFormat</h4>
+	<pre>
+<code class="language-java">@DisplayFormat(format = "$%.2f")
+private Double price;
+</code>
+	</pre>
+
+<p>Specify a format string to apply when displaying the field.</p>
+
+
+<h4 id="computed-column">3.1.3 @ComputedColumn</h4>
+<h6>Supported parameters</h6>
+<table class="table table-striped">
+	<tr>
+		<th>Name</th>
+		<th>Type</th>
+		<th>Required</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td class="fw-bold">name</td>
+		<td>String</td>
+		<td>false</td>
+		<td>The name of this column in the web interface. The method's name is used if this value is not specified.</td>
+	</tr>
+</table>
+<h6>Code example</h6>
+	<pre>
+<code class="language-java">@ComputedColumn
+public double totalSpent() {
+    double total = 0;
+    for (Order o : orders) {
+        total += o.total();
+    }
+    return total;
+}
+</code>
+</pre>
+
+<p>This annotation can be used to add values computed at runtime that are shown like additional columns.</p>
+
+<p class="tip"><span class="title"><i class="bi bi-exclamation-triangle"></i> NOTE</span> 
+If your computed columns are computationally expensive (e.g because they use joins) they can affect the interface loading speed. In particular, the list view is the most affected, as these methods will get called for each item in the list.
+</p>
+
+
+<h4 id="filterable">3.1.4 @Filterable</h4>
+<h6>Supported parameters</h6>
+<table class="table table-striped">
+	<tr>
+		<th>Name</th>
+		<th>Required</th>
+		<th>Type</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td class="fw-bold">type</td>
+		<td>false</td>
+		<td>Enum (<code>DEFAULT</code>, <code>CATEGORICAL</code>)</td>
+		<td>If <code>CATEGORICAL</code>, this changes the filter in the UI to shows all the possible values directly instead of providing a autocomplete form.</td>
+	</tr>
+</table>
+<h6>Code example</h6>
+<pre>
+<code class="language-java">@Filterable
+private LocalDate createdAt;
+
+@Filterable(type=FilterableType.CATEGORICAL)
+@ManyToOne
+private User user;
+</code>
+</pre>
+
+
+
+<p>Place on one or more fields in a class to activate the faceted search feature. This will allow you to easily combine all these filters when operating on the table. Can only be placed on fields that correspond to physical columns on the table (e.g. no <code>@ManyToMany</code>/<code>@OneToMany</code>) and that are not binary (<code>byte[]</code>).</p>
+
+<h4 id="display-image">3.1.5 @DisplayImage</h4>
+
+<pre>
+<code class="language-java">@DisplayImage
+@Lob
+private byte[] image;
+</code>
+</pre>
+
+<p>This annotation can be placed on binary fields to declare they are storing an image and that we want it displayed when possible. The image will be shown as a small thumbnail.</p>
+
+<h4 id="hidde-column">3.1.6 @HiddenColumn</h4>
+<h6>Code example</h6>
+<pre >
+<code>@HiddenColumn
+private String cardNumber;
+</code>
+
+</pre>
+<p>Marks a field as hidden. This column and its values will not be shown in the list and detail view for objects of this type. If the column is nullable, it will be hidden in the create and edit forms as well (and this will result in the column always being NULL when creating/editing objects). If, instead, it's not nullable column, it will be included in the create and edit forms as it would otherwise prevent the creation of items.</p>
+<p><strong>Please note that this is not meant as a security feature, </strong> but rather to hide uninformative columns that clutter the interface. In fact, since the create and edit form come pre-filled with all the information, these views <b>will</b> show the value of the hidden column (if it's not nullable).</p>
+
+<h4 id="read-only">3.1.7 @ReadOnly</h4>
+<h6>Code example</h6>
+<pre class="language-java">
+<code>@ReadOnly
+private LocalDate createdAt;
+</code>
+</pre>
+
+<p>Marks a field as read-only. The field can be filled at creation time, but it will be shown as disabled during edits, making it impossible to change its value after creation. </p>
+
+
+<h4 id="disable-create">3.1.8 @DisableCreate, @DisableEdit, @DisableDelete</h4>
+<h6>Code example</h6>
+<pre >
+<code class="language-java">@Entity
+@DisableCreate
+public class Product { ... }</code>
+</pre>
+
+<p>Disables the possibility of creating/editing/deleting items for the specific table.</p>
+
+
+<h4 id="disable-export">3.1.9 @DisableExport</h4>
+<h6>Code example</h6>
+<pre >
+<code class="language-java">@Entity
+@DisableExport
+public class User { ... }</code>
+</pre>
+
+<p>Disables the export functionality for this table.</p>
+
+
+<h4 id="disable">3.1.10 @Disable</h4>
+<h6>Code example</h6>
+<pre >
+<code class="language-java">@Entity
+@Disable
+public class Payment { ... }</code>
+</pre>
+
+<p>Disables SnapAdmin on this table, by ignoring it during the initialization phase.</p>
+
+
+
+
+<div class="separator"></div>
+
+<h3 id="settings-panel">3.2 The Settings panel</h3>
+<p>As mentioned earlier, the Settings panel primarily provides options to customize the branding/appearance of the web interface. These settings are persistent across restarts and are stored in an embedded H2 database (file named <code>dbadmin_internal</code>), along with other data required by SnapAdmin.</p>
+
+<h2 id="security">4. Security</h2>
+<p>SnapAdmin does not implement authentication and/or authorization mechanisms. However, you can use a standard Spring security configuration in order to limit access to the web UI or specific parts of it.</p>
+<p>All SnapAdmin routes start with the value of <code>dbadmin.baseUrl</code> property, and all write operations (edit, create, delete) are implemented as <code>POST</code> calls. The following code provides an example security configuration (assuming SnapAdmin runs at <code>/admin</code>):</p>
+
+
+<pre>
+<code class="language-java">@Bean
+public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    return http.authorizeHttpRequests(auth -> {
+        // POST methods (create, edit and delete) require ADMIN role
+        auth.requestMatchers(HttpMethod.POST, "/admin/**").hasAuthority("ADMIN")
+            // Read-only SnapAdmin routes require authentication (any role)
+            .requestMatchers("/admin/**").authenticated()
+            // The other routes are not protected (adapt to your needs)
+            .requestMatchers("/**").permitAll();
+    })
+    .formLogin(l -> l.loginPage("/login").permitAll())
+    .build();
+}</code></pre>
+
+<div class="separator"></div>
+<h2 id="troubleshooting">5. Troubleshooting</h2>
+
+<p>When setting up SnapAdmin for the first time, problems most commonly occur at startup, causing the application to stop. If this is the case, first check that you have correctly configured your <code>application.properties</code> file. If everything is correct here, the problem might be related to one or more of your <code>@Entity</code> classes (or the rest of your code in general) which might be using some unsupported feature and/or annotation. </p>
+<p>
+You can enable <code>DEBUG</code>-level logs (e.g. with <code>logging.level.root=DEBUG</code>) to pinpoint the cause error. Looking at those in combination with the stack trace should provide enough information to understand what is going wrong. Keep in mind that if the application doesn't start at all, it's probably a bug: you can <a href="https://github.com/aileftech/spring-boot-database-admin/issues" target="_blank">open an issue on Github</a>, providing the stacktrace, the debug logs and all other relevant information.</p>
+
+<div class="pt-3 pb-5"></div>
+
+
+				</div>
+			</div>
+			
+
+		</div>
+		<script>hljs.highlightAll();</script>
+	</body>
+</html>
