@@ -52,8 +52,8 @@ The code is still in a very early stage and it might not be robust if you use no
 ```xml
 <dependency>
 	<groupId>tech.ailef</groupId>
-	<artifactId>spring-boot-db-admin</artifactId>
-	<version>0.1.8</version>
+	<artifactId>snap-admin</artifactId>
+	<version>0.1.9</version>
 </dependency>
 ```
 
