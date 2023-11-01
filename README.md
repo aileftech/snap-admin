@@ -10,7 +10,7 @@
 
 # SnapAdmin Database Panel
 
-Generate a powerful CRUD management dashboard for your Spring Boot application in a few minutes. 
+Generate a powerful CRUD management dashboard for your [Spring Boot®](https://spring.io/projects/spring-boot) application in a few minutes. 
 
 SnapAdmin scans your `@Entity` classes and automatically builds a web UI with CRUD operations
 for your database schema. No modifications required to your existing code (well, you will need to add **1 line** to it...)!
@@ -91,7 +91,7 @@ dbadmin.modelsPackage=your.models.package,your.second.models.package
 # dbadmin.sqlConsoleEnabled=false
 ```
 
-**IMPORTANT**: The configuration prefix `dbadmin.` will change to `snapadmin.` starting from version 0.2.0. Remember to update your configuration files accordingly.
+**IMPORTANT**: The configuration prefix `dbadmin.` will change to `snapadmin.` starting from version 0.2.0, as part of the project being renamed. Remember to update your configuration files accordingly.
 
 Now annotate your `@SpringBootApplication` class containing the `main` method with the following:
 
