@@ -1,4 +1,4 @@
-[![javadoc](https://javadoc.io/badge2/tech.ailef/spring-boot-db-admin/javadoc.svg)](https://javadoc.io/doc/tech.ailef/spring-boot-db-admin) 
+[![javadoc](https://javadoc.io/badge2/tech.ailef/snap-admin/javadoc.svg)](https://javadoc.io/doc/tech.ailef/snap-admin) 
 
 > The project has been recently renamed from 'Spring Boot Database Admin' to 'SnapAdmin'.
 > If you were already using 'Spring Boot Database Admin' make sure to update your `pom.xml` and other
