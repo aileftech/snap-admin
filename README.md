@@ -4,10 +4,6 @@
 > If you were already using 'Spring Boot Database Admin' make sure to update your `pom.xml` and other
 > references with the new updated name.
 
-<!--
-> **LIVE DEMO** Check if it's up at http://dbadmin.ailef.tech/admin. Feel free to edit the content, it's an in-memory database that resets every hour with the same sample data.
--->
-
 # SnapAdmin Database Panel
 
 Generate a powerful CRUD management dashboard for your [Spring Boot®](https://spring.io/projects/spring-boot) application in a few minutes. 
