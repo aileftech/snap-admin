@@ -4,7 +4,7 @@
 > If you were already using 'Spring Boot Database Admin' make sure to update your `pom.xml` and other
 > references with the new updated name.
 
-# SnapAdmin Database Panel
+# SnapAdmin - Spring Boot Database Admin Panel
 
 Generate a powerful CRUD management dashboard for your [Spring Boot®](https://spring.io/projects/spring-boot) application in a few minutes. 
 
