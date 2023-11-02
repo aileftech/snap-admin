@@ -70,19 +70,6 @@
 	        			</div>
     				</a>
         		</li>
-        		<li th:class="${#strings.equals(activePage, 'settings') ? 'active' : ''}">
-        			<a th:href="|/${dbadmin_baseUrl}/settings|">
-	        			<div class="d-flex align-items-center">
-	        				<div class="menu-icon">
-	        					<i class="bi bi-gear"></i>
-	        				</div>
-	        				<div class="menu-entry-text d-none d-md-block">
-	        					Settings
-	        				</div>
-	        			</div>
-    				</a>
-        		</li>
-        		
         		<li th:if="${dbadmin_properties.isSqlConsoleEnabled()}"
         		    th:class="${#strings.equals(activePage, 'console') ? 'active' : ''}">
         			<a th:href="|/${dbadmin_baseUrl}/console|">
@@ -92,6 +79,18 @@
 	        				</div>
 	        				<div class="menu-entry-text d-none d-md-block">
 	        					SQL Console
+	        				</div>
+	        			</div>
+    				</a>
+        		</li>
+        		<li th:class="${#strings.equals(activePage, 'settings') ? 'active' : ''}">
+        			<a th:href="|/${dbadmin_baseUrl}/settings|">
+	        			<div class="d-flex align-items-center">
+	        				<div class="menu-icon">
+	        					<i class="bi bi-gear"></i>
+	        				</div>
+	        				<div class="menu-entry-text d-none d-md-block">
+	        					Settings
 	        				</div>
 	        			</div>
     				</a>
