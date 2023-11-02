@@ -2,3 +2,42 @@
 	border-radius: 6px;
 	border: 1px solid #DDD;
 }
+
+footer  ul  {
+	margin:  0px;
+	padding-left:  0px;
+}
+
+footer  ul  li {
+	margin:  0px;
+	list-style-type: none;
+}
+
+footer  ul  li a {
+	text-decoration: none;
+	color: #CCC;
+}
+
+
+footer  ul  li a:hover {
+	color: #EEE;
+}
+
+.footer-card h6 {
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+div.separator {
+	border: none;
+	border-top:  1px solid #DDD;
+	opacity: 0.1;
+}
+
+p.text {
+	font-size: 1.2rem;
+}
+
+a {
+	color: #7223D1;
+}

@@ -8,11 +8,17 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css" integrity="sha384-b6lVK+yci+bfDmaY1u0zE8YYJt0TZxLEAFyYSLHId4xoVvsrQu3INevFKo+Xir8e" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/properties.min.js"></script>
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/dark.min.css"> -->
 <body>
     <!-- Top navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
-            <a class="navbar-brand" href="#"><img src="logo.png" style="width: 180px;"></a>
+            <a class="navbar-brand" href="/"><img src="logo.png" style="width: 180px;"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -50,7 +56,7 @@
     <section id="features" class="py-5">
         <div class="container">
             <h2 class="text-center mb-4 fw-bold">Features</h2>
-            <p style="font-size: 1.2rem;" class="mb-4 mt-3">SnapAdmin scans your existing code base and automatically builds everything at runtime: you won't have to modify your existing code base.</p>
+            <p class="text mb-4 mt-3">SnapAdmin scans your existing code base and automatically builds everything at runtime: you won't have to modify your existing code.</p>
             <div class="row pt-3">
                 <div class="col-md-4">
                     <h4 class="fw-bold">First-class CRUD</h4>
@@ -78,12 +84,14 @@
     <section id="get-started" class="py-5 bg-light">
         <div class="container">
             <h2 class="text-center mb-4 fw-bold">Get Started</h2>
+            <p class="text mb-4 mt-3">
+            You can get started with SnapAdmin in less than 3 minutes by following these steps.
+            </p>
             <div class="row">
-                <div class="col-md-4">
-                    <h4 class="fw-bold">Install Maven dependency</h4>
-<pre>
-<code>
-&lt;dependency&gt;
+                <div class="col">
+                    <h3 class="fw-bold">1. Install Maven dependency</h3>
+<pre class="language-xml">
+<code class="language-xml">&lt;dependency&gt;
     &lt;groupId&gt;tech.ailef&lt;/groupId&gt;
     &lt;artifactId&gt;snap-admin&lt;/artifactId&gt;
     &lt;version&gt;0.1.9&lt;/version&gt;
@@ -91,63 +99,64 @@
 </code>
 </pre>
                 </div>
-                <div class="col-md-4">
-                    <h4 class="fw-bold">Configure SnapAdmin</h4>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <h3 class="fw-bold">2. Configure SnapAdmin</h3>
 <pre>
-<code>
-dbadmin.baseUrl=admin
+<code class="language-properties">dbadmin.baseUrl=admin
 dbadmin.modelsPackage=your.models.package
 </code>
 </pre>
                 </div>
-                <div class="col-md-4">
-                    <h4 class="fw-bold">Enable SnapAdmin</h4>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <h3 class="fw-bold">3. Enable SnapAdmin</h3>
+                    <p>Add the following at the top of your <code>@SpringBootApplication</code> class to enable SnapAdmin AutoConfiguration.</p>
 <pre>
-<code>
-@ImportAutoConfiguration(SnapAdminAutoConfiguration.class)
+<code class="language-java">@ImportAutoConfiguration(SnapAdminAutoConfiguration.class)
 </code>
 </pre>
-
+<p class="text">Head over to the <a href="https://github.com/aileftech/snap-admin">Github README</a> or the <a href="docs/">Reference Guide</a> for more detailed instructions.</p>
                 </div>
             </div>
         </div>
     </section>
 
-
-    <section id="features" class="py-5">
-        <div class="container">
-            <h2 class="text-center mb-4 fw-bold">Features</h2>
-            <p style="font-size: 1.2rem;" class="mb-4 mt-3">SnapAdmin scans your existing code base and automatically builds everything at runtime: you won't have to modify your existing code base.</p>
-            <div class="row pt-3">
-                <div class="col-md-4">
-                    <h4 class="fw-bold">First-class CRUD</h4>
-                    <img src="img/crud.png" class="w-100 card-img">
-                    <p class="p-1 mt-2">Complete CRUD features for all entities and their associations, with out-of-the-box support for
-                    JPA validation constraints and multiple field types.</p>
-                </div>
-                <div class="col-md-4">
-                    <h4 class="fw-bold">Annotation-based customization</h4>
-                    <img src="img/annotation.png" class="w-100 card-img">
-                    <p class="p-1 mt-2">Customize SnapAdmin by applying annotations to your classes, methods and fields. You can apply custom
-                    formatting and naming, create custom columns and more.</p>
-                </div>
-                <div class="col-md-4">
-                    <h4 class="fw-bold">Not just CRUD</h4>
-                    <img src="img/export.png" class="w-100 card-img">
-                    <p class="p-1 mt-2">With SnapAdmin you also get: audit logs for write operations, advanced filtering & search,
-                    data export (CSV, XLSX, JSONL) and an SQL console to run and save frequent queries.</p>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- Footer -->
     <footer class="footer text-white text-center text-lg-start" style="background-color: #130623;">
         <div class="container p-4">
-            <p class="mt-2">&copy; 2023 SnapAdmin Panel. All rights reserved.</p>
-            <p>This is project is not affiliated or endorsed by the Spring foundation.</p>
+            <div class="row mb-4">
+                <div class="col-md-4 footer-card">
+                    <h6>Github</h6>
+                    <ul>
+                        <li><a href="https://github.com/aileftech/snap-admin/issues">Issues</a></li>
+                        <li><a href="https://github.com/aileftech/snap-admin/releases">Releases</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 footer-card">
+                    <h6>Documentation</h6>
+                    <ul>
+                        <li><a href="https://javadoc.io/doc/tech.ailef/snap-admin/latest/index.html">Javadoc</a></li>
+                        <li><a href="docs/">Reference Guide</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 footer-card">
+                    <h6>Social</h6>
+                    <ul>
+                        <li><a href="https://twitter.com/aileftech">Twitter</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="separator"></div>
+            <div class="row mt-4">
+                <p class="mt-2">&copy; 2023 SnapAdmin Panel. All rights reserved.
+                Spring and Spring Boot are trademarks of Pivotal Software, Inc. in the U.S. and other countries.</p>
+            </div>
         </div>
     </footer>
-
+    <script>hljs.highlightAll();</script>
 </body>
 </html>
