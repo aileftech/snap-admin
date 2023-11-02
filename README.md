@@ -58,7 +58,7 @@ The code is still in a very early stage and it might not be robust if you use no
 ```
 
 2. A few simple configuration steps are required on your end in order to integrate the library into your project. 
-If you don't want to test on your own code, you can clone the [test project](https://github.com/aileftech/spring-boot-database-admin-test) which provides
+If you don't want to test on your own code, you can clone the [test project](https://github.com/aileftech/snap-admin-test) which provides
 a sample database and already configured code.
 
 Otherwise, go ahead and add these to your `application.properties` file:

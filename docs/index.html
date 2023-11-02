@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SnapAdmin</title>
+    <title>SnapAdmin &ndash; Spring Boot Database Admin Panel</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"></head>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css" integrity="sha384-b6lVK+yci+bfDmaY1u0zE8YYJt0TZxLEAFyYSLHId4xoVvsrQu3INevFKo+Xir8e" crossorigin="anonymous">
@@ -44,8 +44,8 @@
     <header class="hero text-white text-center" style="background-color: #2F0F57;">
         <div class="container p-5">
             <h1 class="display-4 fw-bold">SnapAdmin</h1>
-            <p class="lead">A powerful, automatically-generated database management dashboard for <a href="https://spring.io/projects/spring-boot/" class="text-white" target="_blank">Spring Boot&reg;</a>/JPA applications</p>
-            <img src="screenshot.png" alt="Project Screenshot" class="img-fluid rounded">
+            <p class="lead">A powerful, automatically-generated database management panel for <a href="https://spring.io/projects/spring-boot/" class="text-white" target="_blank">Spring Boot&reg;</a>/JPA applications</p>
+            <img src="screenshot.png" alt="SnapAdmin screenshot showing the list view" class="img-fluid rounded">
             <div class="mt-4">
                 <a href="#get-started" class="btn btn-light btn-lg">Get Started</a>
                 <a href="https://github.com/aileftech/snap-admin" class="btn btn-light btn-lg ms-3"><i class="bi bi-github"></i> Github</a>
@@ -61,19 +61,19 @@
             <div class="row pt-3">
                 <div class="col-md-4">
                     <h4 class="fw-bold">First-class CRUD</h4>
-                    <img src="img/crud.png" class="w-100 card-img">
+                    <img src="img/crud.png" alt="SnapAdmin screenshot showing the editing form" class="w-100 card-img">
                     <p class="p-1 mt-2">Complete CRUD features for all entities and their associations, with out-of-the-box support for
                     JPA validation constraints and multiple field types.</p>
                 </div>
                 <div class="col-md-4">
                     <h4 class="fw-bold">Annotation-based customization</h4>
-                    <img src="img/annotation.png" class="w-100 card-img">
+                    <img src="img/annotation.png"  alt="Screenshot showing some possible annotation-based customization" class="w-100 card-img">
                     <p class="p-1 mt-2">Customize SnapAdmin by applying annotations to your classes, methods and fields. You can apply custom
                     formatting and naming, create custom columns and more.</p>
                 </div>
                 <div class="col-md-4">
                     <h4 class="fw-bold">Not just CRUD</h4>
-                    <img src="img/export.png" class="w-100 card-img">
+                    <img src="img/export.png"  alt="SnapAdmin screenshot showing the export data dialog" class="w-100 card-img">
                     <p class="p-1 mt-2">With SnapAdmin you also get: audit logs for write operations, advanced filtering & search,
                     data export (CSV, XLSX, JSONL) and an SQL console to run and save frequent queries.</p>
                 </div>
@@ -90,7 +90,9 @@
             </p>
             <div class="row">
                 <div class="col">
+
                     <h3 class="fw-bold">1. Install Maven dependency</h3>
+                    <p>SnapAdmin is distributed on Maven: just add the following to your <code>pom.xml</code> file.</p>
 <pre class="language-xml">
 <code class="language-xml">&lt;dependency&gt;
     &lt;groupId&gt;tech.ailef&lt;/groupId&gt;
@@ -104,8 +106,12 @@
             <div class="row">
                 <div class="col">
                     <h3 class="fw-bold">2. Configure SnapAdmin</h3>
+                    <p>Add the minimum required properties to your <code>application.properties</code> file.</p>
 <pre>
-<code class="language-properties">dbadmin.baseUrl=admin
+<code class="language-properties"># the root path of all SnapAdmin routes
+dbadmin.baseUrl=admin
+
+# comma-separated list of packages to scan for @Entity classes
 dbadmin.modelsPackage=your.models.package
 </code>
 </pre>

@@ -34,7 +34,7 @@
 				    <div class="collapse navbar-collapse" id="navbarSupportedContent">
 				      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 				        <li class="nav-item">
-				          <a class="nav-link" href="https://github.com/aileftech/spring-boot-database-admin" target="_blank">Github</a>
+				          <a class="nav-link" href="https://github.com/aileftech/snap-admin" target="_blank">Github</a>
 				        </li>
 				      </ul>
 				      <!--
@@ -67,7 +67,7 @@
 <p>SnapAdmin is a tool to easily build customizable database management interfaces with CRUD operations (and more!) for Spring Boot+JPA apps.</p>
 <p>It does so by scanning your JPA-annotated <code>@Entity</code> classes and building the required functionality at runtime. Since it won't generate actual code you won't have to change your existing code base, and this makes it easy to integrate. Moreover, every time you update your classes, all changes will be reflected automatically on the web UI. 
 </p>
-<p>On the other hand, this approach requires to interact correctly with all JPA annotations and adapt our behaviour accordingly. This is not an easy task given the large surface area of possible behaviours introduced with annotations and can sometimes introduce bugs. If you encounter problems, please <a href="https://github.com/aileftech/spring-boot-database-admin/issues" target="_blank">report it as an issue on Github</a>.</p>
+<p>On the other hand, this approach requires to interact correctly with all JPA annotations and adapt our behaviour accordingly. This is not an easy task given the large surface area of possible behaviours introduced with annotations and can sometimes introduce bugs. If you encounter problems, please <a href="https://github.com/aileftech/snap-admin/issues" target="_blank">report it as an issue on Github</a>.</p>
 
 <p>The rest of this guide outlines how to install, configure and customize SnapAdmin and, where applicable, it documents known interactions with JPA annotations. If, instead, you are looking for the Javadoc, you can find it <a href="https://javadoc.io/doc/tech.ailef/snap-admin/latest/index.html">here</a>.</p>
 <div class="separator"></div>
@@ -81,12 +81,12 @@
 <pre>
 <code class="language-xml">&lt;dependency&gt;
 	&lt;groupId&gt;tech.ailef&lt;/groupId&gt;
-	&lt;artifactId&gt;spring-boot-db-admin&lt;/artifactId&gt;
+	&lt;artifactId&gt;snap-admin&lt;/artifactId&gt;
 	&lt;version&gt;0.1.9&lt;/version&gt;
 &lt;/dependency&gt;
 </code>
 </pre>
-<p class="tip"><span class="title"><i class="bi bi-info-circle"></i> TIP</span> Go to the <a href="https://mvnrepository.com/artifact/tech.ailef/spring-boot-db-admin" target="_blank">Maven repository</a> to retrieve the exact snippet for the latest stable release.</p>
+<p class="tip"><span class="title"><i class="bi bi-info-circle"></i> TIP</span> Go to the <a href="https://mvnrepository.com/artifact/tech.ailef/snap-admin" target="_blank">Maven repository</a> to retrieve the exact snippet for the latest stable release.</p>
 
 <p>Alternatively, if you want the latest unstable release, you can clone the <code>main</code> branch of the Github repo and execute <code>mvn install -D skipTests</code> in the project's directory. This will install the library in your local repository, which you can then include using the same snippet as above, but replacing the version number with the one contained in the <code>pom.xml</code> file of the code you pulled from Github.</p>
 
@@ -130,7 +130,7 @@ dbadmin.modelsPackage=your.models.package,your.second.models.package
 
 <h4 id="known-issues">2.2.1 Known issues</h4>
 <ul>
-	<li><strong>(SnapAdmin <= 0.1.8) Transactional</strong>: If you're using <code>@Transactional</code> methods, you need to annotate your transaction manager with the <code>@Primary</code> annotation, as you may otherwise get a <code>NoUniqueBeanDefinitionException</code> (read <a href="https://github.com/aileftech/spring-boot-database-admin/issues/16" target="_blank">here</a> for more info).
+	<li><strong>(SnapAdmin <= 0.1.8) Transactional</strong>: If you're using <code>@Transactional</code> methods, you need to annotate your transaction manager with the <code>@Primary</code> annotation, as you may otherwise get a <code>NoUniqueBeanDefinitionException</code> (read <a href="https://github.com/aileftech/snap-admin/issues/16" target="_blank">here</a> for more info).
 </ul>
 
 <h3 id="supported-features">2.3 Supported features</h3>
@@ -165,7 +165,7 @@ dbadmin.modelsPackage=your.models.package,your.second.models.package
 
 <p>Unsupported field types are handled as gracefully as possible, meaning that when such a field is detected the application will still run. However, this field will never be displayed in the web interface. This means that it won't be possible to enter values for this field when editing or creating, leaving it with the default NULL value. If the field is not nullable, this implies you won't be able to create items.</p>
 
-<p>If you're using a field type that you think should be supported, please <a href="https://github.com/aileftech/spring-boot-database-admin/issues" target="_blank">open an issue on Github</a>.</p>
+<p>If you're using a field type that you think should be supported, please <a href="https://github.com/aileftech/snap-admin/issues" target="_blank">open an issue on Github</a>.</p>
 
 <p>To check if your code contains unsupported fields:</p>
 <ul>
@@ -371,7 +371,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
 <p>When setting up SnapAdmin for the first time, problems most commonly occur at startup, causing the application to stop. If this is the case, first check that you have correctly configured your <code>application.properties</code> file. If everything is correct here, the problem might be related to one or more of your <code>@Entity</code> classes (or the rest of your code in general) which might be using some unsupported feature and/or annotation. </p>
 <p>
-You can enable <code>DEBUG</code>-level logs (e.g. with <code>logging.level.root=DEBUG</code>) to pinpoint the cause error. Looking at those in combination with the stack trace should provide enough information to understand what is going wrong. Keep in mind that if the application doesn't start at all, it's probably a bug: you can <a href="https://github.com/aileftech/spring-boot-database-admin/issues" target="_blank">open an issue on Github</a>, providing the stacktrace, the debug logs and all other relevant information.</p>
+You can enable <code>DEBUG</code>-level logs (e.g. with <code>logging.level.root=DEBUG</code>) to pinpoint the cause error. Looking at those in combination with the stack trace should provide enough information to understand what is going wrong. Keep in mind that if the application doesn't start at all, it's probably a bug: you can <a href="https://github.com/aileftech/snap-admin/issues" target="_blank">open an issue on Github</a>, providing the stacktrace, the debug logs and all other relevant information.</p>
 
 <div class="pt-3 pb-5"></div>
 
