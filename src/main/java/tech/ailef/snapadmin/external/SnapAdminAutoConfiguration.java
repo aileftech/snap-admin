@@ -46,7 +46,7 @@ import tech.ailef.snapadmin.internal.InternalDbAdminConfiguration;
  * H2 database which is used by SnapAdmin to store user
  * settings and other information like operations history. 
  */
-@ConditionalOnProperty(name = "dbadmin.enabled", matchIfMissing = true)
+@ConditionalOnProperty(name = "snapadmin.enabled", matchIfMissing = true)
 @ComponentScan
 @EnableConfigurationProperties(SnapAdminProperties.class)
 @Configuration
@@ -72,7 +72,7 @@ public class SnapAdminAutoConfiguration {
 		if (props.isTestMode()) {
 			dataSourceBuilder.url("jdbc:h2:mem:test");
 		} else {
-			dataSourceBuilder.url("jdbc:h2:file:./dbadmin_internal");
+			dataSourceBuilder.url("jdbc:h2:file:./snapadmin_internal");
 		}
 		
 		dataSourceBuilder.username("sa");

@@ -148,7 +148,7 @@
 			<div th:if="${field.isImage()}" class="mb-2">
 				<img class="thumb-image"
 					th:id="|__thumb_${name}|"
-					th:src="|/${dbadmin_baseUrl}/download/${schema.getClassName()}/${field.getJavaName()}/${object.getPrimaryKeyValue()}/image|">
+					th:src="|/${snapadmin_baseUrl}/download/${schema.getClassName()}/${field.getJavaName()}/${object.getPrimaryKeyValue()}/image|">
 			</div>
 		</div>
 		<!--/*--> File input <!--*/-->

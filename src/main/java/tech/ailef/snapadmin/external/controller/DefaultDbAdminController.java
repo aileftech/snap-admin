@@ -83,7 +83,7 @@ import tech.ailef.snapadmin.internal.service.UserSettingsService;
  * The main DbAdmin controller that register most of the routes of the web interface.
  */
 @Controller
-@RequestMapping(value= {"/${dbadmin.baseUrl}", "/${dbadmin.baseUrl}/"})
+@RequestMapping(value= {"/${snapadmin.baseUrl}", "/${snapadmin.baseUrl}/"})
 public class DefaultDbAdminController {
 	private static final Logger logger = LoggerFactory.getLogger(DefaultDbAdminController.class);
 	
@@ -439,10 +439,10 @@ public class DefaultDbAdminController {
 			}
 		}
 		
- 		String c = params.get("__dbadmin_create");
+ 		String c = params.get("__snapadmin_create");
 		if (c == null) {
 			throw new ResponseStatusException(
-				HttpStatus.BAD_REQUEST, "Missing required param __dbadmin_create"
+				HttpStatus.BAD_REQUEST, "Missing required param __snapadmin_create"
 			);
 		}
 		

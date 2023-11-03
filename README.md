@@ -65,26 +65,26 @@ Otherwise, go ahead and add these to your `application.properties` file:
 
 ```properties
 ## The first-level part of the URL path: http://localhost:8080/${baseUrl}/
-dbadmin.baseUrl=admin
+snapadmin.baseUrl=admin
 
 ## The package(s) that contain your @Entity classes
 ## accepts multiple comma separated values
-dbadmin.modelsPackage=your.models.package,your.second.models.package
+snapadmin.modelsPackage=your.models.package,your.second.models.package
 
 ## At the moment, it's required to have open-in-view set to true.
 # spring.jpa.open-in-view=true
 
 ## OPTIONAL PARAMETERS
 ## Whether to enable SnapAdmin
-# dbadmin.enabled=true
+# snapadmin.enabled=true
 #
 #
 ## Set to true if you need to run the tests, as it will customize
 ## the database configuration for the internal DataSource
-# dbadmin.testMode=false
+# snapadmin.testMode=false
 #
 ## SQL console enable/disable (true by default)
-# dbadmin.sqlConsoleEnabled=false
+# snapadmin.sqlConsoleEnabled=false
 ```
 
 **IMPORTANT**: The configuration prefix `dbadmin.` will change to `snapadmin.` starting from version 0.2.0, as part of the project being renamed. Remember to update your configuration files accordingly.
@@ -97,7 +97,7 @@ Now annotate your `@SpringBootApplication` class containing the `main` method wi
 
 This will autoconfigure SnapAdmin when your application starts. You are good to go!
 
-3. At this point, when you run your application, you should be able to visit `http://localhost:${port}/${dbadmin.baseUrl}` and see the web interface.
+3. At this point, when you run your application, you should be able to visit `http://localhost:${port}/${snapadmin.baseUrl}` and see the web interface.
 
 ## Documentation
 

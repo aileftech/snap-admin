@@ -71,7 +71,7 @@ import tech.ailef.snapadmin.internal.model.ConsoleQuery;
 import tech.ailef.snapadmin.internal.repository.ConsoleQueryRepository;
 
 @Controller
-@RequestMapping(value = { "/${dbadmin.baseUrl}/", "/${dbadmin.baseUrl}" })
+@RequestMapping(value = { "/${snapadmin.baseUrl}/", "/${snapadmin.baseUrl}" })
 public class DataExportController {
 	private static final Logger logger = LoggerFactory.getLogger(DataExportFormat.class);
 	
