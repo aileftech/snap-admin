@@ -185,26 +185,23 @@ snapadmin.modelsPackage=your.models.package,your.second.models.package
 <h3 id="supported-annotations">3.1 Supported annotations</h3>
 
 <h4 id="display-name">3.1.1 @DisplayName</h4>
-<pre>
-<code class="language-java">@DisplayName
+<pre><code class="language-java">@DisplayName
 public String getFullName() {
     return firstName + " " + lastName;
 }	
-</code>
-</pre>
+</code></pre>
 
 <p>When displaying a reference to an item, we show its primary key by default. If a class has a <code>@DisplayName</code>, this method will be used in addition to the primary key whenever possible, giving the user a more readable option. <p>
+<a href="img/displayname.png"><img class="w-100" src="img/displayname.png"></a>
 
 
 <h4 id="display-format">3.1.2 @DisplayFormat</h4>
-	<pre>
-<code class="language-java">@DisplayFormat(format = "$%.2f")
+	<pre><code class="language-java">@DisplayFormat(format = "$%.2f")
 private Double price;
-</code>
-	</pre>
+</code></pre>
 
 <p>Specify a format string to apply when displaying the field.</p>
-
+<a href="img/displayformat.png"><img class="w-100" src="img/displayformat.png"></a>
 
 <h4 id="computed-column">3.1.3 @ComputedColumn</h4>
 <h6>Supported parameters</h6>
