@@ -22,10 +22,10 @@ package tech.ailef.snapadmin.external;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * The 'dbadmin.*' properties that can be set in the properties file
+ * The 'snapadmin.*' properties that can be set in the properties file
  * to configure the behaviour of Spring Boot Admin Panel. 
  */
-@ConfigurationProperties("dbadmin")
+@ConfigurationProperties("snapadmin")
 public class SnapAdminProperties {
 	/**
 	 * Whether SnapAdmin is enabled.

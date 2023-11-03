@@ -10,9 +10,9 @@
 		    	<div th:replace="~{fragments/resources :: sidebar('entities')}"></div>
 		    	<div class="main-content bg-lighter">
 					<h1 class="fw-bold mb-4"><i class="align-middle bi bi-database"></i> 
-						<a class="align-middle" th:href="|/${dbadmin_baseUrl}|">Entities</a> 
+						<a class="align-middle" th:href="|/${snapadmin_baseUrl}|">Entities</a> 
 						<i class="align-middle bi bi-chevron-double-right"></i>
-						<a class="align-middle" th:href="|/${dbadmin_baseUrl}/model/${schema.getJavaClass().getName()}|"> 
+						<a class="align-middle" th:href="|/${snapadmin_baseUrl}/model/${schema.getJavaClass().getName()}|"> 
 						[[ ${schema.getJavaClass().getSimpleName()} ]]</a>
 						<i class="align-middle bi bi-chevron-double-right"></i>
 						<span class="align-middle"> [[ ${object.getDisplayName()} ]]</span>
@@ -24,17 +24,17 @@
 		    						<h3 class="mb-3 fw-bold" th:text="${object.getDisplayName()}"></h3>
 									<h3><a
 										th:class="|${!schema.isEditEnabled() ? 'disable' : ''} me-2|" 
-										th:href="|/${dbadmin_baseUrl}/model/${schema.getClassName()}/edit/${object.getPrimaryKeyValue()}|">
+										th:href="|/${snapadmin_baseUrl}/model/${schema.getClassName()}/edit/${object.getPrimaryKeyValue()}|">
 										<i class="bi bi-pencil"></i></a>
 										
 										<form class="delete-form me-2" method="POST" 
-											th:action="|/${dbadmin_baseUrl}/model/${schema.getJavaClass().getName()}/delete/${object.getPrimaryKeyValue()}|">
+											th:action="|/${snapadmin_baseUrl}/model/${schema.getJavaClass().getName()}/delete/${object.getPrimaryKeyValue()}|">
 											<button th:class="|${!schema.isDeleteEnabled() ? 'disable' : ''}|"><i class="bi bi-trash"></i></button>
 										</form>
 										
 										<a th:title="|${!schema.isCreateEnabled() ? 'CREATE disabled for this type' : 'Create new item'}|" 
 											th:class="|${!schema.isCreateEnabled() ? 'disable' : ''}|"
-											th:href="|/${dbadmin_baseUrl}/model/${schema.getClassName()}/create|"><i class="bi bi-plus-square"></i></a>
+											th:href="|/${snapadmin_baseUrl}/model/${schema.getClassName()}/create|"><i class="bi bi-plus-square"></i></a>
 									</h3>
 								</div>
 								

@@ -58,7 +58,7 @@
     <section id="features" class="py-5">
         <div class="container">
             <h2 class="text-center mb-4 fw-bold">Features</h2>
-            <p class="text mb-4 mt-3">SnapAdmin scans your existing code base and automatically builds everything at runtime: you won't have to modify your existing code.</p>
+            <p class="text mb-4 mt-3">SnapAdmin saves you time by providing a full-fledged database management interface so you can focus on what matters. It won't be necessary to modify your codebase: SnapAdmin scans your code and builds everything at runtime.</p>
             <div class="row pt-3">
                 <div class="col-md-4">
                     <h4 class="fw-bold">First-class CRUD</h4>
@@ -110,10 +110,10 @@
                     <p>Add the minimum required properties to your <code>application.properties</code> file.</p>
 <pre>
 <code class="language-properties"># the root path of all SnapAdmin routes
-dbadmin.baseUrl=admin
+snapadmin.baseUrl=admin
 
 # comma-separated list of packages to scan for @Entity classes
-dbadmin.modelsPackage=your.models.package
+snapadmin.modelsPackage=your.models.package
 </code>
 </pre>
                 </div>
@@ -132,26 +132,48 @@ dbadmin.modelsPackage=your.models.package
         </div>
     </section>
 
+    <!-- Testimonials -->
+    <section id="testimonials" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-4 fw-bold">Who is using SnapAdmin</h2>
+            <p class="text mb-4 mt-3">Here's what some of our users say about SnapAdmin. You can <a href="https://github.com/aileftech/snap-admin/issues/17">leave your comment, too</a>!</p>
+            <div class="row pt-3" id="testimonials-row">
+                <div class="col-md-6 d-flex">
+                    <div class="d-flex align-items-center testimonials-img">
+                        <img class="w-100" src="https://avatars.githubusercontent.com/u/3874760?v=4">
+                    </div>
+                    <div class="ps-3">
+                        <p><b>fabienfleureau</b></p>
+                        <p>Hello,
+                        Thanks for you project.
+                        I use it an hidden admin page, mostly as if it is a direct connection to database. 
+                        It would be nice to able to run custom queries.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
 
     <!-- Footer -->
     <footer class="footer text-white text-center text-lg-start" style="background-color: #130623;">
         <div class="container p-4">
-            <div class="row mb-4">
-                <div class="col-md-4 footer-card">
+            <div class="row mb-0 mb-md-4">
+                <div class="col-md-4 footer-card mb-md-0 mb-4">
                     <h6>Github</h6>
                     <ul>
                         <li><a href="https://github.com/aileftech/snap-admin/issues">Issues</a></li>
                         <li><a href="https://github.com/aileftech/snap-admin/releases">Releases</a></li>
                     </ul>
                 </div>
-                <div class="col-md-4 footer-card">
+                <div class="col-md-4 footer-card mb-md-0 mb-4">
                     <h6>Documentation</h6>
                     <ul>
-                        <li><a href="https://javadoc.io/doc/tech.ailef/snap-admin/latest/index.html">Javadoc</a></li>
                         <li><a href="docs/">Reference Guide</a></li>
+                        <li><a href="https://javadoc.io/doc/tech.ailef/snap-admin/latest/index.html">Javadoc</a></li>
                     </ul>
                 </div>
-                <div class="col-md-4 footer-card">
+                <div class="col-md-4 footer-card mb-md-0 mb-4">
                     <h6>Social</h6>
                     <ul>
                         <li><a href="https://twitter.com/aileftech">Twitter</a></li>
@@ -164,6 +186,8 @@ dbadmin.modelsPackage=your.models.package
             </div>
         </div>
     </footer>
+
+
     <script>hljs.highlightAll();</script>
 </body>
 </html>

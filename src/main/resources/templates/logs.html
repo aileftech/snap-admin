@@ -17,7 +17,7 @@
 		    				<div class="box">
 		    					<h3 class="fw-bold">Logs</h3>
 		    					<div class="w-75">
-			    					<form th:action="|/${dbadmin_baseUrl}/logs|" class="mt-3" id="log-filter-form" method="GET">
+			    					<form th:action="|/${snapadmin_baseUrl}/logs|" class="mt-3" id="log-filter-form" method="GET">
 			    						<div class="input-group">
 			    							<span class="input-group-text">Action type</span>
 				    						<select name="actionType" class="form-select">
@@ -111,7 +111,7 @@
 											</td>
 											<td>
 												<th:block th:if="${entry.getActionType() != 'DELETE'}">
-													<a th:href="|/${dbadmin_baseUrl}/model/${entry.getJavaClass()}/show/${entry.getPrimaryKey()}|"
+													<a th:href="|/${snapadmin_baseUrl}/model/${entry.getJavaClass()}/show/${entry.getPrimaryKey()}|"
 														th:text="${entry.getPrimaryKey()}"></a>
 												</th:block>
 												<th:block th:if="${entry.getActionType() == 'DELETE'}">

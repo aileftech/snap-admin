@@ -47,7 +47,7 @@ import tech.ailef.snapadmin.external.exceptions.DbAdminException;
  * Controller to serve file or images (`@DisplayImage`) 
  */
 @Controller
-@RequestMapping(value = {"/${dbadmin.baseUrl}/download", "/${dbadmin.baseUrl}/download/"})
+@RequestMapping(value = {"/${snapadmin.baseUrl}/download", "/${snapadmin.baseUrl}/download/"})
 public class FileDownloadController {
 	@Autowired
 	private DbAdminRepository repository;

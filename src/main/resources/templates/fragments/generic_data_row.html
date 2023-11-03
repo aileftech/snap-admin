@@ -21,7 +21,7 @@
 				
 				<span th:if="${object.get(field) != null}">
 					<th:block th:if="${field.isForeignKey()}">
-						<a th:href="|/${dbadmin_baseUrl}/model/${field.getConnectedType().getName()}/show/${object.get(field)}|">
+						<a th:href="|/${snapadmin_baseUrl}/model/${field.getConnectedType().getName()}/show/${object.get(field)}|">
 							<span th:text="${object.get(field)}"></span>
 						</a>
 					</th:block>

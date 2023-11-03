@@ -39,7 +39,7 @@ import tech.ailef.snapadmin.external.dto.AutocompleteSearchResult;
  * API controller for autocomplete results
  */
 @RestController
-@RequestMapping(value= {"/${dbadmin.baseUrl}/api/autocomplete", "/${dbadmin.baseUrl}/api/autocomplete/"})
+@RequestMapping(value= {"/${snapadmin.baseUrl}/api/autocomplete", "/${snapadmin.baseUrl}/api/autocomplete/"})
 public class AutocompleteController {
 	@Autowired
 	private SnapAdmin dbAdmin;

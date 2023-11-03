@@ -41,3 +41,13 @@ p.text {
 a {
 	color: #7223D1;
 }
+
+
+.testimonials-img {
+	width: 33%;
+}
+
+.testimonials-img img {
+	border-radius: 50%; 
+	border: 1px solid #CCC;
+}
