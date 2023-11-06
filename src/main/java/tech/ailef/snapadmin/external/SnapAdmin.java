@@ -85,6 +85,8 @@ public class SnapAdmin {
 	
 	private SnapAdminProperties properties;
 	
+	private boolean authenticated;
+	
 	private static final String VERSION = "0.1.9";
     
     /**
@@ -398,6 +400,13 @@ public class SnapAdmin {
 			throw new DbAdminException(e);
 		}
 	}
+
+	public boolean isAuthenticated() {
+		return authenticated;
+	}
 	
+	public void setAuthenticated(boolean authenticated) {
+		this.authenticated = authenticated;
+	}
 
 }
