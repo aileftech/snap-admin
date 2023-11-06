@@ -61,14 +61,14 @@ import tech.ailef.snapadmin.external.exceptions.InvalidPageException;
  * Implements the basic CRUD operations (and some more)
  */
 @Component
-public class DbAdminRepository {
+public class SnapAdminRepository {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
 	@Autowired
 	private SnapAdmin dbAdmin;
 	
-	public DbAdminRepository() {
+	public SnapAdminRepository() {
 	}
 
 	/**

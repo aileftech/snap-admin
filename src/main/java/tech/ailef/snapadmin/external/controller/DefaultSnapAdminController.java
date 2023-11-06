@@ -56,7 +56,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.ConstraintViolationException;
 import tech.ailef.snapadmin.external.SnapAdmin;
 import tech.ailef.snapadmin.external.SnapAdminProperties;
-import tech.ailef.snapadmin.external.dbmapping.DbAdminRepository;
+import tech.ailef.snapadmin.external.dbmapping.SnapAdminRepository;
 import tech.ailef.snapadmin.external.dbmapping.DbObject;
 import tech.ailef.snapadmin.external.dbmapping.DbObjectSchema;
 import tech.ailef.snapadmin.external.dbmapping.query.DbQueryResult;
@@ -84,14 +84,14 @@ import tech.ailef.snapadmin.internal.service.UserSettingsService;
  */
 @Controller
 @RequestMapping(value= {"/${snapadmin.baseUrl}", "/${snapadmin.baseUrl}/"})
-public class DefaultDbAdminController {
-	private static final Logger logger = LoggerFactory.getLogger(DefaultDbAdminController.class);
+public class DefaultSnapAdminController {
+	private static final Logger logger = LoggerFactory.getLogger(DefaultSnapAdminController.class);
 	
 	@Autowired
 	private SnapAdminProperties properties;
 	
 	@Autowired
-	private DbAdminRepository repository;
+	private SnapAdminRepository repository;
 	
 	@Autowired
 	private SnapAdmin dbAdmin;

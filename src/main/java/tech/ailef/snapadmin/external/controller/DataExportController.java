@@ -55,7 +55,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import tech.ailef.snapadmin.external.SnapAdmin;
-import tech.ailef.snapadmin.external.dbmapping.DbAdminRepository;
+import tech.ailef.snapadmin.external.dbmapping.SnapAdminRepository;
 import tech.ailef.snapadmin.external.dbmapping.DbFieldValue;
 import tech.ailef.snapadmin.external.dbmapping.DbObject;
 import tech.ailef.snapadmin.external.dbmapping.DbObjectSchema;
@@ -79,7 +79,7 @@ public class DataExportController {
 	private SnapAdmin dbAdmin;
 
 	@Autowired
-	private DbAdminRepository repository;
+	private SnapAdminRepository repository;
 	
 	@Autowired
 	private ConsoleQueryRepository queryRepository;

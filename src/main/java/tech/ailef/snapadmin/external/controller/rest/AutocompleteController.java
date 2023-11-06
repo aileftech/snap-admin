@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import tech.ailef.snapadmin.external.SnapAdmin;
-import tech.ailef.snapadmin.external.dbmapping.DbAdminRepository;
+import tech.ailef.snapadmin.external.dbmapping.SnapAdminRepository;
 import tech.ailef.snapadmin.external.dbmapping.DbObjectSchema;
 import tech.ailef.snapadmin.external.dto.AutocompleteSearchResult;
 
@@ -45,7 +45,7 @@ public class AutocompleteController {
 	private SnapAdmin dbAdmin;
 	
 	@Autowired
-	private DbAdminRepository repository;
+	private SnapAdminRepository repository;
 	
 	/**
 	 * Returns a list of entities from a given table that match an input query.
