@@ -51,7 +51,7 @@
 												<span th:text="${schema.getClassName()}"></span>
 											</td>
 											<td class="text-end row-icons">
-												<a title="List all" th:href="|/${snapadmin_baseUrl}/model/${schema.getClassName()}|"><i class="bi bi-list"></i></i></a>
+												<a title="List all" th:href="|/${snapadmin_baseUrl}/model/${schema.getClassName()}|"><i class="bi bi-list"></i></a>
 												<a  th:title="|${!schema.isCreateEnabled() ? 'CREATE disabled for this type' : 'Create new item'}|" 
 													th:class="|${!schema.isCreateEnabled() ? 'disable' : ''}|" 
 													th:href="|/${snapadmin_baseUrl}/model/${schema.getClassName()}/create|"><i class="bi bi-plus-square"></i>
@@ -61,11 +61,11 @@
 									</table>
 								
 									<div class="p-0 m-0" th:if="${schemas.isEmpty()}">
-										No entities have been loaded from Java classes.
+										<p>No entities have been loaded from Java classes.</p>
 										
 										<ul class="mt-3">
-											<li>Make sure you are initializing Spring Boot DB Admin Panel correctly and double check
-											that the package you have set in the CommandLineRunner is the correct one.</li>
+											<li>Make sure you are initializing Snap Admin correctly and double check
+											that the package you have set in your <code>application.properties</code> is correct.</li>
 											<li>Check that the Java classes in the package have been correctly marked with 
 											the <code>@Entity</code> annotation.</li> 
 										</ul>
