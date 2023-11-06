@@ -19,6 +19,7 @@
 
 package tech.ailef.snapadmin.external.controller;
 
+import java.security.Principal;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -94,7 +95,7 @@ public class DefaultSnapAdminController {
 	private SnapAdminRepository repository;
 	
 	@Autowired
-	private SnapAdmin dbAdmin;
+	private SnapAdmin snapAdmin;
 	
 	@Autowired
 	private UserActionService userActionService;
@@ -116,8 +117,7 @@ public class DefaultSnapAdminController {
 	 */
 	@GetMapping
 	public String index(Model model, @RequestParam(required = false) String query) {
-		
-		List<DbObjectSchema> schemas = dbAdmin.getSchemas();
+		List<DbObjectSchema> schemas = snapAdmin.getSchemas();
 		if (query != null && !query.isBlank()) {
 			schemas = schemas.stream().filter(s -> {
 				return s.getClassName().toLowerCase().contains(query.toLowerCase())
@@ -169,7 +169,7 @@ public class DefaultSnapAdminController {
 		if (page == null) page = 1;
 		if (pageSize == null) pageSize = 50;
 		
-		DbObjectSchema schema = dbAdmin.findSchemaByClassName(className);
+		DbObjectSchema schema = snapAdmin.findSchemaByClassName(className);
 		
 		Set<QueryFilter> queryFilters = Utils.computeFilters(schema, otherParams);
 		if (otherParams.containsKey("remove_field")) {
@@ -250,7 +250,7 @@ public class DefaultSnapAdminController {
 	 */
 	@GetMapping("/model/{className}/schema")
 	public String schema(Model model, @PathVariable String className) {
-		DbObjectSchema schema = dbAdmin.findSchemaByClassName(className);
+		DbObjectSchema schema = snapAdmin.findSchemaByClassName(className);
 		
 		model.addAttribute("activePage", "entities");
 		model.addAttribute("schema", schema);
@@ -267,7 +267,7 @@ public class DefaultSnapAdminController {
 	 */
 	@GetMapping("/model/{className}/show/{id}")
 	public String show(Model model, @PathVariable String className, @PathVariable String id) {
-		DbObjectSchema schema = dbAdmin.findSchemaByClassName(className);
+		DbObjectSchema schema = snapAdmin.findSchemaByClassName(className);
 		
 		Object pkValue = schema.getPrimaryKey().getType().parseValue(id);
 		
@@ -288,7 +288,7 @@ public class DefaultSnapAdminController {
 	
 	@GetMapping("/model/{className}/create")
 	public String create(Model model, @PathVariable String className, RedirectAttributes attr) {
-		DbObjectSchema schema = dbAdmin.findSchemaByClassName(className);
+		DbObjectSchema schema = snapAdmin.findSchemaByClassName(className);
 		
 		if (!schema.isCreateEnabled()) {
 			attr.addFlashAttribute("errorTitle", "Unauthorized");
@@ -307,7 +307,7 @@ public class DefaultSnapAdminController {
 	
 	@GetMapping("/model/{className}/edit/{id}")
 	public String edit(Model model, @PathVariable String className, @PathVariable String id, RedirectAttributes attr) {
-		DbObjectSchema schema = dbAdmin.findSchemaByClassName(className);
+		DbObjectSchema schema = snapAdmin.findSchemaByClassName(className);
 		
 		Object pkValue = schema.getPrimaryKey().getType().parseValue(id);
 		
@@ -342,7 +342,7 @@ public class DefaultSnapAdminController {
 	 * @return
 	 */
 	public String delete(@PathVariable String className, @PathVariable String id, RedirectAttributes attr) {
-		DbObjectSchema schema = dbAdmin.findSchemaByClassName(className);
+		DbObjectSchema schema = snapAdmin.findSchemaByClassName(className);
 		
 		if (!schema.isDeleteEnabled()) {
 			attr.addFlashAttribute("errorTitle", "Unable to DELETE row");
@@ -374,7 +374,7 @@ public class DefaultSnapAdminController {
 	 * @return
 	 */
 	public String delete(@PathVariable String className, @RequestParam String[] ids, RedirectAttributes attr) {
-		DbObjectSchema schema = dbAdmin.findSchemaByClassName(className);
+		DbObjectSchema schema = snapAdmin.findSchemaByClassName(className);
 		
 		if (!schema.isDeleteEnabled()) {
 			attr.addFlashAttribute("errorTitle", "Unable to DELETE rows");
@@ -448,7 +448,7 @@ public class DefaultSnapAdminController {
 		
 		boolean create = Boolean.parseBoolean(c);
 		
-		DbObjectSchema schema = dbAdmin.findSchemaByClassName(className);
+		DbObjectSchema schema = snapAdmin.findSchemaByClassName(className);
 		
 		if (!schema.isCreateEnabled() && create) {
 			attr.addFlashAttribute("errorTitle", "Unauthorized");
@@ -536,7 +536,7 @@ public class DefaultSnapAdminController {
 			"page", 
 			userActionService.findActions(searchRequest)
 		);
-		model.addAttribute("schemas", dbAdmin.getSchemas());
+		model.addAttribute("schemas", snapAdmin.getSchemas());
 		model.addAttribute("searchRequest", searchRequest);
 		return "logs";
 	}
