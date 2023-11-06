@@ -30,7 +30,7 @@ public class SnapAdminProperties {
 	/**
 	 * Whether SnapAdmin is enabled.
 	 */
-	public boolean enabled = true;
+	public boolean enabled = false;
 	
 	/**
 	 * The prefix that is prepended to all routes registered by SnapAdmin.

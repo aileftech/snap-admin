@@ -46,7 +46,7 @@ import tech.ailef.snapadmin.internal.InternalDbAdminConfiguration;
  * H2 database which is used by SnapAdmin to store user
  * settings and other information like operations history. 
  */
-@ConditionalOnProperty(name = "snapadmin.enabled", matchIfMissing = true)
+@ConditionalOnProperty(name = "snapadmin.enabled", matchIfMissing = false)
 @ComponentScan
 @EnableConfigurationProperties(SnapAdminProperties.class)
 @Configuration
