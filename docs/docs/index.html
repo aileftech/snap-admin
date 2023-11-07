@@ -220,19 +220,14 @@ private Double price;
 	</tr>
 </table>
 <h6>Code example</h6>
-	<pre>
-<code class="language-java">@ComputedColumn
-public double totalSpent() {
-    double total = 0;
-    for (Order o : orders) {
-        total += o.total();
-    }
-    return total;
+	<pre><code class="language-java">@ComputedColumn
+public double numberOfOrders() {
+    return orders.size();
 }
-</code>
-</pre>
+</code></pre>
 
 <p>This annotation can be used to add values computed at runtime that are shown like additional columns.</p>
+<a href="img/computedcolumn.png"><img class="w-100" src="img/computedcolumn.png"></a>
 
 <p class="tip"><span class="title"><i class="bi bi-exclamation-triangle"></i> NOTE</span> 
 If your computed columns are computationally expensive (e.g because they use joins) they can affect the interface loading speed. In particular, the list view is the most affected, as these methods will get called for each item in the list.
