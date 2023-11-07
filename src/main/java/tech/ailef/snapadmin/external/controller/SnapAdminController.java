@@ -19,6 +19,7 @@
 
 package tech.ailef.snapadmin.external.controller;
 
+import java.security.Principal;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -340,8 +341,10 @@ public class SnapAdminController {
 	 * @param attr
 	 * @return
 	 */
-	public String delete(@PathVariable String className, @PathVariable String id, RedirectAttributes attr) {
+	public String delete(@PathVariable String className, @PathVariable String id, RedirectAttributes attr,
+			Principal principal) {
 		DbObjectSchema schema = snapAdmin.findSchemaByClassName(className);
+		String authUser = principal != null ? principal.getName() : null;
 		
 		if (!schema.isDeleteEnabled()) {
 			attr.addFlashAttribute("errorTitle", "Unable to DELETE row");
@@ -357,7 +360,7 @@ public class SnapAdminController {
 			return "redirect:/" + properties.getBaseUrl() + "/model/" + className;
 		}
 		
-		saveAction(new UserAction(schema.getTableName(), id, "DELETE", schema.getClassName()));
+		saveAction(new UserAction(schema.getTableName(), id, "DELETE", schema.getClassName(), authUser));
 		attr.addFlashAttribute("message", "Deleted " + schema.getJavaClass().getSimpleName() + " with " 
 				+ schema.getPrimaryKey().getName() + "=" + id);
 
@@ -372,8 +375,10 @@ public class SnapAdminController {
 	 * @param attr
 	 * @return
 	 */
-	public String delete(@PathVariable String className, @RequestParam String[] ids, RedirectAttributes attr) {
+	public String delete(@PathVariable String className, @RequestParam String[] ids, RedirectAttributes attr,
+			Principal principal) {
 		DbObjectSchema schema = snapAdmin.findSchemaByClassName(className);
+		String authUser = principal != null ? principal.getName() : null;
 		
 		if (!schema.isDeleteEnabled()) {
 			attr.addFlashAttribute("errorTitle", "Unable to DELETE rows");
@@ -395,7 +400,7 @@ public class SnapAdminController {
 			attr.addFlashAttribute("message", "Deleted " + countDeleted + " of " + ids.length + " items");
 		
 		for (String id : ids) {
-			saveAction(new UserAction(schema.getTableName(), id, "DELETE", schema.getClassName()));
+			saveAction(new UserAction(schema.getTableName(), id, "DELETE", schema.getClassName(), authUser));
 		}
 		
 		return "redirect:/" + properties.getBaseUrl() + "/model/" + className;
@@ -405,7 +410,10 @@ public class SnapAdminController {
 	public String store(@PathVariable String className,
 			@RequestParam MultiValueMap<String, String> formParams,
 			@RequestParam Map<String, MultipartFile> files,
-			RedirectAttributes attr) {
+			RedirectAttributes attr,
+			Principal principal) {
+		String authUser = principal != null ? principal.getName() : null;
+
 		// Extract all parameters that have exactly 1 value,
 		// as these will be the raw values for the object that is being
 		// created.
@@ -466,7 +474,7 @@ public class SnapAdminController {
 				repository.attachManyToMany(schema, newPrimaryKey, multiValuedParams);				
 				pkValue = newPrimaryKey.toString();
 				attr.addFlashAttribute("message", "Item created successfully.");
-				saveAction(new UserAction(schema.getTableName(), pkValue, "CREATE", schema.getClassName()));
+				saveAction(new UserAction(schema.getTableName(), pkValue, "CREATE", schema.getClassName(), authUser));
 			} else {
 				Object parsedPkValue = schema.getPrimaryKey().getType().parseValue(pkValue);
 
@@ -481,13 +489,13 @@ public class SnapAdminController {
 						repository.update(schema, params, files);
 						repository.attachManyToMany(schema, parsedPkValue, multiValuedParams);
 						attr.addFlashAttribute("message", "Item saved successfully.");
-						saveAction(new UserAction(schema.getTableName(), parsedPkValue.toString(), "EDIT", schema.getClassName()));
+						saveAction(new UserAction(schema.getTableName(), parsedPkValue.toString(), "EDIT", schema.getClassName(), authUser));
 					}
 				} else {
 					Object newPrimaryKey = repository.create(schema, params, files, pkValue);
 					repository.attachManyToMany(schema, newPrimaryKey, multiValuedParams);
 					attr.addFlashAttribute("message", "Item created successfully");
-					saveAction(new UserAction(schema.getTableName(), pkValue, "CREATE", schema.getClassName()));
+					saveAction(new UserAction(schema.getTableName(), pkValue, "CREATE", schema.getClassName(), authUser));
 				}
 			}
 		} catch (DataIntegrityViolationException | UncategorizedSQLException | IdentifierGenerationException e) {

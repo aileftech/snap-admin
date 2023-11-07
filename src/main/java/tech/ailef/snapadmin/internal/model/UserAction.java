@@ -77,16 +77,20 @@ public class UserAction {
 	@Column(nullable = false)
 	private String actionType;
 	
+	@Column(nullable = true)
+	private String username;
+	
 	public UserAction() {
 	}
 	
-	public UserAction(String onTable, String primaryKey, String actionType, String javaClass) {
+	public UserAction(String onTable, String primaryKey, String actionType, String javaClass, String username) {
 		this.createdAt = LocalDateTime.now();
 		this.sql = "SQL TODO";
 		this.javaClass = javaClass;
 		this.onTable = onTable;
 		this.actionType = actionType;
 		this.primaryKey = primaryKey;
+		this.username = username;
 	}
 
 	public Integer getId() {
@@ -148,4 +152,13 @@ public class UserAction {
 	public void setJavaClass(String javaClass) {
 		this.javaClass = javaClass;
 	}
+	
+	public String getUsername() {
+		return username;
+	}
+	
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
 }
