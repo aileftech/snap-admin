@@ -131,7 +131,14 @@
 											</td>
 											<td th:text="${entry.getFormattedDate()}">
 											</td>
-											<td th:text="${entry.getUsername()}">
+											<td>
+												<th:block th:if="${entry.getUsername() != null}">
+													<span th:text="${entry.getUsername()}"></span>
+												</th:block>
+												<th:block th:if="${entry.getUsername() == null}">
+													<span class="font-monospace null-label">NULL</span>
+												</th:block>
+												
 											</td>
 											<!--
 											<a href="#" class="ui-btn btn btn-primary">
