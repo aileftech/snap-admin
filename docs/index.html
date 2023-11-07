@@ -14,7 +14,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/java.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/xml.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/properties.min.js"></script>
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/dark.min.css"> -->
 </head>
 <body>
     <!-- Top navbar -->
@@ -98,7 +97,7 @@
 <code class="language-xml">&lt;dependency&gt;
     &lt;groupId&gt;tech.ailef&lt;/groupId&gt;
     &lt;artifactId&gt;snap-admin&lt;/artifactId&gt;
-    &lt;version&gt;0.1.9&lt;/version&gt;
+    &lt;version&gt;0.2.0&lt;/version&gt;
 &lt;/dependency&gt;
 </code>
 </pre>
@@ -109,7 +108,11 @@
                     <h3 class="fw-bold">2. Configure SnapAdmin</h3>
                     <p>Add the minimum required properties to your <code>application.properties</code> file.</p>
 <pre>
-<code class="language-properties"># the root path of all SnapAdmin routes
+<code class="language-properties">
+# SnapAdmin is not enabled by default
+snapadmin.enabled=true
+
+# the root path of all SnapAdmin routes
 snapadmin.baseUrl=admin
 
 # comma-separated list of packages to scan for @Entity classes
