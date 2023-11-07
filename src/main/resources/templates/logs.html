@@ -103,6 +103,17 @@
 			    									</h4>
 			    								</div>
 		    								</th>
+		    								<th >
+		    									<div class="d-flex justify-content-between">
+			    									<div>Time</div>
+			    									<h4>
+			    										<th:block th:replace="~{fragments/table_selectable :: 
+			    											sort_arrow(sortKey=${searchRequest.getSortKey()},
+			    											sortOrder=${searchRequest.getSortOrder()},
+			    											fieldName='user')}">
+			    									</h4>
+			    								</div>
+		    								</th>
 		    							</tr>
 										<tr th:each="entry : ${page.getResults()}" class="table-data-row align-middle">
 											<td th:text="${entry.getActionType()}">
@@ -119,6 +130,8 @@
 												</th:block>
 											</td>
 											<td th:text="${entry.getFormattedDate()}">
+											</td>
+											<td th:text="${entry.getUser()}">
 											</td>
 											<!--
 											<a href="#" class="ui-btn btn btn-primary">
