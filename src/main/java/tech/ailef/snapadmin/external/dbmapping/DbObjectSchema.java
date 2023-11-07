@@ -49,6 +49,7 @@ import tech.ailef.snapadmin.external.annotations.HiddenColumn;
 import tech.ailef.snapadmin.external.dbmapping.fields.DbField;
 import tech.ailef.snapadmin.external.dto.MappingError;
 import tech.ailef.snapadmin.external.exceptions.SnapAdminException;
+import tech.ailef.snapadmin.external.exceptions.SnapAdminNotFoundException;
 import tech.ailef.snapadmin.external.misc.Utils;
 
 /**
@@ -375,9 +376,15 @@ public class DbObjectSchema {
 			
 			for (String param : params.keySet()) {
 				// Parameters starting with __ are hidden and not related to the object creation
-				if (param.startsWith("__")) continue;
+				if (param.startsWith("__") 
+					|| param.equals("_csrf")) continue;
 				
-				String javaFieldName = getFieldByName(param).getJavaName();
+				DbField dbField = getFieldByName(param);
+				
+				if (dbField == null)
+					throw new SnapAdminNotFoundException("Cannot find field " + param + " in " + getJavaClass().getName());
+				
+				String javaFieldName = dbField.getJavaName();
 				Method setter = dbObject.findSetter(javaFieldName);
 				
 				if (setter ==  null) {
