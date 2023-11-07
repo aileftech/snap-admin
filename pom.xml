@@ -15,7 +15,7 @@
 	<name>SnapAdmin</name>
 	<description>SnapAdmin is an auto-generated CRUD admin panel for Spring Boot/JPA apps</description>
 	<properties>
-		<java.version>8</java.version>
+		<java.version>17</java.version>
 	</properties>
 	<licenses>
 		<license>
