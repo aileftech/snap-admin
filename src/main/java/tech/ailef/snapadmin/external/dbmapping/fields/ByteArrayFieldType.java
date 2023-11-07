@@ -24,7 +24,7 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import tech.ailef.snapadmin.external.dto.CompareOperator;
-import tech.ailef.snapadmin.external.exceptions.DbAdminException;
+import tech.ailef.snapadmin.external.exceptions.SnapAdminException;
 
 public class ByteArrayFieldType extends DbFieldType {
 	@Override
@@ -38,7 +38,7 @@ public class ByteArrayFieldType extends DbFieldType {
 		try {
 			return ((MultipartFile)value).getBytes();
 		} catch (IOException e) {
-			throw new DbAdminException(e);
+			throw new SnapAdminException(e);
 		}
 	}
 
@@ -49,6 +49,6 @@ public class ByteArrayFieldType extends DbFieldType {
 	
 	@Override
 	public List<CompareOperator> getCompareOperators() {
-		throw new DbAdminException("Binary fields are not comparable");
+		throw new SnapAdminException("Binary fields are not comparable");
 	}
 }

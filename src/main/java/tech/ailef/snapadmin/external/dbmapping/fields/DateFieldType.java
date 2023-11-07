@@ -24,7 +24,7 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 
 import tech.ailef.snapadmin.external.dto.CompareOperator;
-import tech.ailef.snapadmin.external.exceptions.DbAdminException;
+import tech.ailef.snapadmin.external.exceptions.SnapAdminException;
 
 public class DateFieldType extends DbFieldType {
 	@Override
@@ -39,7 +39,7 @@ public class DateFieldType extends DbFieldType {
 			LocalDate localDate = LocalDate.parse(value.toString());
 			return Date.valueOf(localDate);
 		} catch (DateTimeParseException e) {
-			throw new DbAdminException("Invalid date " + value, e);
+			throw new SnapAdminException("Invalid date " + value, e);
 		}
 	}
 

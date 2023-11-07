@@ -27,7 +27,7 @@ import tech.ailef.snapadmin.external.SnapAdmin;
 import tech.ailef.snapadmin.external.dbmapping.DbObjectSchema;
 import tech.ailef.snapadmin.external.dbmapping.fields.DbField;
 import tech.ailef.snapadmin.external.dbmapping.fields.DbFieldType;
-import tech.ailef.snapadmin.external.exceptions.DbAdminException;
+import tech.ailef.snapadmin.external.exceptions.SnapAdminException;
 import tech.ailef.snapadmin.external.exceptions.UnsupportedFieldTypeException;
 
 public class DbQueryOutputField {
@@ -47,7 +47,7 @@ public class DbQueryOutputField {
 			DbObjectSchema schema = dbAdmin.findSchemaByTableName(table);
 			DbField dbField = schema.getFieldByName(name);
 			this.dbField = dbField;
-		} catch (DbAdminException e) {
+		} catch (SnapAdminException e) {
 			// We were unable to map this result column to a table, this happens
 			// for example with COUNT(*) results and similar. We ignore this
 			// as the dbField will be null and handled as such in the rest of the code

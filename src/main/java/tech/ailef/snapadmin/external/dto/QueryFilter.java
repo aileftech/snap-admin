@@ -22,7 +22,7 @@ package tech.ailef.snapadmin.external.dto;
 import java.util.Objects;
 
 import tech.ailef.snapadmin.external.dbmapping.fields.DbField;
-import tech.ailef.snapadmin.external.exceptions.DbAdminException;
+import tech.ailef.snapadmin.external.exceptions.SnapAdminException;
 
 /**
  * A single filter in a FacetedSearchRequest. This describes a 
@@ -37,7 +37,7 @@ public class QueryFilter {
 	
 	public QueryFilter(DbField field, CompareOperator op, String value) {
 		if (field == null)
-			throw new DbAdminException("Trying to build QueryFilter with null `field`");
+			throw new SnapAdminException("Trying to build QueryFilter with null `field`");
 		this.field = field;
 		this.op = op;
 		this.value = value;

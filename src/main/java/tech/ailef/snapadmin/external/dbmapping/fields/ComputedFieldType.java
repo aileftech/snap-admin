@@ -21,7 +21,7 @@ package tech.ailef.snapadmin.external.dbmapping.fields;
 import java.util.List;
 
 import tech.ailef.snapadmin.external.dto.CompareOperator;
-import tech.ailef.snapadmin.external.exceptions.DbAdminException;
+import tech.ailef.snapadmin.external.exceptions.SnapAdminException;
 
 public class ComputedFieldType extends DbFieldType {
 	@Override
@@ -41,6 +41,6 @@ public class ComputedFieldType extends DbFieldType {
 	
 	@Override
 	public List<CompareOperator> getCompareOperators() {
-		throw new DbAdminException();
+		throw new SnapAdminException();
 	}
 }

@@ -54,7 +54,7 @@ import tech.ailef.snapadmin.external.dto.FacetedSearchRequest;
 import tech.ailef.snapadmin.external.dto.PaginatedResult;
 import tech.ailef.snapadmin.external.dto.PaginationInfo;
 import tech.ailef.snapadmin.external.dto.QueryFilter;
-import tech.ailef.snapadmin.external.exceptions.DbAdminException;
+import tech.ailef.snapadmin.external.exceptions.SnapAdminException;
 import tech.ailef.snapadmin.external.exceptions.InvalidPageException;
 
 /**
@@ -206,7 +206,7 @@ public class SnapAdminRepository {
 		Optional<DbObject> optional = findById(schema, id);
 
 		DbObject dbObject = optional.orElseThrow(() -> {
-			return new DbAdminException("Unable to retrieve newly inserted item");
+			return new SnapAdminException("Unable to retrieve newly inserted item");
 		});
 		
 		for (String mParam : params.keySet()) {

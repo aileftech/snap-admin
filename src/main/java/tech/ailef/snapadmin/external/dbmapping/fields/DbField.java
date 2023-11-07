@@ -113,7 +113,7 @@ public class DbField {
 	
 	public DbObjectSchema getConnectedSchema() {
 		if (connectedType == null) return null;
-		return schema.getDbAdmin().findSchemaByClass(connectedType);
+		return schema.getSnapAdmin().findSchemaByClass(connectedType);
 	}
 	
 	public void setSchema(DbObjectSchema schema) {

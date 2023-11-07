@@ -25,7 +25,7 @@ package tech.ailef.snapadmin.external.exceptions;
  * than the maximum available page). Used internally to redirect the
  * user to a default page. 
  */
-public class InvalidPageException extends DbAdminException {
+public class InvalidPageException extends SnapAdminException {
 	private static final long serialVersionUID = -8891734807568233099L;
 	
 	public InvalidPageException() {

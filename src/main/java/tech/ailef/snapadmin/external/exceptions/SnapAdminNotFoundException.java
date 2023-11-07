@@ -1,5 +1,6 @@
 /* 
  * SnapAdmin - An automatically generated CRUD admin UI for Spring Boot apps
+
  * Copyright (C) 2023 Ailef (http://ailef.tech)
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -17,19 +18,21 @@
  */
 
 
-package tech.ailef.snapadmin.internal;
+package tech.ailef.snapadmin.external.exceptions;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
-/**
- * Configuration class for the "internal" data source. This is place in the root "internal"
- * package, so as to allow component scanning and detection of models and repositories.
- */
-@ConditionalOnProperty(name = "snapadmin.enabled", matchIfMissing = true)
-@ComponentScan
-@Configuration
-public class InternalDbAdminConfiguration {
+public class SnapAdminNotFoundException extends ResponseStatusException {
+	private static final long serialVersionUID = 4090093290330473479L;
+
+	public SnapAdminNotFoundException(String message) {
+		super(HttpStatus.NOT_FOUND, message);
+	}
+	
+	@Override
+	public String getMessage() {
+		return getReason();
+	}
 
 }

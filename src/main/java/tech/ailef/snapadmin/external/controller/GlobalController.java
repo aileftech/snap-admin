@@ -31,8 +31,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import tech.ailef.snapadmin.external.SnapAdmin;
 import tech.ailef.snapadmin.external.SnapAdminProperties;
-import tech.ailef.snapadmin.external.exceptions.DbAdminException;
-import tech.ailef.snapadmin.external.exceptions.DbAdminNotFoundException;
+import tech.ailef.snapadmin.external.exceptions.SnapAdminException;
+import tech.ailef.snapadmin.external.exceptions.SnapAdminNotFoundException;
 import tech.ailef.snapadmin.internal.UserConfiguration;
 
 /**
@@ -51,7 +51,7 @@ public class GlobalController {
 	@Autowired
 	private SnapAdmin dbAdmin;
 	
-	@ExceptionHandler(DbAdminException.class)
+	@ExceptionHandler(SnapAdminException.class)
 	public String handleException(Exception e, Model model, HttpServletResponse response) {
 		model.addAttribute("status", "");
 		model.addAttribute("error", "Error");
@@ -63,7 +63,7 @@ public class GlobalController {
 		return "other/error";
 	}
 	
-	@ExceptionHandler(DbAdminNotFoundException.class)
+	@ExceptionHandler(SnapAdminNotFoundException.class)
 	public String handleNotFound(Exception e, Model model, HttpServletResponse response) {
 		model.addAttribute("status", "404");
 		model.addAttribute("error", "Error");

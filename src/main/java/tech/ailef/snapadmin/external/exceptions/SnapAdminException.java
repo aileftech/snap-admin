@@ -17,16 +17,27 @@
  */
 
 
-package tech.ailef.snapadmin;
+package tech.ailef.snapadmin.external.exceptions;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+/**
+ * Generic top-level exception for everything thrown by us
+ *
+ */
+public class SnapAdminException extends RuntimeException {
+	private static final long serialVersionUID = 8120227031645804467L;
 
-@SpringBootTest
-class SpringBootDbAdminApplicationTests {
-
-	@Test
-	void contextLoads() {
+	public SnapAdminException() {
 	}
-
+	
+	public SnapAdminException(String msg, Throwable e) {
+		super(msg, e);
+	}
+	
+	public SnapAdminException(Throwable e) {
+		super(e);
+	}
+	
+	public SnapAdminException(String msg) {
+		super(msg);
+	}
 }

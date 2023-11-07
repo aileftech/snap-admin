@@ -35,7 +35,7 @@ import jakarta.persistence.OneToOne;
 import tech.ailef.snapadmin.external.annotations.DisplayName;
 import tech.ailef.snapadmin.external.dbmapping.fields.BooleanFieldType;
 import tech.ailef.snapadmin.external.dbmapping.fields.DbField;
-import tech.ailef.snapadmin.external.exceptions.DbAdminException;
+import tech.ailef.snapadmin.external.exceptions.SnapAdminException;
 
 /**
  * Wrapper for all objects retrieved from the database.
@@ -54,7 +54,7 @@ public class DbObject {
 	
 	public DbObject(Object instance, DbObjectSchema schema) {
 		if (instance == null)
-			throw new DbAdminException("Trying to build object with instance == null");
+			throw new SnapAdminException("Trying to build object with instance == null");
 		
 		this.instance = instance;
 		this.schema = schema;
@@ -94,7 +94,7 @@ public class DbObject {
 			DbObject linkedDbObject = new DbObject(linkedObject, field.getConnectedSchema());
 			return linkedDbObject;
 		} else {
-			throw new DbAdminException("Cannot traverse field " + field.getName() + " in class " + schema.getClassName());
+			throw new SnapAdminException("Cannot traverse field " + field.getName() + " in class " + schema.getClassName());
 		}
 	}
 	
@@ -112,7 +112,7 @@ public class DbObject {
 			return linkedObjects.stream().map(o -> new DbObject(o, field.getConnectedSchema()))
 				.collect(Collectors.toList());
 		} else {
-			throw new DbAdminException("Cannot traverse field " + field.getName() + " in class " + schema.getClassName());
+			throw new SnapAdminException("Cannot traverse field " + field.getName() + " in class " + schema.getClassName());
 		}
 	}
 	
@@ -120,14 +120,14 @@ public class DbObject {
 		Method getter = findGetter(name);
 		
 		if (getter == null)
-			throw new DbAdminException("Unable to find getter method for field `"
+			throw new SnapAdminException("Unable to find getter method for field `"
 				+ name + "` in class " + instance.getClass());
 
 		try {
 			Object result = getter.invoke(instance);
 			return new DbFieldValue(result, schema.getFieldByJavaName(name));
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			throw new DbAdminException(e);
+			throw new SnapAdminException(e);
 		}
 	}
 	
@@ -136,14 +136,14 @@ public class DbObject {
 		Method getter = findGetter(primaryKeyField.getJavaName());
 		
 		if (getter == null)
-			throw new DbAdminException("Unable to find getter method for field `"
+			throw new SnapAdminException("Unable to find getter method for field `"
 				+ primaryKeyField.getJavaName() + "` in class " + instance.getClass());
 		
 		try {
 			Object result = getter.invoke(instance);
 			return result;
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			throw new DbAdminException(e);
+			throw new SnapAdminException(e);
 		}
 	}
 	
@@ -161,7 +161,7 @@ public class DbObject {
 				if (displayName == null) return null;
 				else return displayName.toString();
 			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-				throw new DbAdminException(e);
+				throw new SnapAdminException(e);
 			}
 		} else {
 			return getPrimaryKeyValue().toString();
@@ -180,12 +180,12 @@ public class DbObject {
 		Method method = schema.getComputedColumn(column);
 		
 		if (method == null)
-			throw new DbAdminException("Unable to find mapped method for @ComputedColumn " + column);
+			throw new SnapAdminException("Unable to find mapped method for @ComputedColumn " + column);
 		
 		try {
 			return method.invoke(instance);
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			throw new DbAdminException("Error while calling @ComputedColumn " + column
+			throw new SnapAdminException("Error while calling @ComputedColumn " + column
 					+ " on class " + schema.getClassName());
 		}
 	}
@@ -197,14 +197,14 @@ public class DbObject {
 		Optional<?> obj = linkedSchema.getJpaRepository().findById(primaryKeyValue);
 		
 		if (!obj.isPresent()) {
-			throw new DbAdminException("Invalid value " + primaryKeyValue + " for " + fieldName
+			throw new SnapAdminException("Invalid value " + primaryKeyValue + " for " + fieldName
 					+ ": item does not exist.");
 		}
 		
 		Method setter = findSetter(field.getJavaName());
 		
 		if (setter == null) {
-			throw new DbAdminException("Unable to find setter method for " + fieldName + " in " + schema.getClassName());
+			throw new SnapAdminException("Unable to find setter method for " + fieldName + " in " + schema.getClassName());
 		}
 		
 		try {
@@ -217,7 +217,7 @@ public class DbObject {
 		Method setter = findSetter(fieldName);
 		
 		if (setter == null) {
-			throw new DbAdminException("Unable to find setter method for " + fieldName + " in " + schema.getClassName());
+			throw new SnapAdminException("Unable to find setter method for " + fieldName + " in " + schema.getClassName());
 		}
 		
 		try {

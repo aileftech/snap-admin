@@ -17,27 +17,16 @@
  */
 
 
-package tech.ailef.snapadmin.external.exceptions;
+package tech.ailef.snapadmin;
 
-/**
- * Generic top-level exception for everything thrown by us
- *
- */
-public class DbAdminException extends RuntimeException {
-	private static final long serialVersionUID = 8120227031645804467L;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
-	public DbAdminException() {
+@SpringBootTest
+class SpringBootSNapAdminApplicationTests {
+
+	@Test
+	void contextLoads() {
 	}
-	
-	public DbAdminException(String msg, Throwable e) {
-		super(msg, e);
-	}
-	
-	public DbAdminException(Throwable e) {
-		super(e);
-	}
-	
-	public DbAdminException(String msg) {
-		super(msg);
-	}
+
 }

@@ -45,7 +45,7 @@ import tech.ailef.snapadmin.external.dbmapping.fields.StringFieldType;
 import tech.ailef.snapadmin.external.dbmapping.fields.TextFieldType;
 import tech.ailef.snapadmin.external.dto.CompareOperator;
 import tech.ailef.snapadmin.external.dto.QueryFilter;
-import tech.ailef.snapadmin.external.exceptions.DbAdminException;
+import tech.ailef.snapadmin.external.exceptions.SnapAdminException;
 
 @SuppressWarnings("rawtypes")
 public class CustomJpaRepository extends SimpleJpaRepository {
@@ -140,7 +140,7 @@ public class CustomJpaRepository extends SimpleJpaRepository {
 						else value = file.getBytes();
 					}
 				} catch (IOException e) {
-					throw new DbAdminException(e);
+					throw new SnapAdminException(e);
 				}
 			}
 			
@@ -194,7 +194,7 @@ public class CustomJpaRepository extends SimpleJpaRepository {
 	        	try {
 	        		value = dbField.getType().parseValue(v);
 	        	} catch (Exception e) {
-	        		throw new DbAdminException("Invalid value `" + v + "` specified for field `" + dbField.getName() + "`");
+	        		throw new SnapAdminException("Invalid value `" + v + "` specified for field `" + dbField.getName() + "`");
 	        	}
         	}
         	

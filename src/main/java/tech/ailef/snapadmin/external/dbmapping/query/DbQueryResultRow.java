@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import tech.ailef.snapadmin.external.exceptions.DbAdminException;
+import tech.ailef.snapadmin.external.exceptions.SnapAdminException;
 
 public class DbQueryResultRow {
 	private Map<DbQueryOutputField, Object> values;
@@ -60,7 +60,7 @@ public class DbQueryResultRow {
 		DbQueryOutputField key = 
 			values.keySet().stream().filter(f -> f.getName().equals(field)).findFirst().orElse(null);
 		if (key == null) {
-			throw new DbAdminException("Field " + field + " not found");
+			throw new SnapAdminException("Field " + field + " not found");
 		}
 		return get(key);
 	}

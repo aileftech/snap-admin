@@ -38,7 +38,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import tech.ailef.snapadmin.internal.InternalDbAdminConfiguration;
+import tech.ailef.snapadmin.internal.InternalSnapAdminConfiguration;
 
 /**
  * The configuration class for "internal" data source. This is not the
@@ -55,7 +55,7 @@ import tech.ailef.snapadmin.internal.InternalDbAdminConfiguration;
 	basePackages = { "tech.ailef.snapadmin.internal.repository" }
 )
 @EnableTransactionManagement
-@Import(InternalDbAdminConfiguration.class)
+@Import(InternalSnapAdminConfiguration.class)
 public class SnapAdminAutoConfiguration {
 	@Autowired
 	private SnapAdminProperties props;

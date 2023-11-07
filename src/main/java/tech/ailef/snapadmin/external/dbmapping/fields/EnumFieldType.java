@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 
 import jakarta.persistence.EnumType;
 import tech.ailef.snapadmin.external.dto.CompareOperator;
-import tech.ailef.snapadmin.external.exceptions.DbAdminException;
+import tech.ailef.snapadmin.external.exceptions.SnapAdminException;
 
 public class EnumFieldType extends DbFieldType {
 
@@ -52,7 +52,7 @@ public class EnumFieldType extends DbFieldType {
 			return Arrays.stream(invoke).collect(Collectors.toList());
 		} catch (NoSuchMethodException | SecurityException | InvocationTargetException 
 				| IllegalAccessException | IllegalArgumentException e) {
-			throw new DbAdminException(e);
+			throw new SnapAdminException(e);
 		}
 	}
 
@@ -65,11 +65,11 @@ public class EnumFieldType extends DbFieldType {
 			return valueOf.invoke(null, value.toString());
 		} catch (InvocationTargetException e) {
 			if (e.getCause() instanceof IllegalArgumentException)
-				throw new DbAdminException("Invalid value " + value + " for enum type " + getJavaClass().getSimpleName());
+				throw new SnapAdminException("Invalid value " + value + " for enum type " + getJavaClass().getSimpleName());
 			else
-				throw new DbAdminException(e);
+				throw new SnapAdminException(e);
 		} catch (NoSuchMethodException | SecurityException | IllegalAccessException e) {
-			throw new DbAdminException(e);
+			throw new SnapAdminException(e);
 		}
 	}
 

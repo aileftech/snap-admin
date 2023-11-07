@@ -30,7 +30,7 @@ import tech.ailef.snapadmin.external.dbmapping.DbObjectSchema;
 import tech.ailef.snapadmin.external.dbmapping.fields.DbField;
 import tech.ailef.snapadmin.external.dto.CompareOperator;
 import tech.ailef.snapadmin.external.dto.QueryFilter;
-import tech.ailef.snapadmin.external.exceptions.DbAdminException;
+import tech.ailef.snapadmin.external.exceptions.SnapAdminException;
 
 /**
  * Collection of utility functions used across the project
@@ -93,7 +93,7 @@ public interface Utils {
 		
 		if (ops.size() != fields.size() || fields.size() != values.size()
 			|| ops.size() != values.size()) {
-			throw new DbAdminException("Filtering parameters must have the same size");
+			throw new SnapAdminException("Filtering parameters must have the same size");
 		}
 
 		Set<QueryFilter> filters = new HashSet<>();

@@ -68,8 +68,8 @@ import tech.ailef.snapadmin.external.dto.PaginatedResult;
 import tech.ailef.snapadmin.external.dto.PaginationInfo;
 import tech.ailef.snapadmin.external.dto.QueryFilter;
 import tech.ailef.snapadmin.external.dto.ValidationErrorsContainer;
-import tech.ailef.snapadmin.external.exceptions.DbAdminException;
-import tech.ailef.snapadmin.external.exceptions.DbAdminNotFoundException;
+import tech.ailef.snapadmin.external.exceptions.SnapAdminException;
+import tech.ailef.snapadmin.external.exceptions.SnapAdminNotFoundException;
 import tech.ailef.snapadmin.external.exceptions.InvalidPageException;
 import tech.ailef.snapadmin.external.misc.Utils;
 import tech.ailef.snapadmin.internal.model.ConsoleQuery;
@@ -81,12 +81,12 @@ import tech.ailef.snapadmin.internal.service.UserActionService;
 import tech.ailef.snapadmin.internal.service.UserSettingsService;
 
 /**
- * The main DbAdmin controller that register most of the routes of the web interface.
+ * The main SnapAdmin controller that register most of the routes of the web interface.
  */
 @Controller
 @RequestMapping(value= {"/${snapadmin.baseUrl}", "/${snapadmin.baseUrl}/"})
-public class DefaultSnapAdminController {
-	private static final Logger logger = LoggerFactory.getLogger(DefaultSnapAdminController.class);
+public class SnapAdminController {
+	private static final Logger logger = LoggerFactory.getLogger(SnapAdminController.class);
 	
 	@Autowired
 	private SnapAdminProperties properties;
@@ -229,7 +229,7 @@ public class DefaultSnapAdminController {
 			
 		} catch (InvalidPageException e) {
 			return "redirect:/" + properties.getBaseUrl() + "/model/" + className;
-		} catch (DbAdminException e) {
+		} catch (SnapAdminException e) {
 			model.addAttribute("error", e.getMessage());
 			model.addAttribute("errorTitle", "Invalid request");
 			model.addAttribute("schema", schema);
@@ -272,7 +272,7 @@ public class DefaultSnapAdminController {
 		Object pkValue = schema.getPrimaryKey().getType().parseValue(id);
 		
 		DbObject object = repository.findById(schema, pkValue).orElseThrow(() -> {
-			return new DbAdminNotFoundException(
+			return new SnapAdminNotFoundException(
 				schema.getJavaClass().getSimpleName() + " with ID " + id + " not found."
 			);
 		});
@@ -318,7 +318,7 @@ public class DefaultSnapAdminController {
 		}
 		
 		DbObject object = repository.findById(schema, pkValue).orElseThrow(() -> {
-			return new DbAdminNotFoundException(
+			return new SnapAdminNotFoundException(
 			  "Object " + className + " with id " + id + " not found"
 			);
 		});
@@ -500,7 +500,7 @@ public class DefaultSnapAdminController {
 			attr.addFlashAttribute("error", "See below for details");
 			attr.addFlashAttribute("validationErrors", new ValidationErrorsContainer(e));
 			attr.addFlashAttribute("params", params);
-		} catch (DbAdminException e) {
+		} catch (SnapAdminException e) {
 			Throwable cause = e.getCause() != null ? e.getCause() : e;
 			logger.error(Arrays.toString(cause.getStackTrace()));
 			attr.addFlashAttribute("errorTitle", "Error");
@@ -557,7 +557,7 @@ public class DefaultSnapAdminController {
 	@GetMapping("/console/new")
 	public String consoleNew(Model model) {
 		if (!properties.isSqlConsoleEnabled()) {
-			throw new DbAdminException("SQL console not enabled");
+			throw new SnapAdminException("SQL console not enabled");
 		}
 		
 		ConsoleQuery q = new ConsoleQuery();
@@ -568,7 +568,7 @@ public class DefaultSnapAdminController {
 	@GetMapping("/console")
 	public String console() {
 		if (!properties.isSqlConsoleEnabled()) {
-			throw new DbAdminException("SQL console not enabled");
+			throw new SnapAdminException("SQL console not enabled");
 		}
 		
 		List<ConsoleQuery> tabs = consoleQueryRepository.findAll();
@@ -585,7 +585,7 @@ public class DefaultSnapAdminController {
 	@PostMapping("/console/delete/{queryId}")
 	public String consoleDelete(@PathVariable String queryId, Model model) {
 		if (!properties.isSqlConsoleEnabled()) {
-			throw new DbAdminException("SQL console not enabled");
+			throw new SnapAdminException("SQL console not enabled");
 		}
 		
 		consoleQueryRepository.deleteById(queryId);
@@ -604,11 +604,11 @@ public class DefaultSnapAdminController {
 		long startTime = System.currentTimeMillis();
 		
 		if (!properties.isSqlConsoleEnabled()) {
-			throw new DbAdminException("SQL console not enabled");
+			throw new SnapAdminException("SQL console not enabled");
 		}
 		
 		ConsoleQuery activeQuery = consoleQueryRepository.findById(queryId).orElseThrow(() -> {
-			return new DbAdminNotFoundException("Query with ID " + queryId + " not found.");
+			return new SnapAdminNotFoundException("Query with ID " + queryId + " not found.");
 		});
 		
 		if (query != null && !query.isBlank()) {

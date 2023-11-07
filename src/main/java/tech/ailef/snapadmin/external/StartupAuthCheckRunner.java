@@ -30,7 +30,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import tech.ailef.snapadmin.external.exceptions.DbAdminException;
+import tech.ailef.snapadmin.external.exceptions.SnapAdminException;
 
 /**
  * Runs at startup to determine if SnapAdmin is protected with authentication.
@@ -70,7 +70,7 @@ public class StartupAuthCheckRunner {
 				}
 
 			} catch (IOException e) {
-				throw new DbAdminException(e);
+				throw new SnapAdminException(e);
 			}
 			
 		};

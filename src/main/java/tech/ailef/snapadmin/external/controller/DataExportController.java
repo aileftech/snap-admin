@@ -64,8 +64,8 @@ import tech.ailef.snapadmin.external.dbmapping.query.DbQueryResult;
 import tech.ailef.snapadmin.external.dbmapping.query.DbQueryResultRow;
 import tech.ailef.snapadmin.external.dto.DataExportFormat;
 import tech.ailef.snapadmin.external.dto.QueryFilter;
-import tech.ailef.snapadmin.external.exceptions.DbAdminException;
-import tech.ailef.snapadmin.external.exceptions.DbAdminNotFoundException;
+import tech.ailef.snapadmin.external.exceptions.SnapAdminException;
+import tech.ailef.snapadmin.external.exceptions.SnapAdminNotFoundException;
 import tech.ailef.snapadmin.external.misc.Utils;
 import tech.ailef.snapadmin.internal.model.ConsoleQuery;
 import tech.ailef.snapadmin.internal.repository.ConsoleQueryRepository;
@@ -90,13 +90,13 @@ public class DataExportController {
 	@GetMapping("/console/export/{queryId}")
 	public ResponseEntity<byte[]> export(@PathVariable String queryId, @RequestParam String format, 
 			@RequestParam MultiValueMap<String, String> otherParams) {
-		ConsoleQuery query = queryRepository.findById(queryId).orElseThrow(() -> new DbAdminNotFoundException("Query not found: " + queryId));
+		ConsoleQuery query = queryRepository.findById(queryId).orElseThrow(() -> new SnapAdminNotFoundException("Query not found: " + queryId));
 		
 		DataExportFormat exportFormat = null;
 		try {
 			exportFormat = DataExportFormat.valueOf(format.toUpperCase());
 		} catch (IllegalArgumentException e) {
-			throw new DbAdminException("Unsupported export format: " + format);
+			throw new SnapAdminException("Unsupported export format: " + format);
 		}
 		
 		List<String> fieldsToInclude = otherParams.getOrDefault("fields[]", new ArrayList<>());
@@ -120,7 +120,7 @@ public class DataExportController {
 							"attachment; filename=\"export_" + query.getTitle().replaceAll("[^a-zA-Z0-9.-]", "_") + ".jsonl\"")
 					.body(toJsonlQuery(results, fieldsToInclude).getBytes());
 		default:
-			throw new DbAdminException("Invalid DataExportFormat");
+			throw new SnapAdminException("Invalid DataExportFormat");
 		}
 	}
 	
@@ -134,7 +134,7 @@ public class DataExportController {
 		DbObjectSchema schema = dbAdmin.findSchemaByClassName(className);
 		
 		if (!schema.isExportEnabled()) {
-			throw new DbAdminException("Export is not enabled for this table: " +  schema.getTableName());
+			throw new SnapAdminException("Export is not enabled for this table: " +  schema.getTableName());
 		}
 		
 		List<String> fieldsToInclude = otherParams.getOrDefault("fields[]", new ArrayList<>());
@@ -143,7 +143,7 @@ public class DataExportController {
 		try {
 			exportFormat = DataExportFormat.valueOf(format.toUpperCase());
 		} catch (IllegalArgumentException e) {
-			throw new DbAdminException("Unsupported export format: " + format);
+			throw new SnapAdminException("Unsupported export format: " + format);
 		}
 
 		Set<QueryFilter> queryFilters = Utils.computeFilters(schema, otherParams);
@@ -168,7 +168,7 @@ public class DataExportController {
 					.body(toJsonl(results, fieldsToInclude, raw).getBytes());
 		
 		default:
-			throw new DbAdminException("Invalid DataExportFormat");
+			throw new SnapAdminException("Invalid DataExportFormat");
 		}
 
 	}
@@ -209,7 +209,7 @@ public class DataExportController {
 			fos.close();
 			workbook.close();
 		} catch (IOException e) {
-			throw new DbAdminException("Error during serialization for XLSX workbook", e);
+			throw new SnapAdminException("Error during serialization for XLSX workbook", e);
 		}
 		
 		
@@ -252,7 +252,7 @@ public class DataExportController {
 			fos.close();
 			workbook.close();
 		} catch (IOException e) {
-			throw new DbAdminException("Error during serialization for XLSX workbook", e);
+			throw new SnapAdminException("Error during serialization for XLSX workbook", e);
 		}
 		
 		
@@ -279,7 +279,7 @@ public class DataExportController {
 				String json = mapper.writeValueAsString(map);
 				sb.append(json);
 			} catch (JsonProcessingException e) {
-				throw new DbAdminException(e);
+				throw new SnapAdminException(e);
 			}
 			
 			sb.append("\n");
@@ -300,7 +300,7 @@ public class DataExportController {
 				String json = mapper.writeValueAsString(map);
 				sb.append(json);
 			} catch (JsonProcessingException e) {
-				throw new DbAdminException(e);
+				throw new SnapAdminException(e);
 			}
 			
 			sb.append("\n");
@@ -328,7 +328,7 @@ public class DataExportController {
 
 			return sw.toString();
 		} catch (IOException e) {
-			throw new DbAdminException("Error during creation of CSV file", e);
+			throw new SnapAdminException("Error during creation of CSV file", e);
 		}
 	}
 	
@@ -350,7 +350,7 @@ public class DataExportController {
 
 			return sw.toString();
 		} catch (IOException e) {
-			throw new DbAdminException("Error during creation of CSV file", e);
+			throw new SnapAdminException("Error during creation of CSV file", e);
 		}
 	
 	}

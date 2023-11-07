@@ -21,7 +21,7 @@ package tech.ailef.snapadmin.external.dbmapping.fields;
 import java.util.List;
 
 import tech.ailef.snapadmin.external.dto.CompareOperator;
-import tech.ailef.snapadmin.external.exceptions.DbAdminException;
+import tech.ailef.snapadmin.external.exceptions.SnapAdminException;
 
 public class ByteFieldType extends DbFieldType {
 	@Override
@@ -42,6 +42,6 @@ public class ByteFieldType extends DbFieldType {
 	
 	@Override
 	public List<CompareOperator> getCompareOperators() {
-		throw new DbAdminException("Binary fields are not comparable");
+		throw new SnapAdminException("Binary fields are not comparable");
 	}
 }

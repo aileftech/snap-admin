@@ -26,7 +26,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import tech.ailef.snapadmin.external.exceptions.DbAdminException;
+import tech.ailef.snapadmin.external.exceptions.SnapAdminException;
 import tech.ailef.snapadmin.internal.model.UserSetting;
 import tech.ailef.snapadmin.internal.repository.UserSettingsRepository;
 
@@ -51,7 +51,7 @@ public class UserConfiguration {
 		String settingDefaultValue = defaultValues().get(settingName);
 		
 		if (settingDefaultValue == null)
-			throw new DbAdminException("Trying to access setting `" + settingName + "` but it has no default value");
+			throw new SnapAdminException("Trying to access setting `" + settingName + "` but it has no default value");
 		
 		return settingDefaultValue;
 	}

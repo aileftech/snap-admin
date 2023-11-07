@@ -59,13 +59,13 @@ import tech.ailef.snapadmin.external.dbmapping.fields.EnumFieldType;
 import tech.ailef.snapadmin.external.dbmapping.fields.StringFieldType;
 import tech.ailef.snapadmin.external.dbmapping.fields.TextFieldType;
 import tech.ailef.snapadmin.external.dto.MappingError;
-import tech.ailef.snapadmin.external.exceptions.DbAdminException;
-import tech.ailef.snapadmin.external.exceptions.DbAdminNotFoundException;
+import tech.ailef.snapadmin.external.exceptions.SnapAdminException;
+import tech.ailef.snapadmin.external.exceptions.SnapAdminNotFoundException;
 import tech.ailef.snapadmin.external.exceptions.UnsupportedFieldTypeException;
 import tech.ailef.snapadmin.external.misc.Utils;
 
 /**
- * The main DbAdmin class responsible for the initialization phase. This class scans
+ * The main SnapAdmin class is responsible for the initialization phase. This class scans
  * the user provided package containing the {@code Entity} definitions and tries to map each
  * entity to a {@link DbObjectSchema} instance.
  * 
@@ -90,7 +90,7 @@ public class SnapAdmin {
 	private static final String VERSION = "0.1.9";
     
     /**
-	 * Builds the DbAdmin instance by scanning the `@Entity` beans and loading
+	 * Builds the SnapAdmin instance by scanning the `@Entity` beans and loading
 	 * the schemas.
 	 * @param entityManager	the entity manager
 	 * @param properties	the configuration properties
@@ -152,11 +152,11 @@ public class SnapAdmin {
 	 * Finds a schema by its full class name
 	 * @param className	qualified class name
 	 * @return the schema with this class name
-	 * @throws DbAdminException if corresponding schema not found
+	 * @throws SnapAdminException if corresponding schema not found
 	 */
 	public DbObjectSchema findSchemaByClassName(String className) {
 		return schemas.stream().filter(s -> s.getClassName().equals(className)).findFirst().orElseThrow(() -> {
-			return new DbAdminNotFoundException("Schema " + className + " not found.");
+			return new SnapAdminNotFoundException("Schema " + className + " not found.");
 		});
 	}
 	
@@ -164,11 +164,11 @@ public class SnapAdmin {
 	 * Finds a schema by its table name
 	 * @param tableName the table name on the database
 	 * @return the schema with this table name
-	 * @throws DbAdminException if corresponding schema not found
+	 * @throws SnapAdminException if corresponding schema not found
 	 */
 	public DbObjectSchema findSchemaByTableName(String tableName) {
 		return schemas.stream().filter(s -> s.getTableName().equals(tableName)).findFirst().orElseThrow(() -> {
-			return new DbAdminException("Schema " + tableName + " not found.");
+			return new SnapAdminException("Schema " + tableName + " not found.");
 		});
 	}
 	
@@ -176,7 +176,7 @@ public class SnapAdmin {
 	 * Finds a schema by its class object
 	 * @param klass the `@Entity` class you want to find the schema for
 	 * @return the schema for the `@Entity` class
-	 * @throws DbAdminException if corresponding schema not found
+	 * @throws SnapAdminException if corresponding schema not found
 	 */
 	public DbObjectSchema findSchemaByClass(Class<?> klass) {
 		return findSchemaByClassName(klass.getName());
@@ -310,7 +310,7 @@ public class SnapAdmin {
 					// If failure, we try to map a relationship on this field later
 				}
 			}
-		} catch (DbAdminException e) {
+		} catch (SnapAdminException e) {
 			// If failure, we try to map a relationship on this field later
 		}
 
@@ -392,12 +392,12 @@ public class SnapAdmin {
 			}
 			
 			if (linkType == null)
-				throw new DbAdminException("Unable to find @Id field in Entity class " + entityClass);
+				throw new SnapAdminException("Unable to find @Id field in Entity class " + entityClass);
 			
 			return DbFieldType.fromClass(linkType).getConstructor().newInstance();
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
 				| InvocationTargetException | NoSuchMethodException | SecurityException e) {
-			throw new DbAdminException(e);
+			throw new SnapAdminException(e);
 		}
 	}
 

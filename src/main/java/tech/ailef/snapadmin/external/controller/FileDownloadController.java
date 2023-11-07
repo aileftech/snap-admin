@@ -41,7 +41,7 @@ import tech.ailef.snapadmin.external.dbmapping.SnapAdminRepository;
 import tech.ailef.snapadmin.external.dbmapping.DbFieldValue;
 import tech.ailef.snapadmin.external.dbmapping.DbObject;
 import tech.ailef.snapadmin.external.dbmapping.DbObjectSchema;
-import tech.ailef.snapadmin.external.exceptions.DbAdminException;
+import tech.ailef.snapadmin.external.exceptions.SnapAdminException;
 
 /**
  * Controller to serve file or images (`@DisplayImage`) 
@@ -109,7 +109,7 @@ public class FileDownloadController {
 			DbFieldValue dbFieldValue;
 			try {
 				dbFieldValue = dbObject.get(fieldName);
-			} catch (DbAdminException e) {
+			} catch (SnapAdminException e) {
 				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Field not found", e);
 			}
 			

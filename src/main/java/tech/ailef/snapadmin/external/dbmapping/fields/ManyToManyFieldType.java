@@ -22,7 +22,7 @@ import java.util.List;
 
 import jakarta.persistence.ManyToMany;
 import tech.ailef.snapadmin.external.dto.CompareOperator;
-import tech.ailef.snapadmin.external.exceptions.DbAdminException;
+import tech.ailef.snapadmin.external.exceptions.SnapAdminException;
 
 public class ManyToManyFieldType extends DbFieldType {
 	@Override
@@ -52,6 +52,6 @@ public class ManyToManyFieldType extends DbFieldType {
 	
 	@Override
 	public List<CompareOperator> getCompareOperators() {
-		throw new DbAdminException();
+		throw new SnapAdminException();
 	}
 }

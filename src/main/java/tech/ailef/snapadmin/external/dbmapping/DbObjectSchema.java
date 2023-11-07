@@ -48,7 +48,7 @@ import tech.ailef.snapadmin.external.annotations.DisableExport;
 import tech.ailef.snapadmin.external.annotations.HiddenColumn;
 import tech.ailef.snapadmin.external.dbmapping.fields.DbField;
 import tech.ailef.snapadmin.external.dto.MappingError;
-import tech.ailef.snapadmin.external.exceptions.DbAdminException;
+import tech.ailef.snapadmin.external.exceptions.SnapAdminException;
 import tech.ailef.snapadmin.external.misc.Utils;
 
 /**
@@ -75,7 +75,7 @@ public class DbObjectSchema {
 	 */
 	private CustomJpaRepository jpaRepository;
 	
-	private SnapAdmin dbAdmin;
+	private SnapAdmin snapAdmin;
 	
 	/**
 	 * The corresponding `@Entity` class that this schema describes
@@ -95,10 +95,10 @@ public class DbObjectSchema {
 	 * Determines the table name from the `@Table` annotation and also
 	 * which methods are `@ComputedColumn`s
 	 * @param klass the `@Entity` class
-	 * @param dbAdmin the DbAdmin instance
+	 * @param snapAdmin the SnapAdmin instance
 	 */
-	public DbObjectSchema(Class<?> klass, SnapAdmin dbAdmin) {
-		this.dbAdmin = dbAdmin;
+	public DbObjectSchema(Class<?> klass, SnapAdmin snapAdmin) {
+		this.snapAdmin = snapAdmin;
 		this.entityClass = klass;
 		
 		Table tableAnnotation = klass.getAnnotation(Table.class);
@@ -116,7 +116,7 @@ public class DbObjectSchema {
 				.collect(Collectors.toList());
 		for (Method m : methods) {
 			if (m.getParameterCount() > 0)
-				throw new DbAdminException("@ComputedColumn can only be applied on no-args methods");
+				throw new SnapAdminException("@ComputedColumn can only be applied on no-args methods");
 			
 			String name = m.getAnnotation(ComputedColumn.class).name();
 			if (name.isBlank())
@@ -131,11 +131,11 @@ public class DbObjectSchema {
 	}
 	
 	/**
-	 * Returns the DbAdmin instance
-	 * @return the DbAdmin instance
+	 * Returns the SnapAdmin instance
+	 * @return the SnapAdmin instance
 	 */
-	public SnapAdmin getDbAdmin() {
-		return dbAdmin;
+	public SnapAdmin getSnapAdmin() {
+		return snapAdmin;
 	}
 	
 	/**
@@ -191,7 +191,7 @@ public class DbObjectSchema {
 	}
 	
 	/**
-	 * Adds a field to this schema. This is used by the DbAdmin instance
+	 * Adds a field to this schema. This is used by the SnapAdmin instance
 	 * during initialization and it's not supposed to be called afterwards
 	 * @param f	the DbField to add
 	 */
@@ -417,7 +417,7 @@ public class DbObjectSchema {
 			return dbObject;
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
 				| NoSuchMethodException | SecurityException e) {
-			throw new DbAdminException(e);
+			throw new SnapAdminException(e);
 		}
 		
 	}

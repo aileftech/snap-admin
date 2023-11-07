@@ -23,7 +23,7 @@
  * Boot Database Admin in order to save information. 
  * 
  * Due to the way Spring Boot component scanning works, it is needed to create this package and the
- * respective {@link tech.ailef.snapadmin.internal.InternalDbAdminConfiguration} in order to 
+ * respective {@link tech.ailef.snapadmin.internal.InternalSnapAdminConfiguration} in order to 
  * have the component scanning only pick the correct entities/repositories.
  */
 package tech.ailef.snapadmin.internal;
