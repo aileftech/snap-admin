@@ -42,7 +42,7 @@ import tech.ailef.snapadmin.external.dto.AutocompleteSearchResult;
 @RequestMapping(value= {"/${snapadmin.baseUrl}/api/autocomplete", "/${snapadmin.baseUrl}/api/autocomplete/"})
 public class AutocompleteController {
 	@Autowired
-	private SnapAdmin dbAdmin;
+	private SnapAdmin snapAdmin;
 	
 	@Autowired
 	private SnapAdminRepository repository;
@@ -55,7 +55,7 @@ public class AutocompleteController {
 	 */
 	@GetMapping("/{className}")
 	public ResponseEntity<?> autocomplete(@PathVariable String className, @RequestParam String query) {
-		DbObjectSchema schema = dbAdmin.findSchemaByClassName(className);
+		DbObjectSchema schema = snapAdmin.findSchemaByClassName(className);
 		
 		List<AutocompleteSearchResult> search = repository.search(schema, query)
 					.stream().map(x -> new AutocompleteSearchResult(x))

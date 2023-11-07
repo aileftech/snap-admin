@@ -53,7 +53,7 @@ public class FileDownloadController {
 	private SnapAdminRepository repository;
 	
 	@Autowired
-	private SnapAdmin dbAdmin;
+	private SnapAdmin snapAdmin;
 
 	
 	/**
@@ -68,7 +68,7 @@ public class FileDownloadController {
 	public ResponseEntity<byte[]> serveImage(@PathVariable String className, 
 			@PathVariable String fieldName, @PathVariable String id) {
 
-		DbObjectSchema schema = dbAdmin.findSchemaByClassName(className);
+		DbObjectSchema schema = snapAdmin.findSchemaByClassName(className);
 		
 		Optional<DbObject> object = repository.findById(schema, id);
 		
@@ -99,7 +99,7 @@ public class FileDownloadController {
 	public ResponseEntity<byte[]> serveFile(@PathVariable String className, 
 			@PathVariable String fieldName, @PathVariable String id) {
 
-		DbObjectSchema schema = dbAdmin.findSchemaByClassName(className);
+		DbObjectSchema schema = snapAdmin.findSchemaByClassName(className);
 		
 		Optional<DbObject> object = repository.findById(schema, id);
 		

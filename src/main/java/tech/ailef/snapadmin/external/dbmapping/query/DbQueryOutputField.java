@@ -39,12 +39,12 @@ public class DbQueryOutputField {
 	
 	private DbQueryResultRow result;
 	
-	public DbQueryOutputField(String name, String table, SnapAdmin dbAdmin) {
+	public DbQueryOutputField(String name, String table, SnapAdmin snapAdmin) {
 		this.name = name;
 		this.table = table;
 		
 		try {
-			DbObjectSchema schema = dbAdmin.findSchemaByTableName(table);
+			DbObjectSchema schema = snapAdmin.findSchemaByTableName(table);
 			DbField dbField = schema.getFieldByName(name);
 			this.dbField = dbField;
 		} catch (SnapAdminException e) {

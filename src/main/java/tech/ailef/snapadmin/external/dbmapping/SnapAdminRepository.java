@@ -66,7 +66,7 @@ public class SnapAdminRepository {
 	private JdbcTemplate jdbcTemplate;
 	
 	@Autowired
-	private SnapAdmin dbAdmin;
+	private SnapAdmin snapAdmin;
 	
 	public SnapAdminRepository() {
 	}
@@ -304,7 +304,7 @@ public class SnapAdminRepository {
 					Object o = rs.getObject(i + 1);
 					String columnName = metaData.getColumnName(i + 1);
 					String tableName = metaData.getTableName(i + 1);
-					DbQueryOutputField field = new DbQueryOutputField(columnName, tableName, dbAdmin);
+					DbQueryOutputField field = new DbQueryOutputField(columnName, tableName, snapAdmin);
 					
 					result.put(field, o);
 				}

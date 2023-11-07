@@ -76,7 +76,7 @@ public class DataExportController {
 	private static final Logger logger = LoggerFactory.getLogger(DataExportFormat.class);
 	
 	@Autowired
-	private SnapAdmin dbAdmin;
+	private SnapAdmin snapAdmin;
 
 	@Autowired
 	private SnapAdminRepository repository;
@@ -131,7 +131,7 @@ public class DataExportController {
 			@RequestParam MultiValueMap<String, String> otherParams) {
 		if (raw == null) raw = false;
 		
-		DbObjectSchema schema = dbAdmin.findSchemaByClassName(className);
+		DbObjectSchema schema = snapAdmin.findSchemaByClassName(className);
 		
 		if (!schema.isExportEnabled()) {
 			throw new SnapAdminException("Export is not enabled for this table: " +  schema.getTableName());

@@ -49,7 +49,7 @@ public class GlobalController {
 	private UserConfiguration userConf;
 	
 	@Autowired
-	private SnapAdmin dbAdmin;
+	private SnapAdmin snapAdmin;
 	
 	@ExceptionHandler(SnapAdminException.class)
 	public String handleException(Exception e, Model model, HttpServletResponse response) {
@@ -58,7 +58,7 @@ public class GlobalController {
 		model.addAttribute("message", e.getMessage());
 		model.addAttribute("snapadmin_userConf", userConf);
 		model.addAttribute("snapadmin_baseUrl", getBaseUrl());
-		model.addAttribute("snapadmin_version", dbAdmin.getVersion());
+		model.addAttribute("snapadmin_version", snapAdmin.getVersion());
 		model.addAttribute("snapadmin_properties", props);
 		return "other/error";
 	}
@@ -70,7 +70,7 @@ public class GlobalController {
 		model.addAttribute("message", e.getMessage());
 		model.addAttribute("snapadmin_userConf", userConf);
 		model.addAttribute("snapadmin_baseUrl", getBaseUrl());
-		model.addAttribute("snapadmin_version", dbAdmin.getVersion());
+		model.addAttribute("snapadmin_version", snapAdmin.getVersion());
 		model.addAttribute("snapadmin_properties", props);
 		response.setStatus(404);
 		return "other/error";
@@ -78,7 +78,7 @@ public class GlobalController {
 	
 	@ModelAttribute("snapadmin_version")
 	public String getVersion() {
-		return dbAdmin.getVersion();
+		return snapAdmin.getVersion();
 	}
 	
 	/**
@@ -128,7 +128,7 @@ public class GlobalController {
 	
 	@ModelAttribute("snapadmin_authenticated") 
 	public boolean isAuthenticated() {
-		return dbAdmin.isAuthenticated();
+		return snapAdmin.isAuthenticated();
 	}
 	
 }
