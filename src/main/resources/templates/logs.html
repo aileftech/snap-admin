@@ -110,7 +110,7 @@
 			    										<th:block th:replace="~{fragments/table_selectable :: 
 			    											sort_arrow(sortKey=${searchRequest.getSortKey()},
 			    											sortOrder=${searchRequest.getSortOrder()},
-			    											fieldName='user')}">
+			    											fieldName='username')}">
 			    									</h4>
 			    								</div>
 		    								</th>
@@ -131,7 +131,7 @@
 											</td>
 											<td th:text="${entry.getFormattedDate()}">
 											</td>
-											<td th:text="${entry.getUser()}">
+											<td th:text="${entry.getUsername()}">
 											</td>
 											<!--
 											<a href="#" class="ui-btn btn btn-primary">
