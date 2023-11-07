@@ -19,7 +19,6 @@
 
 package tech.ailef.snapadmin.external.controller;
 
-import java.security.Principal;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -57,9 +56,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.ConstraintViolationException;
 import tech.ailef.snapadmin.external.SnapAdmin;
 import tech.ailef.snapadmin.external.SnapAdminProperties;
-import tech.ailef.snapadmin.external.dbmapping.SnapAdminRepository;
 import tech.ailef.snapadmin.external.dbmapping.DbObject;
 import tech.ailef.snapadmin.external.dbmapping.DbObjectSchema;
+import tech.ailef.snapadmin.external.dbmapping.SnapAdminRepository;
 import tech.ailef.snapadmin.external.dbmapping.query.DbQueryResult;
 import tech.ailef.snapadmin.external.dto.CompareOperator;
 import tech.ailef.snapadmin.external.dto.FacetedSearchRequest;
@@ -68,9 +67,9 @@ import tech.ailef.snapadmin.external.dto.PaginatedResult;
 import tech.ailef.snapadmin.external.dto.PaginationInfo;
 import tech.ailef.snapadmin.external.dto.QueryFilter;
 import tech.ailef.snapadmin.external.dto.ValidationErrorsContainer;
+import tech.ailef.snapadmin.external.exceptions.InvalidPageException;
 import tech.ailef.snapadmin.external.exceptions.SnapAdminException;
 import tech.ailef.snapadmin.external.exceptions.SnapAdminNotFoundException;
-import tech.ailef.snapadmin.external.exceptions.InvalidPageException;
 import tech.ailef.snapadmin.external.misc.Utils;
 import tech.ailef.snapadmin.internal.model.ConsoleQuery;
 import tech.ailef.snapadmin.internal.model.UserAction;

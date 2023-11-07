@@ -54,8 +54,8 @@ import tech.ailef.snapadmin.external.dto.FacetedSearchRequest;
 import tech.ailef.snapadmin.external.dto.PaginatedResult;
 import tech.ailef.snapadmin.external.dto.PaginationInfo;
 import tech.ailef.snapadmin.external.dto.QueryFilter;
-import tech.ailef.snapadmin.external.exceptions.SnapAdminException;
 import tech.ailef.snapadmin.external.exceptions.InvalidPageException;
+import tech.ailef.snapadmin.external.exceptions.SnapAdminException;
 
 /**
  * Implements the basic CRUD operations (and some more)
