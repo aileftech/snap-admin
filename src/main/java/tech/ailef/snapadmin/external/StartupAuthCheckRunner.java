@@ -48,6 +48,14 @@ public class StartupAuthCheckRunner {
 	@Autowired
 	private SnapAdminProperties properties;
 	
+	/**
+	 * This event listener gets called after the server is initialized in order
+	 * to have access to the value of the port (needed to build the URL at runtime).
+	 * The method checks if SnapAdmin is accessible (status code == 200) to determine
+	 * whether security is enabled, and if this is not the case it sets flags
+	 * to display appropriate warnings. 
+	 * @return
+	 */
 	@Bean
 	ApplicationListener<ServletWebServerInitializedEvent> serverPortListenerBean() {
 		return event -> {
@@ -65,8 +73,8 @@ public class StartupAuthCheckRunner {
 				
 				snapAdmin.setAuthenticated(statusCode != 200);
 				if (statusCode == 200) {
-					logger.warn("It seems SnapAdmin routes are not protected with authentication. The URL "
-							+ url + " is publicly accessible: be careful!");
+					logger.warn("It appears that you have not enabled security so SnapAdmin is publicly accessible. "
+							+ "Read here to learn how to secure SnapAdmin with Spring Security: https://www.snapadmin.dev/docs/#security");
 				}
 
 			} catch (IOException e) {
