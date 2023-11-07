@@ -126,5 +126,10 @@ public class GlobalController {
 		return props;
 	}
 	
+	@ModelAttribute("snapadmin_authenticated") 
+	public boolean isAuthenticated() {
+		return dbAdmin.isAuthenticated();
+	}
+	
 }
 

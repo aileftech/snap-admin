@@ -9,6 +9,16 @@
 	        	<div th:replace="~{fragments/resources :: sidebar('entities')}"></div>
 	        	<div class="main-content bg-lighter">
 					<h1 class="fw-bold mb-4"><i class="align-middle bi bi-database"></i><span class="align-middle"> Entities</span></h1>
+					<th:block th:if="${!snapadmin_authenticated}">
+						<div class="alert alert-danger alert-dismissible fade show" role="alert" id="auth-warning">
+							<h4 class="alert-heading fw-bold"><i class="bi bi-exclamation-triangle"></i> SnapAdmin is not protected</h4>
+							<p class="mb-0">It appears that you have not enabled security so SnapAdmin is publicly accessible. Please refer to the
+								documentation to learn how to <a href="https://www.snapadmin.dev/docs/#security">protect SnapAdmin with Spring Security.
+								</a>
+							</p>
+							<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+						</div>
+					</th:block>
 					<form th:action="|/${snapadmin_baseUrl}|" method="GET">
     					<div class="input-group">
     						<input type="text" th:value="${query}"

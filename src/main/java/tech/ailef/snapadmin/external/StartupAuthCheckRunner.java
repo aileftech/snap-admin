@@ -19,11 +19,8 @@
 package tech.ailef.snapadmin.external;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.net.http.HttpResponse.BodyHandlers;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +29,8 @@ import org.springframework.boot.web.servlet.context.ServletWebServerInitializedE
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import tech.ailef.snapadmin.external.exceptions.DbAdminException;
 
 /**
  * Runs at startup to determine if SnapAdmin is protected with authentication.
@@ -49,30 +48,31 @@ public class StartupAuthCheckRunner {
 	@Autowired
 	private SnapAdminProperties properties;
 	
-
 	@Bean
 	ApplicationListener<ServletWebServerInitializedEvent> serverPortListenerBean() {
 		return event -> {
 			int serverPort = event.getWebServer().getPort();
 			
-			String url = "http://localhost:" + serverPort + "/" + properties.getBaseUrl();
-			
-			logger.info("Checking if SnapAdmin is protected with authentication at " + url);
-			
-			HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).build();
+			String link = "http://localhost:" + serverPort + "/" + properties.getBaseUrl();
+			logger.info("Checking if SnapAdmin is protected with authentication at " + link);
 			
 			try {
-				HttpResponse<String> response = HttpClient.newBuilder().build().send(request, BodyHandlers.ofString());
-		
-				int statusCode = response.statusCode();
+				URL url = new URL(link);
+				
+				HttpURLConnection openConnection = (HttpURLConnection)url.openConnection();
+				openConnection.setInstanceFollowRedirects(false);
+				int statusCode = openConnection.getResponseCode();
+				
+				snapAdmin.setAuthenticated(statusCode != 200);
 				if (statusCode == 200) {
 					logger.warn("It seems SnapAdmin routes are not protected with authentication. The URL "
 							+ url + " is publicly accessible: be careful!");
-					snapAdmin.setAuthenticated(false);
 				}
-			} catch (IOException | InterruptedException e) {
-				logger.warn("Unable to connect to server at " + url);
+
+			} catch (IOException e) {
+				throw new DbAdminException(e);
 			}
+			
 		};
 	}
 }

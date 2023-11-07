@@ -26,6 +26,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import tech.ailef.snapadmin.external.exceptions.DbAdminException;
 import tech.ailef.snapadmin.internal.model.UserSetting;
 import tech.ailef.snapadmin.internal.repository.UserSettingsRepository;
 
@@ -47,7 +48,12 @@ public class UserConfiguration {
 		Optional<UserSetting> setting = repo.findById(settingName);
 		if (setting.isPresent())
 			return setting.get().getSettingValue();
-		return defaultValues().getOrDefault(settingName, "");
+		String settingDefaultValue = defaultValues().get(settingName);
+		
+		if (settingDefaultValue == null)
+			throw new DbAdminException("Trying to access setting `" + settingName + "` but it has no default value");
+		
+		return settingDefaultValue;
 	}
 
 	/**
@@ -57,6 +63,7 @@ public class UserConfiguration {
 	private Map<String, String> defaultValues() {
 		Map<String, String> values = new HashMap<>();
 		values.put("brandName", "SnapAdmin");
+		values.put("additionalCss", "");
 		return values;
 	}
 }
