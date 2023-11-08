@@ -37,9 +37,9 @@
 	        <a class=" fw-bold navbar-brand" th:href="|/${snapadmin_baseUrl}|"><i class="bi bi-hexagon-fill"></i>
 	        	[[ ${snapadmin_userConf.get('brandName')} ]]
 	        </a>
-	        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-	            <span class="navbar-toggler-icon"></span>
-	        </button>
+	        <div th:if="${snapadmin_authenticated}" class="d-flex align-items-center p-2">
+    			<i class="bi bi-person-circle me-2"></i> [[ ${snapadmin_authenticatedUser} ]]
+	        </div>
 	    </div>
 	</nav>
     <div class="sidebar bg-lightest position-relative" th:fragment="sidebar(page)">

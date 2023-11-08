@@ -19,6 +19,7 @@
 
 package tech.ailef.snapadmin.external.controller;
 
+import java.security.Principal;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -131,5 +132,10 @@ public class GlobalController {
 		return snapAdmin.isAuthenticated();
 	}
 	
+	@ModelAttribute("snapadmin_authenticatedUser")
+	public String authenticatedUser(Principal principal) {
+		if (principal == null) return null;
+		return principal.getName();
+	}
 }
 
