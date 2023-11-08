@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import jakarta.persistence.ManyToMany;
@@ -71,7 +72,7 @@ public class DbObject {
 	
 	@SuppressWarnings("unchecked")
 	public List<DbObject> getValues(DbField field) {
-		List<Object> values = (List<Object>)get(field.getJavaName()).getValue();
+		Collection<Object> values = (Collection<Object>)get(field.getJavaName()).getValue();
 		return values.stream().map(o -> new DbObject(o, field.getConnectedSchema()))
 				.collect(Collectors.toList());
 	}
@@ -221,9 +222,34 @@ public class DbObject {
 			throw new SnapAdminException("Unable to find setter method for " + fieldName + " in " + schema.getClassName());
 		}
 		
+		Class<?>[] types = setter.getParameterTypes();
+		if (types.length != 1) 
+			throw new SnapAdminException("Setter " + setter + " has " + types.length + " parameters (expected 1)");
+		
+		Class<?> expectedSetterType = types[0];
+		if (!expectedSetterType.isAssignableFrom(value.getClass())) {
+			// If the value is not assignable we check if it's a collection 
+			// mismatch, e.g. the setter expects a Set but we are passing a List
+			// or viceversa
+			if (expectedSetterType == Set.class) {
+				// Convert value to Set
+				value = ((Collection<?>)value).stream().collect(Collectors.toSet());
+			} else if (expectedSetterType == List.class) {
+				// Convert value to List
+				value = ((Collection<?>)value).stream().collect(Collectors.toList());
+			}
+		}
+		
+		
+		
+		
+		
 		try {
 			setter.invoke(instance, value);
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			if (e instanceof IllegalArgumentException) {
+				throw new RuntimeException("setter: " + setter + ", passed: " + value.getClass(), e);
+			}
 			throw new RuntimeException(e);
 		}
 	}
