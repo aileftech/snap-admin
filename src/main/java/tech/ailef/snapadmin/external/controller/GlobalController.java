@@ -33,6 +33,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import tech.ailef.snapadmin.external.SnapAdmin;
 import tech.ailef.snapadmin.external.SnapAdminProperties;
 import tech.ailef.snapadmin.external.exceptions.SnapAdminException;
+import tech.ailef.snapadmin.external.exceptions.SnapAdminForbiddenException;
 import tech.ailef.snapadmin.external.exceptions.SnapAdminNotFoundException;
 import tech.ailef.snapadmin.internal.UserConfiguration;
 

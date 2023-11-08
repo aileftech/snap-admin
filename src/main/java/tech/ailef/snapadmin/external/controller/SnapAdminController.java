@@ -662,6 +662,14 @@ public class SnapAdminController {
 		return "settings/appearance";
 	}
 	
+	@GetMapping("/forbidden")
+	public String forbidden(Model model) {
+		model.addAttribute("error", "Forbidden");
+		model.addAttribute("status", "403");
+		model.addAttribute("message", "You don't have the privileges to perform this action");
+		return "other/error";
+	}
+	
 	@PostMapping("/settings")
 	public String settings(@RequestParam Map<String, String> params, Model model) {
 		String next = params.getOrDefault("next", "settings/settings");
