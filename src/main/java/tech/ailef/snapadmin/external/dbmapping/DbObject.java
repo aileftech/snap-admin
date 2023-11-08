@@ -22,6 +22,7 @@ package tech.ailef.snapadmin.external.dbmapping;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -108,7 +109,7 @@ public class DbObject {
 		ManyToMany manyToMany = field.getPrimitiveField().getAnnotation(ManyToMany.class);
 		OneToMany oneToMany = field.getPrimitiveField().getAnnotation(OneToMany.class);
 		if (manyToMany != null || oneToMany != null) {
-			List<Object> linkedObjects = (List<Object>)get(field.getJavaName()).getValue();
+			Collection<Object> linkedObjects = (Collection<Object>)get(field.getJavaName()).getValue();
 			return linkedObjects.stream().map(o -> new DbObject(o, field.getConnectedSchema()))
 				.collect(Collectors.toList());
 		} else {
