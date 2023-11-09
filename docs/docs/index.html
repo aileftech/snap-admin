@@ -27,7 +27,7 @@
 			<div class="container">
 				<nav class="navbar navbar-expand-lg bg-light">
 				  <div class="container-fluid">
-				    <a class="navbar-brand fw-bold" href="#">SnapAdmin <span class="text-muted">v0.1.9</span></a>
+				    <a class="navbar-brand fw-bold" href="#">SnapAdmin <span class="text-muted">v0.2.0</span></a>
 				    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 				      <span class="navbar-toggler-icon"></span>
 				    </button>
@@ -60,7 +60,7 @@
 				<div class="col-9 main-content pt-3 ps-4">
 
 <h1 class="m-0">Reference Guide</h1>
-<h2 class="text-muted mt-0">SnapAdmin v0.1.9</h2>
+<h2 class="text-muted mt-0">SnapAdmin v0.2.0</h2>
 <div class="separator"></div>
 <h2 id="introduction">1. Introduction</h2>
 
@@ -82,7 +82,7 @@
 <code class="language-xml">&lt;dependency&gt;
 	&lt;groupId&gt;tech.ailef&lt;/groupId&gt;
 	&lt;artifactId&gt;snap-admin&lt;/artifactId&gt;
-	&lt;version&gt;0.1.9&lt;/version&gt;
+	&lt;version&gt;0.2.0&lt;/version&gt;
 &lt;/dependency&gt;
 </code>
 </pre>
@@ -95,7 +95,10 @@
 <p>Configure your <code>application.properties</code> file:</p>
 
 	<pre>
-<code class="language-properties">## The first-level part of the URL path: http://localhost:8080/${baseUrl}/
+<code class="language-properties">## SnapAdmin is not enabled by default
+snapadmin.enabled=true
+
+## The first-level part of the URL path: http://localhost:8080/${baseUrl}/
 snapadmin.baseUrl=admin
 
 ## The package(s) that contain your @Entity classes
@@ -143,13 +146,26 @@ snapadmin.modelsPackage=your.models.package,your.second.models.package
 </ul>
 <p>The behaviours specified with these annotations should be applied automatically by SnapAdmin. Using non-supported annotations will not necessarily result in an error, as they are simply ignored. Depending on what the annotation actually does, this could be just fine or result in an error if it interferes with something that SnapAdmin relies on.</p>
 
-<p>The following list documents the most significant interactions between the JPA annotations and SnapAdmin.</p>
-<h6>@Entity</h6>
-<p>Used to detect the candidate classes to scan.</p>
-<h6>@Column</h6>
-<p>Used to detect the column name and its nullability.</p>
-<h6>@GeneratedValue</h6>
-<p>When you have an <code>@Id</code> marked as a <code>@GeneratedValue</code>, you won't be asked to enter it when creating new items, as it will be automatically generated.</p>
+<p>The following list documents the most significant interactions between JPA annotations and SnapAdmin.</p>
+<table class="table table-striped">
+	<tr>
+		<th><h6 class="m-0 p-0">Annotation name</h6></th>
+		<th><p class="m-0">Description</p></th>
+	</tr>
+	<tr>
+		<td><h6 class="m-0 p-0">@Entity</h6></td>
+		<td><p class="m-0">Used to detect the candidate classes to scan.</p></td>
+	</tr>
+	<tr>
+		<td><h6 class="m-0 p-0">@Column</h6></td>
+		<td><p class="m-0">Used to detect the column name and its nullability.</p></td>
+	</tr>
+	<tr>
+		<td><h6 class="m-0 p-0">@GeneratedValue</h6></td>
+		<td><p class="m-0">When you have an <code>@Id</code> marked as a <code>@GeneratedValue</code>, you won't be asked to enter it when 
+			creating new items, as it will be automatically generated.</p></td>
+	</tr>
+</table>
 
 <h4 id="supported-field-types">2.3.2 Supported field types</h4>
 <ul>
@@ -184,6 +200,9 @@ snapadmin.modelsPackage=your.models.package,your.second.models.package
 
 <h3 id="supported-annotations">3.1 Supported annotations</h3>
 
+<p>
+	These annotations can be placed on classes, methods and fields to customize the behaviour of SnapAdmin. 
+</p>
 <h4 id="display-name">3.1.1 @DisplayName</h4>
 <pre><code class="language-java">@DisplayName
 public String getFullName() {
@@ -339,24 +358,55 @@ public class Payment { ... }</code>
 <p>As mentioned earlier, the Settings panel primarily provides options to customize the branding/appearance of the web interface. These settings are persistent across restarts and are stored in an embedded H2 database (file named <code>snapadmin_internal</code>), along with other data required by SnapAdmin.</p>
 
 <h2 id="security">4. Security</h2>
-<p>SnapAdmin does not implement authentication and/or authorization mechanisms. However, you can use a standard Spring security configuration in order to limit access to the web UI or specific parts of it.</p>
+<p>SnapAdmin does not implement authentication and/or authorization mechanisms. However, you can use a standard Spring Security configuration in order to limit access to the web UI or specific parts of it.</p>
 <p>All SnapAdmin routes start with the value of <code>snapadmin.baseUrl</code> property, and all write operations (edit, create, delete) are implemented as <code>POST</code> calls. The following code provides an example security configuration (assuming SnapAdmin runs at <code>/admin</code>):</p>
 
 
 <pre>
-<code class="language-java">@Bean
-public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+<code class="language-java">@Autowired
+private SnapAdminProperties properties;
+
+@Bean
+SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    String baseUrl = properties.getBaseUrl();
+	
     return http.authorizeHttpRequests(auth -> {
-        // POST methods (create, edit and delete) require ADMIN role
-        auth.requestMatchers(HttpMethod.POST, "/admin/**").hasAuthority("ADMIN")
+        /* POST methods (create, edit and delete) require ADMIN role
+    	 * Note that with this configuration users will still be able to access the edit/create page
+    	 * but they will get a Forbidden error after submitting the form if they are not authorized.
+    	 * You can also stop the serving of these pages altogether by customizing the route matchers
+    	 */
+        auth.requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/" + baseUrl + "/**"))
+        	.hasAuthority("ADMIN")
             // Read-only SnapAdmin routes require authentication (any role)
-            .requestMatchers("/admin/**").authenticated()
+            .requestMatchers(AntPathRequestMatcher.antMatcher("/" + baseUrl + "/**"))
+            .authenticated()
             // The other routes are not protected (adapt to your needs)
-            .requestMatchers("/**").permitAll();
+            .requestMatchers(AntPathRequestMatcher.antMatcher("/**")).permitAll();
     })
     .formLogin(l -> l.loginPage("/login").permitAll())
+    /* This custom exception handling code is only needed if you want to have
+     * nicer Forbidden error pages, for cases when a user tries to perform an
+     * action they don't have the correct privileges for (e.g., in the previous
+     * configuration a user without ADMIN role trying to edit/create items).
+     * The exception handling is delegated to the default handler if the
+     * error didn't occur on a SnapAdmin route. You can further customize this
+     * according to your needs or just not use it. In this last scenario, your 
+     * default access denied handler will be used even for errors occurring inside
+     * SnapAdmin.
+     */
+    .exceptionHandling(e -> e.accessDeniedHandler((req, res, ex) -> {
+    	AccessDeniedHandlerImpl defaultHandler = new AccessDeniedHandlerImpl();
+    	if (req.getServletPath().toString().startsWith("/" + baseUrl + "/")) {
+    		res.sendRedirect("/" + baseUrl + "/forbidden");
+    	} else {
+    		defaultHandler.handle(req, res, ex);
+    	}
+    }))
     .build();
 }</code></pre>
+
+<p>You can look at the SnapAdmin auth test project to see the full implementation and use it as a blueprint for your own projects.</p>
 
 <div class="separator"></div>
 <h2 id="troubleshooting">5. Troubleshooting</h2>
