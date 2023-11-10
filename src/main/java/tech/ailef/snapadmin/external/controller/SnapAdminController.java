@@ -543,6 +543,7 @@ public class SnapAdminController {
 			"page", 
 			userActionService.findActions(searchRequest)
 		);
+		model.addAttribute("title", "Action logs");
 		model.addAttribute("schemas", snapAdmin.getSchemas());
 		model.addAttribute("searchRequest", searchRequest);
 		return "logs";
@@ -551,12 +552,14 @@ public class SnapAdminController {
 	
 	@GetMapping("/settings")
 	public String settings(Model model) {
+		model.addAttribute("title", "Settings");
 		model.addAttribute("activePage", "settings");
 		return "settings/settings";
 	}
 	
 	@GetMapping("/help")
-	public String about(Model model) {
+	public String help(Model model) {
+		model.addAttribute("title", "Help");
 		model.addAttribute("activePage", "help");
 		return "help";
 	}
