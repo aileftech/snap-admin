@@ -53,7 +53,7 @@ The code is still in a very early stage and it might not be robust if you use no
 <dependency>
 	<groupId>tech.ailef</groupId>
 	<artifactId>snap-admin</artifactId>
-	<version>0.1.9</version>
+	<version>0.2.0</version>
 </dependency>
 ```
 
@@ -64,6 +64,9 @@ a sample database and already configured code.
 Otherwise, go ahead and add these to your `application.properties` file:
 
 ```properties
+## SnapAdmin is not enabled by default
+snapadmin.enabled=true
+
 ## The first-level part of the URL path: http://localhost:8080/${baseUrl}/
 snapadmin.baseUrl=admin
 
@@ -75,9 +78,9 @@ snapadmin.modelsPackage=your.models.package,your.second.models.package
 # spring.jpa.open-in-view=true
 
 ## OPTIONAL PARAMETERS
+
 ## Whether to enable SnapAdmin
 # snapadmin.enabled=true
-#
 #
 ## Set to true if you need to run the tests, as it will customize
 ## the database configuration for the internal DataSource
@@ -87,7 +90,7 @@ snapadmin.modelsPackage=your.models.package,your.second.models.package
 # snapadmin.sqlConsoleEnabled=false
 ```
 
-**IMPORTANT**: The configuration prefix `dbadmin.` will change to `snapadmin.` starting from version 0.2.0, as part of the project being renamed. Remember to update your configuration files accordingly.
+**IMPORTANT**: The configuration prefix `dbadmin.` has been changed to `snapadmin.` starting from version 0.2.0, as part of the project being renamed. Remember to update your configuration files accordingly if you were already using SnapAdmin <= 0.1.9.
 
 Now annotate your `@SpringBootApplication` class containing the `main` method with the following:
 
