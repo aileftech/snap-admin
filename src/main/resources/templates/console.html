@@ -106,7 +106,7 @@
 									<!-- Pagination -->
 									<nav aria-label="Results pagination">
 										<div class="d-flex justify-content-between">
-											<div th:if="${pagination != null && pagination.getMaxPage() != 1}" class="d-flex">
+											<div th:if="${pagination != null && pagination.getMaxPage() != 1}" class="d-flex w-100">
 												<ul class="pagination me-3">
 													<li class="page-item" th:if="${pagination.getCurrentPage() != 1}">
 														<a class="page-link" 
@@ -141,11 +141,20 @@
 													      </a>
 												    </li>
 												</ul>
-												<div class="d-flex align-items-center" th:if="${pagination.getMaxPage() > 1}">
-													<p class="m-0 p-0">
+												<div class="d-flex align-items-center flex-grow-1" th:if="${pagination.getMaxPage() > 1}">
+													<p class="m-0 p-0 me-2">
 														<i>Showing [[ ${results.size()} ]] of [[ ${pagination.getMaxElement()} ]] 
 															results in [[ ${elapsedTime} ]] seconds</i>
 													</p>
+													<form method="GET" th:action="|/${snapadmin_baseUrl}/console/run/${activeQuery.getId()}|">
+														<select class="form-select page-size" name="pageSize" style="width: 200px">
+													  		<option disabled>Page size</option>
+													  		<option th:selected="${pagination.getPageSize() == 50}">50</option>
+													  		<option th:selected="${pagination.getPageSize() == 100}">100</option>
+													  		<option th:selected="${pagination.getPageSize() == 150}">150</option>
+													  		<option th:selected="${pagination.getPageSize() == 200}">200</option>
+													  	</select>
+													</form>
 													<button th:if="${results != null}" title="Open export data window" type="button" 
 														class="btn pb-0 pt-0"  data-bs-toggle="modal" data-bs-target="#csvQueryExportModal">
 														<i class="bi bi-file-earmark-spreadsheet export-icon" style="font-size: 1.6rem;"></i>
@@ -153,11 +162,20 @@
 												</div>
 											</div>
 											
-											<div class="d-flex align-items-center"  th:if="${pagination.getMaxPage() == 1}">
-												<p class="m-0 p-0">
+											<div class="d-flex align-items-center flex-grow-1"  th:if="${pagination.getMaxPage() == 1}">
+												<p class="m-0 p-0 me-2">
 													<i>Showing [[ ${results.size()} ]] of [[ ${pagination.getMaxElement()} ]] 
 														results in [[ ${elapsedTime} ]] seconds</i>
 												</p>
+												<form method="GET" th:action="|/${snapadmin_baseUrl}/console/run/${activeQuery.getId()}|">
+													<select name="pageSize" class="form-select page-size" style="width: 200px">
+												  		<option disabled>Page size</option>
+												  		<option th:selected="${pagination.getPageSize() == 50}">50</option>
+												  		<option th:selected="${pagination.getPageSize() == 100}">100</option>
+												  		<option th:selected="${pagination.getPageSize() == 150}">150</option>
+												  		<option th:selected="${pagination.getPageSize() == 200}">200</option>
+												  	</select>
+												</form>
 												<button th:if="${results != null}" title="Open export data window" type="button" 
 													class="btn pb-0 pt-0"  data-bs-toggle="modal" data-bs-target="#csvQueryExportModal">
 													<i class="bi bi-file-earmark-spreadsheet export-icon" style="font-size: 1.6rem;"></i>
@@ -239,6 +257,6 @@
 	        	</div>
 	        </div>
 	    </div>
-	    <script type="text/javascript" th:src="|/${snapadmin_baseUrl}/js/console.js|"></script>
+	    <script type="text/javascript" th:src="|/${snapadmin_baseUrl}/snapadmin/js/console.js|"></script>
 	</body>
 </html>

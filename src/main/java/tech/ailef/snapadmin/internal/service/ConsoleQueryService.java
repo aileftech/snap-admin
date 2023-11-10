@@ -18,6 +18,9 @@
 
 package tech.ailef.snapadmin.internal.service;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -37,6 +40,19 @@ public class ConsoleQueryService {
 		return internalTransactionTemplate.execute((status) -> {
 			return repo.save(q);
 		});
+	}
 	
+	public void delete(String id) {
+		internalTransactionTemplate.executeWithoutResult((status) -> {
+			repo.deleteById(id);
+		});
+	}
+	
+	public List<ConsoleQuery> findAll() {
+		return repo.findAll();
+	}
+	
+	public Optional<ConsoleQuery> findById(String id) {
+		return repo.findById(id);
 	}
 }

@@ -75,7 +75,6 @@ import tech.ailef.snapadmin.external.misc.Utils;
 import tech.ailef.snapadmin.internal.model.ConsoleQuery;
 import tech.ailef.snapadmin.internal.model.UserAction;
 import tech.ailef.snapadmin.internal.model.UserSetting;
-import tech.ailef.snapadmin.internal.repository.ConsoleQueryRepository;
 import tech.ailef.snapadmin.internal.service.ConsoleQueryService;
 import tech.ailef.snapadmin.internal.service.UserActionService;
 import tech.ailef.snapadmin.internal.service.UserSettingsService;
@@ -99,9 +98,6 @@ public class SnapAdminController {
 	
 	@Autowired
 	private UserActionService userActionService;
-	
-	@Autowired
-	private ConsoleQueryRepository consoleQueryRepository;
 	
 	@Autowired
 	private ConsoleQueryService consoleService;
@@ -581,7 +577,7 @@ public class SnapAdminController {
 			throw new SnapAdminException("SQL console not enabled");
 		}
 		
-		List<ConsoleQuery> tabs = consoleQueryRepository.findAll();
+		List<ConsoleQuery> tabs = consoleService.findAll();
 		
 		if (tabs.isEmpty()) {
 			ConsoleQuery q = new ConsoleQuery();
@@ -597,8 +593,7 @@ public class SnapAdminController {
 		if (!properties.isSqlConsoleEnabled()) {
 			throw new SnapAdminException("SQL console not enabled");
 		}
-		
-		consoleQueryRepository.deleteById(queryId);
+		consoleService.delete(queryId);
 		return "redirect:/" + properties.getBaseUrl() + "/console";
 	}
 	
@@ -617,7 +612,7 @@ public class SnapAdminController {
 			throw new SnapAdminException("SQL console not enabled");
 		}
 		
-		ConsoleQuery activeQuery = consoleQueryRepository.findById(queryId).orElseThrow(() -> {
+		ConsoleQuery activeQuery = consoleService.findById(queryId).orElseThrow(() -> {
 			return new SnapAdminNotFoundException("Query with ID " + queryId + " not found.");
 		});
 		
@@ -634,7 +629,7 @@ public class SnapAdminController {
 		model.addAttribute("activePage", "console");
 		model.addAttribute("activeQuery", activeQuery);
 		
-		List<ConsoleQuery> tabs = consoleQueryRepository.findAll();
+		List<ConsoleQuery> tabs = consoleService.findAll();
 		model.addAttribute("tabs", tabs);
 		
 		DbQueryResult results = repository.executeQuery(activeQuery.getSql());
