@@ -64,6 +64,11 @@ public class LogsSearchRequest implements FilterRequest {
 	 * The requested sort order, possibly null
 	 */
 	private String sortOrder;
+	
+	/**
+	 * The requested username filter
+	 */
+	private String username;
 
 	/**
 	 * Returns the table specified in this search request. If the value is blank or 'Any',
@@ -168,6 +173,14 @@ public class LogsSearchRequest implements FilterRequest {
 	public String toString() {
 		return "LogsSearchRequest [table=" + table + ", actionType=" + actionType + ", itemId=" + itemId + ", page="
 				+ page + ", pageSize=" + pageSize + ", sortKey=" + sortKey + ", sortOrder=" + sortOrder + "]";
+	}
+	
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	
+	public String getUsername() {
+		return username;
 	}
 	
 	/**

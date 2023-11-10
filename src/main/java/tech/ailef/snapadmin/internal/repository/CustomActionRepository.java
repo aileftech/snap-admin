@@ -27,6 +27,6 @@ import tech.ailef.snapadmin.internal.model.UserAction;
 public interface CustomActionRepository {
 	public List<UserAction> findActions(LogsSearchRequest r);
 	
-	public long countActions(String table, String actionType, String itemId);
+	public long countActions(LogsSearchRequest request);
 
 }

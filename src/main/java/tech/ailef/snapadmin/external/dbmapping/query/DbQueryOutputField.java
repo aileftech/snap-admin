@@ -30,6 +30,11 @@ import tech.ailef.snapadmin.external.dbmapping.fields.DbFieldType;
 import tech.ailef.snapadmin.external.exceptions.SnapAdminException;
 import tech.ailef.snapadmin.external.exceptions.UnsupportedFieldTypeException;
 
+/*
+ * A class that holds output fields from a user-provided SQL query
+ * run in the SQL console. If possible, this field is mapped to a proper
+ * {@link Dbfield} object, otherwise it is left as a raw object.
+ */
 public class DbQueryOutputField {
 	private String name;
 	

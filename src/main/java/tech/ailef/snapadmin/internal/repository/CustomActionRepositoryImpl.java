@@ -54,6 +54,7 @@ public class CustomActionRepositoryImpl implements CustomActionRepository {
     public List<UserAction> findActions(LogsSearchRequest request) {
     	String table = request.getTable();
     	String actionType = request.getActionType();
+    	String username = request.getUsername();
     	String itemId = request.getItemId();
     	PageRequest page = request.toPageRequest();
 
@@ -68,7 +69,9 @@ public class CustomActionRepositoryImpl implements CustomActionRepository {
             predicates.add(cb.equal(userAction.get("actionType"), actionType));
         if (itemId != null)
         	predicates.add(cb.equal(userAction.get("primaryKey"), itemId));
-
+        if (username != null)
+        	predicates.add(cb.equal(userAction.get("username"), username));
+        
         if (!predicates.isEmpty()) {
             query.select(userAction)
                  .where(cb.and(
@@ -95,12 +98,17 @@ public class CustomActionRepositoryImpl implements CustomActionRepository {
      * @return the number of user actions matching the filtering parameters
      */
     @Override
-    public long countActions(String table, String actionType, String itemId) {
+    public long countActions(LogsSearchRequest request) {
 
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Long> query = cb.createQuery(Long.class);
         Root<UserAction> userAction = query.from(UserAction.class);
 
+        String table = request.getTable();
+        String actionType = request.getActionType();
+        String itemId = request.getItemId();
+        String username = request.getUsername();
+        
         List<Predicate> predicates = new ArrayList<>();
         if (table != null)
             predicates.add(cb.equal(userAction.get("onTable"), table));
@@ -108,7 +116,9 @@ public class CustomActionRepositoryImpl implements CustomActionRepository {
             predicates.add(cb.equal(userAction.get("actionType"), actionType));
         if (itemId != null)
         	predicates.add(cb.equal(userAction.get("primaryKey"), itemId));
-
+        if (username != null)
+        	predicates.add(cb.equal(userAction.get("username"), username));
+        
         if (!predicates.isEmpty()) {
             query.select(cb.count(userAction))
                  .where(cb.and(

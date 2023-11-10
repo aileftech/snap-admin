@@ -26,6 +26,10 @@ import java.util.Map;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 
+/**
+ * Holds information about JPA validation errors occurring during
+ * creation or editing of items.
+ */
 public class ValidationErrorsContainer {
 	private Map<String, List<ConstraintViolation<?>>> errors = new HashMap<>();
 	

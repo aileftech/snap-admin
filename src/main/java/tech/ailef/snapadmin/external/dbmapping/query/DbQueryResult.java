@@ -23,6 +23,10 @@ package tech.ailef.snapadmin.external.dbmapping.query;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A wrapper for results returned by user-provided SQL queries run via
+ * the SQL console.
+ */
 public class DbQueryResult {
 	private List<DbQueryResultRow> rows;
 

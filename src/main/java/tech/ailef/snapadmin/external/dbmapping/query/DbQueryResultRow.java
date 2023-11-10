@@ -26,6 +26,10 @@ import java.util.Map;
 
 import tech.ailef.snapadmin.external.exceptions.SnapAdminException;
 
+/**
+ * A single row of results coming from a user-provided SQL query
+ * run via the SQL console.
+ */
 public class DbQueryResultRow {
 	private Map<DbQueryOutputField, Object> values;
 	

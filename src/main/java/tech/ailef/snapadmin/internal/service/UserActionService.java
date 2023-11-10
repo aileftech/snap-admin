@@ -60,12 +60,9 @@ public class UserActionService {
 	 * @return a page of results matching the input request
 	 */
 	public PaginatedResult<UserAction> findActions(LogsSearchRequest request) {
-		String table = request.getTable();
-		String actionType = request.getActionType();
-		String itemId = request.getItemId();
 		PageRequest page = request.toPageRequest();
 		
-		long count = customRepo.countActions(table, actionType, itemId);
+		long count = customRepo.countActions(request);
 		List<UserAction> actions = customRepo.findActions(request);
 		int maxPage = (int)(Math.ceil ((double)count / page.getPageSize()));
 		
