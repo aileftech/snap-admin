@@ -4,6 +4,7 @@
 - SnapAdmin is now disabled by default. Remember to set `snapadmin.enabled=true` to activate it (#30)
 - Alerts if SnapAdmin is running on unsecured routes (#32)
 - User-aware audit logs (#34)
+- Other fixed issues: #35, #27
 
 **0.1.9**
 - Renamed project to SnapAdmin
