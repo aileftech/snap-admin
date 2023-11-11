@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -581,6 +582,16 @@ public class SnapAdminController {
 		
 		if (tabs.isEmpty()) {
 			ConsoleQuery q = new ConsoleQuery();
+			
+			int randomIndex = new Random().nextInt(0, snapAdmin.getSchemas().size());
+			String randomTable = snapAdmin.getSchemas().get(randomIndex).getTableName();
+			
+			q.setSql(
+				"-- It's recommended to always include a LIMIT clause in your query\n"
+				+ "-- Although the SQL Console supports pagination, it retrieves the entire ResultSet\n\n"
+				+ "-- SELECT * FROM " + randomTable + " LIMIT 1000;\n"
+			);
+			
 			consoleService.save(q);
 			return "redirect:/" + properties.getBaseUrl() + "/console/run/" + q.getId();
 		} else {
@@ -645,6 +656,9 @@ public class SnapAdminController {
 			results.crop(startOffset, endOffset);
 			model.addAttribute("pagination", pagination);
 			model.addAttribute("results", results);
+		} else {
+			PaginationInfo pagination = new PaginationInfo(page, 0, pageSize, results.size(), null, null);
+			model.addAttribute("pagination", pagination);
 		}
 		
 		model.addAttribute("title", "SQL Console | " + activeQuery.getTitle());

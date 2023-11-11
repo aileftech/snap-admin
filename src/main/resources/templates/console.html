@@ -106,7 +106,7 @@
 									<!-- Pagination -->
 									<nav aria-label="Results pagination">
 										<div class="d-flex justify-content-between">
-											<div th:if="${pagination != null && pagination.getMaxPage() != 1}" class="d-flex w-100">
+											<div th:if="${pagination != null && pagination.getMaxPage() > 1}" class="d-flex w-100">
 												<ul class="pagination me-3">
 													<li class="page-item" th:if="${pagination.getCurrentPage() != 1}">
 														<a class="page-link" 
@@ -193,7 +193,7 @@
 	        						<!-- Pagination -->
 									<nav aria-label="Results pagination">
 										<div class="d-flex justify-content-between">
-											<div th:if="${pagination != null && pagination.getMaxPage() != 1}" class="d-flex">
+											<div th:if="${pagination != null && pagination.getMaxPage() > 1}" class="d-flex">
 												<ul class="pagination me-3">
 													<li class="page-item" th:if="${pagination.getCurrentPage() != 1}">
 														<a class="page-link" 
@@ -229,18 +229,36 @@
 												    </li>
 												</ul>
 												<div class="d-flex align-items-center" th:if="${pagination.getMaxPage() > 1}">
-													<p class="m-0 p-0">
+													<p class="m-0 p-0 me-2">
 														<i>Showing [[ ${results.size()} ]] of [[ ${pagination.getMaxElement()} ]] 
 															results in [[ ${elapsedTime} ]] seconds</i>
 													</p>
+													<form method="GET" th:action="|/${snapadmin_baseUrl}/console/run/${activeQuery.getId()}|">
+														<select name="pageSize" class="form-select page-size" style="width: 200px">
+													  		<option disabled>Page size</option>
+													  		<option th:selected="${pagination.getPageSize() == 50}">50</option>
+													  		<option th:selected="${pagination.getPageSize() == 100}">100</option>
+													  		<option th:selected="${pagination.getPageSize() == 150}">150</option>
+													  		<option th:selected="${pagination.getPageSize() == 200}">200</option>
+													  	</select>
+													</form>
 												</div>
 											</div>
 											
 											<div class="d-flex align-items-center"  th:if="${pagination.getMaxPage() == 1}">
-												<p class="m-0 p-0">
+												<p class="m-0 p-0 me-2">
 													<i>Showing [[ ${results.size()} ]] of [[ ${pagination.getMaxElement()} ]] 
 														results in [[ ${elapsedTime} ]] seconds</i>
 												</p>
+												<form method="GET" th:action="|/${snapadmin_baseUrl}/console/run/${activeQuery.getId()}|">
+													<select name="pageSize" class="form-select page-size" style="width: 200px">
+												  		<option disabled>Page size</option>
+												  		<option th:selected="${pagination.getPageSize() == 50}">50</option>
+												  		<option th:selected="${pagination.getPageSize() == 100}">100</option>
+												  		<option th:selected="${pagination.getPageSize() == 150}">150</option>
+												  		<option th:selected="${pagination.getPageSize() == 200}">200</option>
+												  	</select>
+												</form>
 											</div>
 										</div>
 										

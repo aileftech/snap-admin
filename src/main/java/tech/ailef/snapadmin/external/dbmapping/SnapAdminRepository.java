@@ -31,6 +31,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.TransientDataAccessResourceException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -294,29 +295,33 @@ public class SnapAdminRepository {
 	public DbQueryResult executeQuery(String sql) {
 		List<DbQueryResultRow> results = new ArrayList<>();
 		if (sql != null && !sql.isBlank()) {
-			results = jdbcTemplate.query(sql, (rs, rowNum) -> {
-				Map<DbQueryOutputField, Object> result = new HashMap<>();
-				
-				ResultSetMetaData metaData = rs.getMetaData();
-				int cols = metaData.getColumnCount();
-				
-				for (int i = 0; i < cols; i++) {
-					Object o = rs.getObject(i + 1);
-					String columnName = metaData.getColumnName(i + 1);
-					String tableName = metaData.getTableName(i + 1);
-					DbQueryOutputField field = new DbQueryOutputField(columnName, tableName, snapAdmin);
+			try {
+				results = jdbcTemplate.query(sql, (rs, rowNum) -> {
+					Map<DbQueryOutputField, Object> result = new HashMap<>();
 					
-					result.put(field, o);
-				}
-				
-				DbQueryResultRow row = new DbQueryResultRow(result, sql);
-				
-				result.keySet().forEach(f -> {
-					f.setResult(row);
+					ResultSetMetaData metaData = rs.getMetaData();
+					int cols = metaData.getColumnCount();
+					
+					for (int i = 0; i < cols; i++) {
+						Object o = rs.getObject(i + 1);
+						String columnName = metaData.getColumnName(i + 1);
+						String tableName = metaData.getTableName(i + 1);
+						DbQueryOutputField field = new DbQueryOutputField(columnName, tableName, snapAdmin);
+						
+						result.put(field, o);
+					}
+					
+					DbQueryResultRow row = new DbQueryResultRow(result, sql);
+					
+					result.keySet().forEach(f -> {
+						f.setResult(row);
+					});
+					
+					return row;
 				});
-				
-				return row;
-			});
+			} catch (TransientDataAccessResourceException e) {
+				// If there's an exception we leave the results as empty
+			}
 		}
 		return new DbQueryResult(results);
 	}
