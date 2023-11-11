@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -182,6 +183,14 @@ public class SnapAdmin {
 		return findSchemaByClassName(klass.getName());
 	}
 
+	/**
+	 * Returns whether this class is managed by SnapAdmin
+	 */
+	public boolean isManagedClass(Class<?> klass) {
+		Optional<DbObjectSchema> hasSchema = 
+			schemas.stream().filter(s -> s.getClassName().equals(klass.getName())).findFirst();
+		return hasSchema.isPresent();
+	}
 	
 	/**
 	 * This method processes a BeanDefinition into a DbObjectSchema object,

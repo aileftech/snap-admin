@@ -287,7 +287,9 @@ public class DbObjectSchema {
 		List<DbField> res = getFields().stream().filter(f -> {
 			return f.getPrimitiveField().getAnnotation(OneToMany.class) != null
 				|| f.getPrimitiveField().getAnnotation(ManyToMany.class) != null;
-		}).collect(Collectors.toList());
+		})
+		.filter(f -> snapAdmin.isManagedClass(f.getConnectedType()))
+		.collect(Collectors.toList());
 		return res;
 	}
 	
