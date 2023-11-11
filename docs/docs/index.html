@@ -359,7 +359,7 @@ public class Payment { ... }</code>
 
 <h2 id="security">4. Security</h2>
 <p>SnapAdmin does not implement authentication and/or authorization mechanisms. However, you can use a standard Spring Security configuration in order to limit access to the web UI or specific parts of it.</p>
-<p>All SnapAdmin routes start with the value of <code>snapadmin.baseUrl</code> property, and all write operations (edit, create, delete) are implemented as <code>POST</code> calls. The following code provides an example security configuration (assuming SnapAdmin runs at <code>/admin</code>):</p>
+<p>All SnapAdmin routes start with the value of <code>snapadmin.baseUrl</code> property, and all write operations (edit, create, delete) are implemented as <code>POST</code> calls. The following code provides an example security configuration thatyou can further customize:</p>
 
 
 <pre>
@@ -406,7 +406,33 @@ SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     .build();
 }</code></pre>
 
-<p>You can look at the SnapAdmin auth test project to see the full implementation and use it as a blueprint for your own projects.</p>
+<h3 id="authorization">Authorization</h3>
+<p>
+	If your authentication related classes (e.g. <code>User</code> and <code>Role</code>) are managed by SnapAdmin it might be possible to edit them, depending on your security configuration.
+	This means that it might be possible for a <code>USER</code> to edit their own roles and escalate their privileges to <code>ADMIN</code>.
+To setup things correctly so that this can't happen you have a few options:</p>
+
+<h6 class="fw-bold mb-1">Exclude auth-related classes from SnapAdmin</h6>
+<p>If you don't want these classes to be accessible at all from the UI, the best option is to just place them in a package that's not managed by SnapAdmin. Alternatively, if changing the package structure is not an option, you can apply them the <a href="#disable"><code>@Disable</code></a> annotation to obtain an equivalent result.</p>
+
+<h6 class="fw-bold mb-1">Adapt SecurityConfiguration</h6>
+
+<p>If you want these classes to be accessible from SnapAdmin securely, you need to change your security configuration so that write operations on these tables can only be performed by users with the right privileges.
+
+For example, you can add something like this to your security configuration:
+
+<pre><code class="language-java">.requestMatchers(
+    AntPathRequestMatcher.antMatcher("/" + baseUrl + "/model/tech.ailef.snapadmin.auth.models.User")
+).hasAuthority("ADMIN")
+.requestMatchers(
+    AntPathRequestMatcher.antMatcher("/" + baseUrl + "/model/tech.ailef.snapadmin.auth.models.Role")
+).hasAuthority("ADMIN")
+</code></pre>
+
+<p>
+	With this configuration, only <code>ADMIN</code> users are allowed to access the SnapAdmin routes for the protected tables. As always, you can customize this further to your needs as long as you follow these guidelines.
+
+You can look at the <a href="#">SnapAdmin auth test project</a> to see a full implementation and use it as a blueprint for your own projects.</p>
 
 <div class="separator"></div>
 <h2 id="troubleshooting">5. Troubleshooting</h2>
