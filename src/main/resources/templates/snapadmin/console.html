@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
-	<head th:replace="~{fragments/resources::head}">
+	<head th:replace="~{snapadmin/fragments/resources::head}">
 	</head>
 	<body>
 		<!-- Modal -->
@@ -58,9 +58,9 @@
 		<!-- End modal -->
 		
     	<div class="bg-light main-wrapper">
-    		<nav th:replace="~{fragments/resources :: navbar}"></nav>
+    		<nav th:replace="~{snapadmin/fragments/resources :: navbar}"></nav>
 	        <div class="d-flex">
-	        	<div th:replace="~{fragments/resources :: sidebar('console')}"></div>
+	        	<div th:replace="~{snapadmin/fragments/resources :: sidebar('console')}"></div>
 	        	<div class="main-content bg-lighter">
 					<h1 class="fw-bold mb-4"><i class="align-middle bi bi-terminal"></i><span class="align-middle"> SQL console</span></h1>
 	        		<div class="row mt-4">
@@ -186,7 +186,7 @@
 								
 									
 									
-									<div th:replace="~{fragments/generic_table :: table(results=${results})}"></div>
+									<div th:replace="~{snapadmin/fragments/generic_table :: table(results=${results})}"></div>
 	        						
 	        						
 	        						
@@ -267,7 +267,7 @@
 	        					</div>
 	        					<div th:if="${error != null}">
 									<div class="separator mt-3 mb-3"></div>
-	        						<th:block th:replace="~{fragments/resources :: alerts}"></th:block>
+	        						<th:block th:replace="~{snapadmin/fragments/resources :: alerts}"></th:block>
 	        					</div>
 							</div>
 	        			</div>

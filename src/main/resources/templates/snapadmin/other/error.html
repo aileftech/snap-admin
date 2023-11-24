@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
-	<head th:replace="~{fragments/resources::head}">
+	<head th:replace="~{snapadmin/fragments/resources::head}">
 	</head>
 	<body>
 	
 		<div class="bg-light main-wrapper">
-			<nav th:replace="~{fragments/resources :: navbar}"></nav>
+			<nav th:replace="~{snapadmin/fragments/resources :: navbar}"></nav>
 		    <div class="d-flex">
-		    	<div th:replace="~{fragments/resources :: sidebar('entities')}"></div>
+		    	<div th:replace="~{snapadmin/fragments/resources :: sidebar('entities')}"></div>
 		    	<div class="main-content bg-lighter">
 					<h1 class="fw-bold mb-4"><i class="align-middle bi bi-exclamation-octagon"></i> 
 						<span class="align-middle">Error</span>

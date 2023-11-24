@@ -25,7 +25,7 @@
 						</th>
 					</tr>
 					<th:block th:each="r : ${results.getRows()}">
-						<tr th:replace="~{fragments/generic_data_row :: data_row(row=${r})}">
+						<tr th:replace="~{snapadmin/fragments/generic_data_row :: data_row(row=${r})}">
 						</tr>
 					</th:block>
 					

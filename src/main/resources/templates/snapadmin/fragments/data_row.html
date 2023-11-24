@@ -24,7 +24,7 @@
 					 <span class="font-monospace null-label">NULL</span>
 				</th:block>
 				<th:block th:if="${row.has(field)}">
-					<th:block th:replace="~{fragments/data_row :: data_row_field(field=${field}, object=${row})}"></th:block>
+					<th:block th:replace="~{snapadmin/fragments/data_row :: data_row_field(field=${field}, object=${row})}"></th:block>
 				</th:block>
 			</td>
 			

@@ -5,7 +5,7 @@
 		<tr th:fragment="data_row(row)" class="table-data-row">
 			<td th:each="field : ${row.getSortedFields()}"
 				th:classAppend="${field.isBinary() ? 'text-center' : ''}">
-				<th:block th:replace="~{fragments/generic_data_row :: data_row_field(field=${field}, object=${row})}"></th:block>
+				<th:block th:replace="~{snapadmin/fragments/generic_data_row :: data_row_field(field=${field}, object=${row})}"></th:block>
 			</td>
 		</tr>
 		

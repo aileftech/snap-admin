@@ -90,7 +90,7 @@
 									<option th:value="${op}" th:each="op : ${field.getType().getCompareOperators()}" 
 										th:text="${op.getDisplayName()}">
 								</select>
-								<input th:replace="~{fragments/search_inputs :: 
+								<input th:replace="~{snapadmin/fragments/search_inputs :: 
 									__${field.getFragmentName()}__(
 											field=${field}, 
 											create=${create}, 

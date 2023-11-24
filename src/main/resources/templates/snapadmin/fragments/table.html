@@ -35,7 +35,7 @@
 						</th>
 					</tr>
 					<th:block th:each="r : ${results}">
-						<tr th:replace="~{fragments/data_row :: data_row(row=${r}, selectable=${false})}">
+						<tr th:replace="~{snapadmin/fragments/data_row :: data_row(row=${r}, selectable=${false})}">
 						</tr>
 					</th:block>
 					

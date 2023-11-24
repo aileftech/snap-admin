@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
-	<head th:replace="~{fragments/resources::head}">
+	<head th:replace="~{snapadmin/fragments/resources::head}">
 	</head>
 	<body>
 		<div class="bg-light main-wrapper">
-			<nav th:replace="~{fragments/resources :: navbar}"></nav>
+			<nav th:replace="~{snapadmin/fragments/resources :: navbar}"></nav>
 		    <div class="d-flex">
-		    	<div th:replace="~{fragments/resources :: sidebar('logs')}"></div>
+		    	<div th:replace="~{snapadmin/fragments/resources :: sidebar('logs')}"></div>
 		    	<div class="main-content bg-lighter">
-		    		<th:block th:replace="~{fragments/resources :: alerts}"></th:block>
+		    		<th:block th:replace="~{snapadmin/fragments/resources :: alerts}"></th:block>
 					<h1 class="fw-bold mb-4"><i class="align-middle bi bi-gear"></i>
 						<span class="align-middle">Logs</span> 
 					</h1>
@@ -58,7 +58,7 @@
 									<div class="alert alert-warning">There are no results for your filtering criteria</div>
 								</div>
 		    					<div class="table-responsive mt-3" th:if="${!page.isEmpty()}">
-									<nav th:replace="~{fragments/resources :: pagination(page=${page})}"></nav>
+									<nav th:replace="~{snapadmin/fragments/resources :: pagination(page=${page})}"></nav>
 		    						
 		    						<table class="table table-striped mt-3">
 		    							<tr class="table-data-row">
@@ -66,7 +66,7 @@
 		    									<div class="d-flex justify-content-between">
 			    									<div>Action type</div>
 			    									<h4>
-			    										<th:block th:replace="~{fragments/table_selectable :: 
+			    										<th:block th:replace="~{snapadmin/fragments/table_selectable :: 
 			    											sort_arrow(sortKey=${searchRequest.getSortKey()},
 			    											sortOrder=${searchRequest.getSortOrder()},
 			    											fieldName='actionType')}">
@@ -77,7 +77,7 @@
 			    								<div class="d-flex justify-content-between">
 			    									<div>Table</div>
 			    									<h4>
-			    										<th:block th:replace="~{fragments/table_selectable :: 
+			    										<th:block th:replace="~{snapadmin/fragments/table_selectable :: 
 			    											sort_arrow(sortKey=${searchRequest.getSortKey()},
 			    											sortOrder=${searchRequest.getSortOrder()},
 			    											fieldName='onTable')}">
@@ -88,7 +88,7 @@
 		    									<div class="d-flex justify-content-between">
 			    									<div>Item ID</div>
 			    									<h4>
-			    										<th:block th:replace="~{fragments/table_selectable :: 
+			    										<th:block th:replace="~{snapadmin/fragments/table_selectable :: 
 			    											sort_arrow(sortKey=${searchRequest.getSortKey()},
 			    											sortOrder=${searchRequest.getSortOrder()},
 			    											fieldName='primaryKey')}">
@@ -99,7 +99,7 @@
 		    									<div class="d-flex justify-content-between">
 			    									<div>Time</div>
 			    									<h4>
-			    										<th:block th:replace="~{fragments/table_selectable :: 
+			    										<th:block th:replace="~{snapadmin/fragments/table_selectable :: 
 			    											sort_arrow(sortKey=${searchRequest.getSortKey()},
 			    											sortOrder=${searchRequest.getSortOrder()},
 			    											fieldName='createdAt')}">
@@ -110,7 +110,7 @@
 		    									<div class="d-flex justify-content-between">
 			    									<div>User</div>
 			    									<h4>
-			    										<th:block th:replace="~{fragments/table_selectable :: 
+			    										<th:block th:replace="~{snapadmin/fragments/table_selectable :: 
 			    											sort_arrow(sortKey=${searchRequest.getSortKey()},
 			    											sortOrder=${searchRequest.getSortOrder()},
 			    											fieldName='username')}">
@@ -151,7 +151,7 @@
 										</tr>
 									</table>
 									
-									<nav th:replace="~{fragments/resources :: pagination(page=${page})}"></nav>								
+									<nav th:replace="~{snapadmin/fragments/resources :: pagination(page=${page})}"></nav>								
 								</div>
 							
 								

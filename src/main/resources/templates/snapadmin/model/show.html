@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
-	<head th:replace="~{fragments/resources::head}">
+	<head th:replace="~{snapadmin/fragments/resources::head}">
 	</head>
 	<body>
 	
 		<div class="bg-light main-wrapper">
-			<nav th:replace="~{fragments/resources :: navbar}"></nav>
+			<nav th:replace="~{snapadmin/fragments/resources :: navbar}"></nav>
 		    <div class="d-flex">
-		    	<div th:replace="~{fragments/resources :: sidebar('entities')}"></div>
+		    	<div th:replace="~{snapadmin/fragments/resources :: sidebar('entities')}"></div>
 		    	<div class="main-content bg-lighter">
 					<h1 class="fw-bold mb-4"><i class="align-middle bi bi-database"></i> 
 						<a class="align-middle" th:href="|/${snapadmin_baseUrl}|">Entities</a> 
@@ -63,7 +63,7 @@
 												<span class="font-monospace null-label">NULL</span>
 											</th:block>
 											<th:block th:if="${object.has(field)}">
-												<th:block th:replace="~{fragments/data_row :: data_row_field(field=${field}, object=${object})}"></th:block>
+												<th:block th:replace="~{snapadmin/fragments/data_row :: data_row_field(field=${field}, object=${object})}"></th:block>
 											</th:block>
 										</td>
 										<td class="dbfieldtype" th:text="${field.getType()}">
@@ -90,7 +90,7 @@
 											<span class="align-middle">[[ ${field.getJavaName()} ]]</span>
 										</span>
 									</h2>
-									<div th:replace="~{fragments/table :: table(schema=${field.getConnectedSchema()}, 
+									<div th:replace="~{snapadmin/fragments/table :: table(schema=${field.getConnectedSchema()}, 
 											results=${object.getValues(field)})}">
 									</div>
 								</div>
