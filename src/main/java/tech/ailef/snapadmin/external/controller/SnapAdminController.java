@@ -134,7 +134,7 @@ public class SnapAdminController {
 		model.addAttribute("activePage", "entities");
 		model.addAttribute("title", "Entities | Index");
 		
-		return "home";
+		return "snapadmin/home";
 	}
 	
 	/**
@@ -222,7 +222,7 @@ public class SnapAdminController {
 			model.addAttribute("query", query);
 			model.addAttribute("sortOrder", sortOrder);
 			model.addAttribute("activeFilters", queryFilters);
-			return "model/list";
+			return "snapadmin/model/list";
 			
 		} catch (InvalidPageException e) {
 			return "redirect:/" + properties.getBaseUrl() + "/model/" + className;
@@ -235,7 +235,7 @@ public class SnapAdminController {
 			model.addAttribute("query", query);
 			model.addAttribute("sortOrder", sortOrder);
 			model.addAttribute("activeFilters", queryFilters);
-			return "model/list";
+			return "snapadmin/model/list";
 		}
 	}
 	
@@ -252,7 +252,7 @@ public class SnapAdminController {
 		model.addAttribute("activePage", "entities");
 		model.addAttribute("schema", schema);
 		
-		return "model/schema";
+		return "snapadmin/model/schema";
 	}
 	
 	/**
@@ -279,7 +279,7 @@ public class SnapAdminController {
 		model.addAttribute("activePage", "entities");
 		model.addAttribute("schema", schema);
 		
-		return "model/show";
+		return "snapadmin/model/show";
 	}
 	
 	
@@ -299,7 +299,7 @@ public class SnapAdminController {
 		model.addAttribute("activePage", "entities");
 		model.addAttribute("create", true);
 		
-		return "model/create";
+		return "snapadmin/model/create";
 	}
 	
 	@GetMapping("/model/{className}/edit/{id}")
@@ -327,7 +327,7 @@ public class SnapAdminController {
 		model.addAttribute("activePage", "entities");
 		model.addAttribute("create", false);
 		
-		return "model/create";
+		return "snapadmin/model/create";
 	}
 	
 	@PostMapping(value="/model/{className}/delete/{id}")
@@ -543,7 +543,7 @@ public class SnapAdminController {
 		model.addAttribute("title", "Action logs");
 		model.addAttribute("schemas", snapAdmin.getSchemas());
 		model.addAttribute("searchRequest", searchRequest);
-		return "logs";
+		return "snapadmin/logs";
 	}
 	
 	
@@ -551,14 +551,14 @@ public class SnapAdminController {
 	public String settings(Model model) {
 		model.addAttribute("title", "Settings");
 		model.addAttribute("activePage", "settings");
-		return "settings/settings";
+		return "snapadmin/settings/settings";
 	}
 	
 	@GetMapping("/help")
 	public String help(Model model) {
 		model.addAttribute("title", "Help");
 		model.addAttribute("activePage", "help");
-		return "help";
+		return "snapadmin/help";
 	}
 	
 	@GetMapping("/console/new")
@@ -664,14 +664,14 @@ public class SnapAdminController {
 		model.addAttribute("title", "SQL Console | " + activeQuery.getTitle());
 		double elapsedTime = (System.currentTimeMillis() - startTime) / 1000.0;
 		model.addAttribute("elapsedTime", new DecimalFormat("0.0#").format(elapsedTime));
-		return "console";
+		return "snapadmin/console";
 	}
 
 	
 	@GetMapping("/settings/appearance")
 	public String settingsAppearance(Model model) {
 		model.addAttribute("activePage", "settings");
-		return "settings/appearance";
+		return "snapadmin/settings/appearance";
 	}
 	
 	@GetMapping("/forbidden")
@@ -679,7 +679,7 @@ public class SnapAdminController {
 		model.addAttribute("error", "Forbidden");
 		model.addAttribute("status", "403");
 		model.addAttribute("message", "You don't have the privileges to perform this action");
-		return "other/error";
+		return "snapadmin/other/error";
 	}
 	
 	@PostMapping("/settings")

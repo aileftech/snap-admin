@@ -31,6 +31,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.TransientDataAccessResourceException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -319,9 +320,9 @@ public class SnapAdminRepository {
 					
 					return row;
 				});
-			} catch (TransientDataAccessResourceException e) {
+			} catch (TransientDataAccessResourceException | DataIntegrityViolationException e) {
 				// If there's an exception we leave the results as empty
-			}
+			} 
 		}
 		return new DbQueryResult(results);
 	}

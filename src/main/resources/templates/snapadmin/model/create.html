@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
-	<head th:replace="~{fragments/resources::head}">
+	<head th:replace="~{snapadmin/fragments/resources::head}">
 	</head>
 	<body>
 	
 		<div class="bg-light main-wrapper">
-			<nav th:replace="~{fragments/resources :: navbar}"></nav>
+			<nav th:replace="~{snapadmin/fragments/resources :: navbar}"></nav>
 		    <div class="d-flex">
-		    	<div th:replace="~{fragments/resources :: sidebar('entities')}"></div>
+		    	<div th:replace="~{snapadmin/fragments/resources :: sidebar('entities')}"></div>
 		    	<div class="main-content bg-lighter">
-		    		<th:block th:replace="~{fragments/resources :: alerts}"></th:block>
+		    		<th:block th:replace="~{snapadmin/fragments/resources :: alerts}"></th:block>
 
 					<h1 class="fw-bold mb-4">
 						<i class="align-middle bi bi-database"></i> 
@@ -41,14 +41,14 @@
 										</label>
 										
 										<th:block th:if="${field.isForeignKey()}">
-											<div th:replace="~{fragments/forms :: input_autocomplete(field=${field},  value=${
+											<div th:replace="~{snapadmin/fragments/forms :: input_autocomplete(field=${field},  value=${
 												create ? (params != null ? params.getOrDefault(field.getName(), '') : '') 
 														 : (object != null ? object.traverse(field).getPrimaryKeyValue() : '' )
 											})}">
 											</div>
 										</th:block>
 										<th:block th:unless="${field.isForeignKey()}">
-											<th:block th:replace="~{fragments/inputs :: 
+											<th:block th:replace="~{snapadmin/fragments/inputs :: 
 												__${field.getFragmentName()}__(
 													field=${field},
 													create=${create},
@@ -68,7 +68,7 @@
 									
 									<div th:each="field : ${schema.getManyToManyOwnedFields()}" class="mt-3">
 										<h2><span th:title="|${field.getType()} relationship|"><i class="bi bi-share"></i> [[ ${field.getJavaName()} ]]</span></h2>
-										<div th:replace="~{fragments/forms :: input_autocomplete_multi(field=${field}, 
+										<div th:replace="~{snapadmin/fragments/forms :: input_autocomplete_multi(field=${field}, 
 											values=${object != null ? object.traverseMany(field) : null } )}">
 										</div>
 									</div>

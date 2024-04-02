@@ -61,7 +61,7 @@ public class GlobalController {
 		model.addAttribute("snapadmin_baseUrl", getBaseUrl());
 		model.addAttribute("snapadmin_version", snapAdmin.getVersion());
 		model.addAttribute("snapadmin_properties", props);
-		return "other/error";
+		return "snapadmin/other/error";
 	}
 	
 	@ExceptionHandler(SnapAdminNotFoundException.class)
@@ -74,7 +74,7 @@ public class GlobalController {
 		model.addAttribute("snapadmin_version", snapAdmin.getVersion());
 		model.addAttribute("snapadmin_properties", props);
 		response.setStatus(404);
-		return "other/error";
+		return "snapadmin/other/error";
 	}
 	
 	@ModelAttribute("snapadmin_version")

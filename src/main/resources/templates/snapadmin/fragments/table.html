@@ -2,14 +2,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 	<head></head>
 	<body>
-		<div th:fragment="table(results)">
+		<div th:fragment="table(results, schema)">
 			<div th:if="${results == null || results.isEmpty()}">
-				<p class="alert alert-warning">No results.</p>
+				<p class="alert alert-warning">This table contains no data.</p>
 			</div>
 			<div th:if="${results != null && results.size() > 0}">
 				<table class="table table-striped align-middle mt-3">
 					<tr class="table-data-row">
-						<th th:each="field : ${results.getSortedFields()}">
+						<th class="row-icons"></th>
+						<th th:each="field : ${schema.getSortedFields()}">
 							<div class="m-0 p-0 d-flex justify-content-between">
 								<div class="column-title">
 									<span th:if="${field.isPrimaryKey()}">
@@ -23,9 +24,18 @@
 							</div>
 							<p class="m-0 p-0 dbfieldtype"><small th:text="${field.getType()}"></small></p>
 						</th>
+						<th class="table-data-row" th:each="colName : ${schema.getComputedColumnNames()}">
+							<div class="m-0 p-0 d-flex justify-content-between">
+								<div class="column-title">
+									<i title="Primary Key" class="bi bi-cpu"></i>
+									<span class="m-0 p-0" th:text="${colName}"></span>
+								</div>
+							</div>
+							<p class="m-0 p-0 dbfieldtype"><small>COMPUTED</small></p>
+						</th>
 					</tr>
-					<th:block th:each="r : ${results.getRows()}">
-						<tr th:replace="~{fragments/generic_data_row :: data_row(row=${r})}">
+					<th:block th:each="r : ${results}">
+						<tr th:replace="~{snapadmin/fragments/data_row :: data_row(row=${r}, selectable=${false})}">
 						</tr>
 					</th:block>
 					
