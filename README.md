@@ -53,7 +53,7 @@ The code is still in a very early stage and it might not be robust if you use no
 <dependency>
 	<groupId>tech.ailef</groupId>
 	<artifactId>snap-admin</artifactId>
-	<version>0.2.0</version>
+	<version>0.2.1</version>
 </dependency>
 ```
 
