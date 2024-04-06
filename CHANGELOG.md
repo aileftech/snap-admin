@@ -1,4 +1,8 @@
 # Changelog
+**0.2.1**
+- Fixed #40
+- Changed license from GPL v3 to MIT
+
 **0.2.0**
 - Renamed all references to "dbadmin" in "snapadmin". This also applies to the configuration parameter prefix (#29)
 - SnapAdmin is now **disabled by default**. Remember to set `snapadmin.enabled=true` to activate it (#30)
