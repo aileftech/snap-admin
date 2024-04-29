@@ -104,7 +104,7 @@ This will autoconfigure SnapAdmin when your application starts. You are good to 
 
 ## Documentation
 
-* [Latest Javadoc](https://javadoc.io/doc/tech.ailef/spring-boot-db-admin)
+* [Latest Javadoc](https://javadoc.io/doc/tech.ailef/snap-admin/)
 * [Reference Guide](https://snapadmin.dev/docs/)
 
 ## Issues
