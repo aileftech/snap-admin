@@ -1,4 +1,7 @@
 # Changelog
+**0.2.2**
+- Fixed #49
+
 **0.2.1**
 - Fixed #40
 - Changed license from GPL v3 to MIT

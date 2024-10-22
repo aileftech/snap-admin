@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>tech.ailef</groupId>
 	<artifactId>snap-admin</artifactId>
-	<version>0.2.1</version>
+	<version>0.2.2</version>
 	<name>SnapAdmin</name>
 	<description>SnapAdmin is an auto-generated CRUD admin panel for Spring Boot/JPA apps</description>
 	<properties>

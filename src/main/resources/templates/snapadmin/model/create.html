@@ -43,7 +43,7 @@
 										<th:block th:if="${field.isForeignKey()}">
 											<div th:replace="~{snapadmin/fragments/forms :: input_autocomplete(field=${field},  value=${
 												create ? (params != null ? params.getOrDefault(field.getName(), '') : '') 
-														 : (object != null ? object.traverse(field).getPrimaryKeyValue() : '' )
+														 : (object != null && object.traverse(field) != null ? object.traverse(field).getPrimaryKeyValue() : '' )
 											})}">
 											</div>
 										</th:block>
