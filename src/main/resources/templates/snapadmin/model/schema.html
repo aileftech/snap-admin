@@ -12,7 +12,7 @@
 					<h1 class="fw-bold mb-4"><i class="bi bi-database"></i> 
 						<a class="align-middle" th:href="|/${snapadmin_baseUrl}|">Entities</a> 
 						<i class="align-middle bi bi-chevron-double-right"></i>
-						<a class="align-middle" th:href="|/${snapadmin_baseUrl}/model/${schema.getJavaClass().getName()}|"> [[ ${schema.getJavaClass().getSimpleName()} ]]</a>
+						<a class="align-middle" th:href="|/${snapadmin_baseUrl}/model/${schema.getJavaClass().getName()}|"> [[ ${schema.javaClassSimpleName } ]]</a>
 						<i class="align-middle bi bi-chevron-double-right"></i><span class="align-middle"> Schema</span>
 					</h1>
 		    		<div class="row mt-4">
@@ -34,7 +34,7 @@
 		    				<div class="box with-navigation">
 		    					<div class="d-flex justify-content-between">
 									<h3 class="fw-bold align-baseline">
-										<span title="Java class name"> [[ ${schema.getJavaClass().getSimpleName()} ]] </span>
+										<span title="Java class name"> [[ ${schema.javaClassSimpleName} ]] </span>
 										<span title="Database table name" class="ms-3 label label-primary label-gray font-monospace">
 											[[ ${schema.getTableName()} ]]
 										</span>

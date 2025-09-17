@@ -104,7 +104,7 @@
 					<h1 class="fw-bold mb-4"><i class="align-middle bi bi-database"></i>
 						<span class="align-middle"><a th:href="|/${snapadmin_baseUrl}|">Entities</a></span> 
 						<i class="align-middle bi bi-chevron-double-right"></i> 
-						<span class="align-middle"> [[ ${schema.getJavaClass().getSimpleName()} ]] </span>
+						<span class="align-middle"> [[ ${schema.getJavaClassSimpleName} ]] </span>
 					</h1>
 		    		<div class="row mt-4">
 		    			<div th:class="${schema.getFilterableFields().isEmpty() ? 'col' : 'col-9'}">
@@ -147,7 +147,7 @@
 		    					
 		    					
 									<h3 class="fw-bold mb-4 align-baseline flex-grow-1">
-										<span title="Java class name"> [[ ${schema.getJavaClass().getSimpleName()} ]] </span>
+										<span title="Java class name"> [[ ${schema.javaClassSimpleName} ]] </span>
 										<span title="Database table name" class="ms-3 label label-primary label-gray font-monospace">
 											[[ ${schema.getTableName()} ]]
 										</span>

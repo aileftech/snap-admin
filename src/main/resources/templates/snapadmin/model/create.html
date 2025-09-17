@@ -16,7 +16,7 @@
 						<span class="align-middle"><a th:href="|/${snapadmin_baseUrl}|">Entities </a></span>
 						<i class="align-middle bi bi-chevron-double-right"></i> 
 						<a class="align-middle" th:href="|/${snapadmin_baseUrl}/model/${schema.getJavaClass().getName()}|">
-						 [[ ${schema.getJavaClass().getSimpleName()} ]] </a>
+						 [[ ${schema.javaClassSimpleName} ]] </a>
 						<i class="align-middle bi bi-chevron-double-right"></i> 
 						<span class="align-middle" th:text="${create ? 'Create' : 'Edit'}"></span>
 						<th:block th:if="${!create}">
@@ -27,7 +27,7 @@
 		    		<div class="row mt-4">
 		    			<div class="col">
 		    				<div class="box">
-								<h3 class="fw-bold mb-4" th:text="${create ? schema.getJavaClass().getSimpleName() : object.getDisplayName()}"></h3>
+								<h3 class="fw-bold mb-4" th:text="${create ? schema.javaClassSimpleName : object.getDisplayName()}"></h3>
 		        				<form class="form" enctype="multipart/form-data" method="post" th:action="|/${snapadmin_baseUrl}/model/${className}/create|">
 		        					<input type="hidden" name="__snapadmin_create" th:value="${create}">
 									<div th:each="field : ${schema.getSortedFields(false)}" class="mt-2"

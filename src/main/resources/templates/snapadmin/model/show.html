@@ -13,7 +13,7 @@
 						<a class="align-middle" th:href="|/${snapadmin_baseUrl}|">Entities</a> 
 						<i class="align-middle bi bi-chevron-double-right"></i>
 						<a class="align-middle" th:href="|/${snapadmin_baseUrl}/model/${schema.getJavaClass().getName()}|"> 
-						[[ ${schema.getJavaClass().getSimpleName()} ]]</a>
+						[[ ${schema.javaClassSimpleName } ]]</a>
 						<i class="align-middle bi bi-chevron-double-right"></i>
 						<span class="align-middle"> [[ ${object.getDisplayName()} ]]</span>
 					</h1>
