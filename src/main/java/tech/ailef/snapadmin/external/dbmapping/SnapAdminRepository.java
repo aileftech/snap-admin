@@ -71,8 +71,8 @@ public class SnapAdminRepository {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Optional<DbObject> findById(DbObjectSchema schema, Object id) {
 		SimpleJpaRepository repository = schema.getJpaRepository();
-		
-		Optional optional = repository.findById(id);
+    Object parsedId = parsePrimaryKey(schema, id);
+		Optional optional = repository.findById(parsedId);
 		if (optional.isEmpty())
 			return Optional.empty();
 		else {
@@ -194,7 +194,8 @@ public class SnapAdminRepository {
 	 */
 	@Transactional("transactionManager")
 	public void attachManyToMany(DbObjectSchema schema, Object id, Map<String, List<String>> params) {
-		Optional<DbObject> optional = findById(schema, id);
+		Object parsedId = parsePrimaryKey(schema, id);
+    Optional<DbObject> optional = findById(schema, parsedId);
 
 		DbObject dbObject = optional.orElseThrow(() -> {
 			return new SnapAdminException("Unable to retrieve newly inserted item");
@@ -210,7 +211,8 @@ public class SnapAdminRepository {
 			
 			List<DbObject> traverseMany =  new ArrayList<>();
 			for (String oId : idValues) {
-				Optional<DbObject> findById = findById(linkedSchema, oId);
+				Object linkedParsedId = parsePrimaryKey(linkedSchema, oId);
+        Optional<DbObject> findById = findById(linkedSchema, linkedParsedId);
 				if (findById.isPresent()) {
 					traverseMany.add(findById.get());
 				}
@@ -324,7 +326,12 @@ public class SnapAdminRepository {
 	@SuppressWarnings("unchecked")
 	@Transactional("transactionManager")
 	public void delete(DbObjectSchema schema, String id) {
-		schema.getJpaRepository().deleteById(id);
+    Object parsedId = parsePrimaryKey(schema, id);
+		schema.getJpaRepository().deleteById(parsedId);
 	}
-	
+
+	private Object parsePrimaryKey(DbObjectSchema schema, Object rawId) {
+    DbField idField = schema.getFieldByName("id");
+    return idField.getType().parseValue(rawId);
+}
 }

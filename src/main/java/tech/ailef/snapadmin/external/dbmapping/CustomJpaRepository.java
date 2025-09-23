@@ -133,8 +133,13 @@ public class CustomJpaRepository extends SimpleJpaRepository {
 				}
 			}
 			
-			if (field.getConnectedSchema() != null)
-				value = field.getConnectedSchema().getJpaRepository().findById(value).get();
+			if (field.getConnectedSchema() != null) {
+				if (value != null) {
+						value = field.getConnectedSchema().getJpaRepository().findById(value).orElse(null);
+				} else {
+						value = null; 
+				}
+			}
 			
 			update.set(root.get(field.getJavaName()), value);
 			hasUpdate = true;
@@ -143,8 +148,10 @@ public class CustomJpaRepository extends SimpleJpaRepository {
 		if (!hasUpdate) return 0;
 		
 		String pkName = schema.getPrimaryKey().getJavaName();
-		update.where(cb.equal(root.get(pkName), params.get(schema.getPrimaryKey().getName())));
-
+		Object parsedPk = schema.getPrimaryKey().getType().parseValue(
+				params.get(schema.getPrimaryKey().getName())
+		);
+		update.where(cb.equal(root.get(pkName), parsedPk));
 		Query query = entityManager.createQuery(update);
 		return query.executeUpdate();
 	}

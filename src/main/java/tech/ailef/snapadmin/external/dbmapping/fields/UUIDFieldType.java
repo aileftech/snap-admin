@@ -19,7 +19,10 @@ public class UUIDFieldType extends DbFieldType {
 
 	@Override
 	public Object parseValue(Object value) {
-		return java.util.UUID.fromString(value.toString());
+		if (value == null) return null;
+		String str = value.toString().trim();
+		if (str.isEmpty()) return null;
+		return java.util.UUID.fromString(str);
 	}
 
 	@Override
