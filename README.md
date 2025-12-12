@@ -45,6 +45,76 @@ These are the supported types for fields inside your `@Entity` classes (excludin
 
 The code is still in a very early stage and it might not be robust if you use not-yet-supported JPA annotations and/or other custom configurations (e.g., custom naming strategy). If you find a bug with your settings, please report it as an issue and I will take a look at it.
 
+## Hierarchy Tree View
+
+SnapAdmin supports visualizing hierarchical data structures (like Brand -> Model -> Part) in an interactive tree view.
+
+### Configuration
+
+To enable the tree view for an entity, use the `@SnapTree` annotation.
+
+**1. Define the Root Entity**
+Annotate the root entity (e.g., `Brand`) with `@SnapTree`.
+
+```java
+@Entity
+@SnapTree(
+    label = "Vehicle Hierarchy", 
+    icon = "bi bi-truck", 
+    childField = "models" // The field in this entity that points to children
+)
+public class Brand {
+    // ...
+    @OneToMany(mappedBy = "brand")
+    private Set<VehicleModel> models;
+}
+```
+
+**2. Define Child Links**
+Annotate the child link field in the parent entity to define the next level of hierarchy.
+
+For example, in `VehicleModel`:
+
+```java
+@Entity
+public class VehicleModel {
+    // ...
+    @ManyToMany
+    @SnapTree(childLabel = "Compatible Parts", icon = "bi bi-gear")
+    private Set<AutoPart> compatibleParts;
+}
+```
+
+### Search Functionality
+
+The tree view includes a powerful search feature that allows users to find nodes by name.
+*   It searches across all entities in the hierarchy.
+*   It automatically expands the tree to show the selected result.
+*   It displays the path context (e.g., `Toyota > Camry > Brake Pad`).
+
+To customize the label shown in search results, use the `@DisplayName` annotation on a method in your entity:
+
+```java
+@Entity
+public class AutoPart {
+    // ...
+    @DisplayName
+    public String getFullName() {
+        return name + " (" + partNumber + ")";
+    }
+}
+```
+
+### Link Existing Items
+
+For Many-to-Many relationships, you can link existing entities to a parent node directly from the tree view.
+*   Right-click on a node that has a Many-to-Many relationship (e.g., a `VehicleModel` with `AutoParts`).
+*   Select "Link Existing...".
+*   Search for the item you want to link.
+*   Select the item and click "Link".
+
+This feature is automatically enabled for fields annotated with `@ManyToMany` where the child entity has a corresponding inverse field.
+
 ## Installation
 
 1. SnapAdmin is distributed on Maven. For the latest stable release you can simply include the following snippet in your `pom.xml` file:

@@ -1,183 +1,185 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
-	<head></head>
-	<body>
-		<div class="autocomplete-input position-relative" th:fragment="input_autocomplete(field, value)">
-			<input class="autocomplete form-control" type="text"  th:name="${field.getName()}"
-				th:data-classname="${field.getConnectedType().getName()}"
-				autocomplete="off"
-				th:value="${value}"
-				placeholder="NULL">
-			</input>
-			<div class="suggestions d-none">
+
+<head></head>
+
+<body>
+	<div class="autocomplete-input position-relative" th:fragment="input_autocomplete(field, value)">
+		<div class="d-flex">
+			<div class="flex-grow-1 position-relative">
+				<input class="autocomplete form-control" type="text" th:name="${field.getName()}"
+					th:data-classname="${field.getConnectedType().getName()}" autocomplete="off" th:value="${value}"
+					placeholder="NULL">
+				</input>
+				<div class="suggestions d-none">
+				</div>
 			</div>
+			<button type="button" class="btn btn-outline-secondary ms-2 btn-sm inline-create-btn"
+				th:attr="data-entity-class=${field.getConnectedType().getName()},data-field-name=${field.getName()}"
+				title="Create new">
+				<i class="bi bi-plus-lg"></i>
+			</button>
 		</div>
-		
-		<div class="autocomplete-multi-input position-relative" th:fragment="input_autocomplete_multi(field, values)">
-			<div class="position-relative">
-				<input class="autocomplete form-control" type="text"
-					autocomplete="off"  
-					th:name="|${field.getName()}[]|"
+	</div>
+
+	<div class="autocomplete-multi-input position-relative" th:fragment="input_autocomplete_multi(field, values)">
+		<div class="d-flex">
+			<div class="flex-grow-1 position-relative">
+				<input class="autocomplete form-control" type="text" autocomplete="off" th:name="|${field.getName()}[]|"
 					th:data-fieldname="|${field.getName()}[]|"
 					th:data-classname="${field.getConnectedType().getName()}">
 				</input>
 				<div class="suggestions d-none">
 				</div>
 			</div>
-			<span class="badge bg-danger mb-0 mt-2 value-badge clear-all-badge"
-				th:classAppend="${values == null || values.isEmpty() ? 'd-none' : ''}">Clear all <i class="bi bi-trash"></i></span>
-			<div class="mt-0 mb-2 selected-values">
-				<th:block th:each="value : ${values}" th:if="${values}">
-					<span class="value-badge">
-						<input type="checkbox" checked="checked" class="badge-checkbox" 
-							   th:name="|${field.getName()}[]|" th:value="${value.getPrimaryKeyValue()}">
-						<span class="badge bg-primary me-2" th:text="${value.getDisplayName()}">
-						</span>
+			<button type="button" class="btn btn-outline-secondary ms-2 btn-sm inline-create-btn"
+				th:attr="data-entity-class=${field.getConnectedType().getName()},data-field-name=${field.getName()}"
+				title="Create new">
+				<i class="bi bi-plus-lg"></i>
+			</button>
+		</div>
+		<span class="badge bg-danger mb-0 mt-2 value-badge clear-all-badge"
+			th:classAppend="${values == null || values.isEmpty() ? 'd-none' : ''}">Clear all <i
+				class="bi bi-trash"></i></span>
+		<div class="mt-0 mb-2 selected-values">
+			<th:block th:each="value : ${values}" th:if="${values}">
+				<span class="value-badge">
+					<input type="checkbox" checked="checked" class="badge-checkbox" th:name="|${field.getName()}[]|"
+						th:value="${value.getPrimaryKeyValue()}">
+					<span class="badge bg-primary me-2" th:text="${value.getDisplayName()}">
 					</span>
-				</th:block>
-			</div>
+				</span>
+			</th:block>
 		</div>
-		
-		
-		
-		<div class="card mb-3 filterable-field"  th:fragment="filter_field(field)">
-			<div class="card-header noselect cursor-pointer">
-				<i class="bi bi-caret-right filter-icon  align-middle"></i> 
-				<span class="fw-bold align-middle" th:text="${field.getName()}"></span>
-			</div>
-			<div class="card-body">
-				<!--/*--> Handle non categorical filter <!--*/-->
-				<th:block th:if="${!field.isFilterableCategorical()}">
-					<form action="" method="GET">
-						<!--/*--> Propagate query filters with hidden fields <!--*/-->
-		                <th:block th:each="filter : ${activeFilters}">
-		                	<input type="hidden"
-		                		name="filter_field" 
-		                		th:value="${filter.getField().getJavaName()}">
-		                	<input type="hidden"
-		                		name="filter_op" 
-		                		th:value="${filter.getOp()}">
-		                	<input type="hidden"
-		                		name="filter_value" 
-		                		th:value="${filter.getValue()}"> 
-		                </th:block>
-						
-						<div class="input-group pe-2">
-							<!-- Reset page when applying filter to start back at page 1 -->
-							<input type="hidden" name="page" value="1">
-							<input type="hidden" name="pageSize" th:value="${page != null ? page.getPagination().getPageSize() : '50'}">
-							<input type="hidden" name="query" th:value="${query}">
-							<input type="hidden" name="filter_field" th:value="${field.getJavaName()}">
-	
-							<th:block th:if="${field.isForeignKey()}">
-								<span class="input-group-text w-25">
-									<input type="hidden" name="filter_op" value="string_eq">
-									Equals
-								</span>
-								<div class="autocomplete-input position-relative w-50">
-									<input class="autocomplete form-control" type="text"  name="filter_value"
-										th:data-classname="${field.getConnectedType().getName()}"
-										autocomplete="off"
-										placeholder="NULL">
-									</input>
-									<div class="suggestions d-none">
-									</div>
+	</div>
+
+
+
+	<div class="card mb-3 filterable-field" th:fragment="filter_field(field)">
+		<div class="card-header noselect cursor-pointer">
+			<i class="bi bi-caret-right filter-icon  align-middle"></i>
+			<span class="fw-bold align-middle" th:text="${field.getName()}"></span>
+		</div>
+		<div class="card-body">
+			<!--/*--> Handle non categorical filter <!--*/-->
+			<th:block th:if="${!field.isFilterableCategorical()}">
+				<form action="" method="GET">
+					<!--/*--> Propagate query filters with hidden fields <!--*/-->
+					<th:block th:each="filter : ${activeFilters}">
+						<input type="hidden" name="filter_field" th:value="${filter.getField().getJavaName()}">
+						<input type="hidden" name="filter_op" th:value="${filter.getOp()}">
+						<input type="hidden" name="filter_value" th:value="${filter.getValue()}">
+					</th:block>
+
+					<div class="input-group pe-2">
+						<!-- Reset page when applying filter to start back at page 1 -->
+						<input type="hidden" name="page" value="1">
+						<input type="hidden" name="pageSize"
+							th:value="${page != null ? page.getPagination().getPageSize() : '50'}">
+						<input type="hidden" name="query" th:value="${query}">
+						<input type="hidden" name="filter_field" th:value="${field.getJavaName()}">
+
+						<th:block th:if="${field.isForeignKey()}">
+							<span class="input-group-text w-25">
+								<input type="hidden" name="filter_op" value="string_eq">
+								Equals
+							</span>
+							<div class="autocomplete-input position-relative w-50">
+								<input class="autocomplete form-control" type="text" name="filter_value"
+									th:data-classname="${field.getConnectedType().getName()}" autocomplete="off"
+									placeholder="NULL">
+								</input>
+								<div class="suggestions d-none">
 								</div>
-								
-							</th:block>
-							<th:block th:unless="${field.isForeignKey()}">
-								<select class="form-select w-25" name="filter_op">
-									<option th:value="${op}" th:each="op : ${field.getType().getCompareOperators()}" 
-										th:text="${op.getDisplayName()}">
-								</select>
-								<input th:replace="~{snapadmin/fragments/search_inputs :: 
-									__${field.getFragmentName()}__(
-											field=${field}, 
-											create=${create}, 
-											name='filter_value',
-											value=''
-										)}"></input>
-							</th:block>
-							<button class="ui-btn btn btn-primary"><i class="bi bi-search text-white"></i></button>
-						</div>
-					</form>
-				</th:block>
-				<!--/*--> Handle categorical filter <!--*/-->
-				<th:block th:if="${field.isFilterableCategorical()}">
-					<th:block th:if="${field.isForeignKey()}">
-						<ul class="categorical-select">
-							<li th:each="categoricalValue : ${field.getConnectedSchema().findAll()}">
-								<form action="" method="GET">
-									<!--/*--> Propagate query filters with hidden fields <!--*/-->
-					                <th:block th:each="filter : ${activeFilters}">
-					                	<!--/*--> This field is categorical so we don't propagate it, to make it mutually exclusive <!--*/-->
-					                	<th:block th:unless="${field.getJavaName() == filter.getField().getJavaName()}">
-						                	<input type="hidden"
-						                		name="filter_field" 
-						                		th:value="${filter.getField().getJavaName()}">
-						                	<input type="hidden"
-						                		name="filter_op" 
-						                		th:value="${filter.getOp()}">
-						                	<input type="hidden"
-						                		name="filter_value" 
-						                		th:value="${filter.getValue()}">
-						                </th:block> 
-					                </th:block>
-									
-									<!-- Reset page when applying filter to start back at page 1 -->
-									<input type="hidden" name="page" value="1">
-									<input type="hidden" name="pageSize" th:value="${page.getPagination().getPageSize()}">
-									<input type="hidden" name="query" th:value="${query}">
-									<input type="hidden" name="filter_field" th:value="${field.getJavaName()}">
+							</div>
 
-									<input type="hidden" name="filter_op" value="string_eq">
-									<input type="hidden" name="filter_value"
-										th:value="${categoricalValue.getPrimaryKeyValue()}">
-									<button class="mb-2">
-										[[ ${categoricalValue.getDisplayName()} ]]
-									</button>
-								</form>
-							</li>
-						</ul>
-					</th:block>
-					<th:block th:unless="${field.isForeignKey()}">
-						<ul class="categorical-select">
-							<li th:each="categoricalValue : ${field.getAllValues()}">
-								<form action="" method="GET">
-									<!--/*--> Propagate query filters with hidden fields <!--*/-->
-					                <th:block th:each="filter : ${activeFilters}">
-					                	<!--/*--> This field is categorical so we don't propagate it, to make it mutually exclusive <!--*/-->
-					                	<th:block th:unless="${field.getJavaName() == filter.getField().getJavaName()}">
-						                	<input type="hidden"
-						                		name="filter_field" 
-						                		th:value="${filter.getField().getJavaName()}">
-						                	<input type="hidden"
-						                		name="filter_op" 
-						                		th:value="${filter.getOp()}">
-						                	<input type="hidden"
-						                		name="filter_value" 
-						                		th:value="${filter.getValue()}">
-						                </th:block> 
-					                </th:block>
-									
-									<!-- Reset page when applying filter to start back at page 1 -->
-									<input type="hidden" name="page" value="1">
-									<input type="hidden" name="pageSize" th:value="${page != null ? page.getPagination().getPageSize() : '50'}">
-									<input type="hidden" name="query" th:value="${query}">
-									<input type="hidden" name="filter_field" th:value="${field.getJavaName()}">
+						</th:block>
+						<th:block th:unless="${field.isForeignKey()}">
+							<select class="form-select w-25" name="filter_op">
+								<option th:value="${op}" th:each="op : ${field.getType().getCompareOperators()}"
+									th:text="${op.getDisplayName()}">
+							</select>
+							<input th:replace="~{snapadmin/fragments/search_inputs :: 
+								__${field.getFragmentName()}__(
+									field=${field}, 
+									create=${create}, 
+									name='filter_value',
+									value=''
+								)}"></input>
+						</th:block>
+						<button class="ui-btn btn btn-primary"><i class="bi bi-search text-white"></i></button>
+					</div>
+				</form>
+			</th:block>
+			<!--/*--> Handle categorical filter <!--*/-->
+			<th:block th:if="${field.isFilterableCategorical()}">
+				<th:block th:if="${field.isForeignKey()}">
+					<ul class="categorical-select">
+						<li th:each="categoricalValue : ${field.getConnectedSchema().findAll()}">
+							<form action="" method="GET">
+								<!--/*--> Propagate query filters with hidden fields <!--*/-->
+								<th:block th:each="filter : ${activeFilters}">
+									<!--/*--> This field is categorical so we don't propagate it, to make it mutually
+									exclusive <!--*/-->
+									<th:block th:unless="${field.getJavaName() == filter.getField().getJavaName()}">
+										<input type="hidden" name="filter_field"
+											th:value="${filter.getField().getJavaName()}">
+										<input type="hidden" name="filter_op" th:value="${filter.getOp()}">
+										<input type="hidden" name="filter_value" th:value="${filter.getValue()}">
+									</th:block>
+								</th:block>
 
-									<input type="hidden" name="filter_op" value="string_eq">
-									<input type="hidden" name="filter_value"
-										th:value="${categoricalValue.getValue()}">
-									<button class="mb-2">
-										[[ ${categoricalValue.getFormattedValue()} ]]
-									</button>
-								</form>
-							</li>
-						</ul>
-					</th:block>
+								<!-- Reset page when applying filter to start back at page 1 -->
+								<input type="hidden" name="page" value="1">
+								<input type="hidden" name="pageSize" th:value="${page.getPagination().getPageSize()}">
+								<input type="hidden" name="query" th:value="${query}">
+								<input type="hidden" name="filter_field" th:value="${field.getJavaName()}">
+
+								<input type="hidden" name="filter_op" value="string_eq">
+								<input type="hidden" name="filter_value"
+									th:value="${categoricalValue.getPrimaryKeyValue()}">
+								<button class="mb-2">
+									[[ ${categoricalValue.getDisplayName()} ]]
+								</button>
+							</form>
+						</li>
+					</ul>
 				</th:block>
-			</div>
+				<th:block th:unless="${field.isForeignKey()}">
+					<ul class="categorical-select">
+						<li th:each="categoricalValue : ${field.getAllValues()}">
+							<form action="" method="GET">
+								<!--/*--> Propagate query filters with hidden fields <!--*/-->
+								<th:block th:each="filter : ${activeFilters}">
+									<!--/*--> This field is categorical so we don't propagate it, to make it mutually
+									exclusive <!--*/-->
+									<th:block th:unless="${field.getJavaName() == filter.getField().getJavaName()}">
+										<input type="hidden" name="filter_field"
+											th:value="${filter.getField().getJavaName()}">
+										<input type="hidden" name="filter_op" th:value="${filter.getOp()}">
+										<input type="hidden" name="filter_value" th:value="${filter.getValue()}">
+									</th:block>
+								</th:block>
+
+								<!-- Reset page when applying filter to start back at page 1 -->
+								<input type="hidden" name="page" value="1">
+								<input type="hidden" name="pageSize"
+									th:value="${page != null ? page.getPagination().getPageSize() : '50'}">
+								<input type="hidden" name="query" th:value="${query}">
+								<input type="hidden" name="filter_field" th:value="${field.getJavaName()}">
+
+								<input type="hidden" name="filter_op" value="string_eq">
+								<input type="hidden" name="filter_value" th:value="${categoricalValue.getValue()}">
+								<button class="mb-2">
+									[[ ${categoricalValue.getFormattedValue()} ]]
+								</button>
+							</form>
+						</li>
+					</ul>
+				</th:block>
+			</th:block>
 		</div>
-	</body>
+	</div>
+</body>
+
 </html>

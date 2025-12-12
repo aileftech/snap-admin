@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+
+<head th:replace="~{snapadmin/fragments/resources::head}">
+</head>
+
+<body>
+    <div class="bg-light main-wrapper">
+        <nav th:replace="~{snapadmin/fragments/resources :: navbar}"></nav>
+        <div class="d-flex">
+            <div th:replace="~{snapadmin/fragments/resources :: sidebar('tree')}"></div>
+            <div class="main-content bg-lighter">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h1 class="fw-bold mb-0">
+                        <i th:class="${treeConfig.icon} + ' align-middle'"></i>
+                        <span class="align-middle" th:text="${treeConfig.label}"></span>
+                    </h1>
+
+                    <!-- Tree Selector if multiple trees exist -->
+                    <div class="dropdown" th:if="${allTrees.size() > 1}">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="treeSelector"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Switch Tree
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="treeSelector">
+                            <li th:each="tree : ${allTrees}">
+                                <a class="dropdown-item" th:href="|/${snapadmin_baseUrl}/tree/${tree.rootEntityClass}|">
+                                    <i th:class="${tree.icon}"></i> [[${tree.label}]]
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col">
+                        <div class="box p-4">
+                            <div class="mb-3 position-relative">
+                                <input type="text" id="tree-search" class="form-control"
+                                    placeholder="Search hierarchy (e.g. 'Toyota', 'Oil Filter')...">
+                                <div id="search-results" class="list-group mt-1 position-absolute w-100 d-none"
+                                    style="z-index: 1000; max-height: 300px; overflow-y: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                                </div>
+                            </div>
+                            <div id="tree-container" th:data-root-class="${treeConfig.rootEntityClass}"
+                                th:data-base-url="${snapadmin_baseUrl}">
+                                <div class="text-center p-5">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Context Menu -->
+    <div id="tree-context-menu" class="tree-context-menu" style="display: none;">
+        <div class="context-menu-item" data-action="add-child">
+            <i class="bi bi-plus-lg me-2"></i><span id="add-child-label">Add Child</span>
+        </div>
+        <div class="context-menu-item" data-action="link-existing">
+            <i class="bi bi-link-45deg me-2"></i><span id="link-existing-label">Link Existing...</span>
+        </div>
+        <div class="dropdown-divider my-1"></div>
+        <div class="context-menu-item" data-action="edit">
+            <i class="bi bi-pencil me-2"></i>Edit
+        </div>
+        <div class="context-menu-item" data-action="delete">
+            <i class="bi bi-trash me-2"></i>Delete
+        </div>
+    </div>
+
+    <!-- Link Existing Modal -->
+    <div class="modal fade" id="linkExistingModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Link Existing Item</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3 position-relative">
+                        <label for="link-search" class="form-label">Search for item to link</label>
+                        <input type="text" class="form-control" id="link-search" placeholder="Type to search...">
+                        <div id="link-search-results" class="list-group mt-1 position-absolute w-100 d-none"
+                            style="z-index: 2000; max-height: 200px; overflow-y: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="btn-confirm-link" disabled>Link</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="|/${snapadmin_baseUrl}/snapadmin/js/tree.js|"></script>
+    <link rel="stylesheet" th:href="|/${snapadmin_baseUrl}/snapadmin/css/tree.css|">
+</body>
+
+</html>

@@ -1,0 +1,89 @@
+.tree-list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+.tree-node-wrapper {
+    margin: 2px 0;
+}
+
+.tree-node-content {
+    display: flex;
+    align-items: center;
+    padding: 6px 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.tree-node-content:hover {
+    background-color: #f8f9fa;
+}
+
+.tree-toggle {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 4px;
+    border: none;
+    background: none;
+}
+
+.tree-label {
+    cursor: pointer;
+    user-select: none;
+    font-weight: 500;
+    color: #333;
+}
+
+.tree-label:hover {
+    text-decoration: underline;
+    color: #0d6efd;
+}
+
+.tree-children {
+    border-left: 1px solid #dee2e6;
+}
+
+.tree-node-content.highlight {
+    background-color: #fff3cd;
+    border: 1px solid #ffeeba;
+}
+
+/* Context Menu Styles */
+.tree-context-menu {
+    position: fixed;
+    background: white;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 10000;
+    min-width: 160px;
+    padding: 4px 0;
+}
+
+.context-menu-item {
+    padding: 8px 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #333;
+    transition: background-color 0.2s;
+    user-select: none;
+}
+
+.context-menu-item:hover {
+    background-color: #f8f9fa;
+}
+
+.context-menu-item[data-action="delete"]:hover {
+    background-color: #fff5f5;
+    color: #dc3545;
+}
+
+.context-menu-item i {
+    font-size: 14px;
+}
