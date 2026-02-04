@@ -1,106 +1,177 @@
-<!DOCTYPE html>
+<!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
-	<head th:replace="~{snapadmin/fragments/resources::head}">
-	</head>
+	<head th:replace="~{snapadmin/fragments/resources::head}"> </head>
 	<body>
-	
 		<div class="bg-light main-wrapper">
 			<nav th:replace="~{snapadmin/fragments/resources :: navbar}"></nav>
-		    <div class="d-flex">
-		    	<div th:replace="~{snapadmin/fragments/resources :: sidebar('entities')}"></div>
-		    	<div class="main-content bg-lighter">
-					<h1 class="fw-bold mb-4"><i class="align-middle bi bi-database"></i> 
-						<a class="align-middle" th:href="|/${snapadmin_baseUrl}|">Entities</a> 
+			<div class="d-flex">
+				<div
+					th:replace="~{snapadmin/fragments/resources :: sidebar('entities')}"
+				></div>
+				<div class="main-content bg-lighter">
+					<h1 class="fw-bold mb-4">
+						<i class="align-middle bi bi-database"></i>
+						<a
+							class="align-middle"
+							th:href="|/${snapadmin_baseUrl}|"
+							>Entities</a
+						>
 						<i class="align-middle bi bi-chevron-double-right"></i>
-						<a class="align-middle" th:href="|/${snapadmin_baseUrl}/model/${schema.getJavaClass().getName()}|"> 
-						[[ ${schema.getJavaClass().getSimpleName()} ]]</a>
+						<a
+							class="align-middle"
+							th:href="|/${snapadmin_baseUrl}/model/${schema.getJavaClass().getName()}|"
+						>
+							[[ ${schema.getSimpleName()} ]]</a
+						>
 						<i class="align-middle bi bi-chevron-double-right"></i>
-						<span class="align-middle"> [[ ${object.getDisplayName()} ]]</span>
+						<span class="align-middle">
+							[[ ${object.getDisplayName()} ]]</span
+						>
 					</h1>
-		    		<div class="row mt-4">
-		    			<div class="col">
-		    				<div class="box">
-		    					<div class="d-flex justify-content-between">
-		    						<h3 class="mb-3 fw-bold" th:text="${object.getDisplayName()}"></h3>
-									<h3><a
-										th:class="|${!schema.isEditEnabled() ? 'disable' : ''} me-2|" 
-										th:href="|/${snapadmin_baseUrl}/model/${schema.getClassName()}/edit/${object.getPrimaryKeyValue()}|">
-										<i class="bi bi-pencil"></i></a>
-										
-										<form class="delete-form me-2" method="POST" 
-											th:action="|/${snapadmin_baseUrl}/model/${schema.getJavaClass().getName()}/delete/${object.getPrimaryKeyValue()}|">
-											<button th:class="|${!schema.isDeleteEnabled() ? 'disable' : ''}|"><i class="bi bi-trash"></i></button>
+					<div class="row mt-4">
+						<div class="col">
+							<div class="box">
+								<div class="d-flex justify-content-between">
+									<h3
+										class="mb-3 fw-bold"
+										th:text="${object.getDisplayName()}"
+									></h3>
+									<h3>
+										<a
+											th:class="|${!schema.isEditEnabled() ? 'disable' : ''} me-2|"
+											th:href="|/${snapadmin_baseUrl}/model/${schema.getClassName()}/edit/${object.getPrimaryKeyValue()}|"
+										>
+											<i class="bi bi-pencil"></i
+										></a>
+
+										<form
+											class="delete-form me-2"
+											method="POST"
+											th:action="|/${snapadmin_baseUrl}/model/${schema.getJavaClass().getName()}/delete/${object.getPrimaryKeyValue()}|"
+										>
+											<button
+												th:class="|${!schema.isDeleteEnabled() ? 'disable' : ''}|"
+											>
+												<i class="bi bi-trash"></i>
+											</button>
 										</form>
-										
-										<a th:title="|${!schema.isCreateEnabled() ? 'CREATE disabled for this type' : 'Create new item'}|" 
+
+										<a
+											th:title="|${!schema.isCreateEnabled() ? 'CREATE disabled for this type' : 'Create new item'}|"
 											th:class="|${!schema.isCreateEnabled() ? 'disable' : ''}|"
-											th:href="|/${snapadmin_baseUrl}/model/${schema.getClassName()}/create|"><i class="bi bi-plus-square"></i></a>
+											th:href="|/${snapadmin_baseUrl}/model/${schema.getClassName()}/create|"
+											><i class="bi bi-plus-square"></i
+										></a>
 									</h3>
 								</div>
-								
-								
-								<table class="table table-striped align-middle show-table">
+
+								<table
+									class="table table-striped align-middle show-table"
+								>
 									<tr class="table-data-row">
 										<th style="width: 32px"></th>
 										<th>Column</th>
 										<th>Value</th>
 										<th>Type</th>
 									</tr>
-									<tr th:each="field : ${schema.getSortedFields()}" class="table-data-row">
+									<tr
+										th:each="field : ${schema.getSortedFields()}"
+										class="table-data-row"
+									>
 										<td>
-											<span th:if="${field.isPrimaryKey()}">
-												<i title="Primary Key" class="bi bi-key"></i>
+											<span
+												th:if="${field.isPrimaryKey()}"
+											>
+												<i
+													title="Primary Key"
+													class="bi bi-key"
+												></i>
 											</span>
-											<span th:if="${field.isForeignKey()}">
-												<i title="Foreign Key" class="bi bi-link"></i>
+											<span
+												th:if="${field.isForeignKey()}"
+											>
+												<i
+													title="Foreign Key"
+													class="bi bi-link"
+												></i>
 											</span>
 										</td>
 										<td class="fw-bold">
-											<span class="m-0 p-0" th:text="${field.getName()}"></span>
+											<span
+												class="m-0 p-0"
+												th:text="${field.getName()}"
+											></span>
 										</td>
 										<td>
-											<th:block th:if="${!object.has(field)}">
-												<span class="font-monospace null-label">NULL</span>
+											<th:block
+												th:if="${!object.has(field)}"
+											>
+												<span
+													class="font-monospace null-label"
+													>NULL</span
+												>
 											</th:block>
-											<th:block th:if="${object.has(field)}">
-												<th:block th:replace="~{snapadmin/fragments/data_row :: data_row_field(field=${field}, object=${object})}"></th:block>
+											<th:block
+												th:if="${object.has(field)}"
+											>
+												<th:block
+													th:replace="~{snapadmin/fragments/data_row :: data_row_field(field=${field}, object=${object})}"
+												></th:block>
 											</th:block>
 										</td>
-										<td class="dbfieldtype" th:text="${field.getType()}">
-										</td>
+										<td
+											class="dbfieldtype"
+											th:text="${field.getType()}"
+										></td>
 									</tr>
-									<tr class="table-data-row" th:each="colName : ${schema.getComputedColumnNames()}">
+									<tr
+										class="table-data-row"
+										th:each="colName : ${schema.getComputedColumnNames()}"
+									>
 										<td>
 											<i class="bi bi-cpu"></i>
 										</td>
-										<td class="fw-bold" th:text="${colName}">
-										</td>
-										<td th:text="${object.compute(colName)}">
-										</td>
+										<td
+											class="fw-bold"
+											th:text="${colName}"
+										></td>
+										<td
+											th:text="${object.compute(colName)}"
+										></td>
 										<td>
-											<span class="dbfieldtype">COMPUTED</span>
+											<span class="dbfieldtype"
+												>COMPUTED</span
+											>
 										</td>
 									</tr>
 								</table>
-								
-								<div th:each="field : ${schema.getRelationshipFields()}">
+
+								<div
+									th:each="field : ${schema.getRelationshipFields()}"
+								>
 									<h2>
-										<span th:title="|${field.getType()} relationship|">
-											<i class="align-middle bi bi-share"></i> 
-											<span class="align-middle">[[ ${field.getJavaName()} ]]</span>
+										<span
+											th:title="|${field.getType()} relationship|"
+										>
+											<i
+												class="align-middle bi bi-share"
+											></i>
+											<span class="align-middle"
+												>[[ ${field.getJavaName()}
+												]]</span
+											>
 										</span>
 									</h2>
-									<div th:replace="~{snapadmin/fragments/table :: table(schema=${field.getConnectedSchema()}, 
-											results=${object.getValues(field)})}">
-									</div>
+									<div
+										th:replace="~{snapadmin/fragments/table :: table(schema=${field.getConnectedSchema()}, 
+											results=${object.getValues(field)})}"
+									></div>
 								</div>
 							</div>
-		    			</div>
-		    		</div>
-		    	</div>
-		    </div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
-	
-		
 	</body>
 </html>
