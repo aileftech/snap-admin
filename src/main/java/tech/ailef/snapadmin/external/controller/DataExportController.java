@@ -51,8 +51,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 import tech.ailef.snapadmin.external.SnapAdmin;
 import tech.ailef.snapadmin.external.dbmapping.DbFieldValue;
@@ -278,16 +278,16 @@ public class DataExportController {
 			try {
 				String json = mapper.writeValueAsString(map);
 				sb.append(json);
-			} catch (JsonProcessingException e) {
+			} catch (JacksonException e) {
 				throw new SnapAdminException(e);
 			}
-			
+
 			sb.append("\n");
 		}
 
 		return sb.toString();
 	}
-	
+
 	private String toJsonlQuery(DbQueryResult result, List<String> fields) {
 		if (result.isEmpty())
 			return "";
@@ -299,10 +299,10 @@ public class DataExportController {
 			try {
 				String json = mapper.writeValueAsString(map);
 				sb.append(json);
-			} catch (JsonProcessingException e) {
+			} catch (JacksonException e) {
 				throw new SnapAdminException(e);
 			}
-			
+
 			sb.append("\n");
 		}
 
