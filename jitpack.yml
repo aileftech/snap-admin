@@ -1,0 +1,10 @@
+# JitPack's default build image has no JDK 26 (and SDKMAN, its usual installer, only goes up to 25),
+# so without this the build fails with "JAVA_HOME is not defined correctly" and consumers resolving
+# main-SNAPSHOT silently keep getting the last good (pre-Boot-4) build. Pull Temurin 26 straight
+# from Adoptium instead. JAVA_HOME is exported in the same command as the build because separate
+# lines don't share shell state.
+before_install:
+  - curl -sSfL -o /tmp/jdk26.tar.gz "https://api.adoptium.net/v3/binary/latest/26/ga/linux/x64/jdk/hotspot/normal/eclipse"
+  - mkdir -p /tmp/jdk26 && tar -xzf /tmp/jdk26.tar.gz -C /tmp/jdk26 --strip-components=1
+install:
+  - export JAVA_HOME=/tmp/jdk26 PATH=/tmp/jdk26/bin:$PATH && java -version && ./mvnw -B install -DskipTests

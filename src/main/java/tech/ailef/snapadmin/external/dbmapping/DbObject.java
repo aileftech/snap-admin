@@ -19,8 +19,10 @@
 
 package tech.ailef.snapadmin.external.dbmapping;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -29,6 +31,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import org.hibernate.Hibernate;
 
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
@@ -73,6 +77,7 @@ public class DbObject {
 	@SuppressWarnings("unchecked")
 	public List<DbObject> getValues(DbField field) {
 		Collection<Object> values = (Collection<Object>)get(field.getJavaName()).getValue();
+		if (values == null) return new ArrayList<>();
 		return values.stream().map(o -> new DbObject(o, field.getConnectedSchema()))
 				.collect(Collectors.toList());
 	}
@@ -111,6 +116,8 @@ public class DbObject {
 		OneToMany oneToMany = field.getPrimitiveField().getAnnotation(OneToMany.class);
 		if (manyToMany != null || oneToMany != null) {
 			Collection<Object> linkedObjects = (Collection<Object>)get(field.getJavaName()).getValue();
+			// An unsaved entity or one without a field initializer can hold a null collection
+			if (linkedObjects == null) return new ArrayList<>();
 			return linkedObjects.stream().map(o -> new DbObject(o, field.getConnectedSchema()))
 				.collect(Collectors.toList());
 		} else {
@@ -125,9 +132,26 @@ public class DbObject {
 			throw new SnapAdminException("Unable to find getter method for field `"
 				+ name + "` in class " + instance.getClass());
 
+		DbField dbField = schema.getFieldByJavaName(name);
+		Field javaField = dbField == null ? null : dbField.getPrimitiveField();
+
+		// Entities sometimes override the conventional getter with a display-only
+		// variant (e.g. `String getComputer()` over a `Computer computer` relationship).
+		// Invoking it would hand a String to code expecting the mapped type, so in that
+		// case read the field itself instead.
+		if (javaField != null && !javaField.getType().isAssignableFrom(getter.getReturnType())) {
+			try {
+				javaField.setAccessible(true);
+				// Fields on an uninitialized Hibernate proxy are always null
+				return new DbFieldValue(javaField.get(Hibernate.unproxy(instance)), dbField);
+			} catch (IllegalAccessException | RuntimeException e) {
+				throw new SnapAdminException(e);
+			}
+		}
+
 		try {
 			Object result = getter.invoke(instance);
-			return new DbFieldValue(result, schema.getFieldByJavaName(name));
+			return new DbFieldValue(result, dbField);
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			throw new SnapAdminException(e);
 		}
@@ -263,7 +287,27 @@ public class DbObject {
 			if (m.getName().equals("set" + capitalize))
 				return m;
 		}
-		
+
+		// Lombok drops the "is" of a boolean field named e.g. `isLaptop`: setLaptop()
+		String stripped = stripBooleanIsPrefix(fieldName);
+		if (stripped != null) {
+			for (Method m : methods) {
+				if (m.getName().equals("set" + stripped))
+					return m;
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * For a boolean field named like `isLaptop`, returns `Laptop`; otherwise null.
+	 */
+	private String stripBooleanIsPrefix(String fieldName) {
+		DbField dbField = schema.getFieldByJavaName(fieldName);
+		if (dbField == null || !(dbField.getType() instanceof BooleanFieldType)) return null;
+		if (fieldName.length() > 2 && fieldName.startsWith("is") && Character.isUpperCase(fieldName.charAt(2)))
+			return fieldName.substring(2);
 		return null;
 	}
 	
@@ -283,7 +327,15 @@ public class DbObject {
 			if (m.getName().equals(prefix + capitalize))
 				return m;
 		}
-		
+
+		// Lombok names the getter of a boolean field `isLaptop` just isLaptop()
+		if (stripBooleanIsPrefix(fieldName) != null) {
+			for (Method m : methods) {
+				if (m.getName().equals(fieldName) && m.getParameterCount() == 0)
+					return m;
+			}
+		}
+
 		return null;
 	}
 	
